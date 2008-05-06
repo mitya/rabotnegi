@@ -1,0 +1,198 @@
+body {
+	margin:10px 0; font: medium 'Lucida Grande', Verdana, sans-serif;
+	behavior: url('/stylesheets/csshover2.htc');
+	min-width: 600px }
+body #content {margin:0 20px}
+
+input, select { margin: 0; padding: 0 }
+a:link {color: mediumblue}
+a:visited {color: purple}
+a:hover {color: darkred}
+table { border-collapse: collapse; }
+h1, h2, h3, h4, h5, h6, p, pre { margin: 0}
+h1 {margin: 1em 0 .25em}
+h2 {margin: 1em 0 .25em}
+h3 {margin: 1em 0 0}
+h4 {margin: 1em 0 0}
+p {margin: .25em 0}
+pre {margin: .25em 0}
+
+
+input.inner-tooltip,
+textarea.inner-tooltip { color: gray; font-style: italic; }
+input.required-field,
+textarea.required-field { background: #FF6; }
+
+table.form-layout col.labels { width: 120px}
+table.form-layout td {padding-bottom: 5px;}
+table.form-layout th {text-align: right; vertical-align: top; padding-right: 5px;}
+table.form-layout th label { font-variant: small-caps; font-size: smaller;}
+table.form-layout input {width: 150px}
+table.form-layout select {width: 155px}
+table.form-layout input.button {width: 155px}
+table.form-layout label input {width: auto} /*fix for checkbox & radiobuttons*/
+table.form-layout td small {color: gray; font-size: 11px;}
+table.form-layout td span.required-mark {color: gray; font-size: 11px}
+* html table.form-layout td {padding-top: 0}
+* html table.form-layout td input.checkbox {margin-left: -3px}
+
+
+a.ui:link, a.ui:visited {color: mediumblue;}
+a.ui:hover {color: darkred;}
+a.cmd:link, a.cmd:visited { color: green; border-bottom: 1px dashed; text-decoration: none; }
+a.cmd:hover { color: firebrick; }
+a.page { padding: 0 4px; text-decoration: none; }
+a.page:hover { padding: 0 3px; border: 1px solid #df0f5f; }
+a.page.current { border: 1px solid black; color: black; padding: 0 3px; cursor: default; }
+a.tmp { color: green; }
+
+span.spinner { background: green; color: white; }
+table.devgrid td {border: 1px dashed black;}
+table.centered {margin:0 auto}
+br.clearer { clear: both; display: block;}
+
+.message {text-align: center; font-weight: bold; padding: 8px; margin: 8px 0 8px;}
+.warning {background: gold;}
+.sort-mark {text-decoration:none}
+
+div.submit {margin-top: 3px;}
+div.submit span.cancel {font-size: small;}
+div.submit .action-button {}
+
+
+#header { margin-bottom: 10px; }
+#logo { font-weight:bold; font-size:x-large; }
+#logo a { text-decoration: none; }
+#logo #logo-pro { color: red; }
+#logo #logo-rabotu { font-variant: small-caps; color: black; }
+#flash-notice,
+#flash-error {
+	padding: 8px; margin: 8px 0 8px;
+	text-align: center; font-weight: bold; color: white;}
+#flash-notice {background: green}
+#flash-error {background: red}
+
+#tab-bar {width:100%; height:25px }
+#tab-bar .tab {border:1px solid #555; border-bottom:1px solid #555; padding:0 10px; background:#777;}
+#tab-bar .tab a {color:black; text-decoration:none}
+#tab-bar .tab a:hover {color:white}
+#tab-bar .selected-tab {
+	border-top:1px solid #555; border-left:1px solid #555;
+	border-right:1px solid #555; border-bottom:1px solid #ddd;
+	background:#ddd}
+#tab-bar .selected-tab a:hover {color:black}
+#tab-bar .spacer {border-bottom:1px solid #555}
+#tab-bar #logo-pseudo-tab {border-bottom:1px solid #555}
+
+#nav-bar {height:25px; line-height:25px; padding-left: 5px; background:#ddd}
+#nav-bar a {margin:0 7px}
+#nav-bar a.selected {color:black; text-decoration:none}
+
+#footer {
+	clear: left; width: 100%;
+	margin-top: 20px; padding-top: 3px; border-top: thin solid gray;
+	text-align: center; color: gray; }
+
+
+#info-panel { clear: both; width: 100%; margin-top: 20px; padding: 5px }
+#info-panel pre { font-family: 'CMU Typewriter Text'; font-size: 12pt; }
+#info-panel p#trace-contents { text-align: center; font-size: larger; }
+#info-panel h2#info-panel-show {text-align: center;}
+
+
+#vacancies-search-form fieldset {padding:10px}
+#vacancies-search-form input {width:200px}
+#vacancies-search-form select,
+#vacancies-search-form input.button {width:205px}
+html>body #vacancies-search-form fieldset {border:1px solid silver}
+
+
+#resumes-search-form input {width:200px}
+#resumes-search-form select,
+#resumes-search-form input.button {width:205px}
+#resumes-search-form fieldset {padding:10px}
+html>body #resumes-search-form fieldset {border:1px solid silver}
+
+
+#vacancies-search-page #content {margin:0}
+.vacancies-list { width: 100%; margin: 10px 0}
+.vacancies-list span.pos {font-weight: bold; }
+.vacancies-list td.sal,
+.vacancies-list th.sal {text-align: right; white-space:nowrap }
+.vacancies-list td.pos,
+.vacancies-list th.pos {text-align: left}
+.vacancies-list td.emp,
+.vacancies-list th.emp {text-align: left}
+.vacancies-list thead tr { background: #dfefff; }
+.vacancies-list thead tr th { padding-bottom: 0.8em; }
+.vacancies-list tfoot tr {	background: #dfefff; }
+.vacancies-list tfoot tr td { padding-top: 0.8em; }
+.vacancies-list tr.alt { background: #eee; }
+.vacancies-list th,
+.vacancies-list td {padding:1px 5px}
+.vacancies-list tr.active {background:#ffc}
+.vacancies-list tr.desc-active td {padding-bottom: 5px;}
+.vacancies-list tr.alt-active {background:#cfc}
+.vacancies-list tr.alt-desc-active td {padding-bottom: 5px;}
+.vacancies-list tr.desc div.content {white-space: pre-wrap}
+.vacancies-list tr.desc div.content a.rabota-ru {float: right;}
+.search-result-message {margin: 1em 0 0.5em 0; text-align: center; }
+.search-result-message .search-result-count { font-weight: bold; }
+
+
+#vacancy-edit-form input { width: 220px }
+#vacancy-edit-form select { width: 224px }
+#vacancy-edit-form textarea { width: 400px; height: 170px }
+
+
+#resume-form {width: 800px}
+#name-section, #job-section, #about-me-section, #job-reqs-section, 
+#contact-section, #security-section {margin: 16px 0}
+#resume_job_reqs, #resume_contact_info, #resume_about_me {width: 500px}
+#resume_about_me {height: 200px}
+#resume_job_reqs {height: 100px}
+#resume_contact_info {height: 50px}
+#resume_min_salary {text-align: center; width: 60px}
+#resume_fname, #resume_lname, #resume_job_title {width: 200px}
+#resume_city, #resume_industry {width: 205px}
+
+
+#resume #name {font-size:200%; font-weight:bold}
+#resume #job-title {font-size:200%; color:green}
+#resume #salary {font-size:150%; margin-left:20px}
+#resume #salary-value {font-weight:bold}
+#resume #about-me,
+#resume #job-reqs,
+#resume #contact-info {margin:10px 0}
+#resume pre {white-space:pre-wrap; font:100% Verdana, sans-serif; margin:3px 0}
+#resume h4 {margin:12px 0 3px 0; font-size: larger}
+
+#resume-list {margin: 0 auto}
+#resume-list .sal {padding-left: 20px; text-align: right}
+#resume-list .pos {text-align: left}
+
+
+#workers-login-form #name,
+#workers-login-form #password {width: 140px;}
+#workers-login-form #log_in {width:145px}
+
+
+#emp-idx {width:100%}
+#emp-idx #casual-div, #emp-idx #pro-div {width:50%}
+#emp-idx #casual-div {font-size:xx-large; line-height:1.5; border-right:silver 1px solid;}
+#emp-idx #pro-div {padding-left:20px}
+#emp-idx #pro-div #register-h {margin:8px 0 0}
+#emp-idx #pro-div #or-p {margin:5px 0}
+#emp-idx #pro-div #login-h {margin:0 0 5px}
+#emp-idx #pro-div form {margin-top:5px}
+#emp-idx #pro-div form th {text-align:left}
+
+.pro-empoloyers-index-section {margin-left:20px}
+
+
+#vacancies-table {position:relative; left: -35px; margin-bottom: 8px;}
+#vacancies-table th { padding: 1px 20px 1px 0; text-align: left;}
+#vacancies-table td.controls { width: 30px; padding-right: 5px; padding-left: 0;}
+#vacancies-table td.controls span { display: none}
+#vacancies-table tr:hover td.controls span { display: inline; }
+#vacancies-table td.controls img {border: 0; margin: 0; padding: 0; width: 12px; height:12px;}

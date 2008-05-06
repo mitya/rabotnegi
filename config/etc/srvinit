@@ -1,0 +1,21 @@
+#!/bin/sh
+# Called by cron
+# @reboot	root	/etc/srvinit >>/var/log/srvinit 2>&1
+
+echo
+echo "Server started at: `date`"
+echo "User: `whoami`"
+echo "Path: $PATH"
+echo "Shel: $SHELL"
+
+echo 'Starting mongrels...'
+/usr/local/bin/ruby /usr/local/bin/mongrel_cluster_ctl start
+
+echo 'Starting pen...'
+/usr/local/bin/pen -H -p /var/run/pen.pid 80 localhost:4001 localhost:4002
+
+echo 'Starting monit...'
+/usr/local/bin/monit
+
+echo 'Starting firewall...'
+/etc/firewall.conf

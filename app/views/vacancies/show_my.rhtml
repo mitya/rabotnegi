@@ -1,0 +1,7 @@
+<%= link_to 'Редактировать', {:controller=>:vacancies, :action=>:edit, :id=>@vacancy.id}, {:class=>'ui'} %>	
+<%= link_to 'Удалить', {:controller=>:vacancies, :action=>:delete, :id=>@vacancy.id},
+		{:class=>'ui', :method=>:delete, :confirm => "Удаляем «#{@vacancy.title}», да?"}
+%>
+<hr>
+
+<%= render :partial => 'show' %>

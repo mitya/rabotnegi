@@ -1,0 +1,10 @@
+<% @page_title = "Моё резюме" %>
+
+<%= link_to 'Редактировать', edit_resume_path('my'), :class=>'ui' %> |
+<%= link_to 'Удалить', resume_path('my'), :method=>:delete, :class=>'ui' %> |
+<%= link_to 'Выход', log_out_resumes_path, :class=>'ui' %> |
+<hr>
+
+<!-- Резюме просмотрено работодателями <b><%= @resume.view_count %></b> раз. -->
+
+<%= render :partial => 'show' %>

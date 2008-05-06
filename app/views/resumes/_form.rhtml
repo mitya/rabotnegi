@@ -1,0 +1,28 @@
+<%= error_messages_for :resume %>
+<% form(:resume, :url => action, :method => method) do |f| %>
+	<% f.field_set do %>
+		<%= f.text_field 'Имя', :fname, :required => true %>
+		<%= f.text_field 'Фамилия', :lname, :required => true %>
+	<% end %>
+
+	<% f.field_set 'Требования к работе', 'job-info' do %>
+		<%= f.select 'Город', :city, $city_inverted_table %>
+		<%= f.select 'Отрастль', :industry, $industry_groups %>
+		<%= f.text_field 'Должность', :job_title, :required => true %>
+		<%= f.text_field 'Зарплата', :min_salary, :before => 'от', :after => 'рублей' %>
+	<% end %>
+			
+	<% f.field_set 'Дополнительная информация', 'text-areas' do %>		
+		<%= f.text_area 'О себе', :about_me, :title => 'Профессиональные знания и умения. опыт работы, образование…' %>
+		<%= f.text_area 'О работе', :job_reqs, :title => 'Дополнительные требования к работе' %>
+		<%= f.text_area 'Контактная&nbsp;<br> информация', :contact_info, :title => 'Телефон, Email…' %>
+		<%= f.password_field 'Пароль', :password, :comment => 'Пароль нужен если вы предпологаете редактировать резюме в будущем.' %>
+	<% end %>
+	
+	<%= f.submit_section action_label, :rid => 'submit' %>
+<% end %>
+
+
+<script type='text/javascript'>
+	$('resume_about_me', 'resume_job_reqs', 'resume_contact_info').invoke('makeTooltip')
+</script>
