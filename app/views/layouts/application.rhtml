@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<%= page_title %>
+	<%= stylesheet_link_tag 'default.css' %>
+	<%= javascript_include_tag :defaults %>
+</head>
+
+<body <%= page_id %>>
+	<div id='header'>
+		<div id='nav'>
+			<% nav_elements = select_nav_element_ids  %>
+			
+			<table id='tab-bar'>
+				<col width=10>
+				<col width=1>
+				<col width=10>
+				<col width=10>
+				<col width=1>
+				<col width=10>
+				<col width=1>
+				<col width=*>
+				<tr>
+					<td class='spacer'>
+					<td id='logo-pseudo-tab'>
+						<div id='logo'>
+							<a href='/'>
+								<span id='logo-pro'>Р</span><span id='logo-rabotu'>аботнеги.ру</span>
+							</a>
+						</div>
+					<td class='spacer'>
+					<td class='spacer'>
+					<td id='workers-tab' class='tab'><a href='/vacancies'>Работникам</a>
+					<td class='spacer'>
+					<td id='employers-tab' class='tab'><a href='/employers'>Работодателям</a>
+					<td class='spacer'>
+					<%= add_css_class(nav_elements[:tab_id], 'selected-tab') %>
+			</table>
+			
+			<div id='nav-bar'>
+				<% case nav_elements[:nav_bar_code]
+					 when :workers_nav_bar %>
+					<div id='workers-nav-bar'>
+						<a id='vacancy-search-link' href='/vacancies' class='ui'>Поиск вакансий</a>
+						<a id='my-resume-link' href='/resumes/my' class='ui'>Моё резюме</a>
+					</div>
+				<% when :pro_employers_nav_bar %>
+					<div id='pro-employers-nav-bar'>
+						<a id='resume-search-link' href='/resumes' class='ui'>Поиск резюме</a>
+						<a id='my-vacancies-link' href='/vacancies/my' class='ui'>Мои вакансии</a>
+					</div>
+				<% when :casual_employers_nav_bar %>
+					<div id='casual-employers-nav-bar'>
+						<a id='resume-search-link' href='/resumes' class='ui'>Поиск резюме</a>
+						<a id='vacancies-publication-link' href='/vacancies/new' class='ui'>Публикация вакансий</a>
+					</div> 
+				<% end %>
+				<%= add_css_class(nav_elements[:nav_link_id], 'selected') unless nav_elements[:nav_link_id].blank? %>
+			</div>
+		</div>
+		
+	</div>
+
+	<div id='content'>
+		<%= message 'flash-notice', flash[:notice] %>
+		<%= message 'flash-error', flash[:error] %>
+		<%= yield :layout %>
+	</div>
+	
+	<div id='footer'>© 2008 Работнеги.ру</div>
+	
+	<%# render :partial=>'layouts/trace' %>
+</body>

@@ -1,0 +1,24 @@
+<% @page_title = 'Размещение резюме' %>
+
+<h2><a href='/resumes/new' class='ui'>Опубликовать резюме</a></h2>
+<br>
+или
+<h2>Отредактировать резюме</h2>
+<% form_el log_in_resumes_path, :method => :post, :id => 'workers-login-form' do %>
+		<!-- 
+		<col class='labels'>
+		<col>
+		-->
+		<%= text_field_el 'Имя, фамилия', :name, params[:name] %>
+		<%= password_field_el 'Пароль', :password, params[:password] %>
+		
+		<!-- 
+		<tr>
+		<th>
+		<td><label>
+					<input id='remember_me' name='remember_me' type='checkbox' value='<%= params[:remember_me] %>'>
+					запомнить меня
+				</label> 
+		-->
+		<%= submit_el 'Открыть резюме', :id => 'log_in', :class => 'submit' %>
+<% end %>

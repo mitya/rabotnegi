@@ -1,0 +1,30 @@
+<% @page_id = 'vacancies-search-page' %>
+<%= render :partial=>'search_form' %>
+
+<script type='text/javascript' src='/javascripts/vacancies.js'></script>
+
+<div class='search-result-message'>
+	Найдено <%= objects_found @pager, @vacancies, 'ваканс', 'ия', 'ии', 'ий' %>.
+</div>
+
+<table class='vacancies-list'>
+	<thead><tr>
+		<th class='pos'><%= sort_link "Должность", :title %>
+		<th class='emp'><%= sort_link "Компания", :employer_name %>
+		<th class='sal'><%= sort_link "Зарплата", :salary_min %>
+	<tbody>
+	<% for v in @vacancies do %>
+		<tr id='<%= v.id %>' class='<%= cycle('', 'alt') %>'>
+			<td class='pos'>
+				 <a href='<%= description_vacancy_path(v.id) %>' onclick='return toggleVacancy(<%= v.id %>)'><%= v.title %></a>
+			<td class='emp'><%= v.employer_name %>
+			<td class='sal'><%= v.salary %>
+	<% end %>
+	<% if @pager.page_count > 1 %>
+		<tfoot><tr><td colspan=3>
+				<strong>Страницы:</strong>
+				<%= link_to "предыдущая", {:overwrite_params=>{:p => @pager.current.previous}}  if @pager.current.previous %>
+				<%= link_to "следующая", {:overwrite_params=>{:p => @pager.current.next}} if @pager.current.next %>
+				(<%= pagination_links @pager, :window_size=>10, :params=>params, :name=>$page_param_name %>)
+	<% end  %>
+</table>

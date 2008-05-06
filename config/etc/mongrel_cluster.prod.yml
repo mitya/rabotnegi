@@ -1,0 +1,9 @@
+--- 
+cwd: /var/www/jobs/current
+user: mongrel
+group: mongrel
+log_file: log/mongrel.log
+pid_file: tmp/pids/mongrel.pid
+port: "4001"
+environment: production
+servers: 3
