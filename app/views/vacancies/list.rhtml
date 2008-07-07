@@ -4,7 +4,7 @@
 <script type='text/javascript' src='/javascripts/vacancies.js'></script>
 
 <div class='search-result-message'>
-	Найдено <%= objects_found @pager, @vacancies, 'ваканс', 'ия', 'ии', 'ий' %>.
+	<%= found_objects_info @vacancies, 'ваканс', 'ия', 'ии', 'ий' %>.
 </div>
 
 <table class='vacancies-list'>
@@ -20,11 +20,9 @@
 			<td class='emp'><%= v.employer_name %>
 			<td class='sal'><%= v.salary %>
 	<% end %>
-	<% if @pager.page_count > 1 %>
-		<tfoot><tr><td colspan=3>
+	<% if @vacancies.total_pages > 1 %>
+		<tfoot><tr><td colspan='3' class='pagination'>
 				<strong>Страницы:</strong>
-				<%= link_to "предыдущая", {:overwrite_params=>{:p => @pager.current.previous}}  if @pager.current.previous %>
-				<%= link_to "следующая", {:overwrite_params=>{:p => @pager.current.next}} if @pager.current.next %>
-				(<%= pagination_links @pager, :window_size=>10, :params=>params, :name=>$page_param_name %>)
+				<%= will_paginate @vacancies, :inner_window => 10, :params => params, :param_name => :p, :prev_label => "« предыдущая", :next_label => "следующая »", :container => false %>
 	<% end  %>
 </table>

@@ -1,3 +1,4 @@
 log/*
 tmp/*
 jobs.tmproj
+.DS_Store

@@ -9,22 +9,12 @@ test:
   adapter: mysql
   database: jobs_test
   username: root
-  password:
-  socket: /tmp/mysql.sock
+  host: localhost
   encoding: utf8
   
 production:
   adapter: mysql
   database: jobs_prod
-  username: jobsapp
-  password: 123
-  socket: /var/run/mysqld/mysqld.sock
-  encoding: utf8
-
-staging:
-  adapter: mysql
-  database: jobs_dev
   username: root
-  password:
-  socket: /tmp/mysql.sock
+  socket: /var/run/mysqld/mysqld.sock
   encoding: utf8

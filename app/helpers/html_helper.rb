@@ -42,14 +42,14 @@ module HtmlHelper
 		content_tag 'div', object, :id => id
 	end
 	
-	def objects_found(paginator, objects, word, e1, e2, e5)
-		if paginator.page_count <= 1
+	def found_objects_info(objects, word, e1, e2, e5)
+		if objects.total_pages <= 1
 			count = objects.size
 			object = RussianInflector.inflect objects.size, word, e1, e2, e5
 		else
-			count = "более #{paginator.page_count * 50}"
-			object = RussianInflector.inflect paginator.page_count * 50, word, e1, e2, e5, :more end
-		"<span class='search-result-count'>#{count}</span> #{object}"
+			object = RussianInflector.inflect objects.total_entries, word, e1, e2, e5, :more
+		end
+		"Найдено <b>#{objects.total_entries}</b> #{object}. Показаны <b>#{objects.offset + 1}</b> — <b>#{objects.offset + objects.length}</b>"
 	end
 	
 	def submit_section(action_label)
