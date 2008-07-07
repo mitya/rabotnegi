@@ -5,7 +5,6 @@ class VacanciesController < ApplicationController
 	before_filter :set_employer_authentified
 	before_filter :redirect_if_unauthetified,    :only => [:list_my, :edit, :update, :delete]
 	before_filter :redirect_if_unauthorized,     :only => [:edit, :update, :delete]
-
 	
 	def my
 		load_employer
@@ -21,7 +20,7 @@ class VacanciesController < ApplicationController
 
 	def new
 		@vacancy = Vacancy.new
-		@vacancy.city = :msk
+		@vacancy.city = 'msk'
     render_multiview :form, :url => "/vacancies", :method => :post, :action_label => 'Опубликовать'
 	end
 
@@ -37,13 +36,7 @@ class VacanciesController < ApplicationController
 			filter_template << ' and industry=:industry' if params[:industry] != 'any'
 			filter_template << ' and (title like :q_esc or employer_name like :q_esc)' if params[:q_esc]
 			
-			vacancies_count = Vacancy.count(:all, :conditions => [filter_template, params])
-			@pager = Paginator.new(self, vacancies_count, 50, params[:p])
-			@vacancies = Vacancy.find :all,
-					:conditions => [filter_template, params],
-					:order => sort_expression,
-					:limit => @pager.items_per_page,
-					:offset => @pager.current.offset,
+			@vacancies = Vacancy.paginate	:page => params[:p], :per_page => 50, :conditions => [filter_template, params], :order => sort_expression,
 					:select => 'id, title, external_id, salary_min, salary_max, employer_name'
 					
 			render :action => (@vacancies.empty? ? 'list_empty' : 'list')
@@ -81,7 +74,7 @@ class VacanciesController < ApplicationController
 		end
 	end
 
-	def delete
+	def destroy
 		@vacancy = Vacancy.find(params[:id])
 		@vacancy.destroy
 		flash[:notice] = "Вакансия «#{@vacancy.title}» удалена"

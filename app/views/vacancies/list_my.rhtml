@@ -7,7 +7,7 @@
 				<td class='controls'>
 					<span>
 					<%= link_to '<img src="/images/edit.gif" title="Редактировать" alt="Редактировать">', {:controller=>:vacancies, :action => :edit, :id => vacancy.id}, {:class=>'ui'} %>
-					<%= link_to '<img src="/images/delete.gif" title="Удалить" alt="Удалить">', {:controller=>:vacancies, :action => :delete, :id => vacancy.id},
+					<%= link_to '<img src="/images/delete.gif" title="Удалить" alt="Удалить">', {:controller=>:vacancies, :action => :destroy, :id => vacancy.id},
 							:confirm => "Удаляем «#{vacancy.title}», да?", :method=>:delete, :class=>'ui' %>
 					</span>
 				<th><%= link_to vacancy.title, {:controller=>:vacancies, :action => :show, :id => vacancy.id}, {:class=>'ui'}  %>

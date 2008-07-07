@@ -14,27 +14,29 @@ class Resume < ActiveRecord::Base
 		filter = 'city = :city'
 		filter << ' and industry = :industry' if params[:industry]
 		filter << ' and job_title like :keywords_esc' if params[:keywords_esc]
+		
 		if params[:salary]
 			direction, value = params[:salary].match(/(-?)(\d+)/).captures
 			search_down = direction == '-'
-			filter << " and min_salary #{search_down ? '<=' : '>='} #{value} " end
+			filter << " and min_salary #{search_down ? '<=' : '>='} #{value} "
+		end
 		
-		return find(:all,
-				:conditions => [filter, params],
-				:order => 'min_salary',
-				:select => 'id, job_title, min_salary')
+		all :conditions => [filter, params], :order => 'min_salary', :select => 'id, job_title, min_salary'
 	end
 	
 	def self.find_by_name(lname, fname)
-		return find(:first, :conditions=>['lname = ? and fname = ?', lname, fname]) end
+		first :conditions => ['lname = ? and fname = ?', lname, fname]
+	end
 	
 	def name
-		!lname.blank? ? "#{fname} #{lname}" : fname end
+		!lname.blank? ? "#{fname} #{lname}" : fname
+	end
 		
 	def summary
-		"#{name} — #{job_title} (#{salary_text})" end
+		"#{name} — #{job_title} (#{salary_text})"
+	end
 		
 	def salary_text
-		"от #{min_salary} р." end
+		"от #{min_salary} р."
+	end
 end
-

@@ -7,18 +7,18 @@ CREATE TABLE `employers` (
   `updated_at` datetime NOT NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ix_employers_login` (`login`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `resumes` (
   `id` int(11) NOT NULL auto_increment,
   `fname` varchar(30) NOT NULL,
   `lname` varchar(30) NOT NULL,
   `password` varchar(30) default NULL,
-  `city` enum('msk','spb','ekb','nn','nsk') NOT NULL,
+  `city` varchar(255) NOT NULL,
   `job_title` varchar(100) NOT NULL,
-  `industry` enum('it','finance','transportation','logistics','service','wholesale','manufactoring','restaurant','retail','office','building','hr','marketing','medicine','realty','sales','publishing','insurance','telecom','executives','hospitality','telework','householding','law') NOT NULL,
-  `min_salary` int(11) NOT NULL,
-  `view_count` int(11) NOT NULL default '0',
+  `industry` varchar(255) NOT NULL,
+  `min_salary` bigint(11) NOT NULL,
+  `view_count` bigint(11) NOT NULL default '0',
   `job_reqs` text,
   `about_me` text,
   `contact_info` text,
@@ -29,22 +29,32 @@ CREATE TABLE `resumes` (
   KEY `ix_resumes_city` (`city`),
   KEY `ix_resumes_industry` (`industry`),
   KEY `ix_resumes_city_industry` (`city`,`industry`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `schema_info` (
-  `version` int(11) default NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+CREATE TABLE `schema_migrations` (
+  `version` varchar(255) NOT NULL,
+  UNIQUE KEY `unique_schema_migrations` (`version`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `simple_captcha_data` (
+  `id` int(11) NOT NULL auto_increment,
+  `key` varchar(40) default NULL,
+  `value` varchar(6) default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `vacancies` (
   `id` int(11) NOT NULL auto_increment,
   `title` varchar(255) NOT NULL,
   `description` text NOT NULL,
-  `external_id` int(11) default NULL,
-  `industry` enum('it','finance','transportation','logistics','service','wholesale','manufactoring','restaurant','retail','office','building','hr','marketing','medicine','realty','sales','publishing','insurance','telecom','executives','hospitality','telework','householding','law') NOT NULL,
-  `city` enum('msk','spb','ekb','nn','nsk') NOT NULL,
-  `salary_min` int(11) default NULL,
-  `salary_max` int(11) default NULL,
-  `employer_id` int(11) default NULL,
+  `external_id` bigint(11) default NULL,
+  `industry` varchar(255) NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `salary_min` bigint(11) default NULL,
+  `salary_max` bigint(11) default NULL,
+  `employer_id` bigint(11) default NULL,
   `employer_name` varchar(255) default NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
@@ -54,6 +64,6 @@ CREATE TABLE `vacancies` (
   KEY `ix_vacancies_industry` (`industry`),
   KEY `ix_vacancies_city_industry` (`city`,`industry`),
   KEY `fk_vacancies_employers` (`employer_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3665 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7329 DEFAULT CHARSET=utf8;
 
-INSERT INTO `schema_info` (version) VALUES (3)
+INSERT INTO schema_migrations (version) VALUES ('1');

@@ -115,8 +115,8 @@ class RabotaRu::VacancyConverter
     vacancy.description = format_description(rss_item['description'], rss_item['responsibility'])
     vacancy.external_id = extract_id(rss_item['guid'])
     vacancy.employer_name = rss_item['employer']['content']
-    vacancy.city = find_city(rss_item['city']['vacancy:number'].to_i)
-    vacancy.industry = find_industry(rss_item['rubric_0']['vacancy:number'].to_i)
+    vacancy.city = find_city(rss_item['city']['vacancy:number'].to_i).to_s
+    vacancy.industry = find_industry(rss_item['rubric_0']['vacancy:number'].to_i).to_s
     vacancy.salary = convert_salary(rss_item['salary'])
     vacancy.created_at = Time.parse(rss_item['date']['vacancy:publishDate'])
     vacancy
