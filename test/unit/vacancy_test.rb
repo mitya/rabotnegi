@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe Vacancy do
+unit_test Vacancy do
   def setup
     @vacancy = Vacancy.new    
   end

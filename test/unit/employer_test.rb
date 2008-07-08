@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe Employer do
+unit_test Employer do
   def setup
     @microsoft = Employer.new(:name=>'Microsoft', :login => 'ms', :password => '123', :password_confirmation => '123')
   end
