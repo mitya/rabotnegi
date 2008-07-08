@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe "Domain initialization" do
+unit_test "Domain initialization" do
   test "industry data loading" do
     assert $industry_map.size > 10
     assert $popular_industry_table.size > 5
@@ -22,11 +22,11 @@ describe "Domain initialization" do
     column_is_alphabetized! $other_industry_table, 1
   end
   
-  # visual_test "print tables" do
-  #   print_variable '$industry_map'
-  #   print_variable '$popular_industry_table'
-  #   print_variable '$other_industry_table'
-  # end
+  visual_test "print tables" do
+    print_variable '$industry_map'
+    print_variable '$popular_industry_table'
+    print_variable '$other_industry_table'
+  end
   
   def column_is_alphabetized!(table, col)
     prev = ''

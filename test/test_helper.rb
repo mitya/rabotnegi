@@ -6,7 +6,6 @@ require 'pp'
 class Test::Unit::TestCase
   self.use_transactional_fixtures = true
   self.use_instantiated_fixtures  = false
-  fixtures :all
   
   class << self
     def test(name, &block)
@@ -16,22 +15,14 @@ class Test::Unit::TestCase
       define_method(test_name, &block)
     end
     
-    alias visual_test test    
-    alias it test
-    alias its test
-    
-    def xtest(*args) end
-    alias xvisual_test xtest    
-    alias xit xtest
-    alias xits xtest    
+    def visual_test(name, &block)
+      # test(name, &block)
+    end
   end  
 end
 
-def describe(name, &block)
+def unit_test(name, &block)
   test_case = Class.new(ActiveSupport::TestCase)
   Object.const_set((name.to_s.tr_s(' :', '_') + 'Test').classify, test_case)
   test_case.class_eval(&block)
-end
-
-def xdescribe(*args)  
 end
