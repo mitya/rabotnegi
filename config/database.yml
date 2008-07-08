@@ -12,9 +12,16 @@ test:
   host: localhost
   encoding: utf8
   
+staging:
+  adapter: mysql
+  database: rabotnegi_stg
+  username: root
+  socket: /var/run/mysqld/mysqld.sock
+  encoding: utf8
+
 production:
   adapter: mysql
-  database: jobs_prod
+  database: rabotnegi_prod
   username: root
   socket: /var/run/mysqld/mysqld.sock
   encoding: utf8
