@@ -1,6 +1,6 @@
-<% @page_title = resumes_page_title %>
+<% title resumes_page_title %>
 
-<%= render :partial => "search_form" %>
+<%= :partial => :search_form %>
 
 <% if @resumes.empty? %>
 	<div class='message warning'>

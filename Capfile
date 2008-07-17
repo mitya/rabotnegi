@@ -28,7 +28,7 @@ role :db,  host, :primary => true
 
 namespace :deploy do
   task :after_update_code do
-    run "chown -R #{runner} #{release_path}"
+    run "chown -R #{runner}:#{runner} #{release_path}"
   end
   
   task :restart do run "god restart #{application}" end  

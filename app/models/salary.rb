@@ -1,24 +1,5 @@
 class Salary
-	@@fields = [:min, :max]	
-	
-	def self.parse(string_value)
-		parameters = {}
-		string_value.strip!
-		case string_value
-		when /(^\d+$)/
-			parameters[:exact] = $1.to_i
-		when /^(\d+)-(\d+)$/, /^(\d+)—(\d+)$/
-			parameters[:min] = $1.to_i
-			parameters[:max] = $2.to_i
-		when /^от (\d+)$/, /^(\d+)\+$/ 
-			parameters[:min] = $1.to_i
-		when /^до (\d+)$/, /^<(\d+)$/
-			parameters[:max] = $1.to_i
-		else
-			raise ArgumentError, "Невозможно конвертировать '#{string_value}'."
-	  end
-		new(parameters)
-	end
+	@@fields = [:min, :max]
 	
 	# cal-seq:
 	#		new 
@@ -45,11 +26,8 @@ class Salary
 	def max?; @max && !@min end
 	def range?; @max && @min && @max != @min end
 
-	
 	def ==(other)
-		min == other.min &&
-		max == other.max &&
-		currency == other.currency
+		min == other.min && max == other.max && currency == other.currency
 	end 
   alias eql? ==
 
@@ -100,4 +78,25 @@ private
 	  "#{salary_string} р."
 	end 
   alias swc salary_with_currency
+  
+  class << self
+    def parse(string_value)
+  		params = {}
+  		string_value.strip!
+  		case string_value
+  		when /(^\d+$)/
+  			params[:exact] = $1.to_i
+  		when /^(\d+)-(\d+)$/, /^(\d+)—(\d+)$/
+  			params[:min] = $1.to_i
+  			params[:max] = $2.to_i
+  		when /^от (\d+)$/, /^(\d+)\+$/ 
+  			params[:min] = $1.to_i
+  		when /^до (\d+)$/, /^<(\d+)$/
+  			params[:max] = $1.to_i
+  		else
+  			raise ArgumentError, "Невозможно конвертировать '#{string_value}'."
+  	  end
+  		new(params)
+  	end	
+  end
 end

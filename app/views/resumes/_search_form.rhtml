@@ -1,3 +1,5 @@
+<% title 'Поиск резюме' %>
+
 <% div 'resumes-search-form', :center => true do %>
 <% form_el resumes_url, :fieldset => true, :method => :get do %>
 	<%= select_el 'Город', :city, $city_inverted_table, params[:city] %>
