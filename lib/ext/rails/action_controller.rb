@@ -1,20 +1,11 @@
 class ActionController::Base
-  def render_part(partial, options = {})
-    render_options, render_options[:locals] = options / [:layout, :object, :collection, :status, :spacer_template]
-    render render_options + {:partial => partial.to_s}
-  end
-  
-  def render_multiview(partial, locals = {})
-    render_part partial, locals + {:layout => true}
-  end
-  
   def template(template, options = {})
     render options.merge(:action => template.to_s)
   end
   
   def redirect(url)
-    return redirect_to(:back) if url == :back
-    redirect_to url.is_a?(Symbol) ? {:action => url} : url
+    url = { :action => url.to_s } if url.is_a?(Symbol) && url != :back
+    redirect_to url
   end
   
   def partial(partial, options = {})

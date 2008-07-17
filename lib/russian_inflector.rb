@@ -1,42 +1,32 @@
 module RussianInflector
-	def self.inflect number, word, end1, end2, end5, strategy=:normal
-		return word + select_ending(number, end1, end2, end5, strategy)
+	def self.inflect(number, word, end1, end2, end5, strategy = :normal)
+		word + select_ending(number, end1, end2, end5, strategy)
 	end
 	
 private
-	def self.select_ending number, end1, end2, end5, strategy
-		number_by_100 = number%100
+	def self.select_ending(number, end1, end2, end5, strategy)
+		number_by_100 = number % 100
 		case strategy
 		when :normal
 			case number_by_100
-			when 1:
-				end1
-			when 2..4:
-				end2
-			when 5..20:
-				end5
+			when 1: end1
+			when 2..4: end2
+			when 5..20: end5
 			else
-				case number_by_100%10
-				when 1:
-					end1
-				when 2..4:
-					end2
-				when 0, 5..9:
-					end5
+				case number_by_100 % 10
+				when 1: end1
+				when 2..4: end2
+				when 0, 5..9: end5
 				end
 			end
 		when :more
 			case number_by_100
-			when 1:
-				end2
-			when 2..20:
-				end5
+			when 1: end2
+			when 2..20: end5
 			else
-				case number_by_100%10
-				when 1:
-					end2
-				when 0, 2..9:
-					end5
+				case number_by_100 % 10
+				when 1: end2
+				when 0, 2..9: end5
 				end
 			end	
 		end

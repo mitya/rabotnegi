@@ -3,15 +3,11 @@ class ApplicationController < ActionController::Base
   include SimpleCaptcha::ControllerHelpers
   
 	session :session_key => '_jobs_session_id'
-	before_filter :init_flash_trace
+	
+  rescue_from(ActiveRecord::RecordInvalid) { template :form, :status => 422 }
 
-private
-	def init_flash_trace
-		flash[:trace] = {}
-	end
+protected
+  def ensure_proper_protocol
+    Rails.env.in?('test', 'development') || super
+  end
 end
-
-$page_size = 50
-$sort_param_name  = 's'
-$page_param_name  = 'p'
-$query_param_name = 'q'

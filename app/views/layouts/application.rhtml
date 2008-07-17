@@ -1,8 +1,8 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 
 <head>
-	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-	<%= page_title %>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />	
+	<title><%= page_title %></title>
 	<%= stylesheet_link_tag 'default.css' %>
 	<%= javascript_include_tag :defaults %>
 </head>
@@ -10,7 +10,7 @@
 <body <%= page_id %>>
 	<div id='header'>
 		<div id='nav'>
-			<% nav_elements = select_nav_element_ids  %>
+			<% nav_elements = select_nav_element_ids %>
 			
 			<table id='tab-bar'>
 				<col width=10>
@@ -63,12 +63,10 @@
 	</div>
 
 	<div id='content'>
-		<%= message 'flash-notice', flash[:notice] %>
-		<%= message 'flash-error', flash[:error] %>
+		<%= content_tag :div, flash[:notice], :id => 'flash-notice' if flash[:notice] %>
+		<%= content_tag :div, flash[:error], :id => 'flash-error' if flash[:error] %>		
 		<%= yield :layout %>
 	</div>
 	
 	<div id='footer'>© 2008 Работнеги.ру</div>
-	
-	<%# render :partial=>'layouts/trace' %>
 </body>

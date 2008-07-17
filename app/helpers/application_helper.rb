@@ -1,24 +1,56 @@
-module ApplicationHelper
-  include DebugHelper
-  include HtmlHelper
-  
-  def title(value)
-    @page_title = value
-  end
-  
-	def page_title
-		return "<title>#{@page_title || 'Работнеги.ру'}</title>"
+module CollectionsHelper
+	def found_objects_info(collection, word, e1, e2, e5)
+		if collection.total_pages <= 1
+			count = collection.size
+			object = RussianInflector.inflect(collection.size, word, e1, e2, e5)
+		else
+			object = RussianInflector.inflect(collection.total_entries, word, e1, e2, e5)
+		end
+		
+		"Найдено <b>#{collection.total_entries}</b> #{object}. 
+		 Показаны <b>#{collection.offset + 1}</b> — <b>#{collection.offset + collection.length}</b>"
+	end
+
+	def sort_link(collection, label, field)
+	  curfld, curdir = collection.sort_field, collection.sort_direction
+	  
+	  param, sign = if field != curfld then [field, '']
+	    elsif curdir == :asc then ["-#{field}", '▲']
+      elsif curdir == :desc then ["#{field}", '▼']
+    end
+	  
+		link_to content_tag(:span, sign, :class => 'sort-mark') + label,
+			request.request_parameters.merge(:p => nil, :s => param), :class => 'ui'
+	end  
+end
+
+module CommonHelper
+	def add_css_class(element_id, klass)
+		content_tag :script, "$('#{element_id}').addClassName('#{klass}')"
 	end
 	
-	def page_id
-	  "id='#{@page_id}'" if @page_id	 
+	def div(id, options = {}, &proc)
+		return if options[:only] == false
+		return if options[:except] == true
+		
+		if options[:center]
+			concat "<table id='#{id}' class='centered'><tr><td>", proc.binding
+			yield
+			concat '</table>', proc.binding
+    else
+  		concat "<div id='#{id}'>", proc.binding
+  		yield
+  		concat '</div>', proc.binding
+		end
 	end
 	
-	def required_mark(options={})
+	def required_mark(options = {})
     content_tag :span, '(обязательное поле)', {:class => 'required-mark'}.update(options)
-	end
-	
-	# call-seq select_nav_element_ids => {tab_id: string, nav_bar_code: symbol, nav_link_id: string}
+	end	
+end
+
+module TabsHelper
+	# Returns {tab_id: string, nav_bar_code: symbol, nav_link_id: string}
 	def select_nav_element_ids
 		contr = self.controller.controller_name.to_sym
 		action = self.controller.action_name.to_sym
@@ -27,7 +59,8 @@ module ApplicationHelper
 			
 		if !route
 			logger.warn("Не найдена строка маршрутизации для #{controller.controller_name}/#{controller.action_name}")
-			return {:tab_id=>"workers-tab", :nav_bar_code=>:workers_nav_bar, :nav_link_id=>nil} end
+			return { :tab_id => "workers-tab", :nav_bar_code => :workers_nav_bar, :nav_link_id => nil }
+		end
 
 		nav_element_ids = {}
 		nav_element_ids[:tab_id] = route[2]
@@ -53,14 +86,14 @@ module ApplicationHelper
 		end
 
 		if nav_element_ids[:nav_bar_code] == :employers_nav_bar
-			nav_element_ids[:nav_bar_code] = session[:employer_id] ?
-				:pro_employers_nav_bar : :casual_employers_nav_bar end
+			nav_element_ids[:nav_bar_code] = session[:employer_id] ? :pro_employers_nav_bar : :casual_employers_nav_bar
+		end
 		
 		if nav_element_ids[:nav_link_id] == :vacancies_link
-			nav_element_ids[:nav_link_id] = session[:employer_id] ?
-				"my-vacancies-link" : 'vacancies-publication-link' end
+			nav_element_ids[:nav_link_id] = session[:employer_id] ? "my-vacancies-link" : 'vacancies-publication-link'
+		end
 		
-		return nav_element_ids
+		nav_element_ids
 	end
 	
 	@@routing_table = [
@@ -79,5 +112,32 @@ module ApplicationHelper
 		[:vacancies, :new,     "employers-tab", :employers_nav_bar,        'vacancies_link'],
 		[:vacancies, :edit,    "employers-tab", :employers_nav_bar,        'vacancies_link'],
 		[:vacancies, :index,   "workers-tab",   :workers_nav_bar,        'vacancy-search-link']
-	]
+	]  
+end
+
+module LayoutHelper
+  def title(value)
+    @page_title = value
+  end
+  
+	def page_title
+		@page_title || 'Работнеги.ру'
+	end
+
+  def identifier(value)
+    @page_id = value
+  end
+	
+	def page_id
+	  "id='#{@page_id}'" if @page_id
+	end  
+end
+
+module ApplicationHelper
+  include CollectionsHelper
+  include CommonHelper
+  include WrappedFormTagHelper
+  include FormHelperExtensions
+  include TabsHelper
+  include LayoutHelper
 end

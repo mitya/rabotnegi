@@ -9,6 +9,6 @@ module ResumesHelper
 		title << " — #{industry}" if industry
 		title << " — #{query}" if query
 		title << ", стр. №#{page}" if page
-		return title
+		title
 	end
 end
