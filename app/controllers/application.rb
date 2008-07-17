@@ -3,7 +3,6 @@ class ApplicationController < ActionController::Base
   include SimpleCaptcha::ControllerHelpers
   
 	session :session_key => '_jobs_session_id'
-	helper :debug, :html
 	before_filter :init_flash_trace
 
 private

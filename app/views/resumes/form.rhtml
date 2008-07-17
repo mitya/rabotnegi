@@ -1,5 +1,9 @@
+<% title @resume.new?? 'Публикация резюме' : 'Редактирование резюме' %>
+
+<% action_label = @resume.new?? 'опубликовать' : 'Сохранить' %>
+
 <%= error_messages_for :resume %>
-<% form(:resume, :url => action, :method => method) do |f| %>
+<% form @resume do |f| %>
 	<% f.field_set do %>
 		<%= f.text_field 'Имя', :fname, :required => true %>
 		<%= f.text_field 'Фамилия', :lname, :required => true %>
@@ -22,7 +26,4 @@
 	<%= f.submit_section action_label, :rid => 'submit' %>
 <% end %>
 
-
-<script type='text/javascript'>
-	$('resume_about_me', 'resume_job_reqs', 'resume_contact_info').invoke('makeTooltip')
-</script>
+<script>$('resume_about_me', 'resume_job_reqs', 'resume_contact_info').invoke('makeTooltip')</script>

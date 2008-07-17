@@ -1,4 +1,11 @@
 module ApplicationHelper
+  include DebugHelper
+  include HtmlHelper
+  
+  def title(value)
+    @page_title = value
+  end
+  
 	def page_title
 		return "<title>#{@page_title || 'Работнеги.ру'}</title>"
 	end

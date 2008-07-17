@@ -1,10 +1,13 @@
 module CurrencyConverter
-	# call-seq: convert(value: Number, sourceCurrency: CurrencySymbol, targetCurrency: CurrencySymbol)
-	def self.convert(value, sourceCurrency, targetCurrency)
-		return value * rate(sourceCurrency) / rate(targetCurrency)
+  module_function
+  
+	def convert(value, source_currency_sym, target_currency_sym)
+		value * rate(source_currency_sym) / rate(target_currency_sym)
 	end
 	
-	def self.rate(currency) @@rates[currency] end
+	def rate(currency)
+	  @@rates[currency]
+	end
 
-	@@rates = { :rub => 1, :usd => 25, :eur => 34	}
+	@@rates = { :rub => 1, :usd => 23.5, :eur => 37	}
 end

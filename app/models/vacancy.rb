@@ -6,22 +6,16 @@ class Vacancy < ActiveRecord::Base
 	]
 	
 	def ==(other)
-    id == other.id &&
-		city == other.city &&
-		industry == other.industry &&
-		title == other.title &&
-		description == other.description &&
-		external_id == other.external_id &&
-		employer_id == other.employer_id &&
-		employer_name == other.employer_name &&
-		salary == other.salary &&
-		created_at == other.created_at &&
-		updated_at == other.updated_at
+		[:id, :city, :industry, :title, :description, :external_id, :employer_id,
+		  :employer_name, :salary, :created_at, :updated_at].all? { |attr| self.send(attr) == other.send(attr) }
 	end
 	alias eql? ==
 	
-	def link() id end
+	def salary_text 
+	  salary.for_edit
+	end
 	
-	def salary_text() salary.for_edit end
-	def salary_text=(value) salary.for_edit = value end
+	def salary_text=(value)
+	  salary.for_edit = value
+	end
 end
