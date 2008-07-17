@@ -1,21 +1,45 @@
 class Vacancy < ActiveRecord::Base
-	belongs_to :employer
-	composed_of :salary, :mapping => [
-		[:salary_min, :min],
-		[:salary_max, :max]
-	]
-	
-	def ==(other)
-		[:id, :city, :industry, :title, :description, :external_id, :employer_id,
-		  :employer_name, :salary, :created_at, :updated_at].all? { |attr| self.send(attr) == other.send(attr) }
-	end
-	alias eql? ==
-	
-	def salary_text 
-	  salary.for_edit
-	end
-	
-	def salary_text=(value)
-	  salary.for_edit = value
-	end
+  extend Forwardable
+  
+  property :title, :string
+  property :description, :text
+  property :external_id, :integer
+  property :industry, :string
+  property :city, :string
+  property :salary_min, :integer
+  property :salary_max, :integer
+  property :employer_name, :string
+    
+  belongs_to :employer
+  composed_of :salary, :mapping => {:salary_min => :min, :salary_max => :max}.to_a
+
+  validates_presence_of :title, :description, :industry, :city
+  
+  def_delegator :salary, :salary_text, :for_edit
+  def_delegator :salary, :salary_text=, :for_edit=
+  
+  def eql?(other)
+    attributes == other.attributes
+  end
+  
+  def to_s
+    title
+  end
+  
+protected
+  def after_initialize
+    if new?
+      self.city = 'msk' unless city.present?
+    end
+  end
+  
+  class << self
+    def search(params)
+      results = scoped({})
+  	  results = results.where(:city => params[:city]) if params[:city].present?
+  	  results = results.where(:industry => params[:industry]) if params[:industry].present?
+  	  results = results.where("title LIKE :q or employer_name LIKE :q", :q => "%#{params[:q]}%") if params[:q].present?
+      results
+    end    
+  end
 end

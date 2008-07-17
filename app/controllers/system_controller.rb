@@ -6,6 +6,6 @@ class SystemController < ApplicationController
 	end
 	
 	def ssl
-	  render :text => request.ssl? ? 'SSL' : 'no SSL'
+	  render :text => request.ssl? ? 'SSL' : 'not SSL'
 	end
 end

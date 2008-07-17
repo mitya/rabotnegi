@@ -1,4 +1,4 @@
-<% form(:vacancy, :url => url, :html => { :id => 'vacancy-edit-form', :method => method }) do |f| %>
+<% form @vacancy, :html => { :id => 'vacancy-edit-form' } do |f| %>
 	<%= f.error_messages %>
 	<%= f.text_field 'Работодатель', :employer_name  if !@employer_authenticated %>
 	<%= f.text_field 'Должность', :title %>
@@ -6,5 +6,5 @@
 	<%= f.select 'Отрасль', :industry, $industry_groups %>
 	<%= f.text_field 'Зарплата', :salary_text, :after => 'рублей', :comment => 'Примеры: 10000, 10000—20000, 10000+, <10000.' %>
 	<%= f.text_area 'Описание', :description %>
-	<%= f.submit_section action_label %>
+	<%= f.submit_section @vacancy.new?? 'Опубликовать' : 'Сохранить' %>
 <% end %>

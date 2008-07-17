@@ -1,23 +1,32 @@
-<% title resumes_page_title %>
+<% if @resumes.nil? %>
 
-<%= :partial => :search_form %>
+  <% title 'Поиск резюме' %>
+  <%= partial :search_form %>
 
-<% if @resumes.empty? %>
-	<div class='message warning'>
-		Резюме в выбранном городе/отрасли пока нет.
-	</div>
-<% else  %>
+<% else %>
 
-	<table id='resume-list'>
-		<tr>
-			<th class='pos'>Должность
-			<th class='sal'>Зарплата
+  <% title resumes_page_title %>
+  <%= partial :search_form %>
 
-		<% for resume in @resumes %>
-			<tr>
-				<td class='pos'><%= link_to resume.job_title, resume_url(resume) %>
-				<td class='sal'>от <%= resume.min_salary %> р.
-		<% end %>
-	</table>
-	
+  <% if @resumes.empty? %>
+
+  	<div class='message warning'>
+  		Резюме в выбранном городе/отрасли пока нет.
+  	</div>
+
+  <% else %>
+
+  	<table id='resume-list'>
+  		<tr>
+  			<th class='pos'>Должность
+  			<th class='sal'>Зарплата
+
+  		<% for resume in @resumes %>
+  			<tr>
+  				<td class='pos'><%= link_to resume.job_title, resume %>
+  				<td class='sal'>от <%= resume.min_salary %> р.
+  		<% end %>
+  	</table>
+
+  <% end %>
 <% end %>

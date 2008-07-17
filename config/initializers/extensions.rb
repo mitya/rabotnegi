@@ -1,1 +1,0 @@
-Dir["#{RAILS_ROOT}/lib/ext/**/*.rb"].each { |file| require file }

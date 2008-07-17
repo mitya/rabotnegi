@@ -1,0 +1,55 @@
+<% if @vacancies.nil? %>
+
+  <%= partial :search_form %>
+
+<% elsif @vacancies.any? %>
+
+  <%= partial :search_form %>
+
+  <script src='/javascripts/vacancies.js'></script>
+
+  <div class='search-result-message'>
+  	<%= found_objects_info @vacancies, 'ваканс', 'ия', 'ии', 'ий' %>.
+  </div>
+
+  <table class='vacancies-list'>
+  	<thead>
+  	  <tr>
+    		<th class='pos'><%= sort_link @vacancies, "Должность", :title %>
+    		<th class='emp'><%= sort_link @vacancies, "Компания", :employer_name %>
+    		<th class='sal'><%= sort_link @vacancies, "Зарплата", :salary_min %>
+  		  
+  	<tbody>
+  	<% @vacancies.each do |vacancy| %>
+  		<tr id='<%= vacancy.id %>' class='<%= cycle('', 'alt') %>'>
+  			<td class='pos'><%= link_to vacancy.title, [vacancy, :description], :onclick => "return toggleVacancy(#{vacancy.id})" %>
+  			<td class='emp'><%= vacancy.employer_name %>
+  			<td class='sal'><%= vacancy.salary %>
+  	<% end %>
+
+    <tfoot>
+  	<% if @vacancies.total_pages > 1 %>
+  		<tr>
+  		  <td colspan='3' class='pagination'>
+  				<strong>Страницы:</strong>
+  				<%= will_paginate @vacancies, :inner_window => 10, :params => params, :param_name => :p,
+    				  :prev_label => "« предыдущая", :next_label => "следующая »", :container => false %>
+  	<% end %>
+  </table>
+
+<% elsif @vacancies.empty? %>
+
+  <%= partial :search_form %>
+
+  <div class='message warning'>
+  	<% if params[:q] %>
+  		По вашему запросу ничего не найдено
+  		<br>
+  		Попробуйте изменить ключевые слова или 
+  		<%=	link_to 'поискать без указания ключевых слов', request.request_parameters.merge(:q => nil), :class => 'ui' %>
+  	<% else %>
+  		Иформации о вакансиях в выбранном городе/отрасли сейчас нет
+  	<% end %>
+  </div>
+
+<% end %>

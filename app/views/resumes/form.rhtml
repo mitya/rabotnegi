@@ -1,9 +1,7 @@
 <% title @resume.new?? 'Публикация резюме' : 'Редактирование резюме' %>
 
-<% action_label = @resume.new?? 'опубликовать' : 'Сохранить' %>
-
-<%= error_messages_for :resume %>
 <% form @resume do |f| %>
+	<%= f.error_messages %>
 	<% f.field_set do %>
 		<%= f.text_field 'Имя', :fname, :required => true %>
 		<%= f.text_field 'Фамилия', :lname, :required => true %>
@@ -23,7 +21,7 @@
 		<%= f.password_field 'Пароль', :password, :comment => 'Пароль нужен если вы предпологаете редактировать резюме в будущем.' %>
 	<% end %>
 	
-	<%= f.submit_section action_label, :rid => 'submit' %>
+	<%= f.submit_section @resume.new?? 'Опубликовать' : 'Сохранить', :rid => 'submit' %>
 <% end %>
 
 <script>$('resume_about_me', 'resume_job_reqs', 'resume_contact_info').invoke('makeTooltip')</script>

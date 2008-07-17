@@ -1,44 +1,50 @@
 class Resume < ActiveRecord::Base	
-	validates_presence_of :fname, :message => 'Укажите имя.'
-	validates_presence_of :lname, :message => 'Укажите фамилию.'
-	validates_presence_of :city
-	validates_presence_of :job_title
-	validates_presence_of :industry
-	validates_presence_of :min_salary
+  property :fname,        :string
+  property :lname,        :string
+  property :password,     :string
+  property :city,         :string
+  property :industry,     :string
+  property :job_title,    :string
+  property :min_salary,   :integer, :default => 0
+  property :view_count,   :integer
+  property :job_reqs,     :text
+  property :about_me,     :text
+  property :contact_info, :text
+  
+	validates_presence_of :fname, :lname, :city, :job_title, :industry
 	validates_presence_of :contact_info, :message => "Укажите телефон или электронную почту в контактной информации."
 	validates_numericality_of :min_salary, :message => "Укажите зарплату — число в рублях."
 	
 	def name
-		!lname.blank? ? "#{fname} #{lname}" : fname
+	  [fname, lname].compact.join(' ')
 	end
 		
-	def summary
-		"#{name} — #{job_title} (#{salary_text})"
+	def to_s
+		"#{name} — #{job_title} (от #{min_salary} р.)"
 	end
 		
-	def salary_text
-		"от #{min_salary} р."
-	end
-	
 	class << self
   	def search(params)
-  	  results = order_by(:min_salary).select(:id, :job_title, :min_salary)
+  	  results = scoped({})
+  	  results = results.where(:city => params[:city]) if params[:city].present?
+  	  results = results.where(:industry => params[:industry]) if params[:industry].present?
+  	  results = results.where("job_title LIKE ?", "%#{params[:keywords]}%") if params[:keywords].present?
 
-  	  results = results.where(:city => params[:city]) unless params[:city].blank?
-  	  results = results.where(:industry => params[:industry]) unless params[:industry].blank?
-  	  results = results.where(["job_title LIKE ?", "%#{params[:keywords]}%"]) unless params[:keywords].blank?
-
-  		if params[:salary]
+  		if params[:salary].present?
   			direction, value = params[:salary].match(/(-?)(\d+)/).captures
   			op = direction == '-' ? :<= : :>=
-  			results = results.where(["min_salary #{op} ?", value])
-  		end
-      
-      results
-  	end	  
+  			results = results.where("min_salary #{op} ?", value)
+  		end      
 
-  	def find_by_name(lname, fname)
-  	  find_by_lname_and_fname(lname, fname)
-  	end  	
+      results
+  	end
+
+  	def authenticate(name, password)
+  	  name =~ /(\w+)\s+(\w+)/ || raise(ArgumentError, "Имя имеет неправильный формат")
+  	  first, last = $1, $2
+  	  resume = find_by_lname_and_fname(lname, fname) || raise(ArgumentError, "Резюме «#{name}» не найдено")
+      resume.password == password || raise(ArgumentError, "Неправильный пароль")
+      resume
+  	end
 	end
 end

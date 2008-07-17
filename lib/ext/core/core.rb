@@ -22,6 +22,7 @@ end
     !blank?
   end
   alias exist? exists?
+  alias present? exists?
 	
 	def getter_name(name) "#{name}".to_sym end
   def setter_name(name) "#{name}=".to_sym end
@@ -30,6 +31,14 @@ end
 	def make_private_accessor
 	  PureDelegator.new(self)
 	end
+	
+  def metaclass() class << self; self end end
+  
+  def define_constant_methods(hash)
+    hash.each_pair do |method, value|
+      metaclass.send(:define_method, method) { value }
+    end
+  end
 
 private
   # Raises specified event, if handler if defined.
@@ -76,6 +85,10 @@ class Array
   
   def second; self[1] end
   def singleton?; count == 1 end
+
+  def reduce
+    singleton?? first : self
+  end
 
   def vararg!
     replace(first.to_a) if singleton? && first.is_a?(Enumerable)
