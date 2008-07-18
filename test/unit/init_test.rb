@@ -12,9 +12,9 @@ unit_test "Domain initialization" do
     assert $city_map.size == 5    
   end
   
-  test "$industry_list contains all industries from $industry_metadata_table" do
-    assert $industry_metadata_table.length == $industry_list.length
-    assert $industry_metadata_table.all? { |code,| $industry_list.include?(code) }
+  test "$industry_list contains all industries from Industry.metadata_table" do
+    assert Industry.metadata_table.length == $industry_list.length
+    assert Industry.metadata_table.all? { |code,| $industry_list.include?(code) }
   end
   
   test "industry tables sorting" do

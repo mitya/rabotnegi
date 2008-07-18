@@ -2,8 +2,6 @@ class ApplicationController < ActionController::Base
   include SslRequirement
   include SimpleCaptcha::ControllerHelpers
   
-	session :session_key => '_jobs_session_id'
-	
   rescue_from(ActiveRecord::RecordInvalid) { template :form, :status => 422 }
 
 protected

@@ -1,9 +1,9 @@
 <% div 'resumes-search-form', :center => true do %>
 <% form_el resumes_url, :fieldset => true, :method => :get do %>
-	<%= select_el 'Город', :city, $city_inverted_table, params[:city] %>
-	<%= select_el 'Отрасль', :industry, $industry_groups, params[:industry] %>
+	<%= select_el 'Город', :city, City.for_select, params[:city] %>
+	<%= select_el 'Отрасль', :industry, Industry.for_select_with_groups, params[:industry] %>
 	<%= text_field_el 'Ключевые слова', :keywords %>
-	<%= select_el 'Зарплата', :salary, $salary_inverted_table, params[:salary], :include_blank => "любая" %>
+	<%= select_el 'Зарплата', :salary, PredefinedSalaries.for_select, params[:salary], :include_blank => "любая" %>
 	<%= submit_el 'Найти', :class => 'button' %>
 <% end %>
 <% end %>

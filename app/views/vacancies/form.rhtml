@@ -2,8 +2,8 @@
 	<%= f.error_messages %>
 	<%= f.text_field 'Работодатель', :employer_name  if !@employer_authenticated %>
 	<%= f.text_field 'Должность', :title %>
-	<%= f.select 'Город', :city, $city_inverted_table %>
-	<%= f.select 'Отрасль', :industry, $industry_groups %>
+	<%= f.select 'Город', :city, City.for_select %>
+	<%= f.select 'Отрасль', :industry, Industry.for_select_with_groups %>
 	<%= f.text_field 'Зарплата', :salary_text, :after => 'рублей', :comment => 'Примеры: 10000, 10000—20000, 10000+, <10000.' %>
 	<%= f.text_area 'Описание', :description %>
 	<%= f.submit_section @vacancy.new?? 'Опубликовать' : 'Сохранить' %>
