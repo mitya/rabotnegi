@@ -2,8 +2,8 @@
 
 <% div 'vacancies-search-form', :center => true do %>
 <% form_el vacancies_url, :fieldset => true, :onsubmit => 'return VacanciesSearch.prepare(this)' do %>
-	<%= select_el 'Город', :city, $city_inverted_table, params[:city] %>
-	<%= select_el 'Отрасль', :industry, $industry_groups, params[:industry], :blank => ['любая', :any] %>
+	<%= select_el 'Город', :city, City.for_select, params[:city] %>
+	<%= select_el 'Отрасль', :industry, Industry.for_select_with_groups, params[:industry], :blank => ['любая', :any] %>
 	<%= text_field_el 'Ключевые слова', :q, params[:q] %>
 	<%= submit_el 'Найти', :class => 'button' %>
 <% end %>

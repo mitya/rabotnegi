@@ -36,14 +36,14 @@ private
     FileUtils.rm_r(work_directory) if File.exists?(work_directory)
     Dir.mkdir(work_directory)
     
-    $city_metadata_table.each do |city_code, city_external_id|
-      $industry_metadata_table.each do |industry_code, industry_external_id|
-        rss_text = Net::HTTP.get(RABOTARU_HOST, RABOTARU_PATH % [city_external_id, industry_external_id])
-        rss_file = File.open("#{work_directory}/#{city_code}-#{industry_code}.rss", 'w')
+    City.each do |city|
+      Industry.each do |industry|
+        rss_text = Net::HTTP.get(RABOTARU_HOST, RABOTARU_PATH % [city.external_id, industry.external_id])
+        rss_file = File.open("#{work_directory}/#{city.code}-#{industry.code}.rss", 'w')
         rss_file.write(rss_text)
         rss_file.close()
       end
-    end
+    end    
   end
   
   # Конвертирует загруженные файлы в объекты и помещает результат в @loaded_vacancies.
@@ -115,8 +115,8 @@ class RabotaRu::VacancyConverter
     vacancy.description = format_description(rss_item['description'], rss_item['responsibility'])
     vacancy.external_id = extract_id(rss_item['guid'])
     vacancy.employer_name = rss_item['employer']['content']
-    vacancy.city = find_city(rss_item['city']['vacancy:number'].to_i).to_s
-    vacancy.industry = find_industry(rss_item['rubric_0']['vacancy:number'].to_i).to_s
+    vacancy.city = City.find_by_external_id(rss_item['city']['vacancy:number']).to_s
+    vacancy.industry = Industry.find_by_external_id(rss_item['rubric_0']['vacancy:number']).to_s
     vacancy.salary = convert_salary(rss_item['salary'])
     vacancy.created_at = Time.parse(rss_item['date']['vacancy:publishDate'])
     vacancy
@@ -131,16 +131,6 @@ private
   def extract_id(external_vacancy_link)
     %r{http://www.rabota.ru/vacancy(\d+).html} =~ external_vacancy_link
     $1.to_i
-  end
-  
-  # Finds city code by extenal ID
-  def find_city(eid)
-    $city_metadata_table.find { |code, ext_id| ext_id == eid }[0] rescue raise ArgumentError, "Город ##{eid} не найден"
-  end
-  
-  # Находит отрасль по внешнему номеру.
-  def find_industry(eid)
-    $industry_metadata_table.find { |code, ext_id| ext_id == eid }[0] rescue raise ArgumentError, "Отрасль ##{eid} не найден"
   end
   
   # Конвертирует XML зарплаты в объект Salary.
