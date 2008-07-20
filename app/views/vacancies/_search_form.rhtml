@@ -1,10 +1,28 @@
 <% identifier 'vacancies-search-page' %>
 
-<% div 'vacancies-search-form', :center => true do %>
-<% form_el vacancies_url, :fieldset => true, :onsubmit => 'return VacanciesSearch.prepare(this)' do %>
-	<%= select_el 'Город', :city, City.for_select, params[:city] %>
-	<%= select_el 'Отрасль', :industry, Industry.for_select_with_groups, params[:industry], :blank => ['любая', :any] %>
-	<%= text_field_el 'Ключевые слова', :q, params[:q] %>
-	<%= submit_el 'Найти', :class => 'button' %>
+<% center 'vacancies-search-form' do %>
+<% form_tag vacancies_url, :onsubmit => 'return VacanciesSearch.prepare(this)' do %>
+<% field_set_tag do %>
+<% wrapper do %>
+	<%= list_select_view 'Город', :city, City.for_select, params[:city] %>
+	<%= list_group_select_view 'Отрасль', :industry, Industry.for_select_with_groups, params[:industry], :blank => ['любая', :any] %>
+	<%= text_field_view 'Ключевые слова', :q, params[:q] %>
+	<%= submit_view 'Найти', :class => 'button' %>
+<% end %>
+<% end %>
+<% end %>
+<% end %>
+
+
+<% center 'vacancies-search-form' do %>
+<% form_tag vacancies_url, :onsubmit => 'return VacanciesSearch.prepare(this)' do %>
+<% field_set_tag do %>
+<% wrapper do %>
+	<%= line_for :city, 'Город', list_select_view(:city, City.for_select, params[:city]) %>
+	<%= line_for :industry, 'Отрасль', list_group_select_view(:industry, Industry.for_select_with_groups, params[:industry], :blank => ['любая', :any]) %>
+	<%= line_for :q, 'Ключевые слова', text_field_view(:q, params[:q]) %>
+	<%= line_right submit_view('Найти', :class => 'button') %>
+<% end %>
+<% end %>
 <% end %>
 <% end %>

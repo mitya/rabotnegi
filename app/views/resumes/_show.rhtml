@@ -11,22 +11,22 @@
 		<pre><%= @resume.about_me %></pre>
 	</div>
 	
-	<% div 'job-reqs', :only => !@resume.job_reqs.blank? do %>
+	<% div 'job-reqs', :only => @resume.job_reqs.present? do %>
 		<h4>Дополнительные требования к работе</h4>
 		<pre><%= @resume.job_reqs %></pre>
 	<% end %>
 
-	<% div "contact-info", :only => !@resume.contact_info.blank? do %>
+	<% div "contact-info", :only => @resume.contact_info.present? do %>
 		<h4>Контактная информация</h4>
 		<pre><%= @resume.contact_info %></pre>
 	<% end %>	
 	
-	<% div 'job-reqs', :except => @resume.job_reqs.blank? do %>
+	<% div 'job-reqs', :only => @resume.job_reqs.present? do %>
 		<h4>Дополнительные требования к работе</h4>
 		<pre><%= @resume.job_reqs %></pre>
 	<% end %>
 
-	<% div "contact-info", :except => @resume.contact_info.blank? do %>
+	<% div "contact-info", :only => @resume.contact_info.present? do %>
 		<h4>Контактная информация</h4>
 		<pre><%= @resume.contact_info %></pre>
 	<% end %>

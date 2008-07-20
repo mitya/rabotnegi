@@ -1,9 +1,11 @@
-<%= error_messages_for :employer %>
-<% form :employer, :url => employers_path do |f| %>
+<% form_view_for @employer do |f| %>
+<% wrapper do %>
+  <%= f.error_messages %>
 	<%= f.text_field 'Название компании', :name %>
 	<%= f.text_field 'Логин', :login %>
 	<%= f.password_field 'Пароль', :password %>
 	<%= f.password_field 'Подтверждение пароля', :password_confirmation %>
-	<%= f.wrap2 'Надпись на картинке', show_simple_captcha(:object => 'employer') %>
-	<%= f.submit 'Зарегистрироваться' %>
+	<%= line label_view(nil, 'Надпись на картинке'), show_simple_captcha(:object => 'employer') %>
+	<%= submit_view 'Зарегистрироваться' %>
+<% end %>
 <% end %>

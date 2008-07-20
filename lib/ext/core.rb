@@ -171,3 +171,9 @@ module Kernel
     puts "#{expr}: #{result.inspect}"
   end
 end
+
+class << File
+  def write(path, data)
+    File.open(path, 'wb') { |file| file.write(data) }
+  end
+end
