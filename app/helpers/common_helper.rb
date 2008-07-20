@@ -4,18 +4,17 @@ module CommonHelper
 	end
 	
 	def div(id, options = {}, &proc)
-		return if options[:only] == false
-		return if options[:except] == true
+		return if options[:only] == false || options[:except] == true
 		
-		if options[:center]
-			concat "<table id='#{id}' class='centered'><tr><td>", proc.binding
-			yield
-			concat '</table>', proc.binding
-    else
-  		concat "<div id='#{id}'>", proc.binding
-  		yield
-  		concat '</div>', proc.binding
-		end
+		concat "<div id='#{id}'>", proc.binding
+		yield
+		concat '</div>', proc.binding
+	end
+
+	def center(id, &proc)
+		concat "<table id='#{id}' class='centered'><tr><td>", proc.binding
+		yield
+		concat '</table>', proc.binding
 	end
 	
 	def required_mark(options = {})

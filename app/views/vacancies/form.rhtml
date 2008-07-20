@@ -1,10 +1,25 @@
-<% form @vacancy, :html => { :id => 'vacancy-edit-form' } do |f| %>
+<% form_view_for @vacancy, :html => { :id => 'vacancy-edit-form' } do |f| %>
+<% wrapper do %>
 	<%= f.error_messages %>
-	<%= f.text_field 'Работодатель', :employer_name  if !@employer_authenticated %>
+	<%= f.text_field 'Работодатель', :employer_name unless session[:employer_id] %>
 	<%= f.text_field 'Должность', :title %>
 	<%= f.select 'Город', :city, City.for_select %>
 	<%= f.select 'Отрасль', :industry, Industry.for_select_with_groups %>
 	<%= f.text_field 'Зарплата', :salary_text, :after => 'рублей', :comment => 'Примеры: 10000, 10000—20000, 10000+, <10000.' %>
 	<%= f.text_area 'Описание', :description %>
 	<%= f.submit_section @vacancy.new?? 'Опубликовать' : 'Сохранить' %>
+<% end %>
+<% end %>
+
+<% form_view_for @vacancy, :html => { :id => 'vacancy-edit-form' } do |f| %>
+<% wrapper do %>
+	<%= f.line_span f.error_messages %>
+	<%= f.line_for :employer_name, 'Работодатель', f.text_field(:employer_name) unless session[:employer_id] %>
+	<%= f.line_for :title, 'Должность', f.text_field(:title) %>
+	<%= f.line_for :city, 'Город', f.select(:city, City.for_select) %>
+	<%= f.line_for :industry, 'Отрасль', f.select(:industry, Industry.for_select_with_groups) %>
+	<%= f.line_for :salary_text, 'Зарплата', f.text_field(:salary_text), :after => 'рублей', :comment => 'Примеры: 10000, 10000—20000, 10000+, <10000.' %>
+	<%= f.line_for :description, 'Описание', f.text_area(:description) %>
+	<%= f.line_right submit_section(@vacancy.new?? 'Опубликовать' : 'Сохранить') %>
+<% end %>
 <% end %>

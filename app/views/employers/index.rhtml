@@ -1,17 +1,18 @@
-<table id='emp-idx'>
-<tr>
+<table id='emp-idx'><tr>
 	<td id='casual-div'>
-		<a href='<%= new_vacancy_path %>' class='ui'>Опубликовать вакансию</a><br>
-		<a href='<%= resumes_path %>' class='ui'>Найти резюме</a>
+	  <%= link_to "Опубликовать вакансию", new_vacancy_path, :class => 'ui' %>
+	  <%= link_to "Найти резюме", resumes_path, :class => 'ui' %>
 	<td>
 	<td id='pro-div'>
 		<h2>Публикуете много вакансий?</h2>
-		<h3 id='register-h'><a id='register-link' href='<%= new_employer_path %>' class='ui'>Зарегистрируйтесь</a></h3>
+		<h3 id='register-h'><%= link_to "Зарегистрируйтесь", new_employer_path, :class => 'ui' %></h3>
 		<p id='or-p'>или
 		<h3 id='login-h'>Войдите в систему</h3>
-		<% form_el log_in_employers_path, :method => :post, :id => 'employer-login' do %>
-			<%= text_field_el  'Логин', :login, params[:login] %>
-			<%= password_field_el 'Пароль', :password, params[:password] %>
-			<%= submit_el 'Войти', :class => 'button' %>
+		<% form_tag log_in_employers_path, :method => :post, :id => 'employer-login' do %>
+	  <% wrapper do %>
+			<%= text_field_view  'Логин', :login, params[:login] %>
+			<%= password_field_view 'Пароль', :password, params[:password] %>
+			<%= submit_view 'Войти', :class => 'button' %>
+		<% end %>
 		<% end %>
 </table>

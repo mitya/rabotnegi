@@ -1,5 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 
+<% location = determine_location %>
+
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />	
 	<title><%= page_title %></title>
@@ -10,8 +12,6 @@
 <body <%= page_id %>>
 	<div id='header'>
 		<div id='nav'>
-			<% nav_elements = select_nav_element_ids %>
-			
 			<table id='tab-bar'>
 				<col width=10>
 				<col width=1>
@@ -35,28 +35,28 @@
 					<td class='spacer'>
 					<td id='employers-tab' class='tab'><a href='/employers'>Работодателям</a>
 					<td class='spacer'>
-					<%= add_css_class(nav_elements[:tab_id], 'selected-tab') %>
+					<%= add_css_class(location.tab, 'selected-tab') %>
 			</table>
 			
 			<div id='nav-bar'>
-				<% case nav_elements[:nav_bar_code]
-					 when :workers_nav_bar %>
+				<% case location.navigation_bar
+					 when :workers %>
 					<div id='workers-nav-bar'>
 						<a id='vacancy-search-link' href='/vacancies' class='ui'>Поиск вакансий</a>
 						<a id='my-resume-link' href='/resumes/my' class='ui'>Моё резюме</a>
 					</div>
-				<% when :pro_employers_nav_bar %>
+				<% when :pro_employers %>
 					<div id='pro-employers-nav-bar'>
 						<a id='resume-search-link' href='/resumes' class='ui'>Поиск резюме</a>
-						<a id='my-vacancies-link' href='/vacancies/my' class='ui'>Мои вакансии</a>
+						<a id='vacancies-link' href='/vacancies/my' class='ui'>Мои вакансии</a>
 					</div>
-				<% when :casual_employers_nav_bar %>
+				<% when :casual_employers %>
 					<div id='casual-employers-nav-bar'>
 						<a id='resume-search-link' href='/resumes' class='ui'>Поиск резюме</a>
-						<a id='vacancies-publication-link' href='/vacancies/new' class='ui'>Публикация вакансий</a>
+						<a id='vacancies-link' href='/vacancies/new' class='ui'>Публикация вакансий</a>
 					</div> 
 				<% end %>
-				<%= add_css_class(nav_elements[:nav_link_id], 'selected') unless nav_elements[:nav_link_id].blank? %>
+				<%= add_css_class(location.navigation_link, 'selected') if location.navigation_link.present? %>
 			</div>
 		</div>
 		

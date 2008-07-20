@@ -25,7 +25,7 @@ private
   
   class << self
     def authenticate(login, password)
-      find_by_login_and_password(login, password) || raise ArgumenError
+      find_by_login_and_password(login, password) || raise(ArgumentError)
     end   
   end
 end

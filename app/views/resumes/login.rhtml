@@ -4,13 +4,13 @@
 <br>
 или
 <h2>Отредактировать резюме</h2>
-<% form_el log_in_resumes_path, :method => :post, :id => 'workers-login-form' do %>
+<% form_tag log_in_resumes_path, :method => :post, :id => 'workers-login-form' do %>
 		<!-- 
 		<col class='labels'>
 		<col>
 		-->
-		<%= text_field_el 'Имя, фамилия', :name, params[:name] %>
-		<%= password_field_el 'Пароль', :password, params[:password] %>
+		<%= text_field_view 'Имя, фамилия', :name, params[:name] %>
+		<%= password_field_view 'Пароль', :password, params[:password] %>
 		
 		<!-- 
 		<tr>
@@ -20,5 +20,5 @@
 					запомнить меня
 				</label> 
 		-->
-		<%= submit_el 'Открыть резюме', :id => 'log_in', :class => 'submit' %>
+		<%= submit_view 'Открыть резюме', :id => 'log_in', :class => 'submit' %>
 <% end %>
