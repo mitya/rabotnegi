@@ -1,12 +1,7 @@
 module RussianInflector
 	def self.inflect(number, word, end1, end2, end5, strategy = :normal)
-		word + select_ending(number, end1, end2, end5, strategy)
-	end
-	
-private
-	def self.select_ending(number, end1, end2, end5, strategy)
 		number_by_100 = number % 100
-		case strategy
+	  ending = case strategy
 		when :normal
 			case number_by_100
 			when 1: end1
@@ -30,7 +25,8 @@ private
 				end
 			end	
 		end
-	end
+		word + ending
+	end	
 end
 
 if $0 == __FILE__
