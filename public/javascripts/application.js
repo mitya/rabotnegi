@@ -7,9 +7,9 @@ function log(message) {
 
 VacanciesSearch = {
 	prepare: function(form) {
-		var url = form.action + '/' + form.city.value
-		if (form.industry.value != 'any')
-			url += '/' + form.industry.value
+		var city = form.city.value
+		var industry = form.industry.value
+		var url = form.action + '/' + city + '/' + industry
 		if (form.q.value != '') {
 			q = form.q.value
 			q = q.replace(' ', '+')

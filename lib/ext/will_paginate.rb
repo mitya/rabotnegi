@@ -1,5 +1,5 @@
 module WillPaginate::Finder::ClassMethods
-  # Extends result collection with #sort_field and @sort_direction methods if there are :order_by option.
+  # Extends result collection with #sort_field and #sort_direction methods if there are :order_by option.
   # Format for :order_by is "field" for asc sorting, and "-field" for desc.
   def paginate_with_sorting(*args, &block)
     options = args.extract_options!

@@ -1,10 +1,10 @@
 <% if @vacancies.nil? %>
 
-  <%= partial :search_form %>
+  <%= partial :search %>
 
 <% elsif @vacancies.any? %>
 
-  <%= partial :search_form %>
+  <%= partial :search %>
 
   <script src='/javascripts/vacancies.js'></script>
 
@@ -39,7 +39,7 @@
 
 <% elsif @vacancies.empty? %>
 
-  <%= partial :search_form %>
+  <%= partial :search %>
 
   <div class='message warning'>
   	<% if params[:q] %>

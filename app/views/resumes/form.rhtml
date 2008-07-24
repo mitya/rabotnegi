@@ -2,39 +2,6 @@
 
 <% form_view_for @resume do |f| %>
 <% wrapper end %>
-	<%= f.error_messages %>
-	
-	<% section do %>
-		<%= f.text_field 'Имя', :fname, :required => true %>
-		<%= f.text_field 'Фамилия', :lname, :required => true %>
-	<% end %>
-
-	<% section :title => 'Требования к работе', :id => 'job-info' do %>
-		<%= f.select 'Город', :city, City.for_select %>
-		<%= f.select 'Отрастль', :industry, Industry.for_select_with_groups %>
-		<%= f.text_field 'Должность', :job_title, :required => true %>
-		<%= f.text_field 'Зарплата', :min_salary, :before => 'от', :after => 'рублей' %>
-	<% end %>
-			
-	<% section :title => 'Дополнительная информация', :id => 'text-areas' do %>
-		<%= f.text_area 'О себе', :about_me, :title => 'Профессиональные знания и умения. опыт работы, образование…' %>
-		<%= f.text_area 'О работе', :job_reqs, :title => 'Дополнительные требования к работе' %>
-		<%= f.text_area 'Контактная&nbsp;<br> информация', :contact_info, :title => 'Телефон, Email…' %>
-		<%= f.password_field 'Пароль', :password, :comment => 'Пароль нужен если вы предпологаете редактировать резюме в будущем.' %>
-	<% end %>
-	
-	<%= right submit_section @resume.new?? 'Опубликовать' : 'Сохранить', :rid => 'submit' %>
-<% end %>
-<% end %>
-
-
-
-
-
-
-
-<% form_view_for @resume do |f| %>
-<% wrapper end %>
 	<%= line_span f.error_messages %>
 	
 	<% section do %>
@@ -56,7 +23,7 @@
 		<%= f.line_for :password, 'Пароль', f.password_field(:password), :comment => 'Пароль нужен если вы предпологаете редактировать резюме в будущем.' %>
 	<% end %>
 	
-	<%= line_right submit_section(@resume.new?? 'Опубликовать' : 'Сохранить'), :rid => 'submit' %>
+	<%= line_right submit_section(@resume.new?? 'Опубликовать' : 'Сохранить') %>
 <% end %>
 <% end %>
 

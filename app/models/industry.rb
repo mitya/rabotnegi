@@ -45,6 +45,6 @@ class Industry < Struct.new(:code, :extrernal_id, :name, :group)
   @@popular, @@other = @@all.partition { |industry| industry.group == :popular }
   @@for_select_with_groups = [
     ['Популярные', @@popular.map { |industry| [industry.name, industry.code.to_s] }], 
-    ['Остальные', @@popular.map { |industry| [industry.name, industry.code.to_s] }]
+    ['Остальные', @@other.map { |industry| [industry.name, industry.code.to_s] }]
   ]
 end

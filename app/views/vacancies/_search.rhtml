@@ -1,0 +1,14 @@
+<% identifier 'vacancies-search-page' %>
+
+<% center 'vacancies-search-form' do %>
+<% form_tag vacancies_url, :onsubmit => 'return VacanciesSearch.prepare(this)', :method => :get do %>
+<% field_set_tag do %>
+<% wrapper do %>
+	<%= line_for :city, 'Город', list_select_tag(:city, City.for_select, params[:city]) %>
+	<%= line_for :industry, 'Отрасль', list_group_select_tag(:industry, Industry.for_select_with_groups, params[:industry], :blank => ['любая', '']) %>
+	<%= line_for :q, 'Ключевые слова', text_field_tag(:q, params[:q]) %>
+	<%= line_right submit_tag('Найти', :class => 'button') %>
+<% end %>
+<% end %>
+<% end %>
+<% end %>

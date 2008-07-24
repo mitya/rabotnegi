@@ -16,6 +16,6 @@ protected
   end
 
   def ensure_proper_protocol
-    Rails.env.in?('test', 'development') || super
+    ['test', 'development'].include?(Rails.env) || super
   end
 end
