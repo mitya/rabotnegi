@@ -43,8 +43,7 @@ class ResumesController < ApplicationController
   end
   
   def destroy
-    @resume = Resume.find(session[:resume_id])
-    @resume.destroy   
+    @resume = Resume.destroy(session[:resume_id])
     flash[:notice] = 'Резюме удалено'
     log_out
   end

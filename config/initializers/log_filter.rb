@@ -7,6 +7,7 @@ module LogFilter
       "SHOW FIELDS",
       "SET NAMES",
       "SET SQL_AUTO_IS_NULL",
+      "Compiling template"
     ]
   
     def include?(message)
