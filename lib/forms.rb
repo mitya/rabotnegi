@@ -9,22 +9,15 @@ module SelectHelper
     content_tag :select, option_tags, { "name" => name, "id" => name }.update(options.stringify_keys)
   end
 
-  def select_tag(name, choices, *args)
-    if choices.is_a?(String) then super
-    elsif choices.first.last.is_a?(Array) then list_group_select_tag(name, choices, *args)
-    else list_select_tag(name, choices, *args) end
-  end
-
   # Generates a SELECT tag with option groups.
   # Groups structure is: [[grplabel, [optlabel, opt]], ...]
   def group_select(object, property, groups, options = {})
     ActionView::Helpers::InstanceTag.new(object, property, self, nil, options.delete(:object)).to_group_select_tag(groups, options)
   end
 
-private
   def blank_option_tags(options = {})
     blank = options.delete(:blank)
-    prompt = options.delete(:blank)
+    prompt = options.delete(:prompt)
 
     option_tags = ''
     option_tags << content_tag(:option) if blank == true
@@ -36,27 +29,15 @@ private
 end
 
 module FormHelperExtensions
-  def submit_section(action_label)
-    <<-html
-      <div class='submit'>
-        <input type="submit" class='action-button' value='#{action_label}'>
+  def submit_section(label)
+    %{<div class='submit'>
+        <input type="submit" class='action-button' value='#{ label }'>
         <span class='cancel'>
           или
           <a href='#{ request.headers['Referer'] }' class='ui'>Отменить</a>
         <span>
-      </div>
-    html
-  end
-
-  def form_view_for(record_or_name_or_array, *args, &proc)
-    options = args.extract_options!.merge(:builder => WrappedFormBuilder)    
-    form_for(record_or_name_or_array, *(args << options), &proc)
-  end
-  
-  def fields_view_for(record_or_name_or_array, *args, &proc)
-    options = args.extract_options!.merge(:builder => WrappedFormBuilder)
-    fields_for(record_or_name_or_array, *(args << options), &proc)
-  end
+      </div>}
+  end  
 end
 
 module FormViewHelper
@@ -98,34 +79,27 @@ module FormViewHelper
   end
   
   def line_for(name, title, content, options = {})
-    label = label_tag(name, title + ':', options.delete(:label) || {})
+    label = label_tag(name, title + ':')
     line(label, content, options)
   end
     
-  def with_label(title, name, options = {})
-    wrap_options, content_options = options.partition_by(:required, :rid, :before, :after, :label, :comment)
-    label = label_view(name, title, wrap_options[:label] || {})
-    control = yield(content_options)
-    line(label, control, wrap_options.reverse_update(:rid => name))
-  end
-  
   def section(options = {}, &block)
     concat(tag(:tbody, options, true), block.binding)
     yield
   end
   
   def wrapper(&block)
-    concat("<table class='form-layout'>", block.binding)
+    concat "<table class='form-layout'>", block.binding
     yield
-    concat('</table>', block.binding)
+    concat '</table>', block.binding
   end
 end
 
-class WrappedFormBuilder < ActionView::Helpers::FormBuilder
+class CustomFormBuilder < ActionView::Helpers::FormBuilder
   def line_for(property, title, content, options = {})
-    label = label(name, title + ':', options.delete(:label) || {})
+    label = label(property, title + ':')
     @template.line(label, content, options)
   end
 end	
 
-ActionView::Base.default_form_builder = WrappedFormBuilder
+ActionView::Base.default_form_builder = CustomFormBuilder

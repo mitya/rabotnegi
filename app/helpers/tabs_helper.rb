@@ -1,5 +1,4 @@
-class SiteLocation < Struct.new(:tab, :navigation_bar, :navigation_link)
-end
+SiteLocation = Struct.new(:tab, :navigation_bar, :navigation_link)
 
 module TabsHelper
 	def determine_location

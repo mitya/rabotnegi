@@ -9,5 +9,8 @@ Rails::Initializer.run do |config|
   config.after_initialize do
     require 'forwardable'
     Dir["#{Rails.root}/lib/ext/**/*.rb"].each { |file| require file }
+    require 'common'
+    require 'forms'
+    require 'log_helper'
   end
 end

@@ -6,7 +6,7 @@
   	<%= line_for :industry, 'Отрасль', list_group_select_tag(:industry, Industry.for_select_with_groups, params[:industry]) %>
   	<%= line_for :keywords, 'Ключевые слова', text_field_tag(:keywords) %>
   	<%= line_for :salary, 'Зарплата', list_select_tag(:salary, PredefinedSalaries.for_select, params[:salary], :include_blank => "любая") %>
-  	<%= line_right submit_view('Найти', :class => 'button') %>
+  	<%= line_right submit_tag('Найти', :class => 'button') %>
 <% end %>
 <% end %>
 <% end %>
