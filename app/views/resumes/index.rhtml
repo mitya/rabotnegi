@@ -1,12 +1,12 @@
 <% if @resumes.nil? %>
 
   <% title 'Поиск резюме' %>
-  <%= partial :search_form %>
+  <%= partial :search %>
 
 <% else %>
 
   <% title resumes_page_title %>
-  <%= partial :search_form %>
+  <%= partial :search %>
 
   <% if @resumes.empty? %>
 

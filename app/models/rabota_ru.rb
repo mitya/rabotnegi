@@ -5,7 +5,8 @@ require 'time'
 module RabotaRu
   # Загружает вакансии с Работы.ру. 
   class VacancyLoader
-    attr_boolean :skip_remote_loading
+    attr_writer :skip_remote_loading
+    def skip_remote_loading?() @skip_remote_loading end
   
     def initialize
       @loaded_vacancies = []
@@ -34,7 +35,7 @@ module RabotaRu
       City.each do |city|
         Industry.each do |industry|
           rss_text = Net::HTTP.get('www.rabota.ru', '/v3_rssExport.html?c=%d&r=%d' % [city.external_id, industry.external_id])
-          File.write("#{work_directory}/#{city.code}-#{industry.code}.rss", rss_text)
+          File.open("#{work_directory}/#{city.code}-#{industry.code}.rss", 'w') { |file| file << rss_text }
         end
       end    
     end
@@ -170,7 +171,7 @@ module RabotaRu
     end
   
     def convert_currency(currency_string)
-      raise_if_nil currency_string, :currency_string
+      assert currency_string, "Currency string can't be nil"
       case currency_string.downcase
         when 'руб': :rub
         when 'usd': :usd

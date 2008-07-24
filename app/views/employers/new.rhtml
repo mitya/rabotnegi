@@ -1,11 +1,11 @@
 <% form_view_for @employer do |f| %>
 <% wrapper do %>
-  <%= f.error_messages %>
-	<%= f.text_field 'Название компании', :name %>
-	<%= f.text_field 'Логин', :login %>
-	<%= f.password_field 'Пароль', :password %>
-	<%= f.password_field 'Подтверждение пароля', :password_confirmation %>
-	<%= line label_view(nil, 'Надпись на картинке'), show_simple_captcha(:object => 'employer') %>
-	<%= submit_view 'Зарегистрироваться' %>
+  <%= line_span f.error_messages %>
+	<%= f.line_for :name, 'Название компании', f.text_field(:name) %>
+	<%= f.line_for :login, 'Логин', f.text_field(:login) %>
+	<%= f.line_for :password, 'Пароль' f.password_field(:password) %>
+	<%= f.line_for :password_confirmation, 'Подтверждение пароля', f.password_field(:password_confirmation) %>
+	<%= line label_tag(nil, 'Надпись на картинке:'), show_simple_captcha(:object => 'employer') %>
+	<%= line_right submit_tag('Зарегистрироваться') %>
 <% end %>
 <% end %>

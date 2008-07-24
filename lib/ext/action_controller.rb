@@ -9,7 +9,7 @@ class ActionController::Base
   end
   
   def partial(partial, options = {})
-    render_options, render_options[:locals] = options / [:layout, :object, :collection, :status, :spacer_template]
+    render_options, render_options[:locals] = options.partition_by(:layout, :object, :collection, :status, :spacer_template)
     render_options[:partial] = partial.is_a?(Symbol) ? partial.to_s : partial
     render render_options
   end  

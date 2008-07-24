@@ -25,21 +25,21 @@ class Resume < ActiveRecord::Base
 		
 	class << self
   	def search(params)
-  	  results = scoped({})
-  	  results = results.where(:city => params[:city]) if params[:city].present?
-  	  results = results.where(:industry => params[:industry]) if params[:industry].present?
-  	  results = results.where("job_title LIKE ?", "%#{params[:keywords]}%") if params[:keywords].present?
-
+  	  conditions = []
+  	  conditions << {:city => params[:city]} if params[:city].present?
+  	  conditions << {:industry => params[:industry]} if params[:industry].present?
+  	  conditions << ["job_title LIKE ?", "%#{params[:keywords]}%"] if params[:keywords].present?
+  	  
   		if params[:salary].present?
   			direction, value = params[:salary].match(/(-?)(\d+)/).captures
   			op = direction == '-' ? :<= : :>=
-  			results = results.where("min_salary #{op} ?", value)
+  			conditions << ["min_salary #{op} ?", value]
   		end      
 
-      results
+      conditions.inject(scoped({})) { |scope, condition| scope.scoped(:conditions => condition) }
   	end
 
-  	def authenticate(name, password)
+	  def authenticate(name, password)
   	  name =~ /(\w+)\s+(\w+)/ || raise(ArgumentError, "Имя имеет неправильный формат")
   	  first, last = $1, $2
   	  resume = find_by_lname_and_fname(lname, fname) || raise(ArgumentError, "Резюме «#{name}» не найдено")

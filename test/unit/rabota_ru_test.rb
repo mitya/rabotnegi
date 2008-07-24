@@ -7,7 +7,7 @@ require 'time'
 #   fixtures :vacancies
 #   
 #   def setup
-#     @loader = RabotaRu::VacancyLoader.new_private_accessor
+#     @loader = PureDelegator.new(RabotaRu::VacancyLoader)
 # 
 #     work_dir_path = @loader.work_directory
 #     Dir.mkdir(work_dir_path) unless File.exists?(work_dir_path)
@@ -15,12 +15,12 @@ require 'time'
 #   end
 #   
 #   test "directory clearing" do
-#     @work_dir.create_files('1.test', '2.test', '3.test')
-#     @work_dir['*.test'].count.should == 3
+#     %(1.test 2.test 3.test).each { |file| File.new("#{@work_dir_path}/#{file}", 'a') }
+#     Dir["#{@work_dir_path}/*.test"].count.should == 3
 #     
 #     @loader.load_to_files
 #     
-#     assert @work_dir['*.test'].empty?
+#     assert Dir["#{@work_dir_path}/*.test"].empty?
 #     assert_equal $city_list.size * $industry_list.size, @work_dir['*.rss'].count
 #   end
 #   
@@ -84,7 +84,7 @@ require 'time'
 #       :salary=>Salary.new(:min=>20000, :max=>50000, :currency=>:rub)
 #     )
 # 
-#     @converter = RabotaRu::VacancyConverter.new_private_accessor
+#     @converter = PureDelegator.new(RabotaRu::VacancyConverter.new)
 #   end
 #   
 #   test "convertion" do
