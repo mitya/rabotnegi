@@ -1,12 +1,4 @@
 class Object
-  def present?
-    !blank?
-  end
-
-  def metaclass
-    class << self; self end
-  end
-
   def define_constant_methods(hash)
     hash.each_pair do |method, value|
       metaclass.send(:define_method, method) { value }
@@ -15,10 +7,7 @@ class Object
 end
 
 class Array
-  def second
-    self[1]
-  end
-
+  # Returns first element when there is only one element, otherwise returns self.
   def reduce
     size == 1 ? first : self
   end

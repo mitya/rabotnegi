@@ -6,15 +6,15 @@ module CommonHelper
 	def div(id, options = {}, &proc)
 		return if options[:only] == false || options[:except] == true
 		
-		concat "<div id='#{id}'>", proc.binding
+		concat "<div id='#{id}'>"
 		yield
-		concat '</div>', proc.binding
+		concat '</div>'
 	end
 
 	def center(id, &proc)
-		concat "<table id='#{id}' class='centered'><tr><td>", proc.binding
+		concat "<table id='#{id}' class='centered'><tr><td>"
 		yield
-		concat '</table>', proc.binding
+		concat '</table>'
 	end
 	
 	def required_mark(options = {})

@@ -1,6 +1,6 @@
 <% title @resume.new?? 'Публикация резюме' : 'Редактирование резюме' %>
 
-<% form_view_for @resume do |f| %>
+<% form_for @resume do |f| %>
 <% wrapper end %>
 	<%= line_span f.error_messages %>
 	

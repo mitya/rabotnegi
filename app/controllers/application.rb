@@ -6,16 +6,11 @@ class ApplicationController < ActionController::Base
 
 protected
   def log_processing
-    if logger && logger.info?
-      logger.info  "\n\nProcessing #{self.class.name}\##{action_name} (for #{request_origin}) [#{request.method.to_s.upcase}]"
-      logger.info  "  Session ID: #{@_session.session_id.inspect}" if @_session and @_session.respond_to?(:session_id)
-      logger.info  "  Parameters: #{respond_to?(:filter_parameters) ? filter_parameters(params).inspect : params.inspect}"
-      logger.debug "  Session: #{session.instance_variable_get(:@data).inspect}"
-      # logger.debug "  Cookies: #{cookies.inspect}"
-    end
+    super
+    logger.debug "  Session: #{session.instance_variable_get(:@data).inspect}"
   end
 
   def ensure_proper_protocol
-    ['test', 'development'].include?(Rails.env) || super
+    Rails.env.development? || Rails.env.test? || super
   end
 end

@@ -1,31 +1,27 @@
 module SelectHelper
-  def list_select_tag(name, collection, selected, options = {})
-    option_tags = blank_option_tags(options) + options_for_select(collection, selected)
-    content_tag :select, option_tags, { "name" => name, "id" => name }.update(options.stringify_keys)
+  def select_tag(name, option_tags = nil, options = {})
+    option_tags = blank_option_tags(options.delete(:include_blank), options.delete(:prompt)) + option_tags
+    super
   end
 
-  def list_group_select_tag(name, collection, selected, options = {})
-    option_tags = blank_option_tags(options) + option_groups_from_collection_for_select(collection, :last, :first, :last, :first, selected)
-    content_tag :select, option_tags, { "name" => name, "id" => name }.update(options.stringify_keys)
+  def blank_option_tags(blank, prompt)
+    case
+      when blank == true then content_tag(:option, :value =>  '')
+      when String === blank then content_tag(:option, blank, :value => '')
+      when Array === blank then content_tag(:option, blank.first, :value => blank.last)
+      when prompt then content_tag(:option, prompt)
+    end || ''
+  end
+  
+  def option_groups_for_select(container, selected = nil)
+    option_groups_from_collection_for_select(container, :last, :first, :last, :first, selected)
   end
 
   # Generates a SELECT tag with option groups.
   # Groups structure is: [[grplabel, [optlabel, opt]], ...]
-  def group_select(object, property, groups, options = {})
-    ActionView::Helpers::InstanceTag.new(object, property, self, nil, options.delete(:object)).to_group_select_tag(groups, options)
+  def group_select(object, method, groups, options = {}, html_options = {})
+    ActionView::Helpers::InstanceTag.new(object, method, self, options.delete(:object)).to_group_select_tag(groups, options, html_options)
   end
-
-  def blank_option_tags(options = {})
-    blank = options.delete(:blank)
-    prompt = options.delete(:prompt)
-
-    option_tags = ''
-    option_tags << content_tag(:option) if blank == true
-    option_tags << content_tag(:option, blank) if blank.is_a?(String)
-    option_tags << content_tag(:option, blank.first, :value => blank.last) if blank.is_a?(Array)
-    option_tags << content_tag(:option, prompt) if prompt
-    option_tags
-  end  
 end
 
 module FormHelperExtensions
@@ -89,9 +85,9 @@ module FormViewHelper
   end
   
   def wrapper(&block)
-    concat "<table class='form-layout'>", block.binding
+    concat "<table class='form-layout'>"
     yield
-    concat '</table>', block.binding
+    concat '</table>'
   end
 end
 
@@ -99,6 +95,10 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
   def line_for(property, title, content, options = {})
     label = label(property, title + ':')
     @template.line(label, content, options)
+  end
+
+  def group_select(method, choices, options = {}, html_options = {})
+    @template.group_select(@object_name, method, choices, objectify_options(options), @default_options.merge(html_options))
   end
 end	
 
