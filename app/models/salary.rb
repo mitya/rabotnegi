@@ -41,9 +41,9 @@ class Salary
 	end
 	
 	def text=(value)
-	  other = parse(value)
-	  min = other.min
-	  max = other.max
+	  other = self.class.parse(value)
+	  self.min = other.min
+	  self.max = other.max
 	end
 	
 	def convert_currency(new_currency)
@@ -55,18 +55,19 @@ class Salary
 		
   class << self
     def make(attributes)
-  	  salary = new
-  		attributes.each { |name, value| salary.send("#{name}=", value) }
+  	  returning new do |salary|
+  		  attributes.each { |name, value| salary.send("#{name}=", value) }
+		  end
   	end
   	    
   	def parse(string)
-  		string.strip!
+  		string.squish!
   		params = case string
-    		when /(^\d+$)/ then { :exact => $1.to_i }
-    		when /^(\d+)-(\d+)$/, /^(\d+)—(\d+)$/ then { :min => $1.to_i, :max => $2.to_i }
-    		when /^от (\d+)$/, /^(\d+)\+$/ then { :min => $1.to_i }
-    		when /^до (\d+)$/, /^<(\d+)$/ then { :max => $1.to_i }
-    		else raise ArgumentError, "Невозможно конвертировать '#{string}'."
+    		when /(\d+)\s?[-—]\s?(\d+)/, /от (\d+) до (\d+)/ then { :min => $1.to_i, :max => $2.to_i }
+    		when /от (\d+)/, /(\d+)\+/ then { :min => $1.to_i }
+    		when /до (\d+)/, /<(\d+)/ then { :max => $1.to_i }
+    		when /(\d+)/ then { :exact => $1.to_i }
+    		else {}
   	  end
   		make(params)
   	end

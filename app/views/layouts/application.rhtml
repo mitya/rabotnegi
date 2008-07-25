@@ -39,23 +39,24 @@
 			</table>
 			
 			<div id='nav-bar'>
-				<% case location.navigation_bar
-					 when :workers %>
-					<div id='workers-nav-bar'>
-						<a id='vacancy-search-link' href='/vacancies' class='ui'>Поиск вакансий</a>
-						<a id='my-resume-link' href='/resumes/my' class='ui'>Моё резюме</a>
-					</div>
-				<% when :pro_employers %>
-					<div id='pro-employers-nav-bar'>
-						<a id='resume-search-link' href='/resumes' class='ui'>Поиск резюме</a>
-						<a id='vacancies-link' href='/vacancies/my' class='ui'>Мои вакансии</a>
-					</div>
-				<% when :casual_employers %>
-					<div id='casual-employers-nav-bar'>
-						<a id='resume-search-link' href='/resumes' class='ui'>Поиск резюме</a>
-						<a id='vacancies-link' href='/vacancies/new' class='ui'>Публикация вакансий</a>
-					</div> 
-				<% end %>
+				<div id='<%= location.navigation_bar.to_s.gsub(/_/, '-') %>-nav-bar'>
+  				<% case location.navigation_bar
+  					 when :workers %>
+  					<a id='vacancy-search-link' href='/vacancies' class='ui'>Поиск вакансий</a>
+  					<a id='my-resume-link' href='/resumes/my' class='ui'>Моё резюме</a>
+  				<% when :pro_employers %>
+  					<a id='resume-search-link' href='/resumes' class='ui'>Поиск резюме</a>
+  					<a id='vacancies-link' href='/vacancies/my' class='ui'>Мои вакансии</a>
+  				<% when :casual_employers %>
+  					<a id='resume-search-link' href='/resumes' class='ui'>Поиск резюме</a>
+  					<a id='vacancies-link' href='/vacancies/new' class='ui'>Публикация вакансий</a>
+  				<% end %>
+				  <% if current_employer %>
+				    <span style='float: right; padding-right: 20px'>
+    					<%= current_employer %> |<%= link_to 'Выйти', log_out_employers_path, { :class => 'ui' } %>
+				    </span>
+					<% end %>
+				</div>
 				<%= add_css_class(location.navigation_link, 'selected') if location.navigation_link.present? %>
 			</div>
 		</div>

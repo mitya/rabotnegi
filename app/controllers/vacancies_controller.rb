@@ -9,6 +9,10 @@ class VacanciesController < ApplicationController
       scoped(:select => 'id, title, external_id, salary_min, salary_max, employer_name').
       paginate(:page => params[:p], :per_page => 50, :order_by => params[:s] || 'salary_min') if params[:city]    
   end
+
+  def description
+    partial :description
+  end
   
   def show
   end
@@ -42,10 +46,6 @@ class VacanciesController < ApplicationController
     redirect_home 
   end
 
-  def description
-    partial :description
-  end
-  
   def my
     @employer = Employer.find(session[:employer_id])
     @vacancies = @employer.vacancies.all(:order => 'title', :select => 'id, title, external_id, salary_min, salary_max, employer_name')

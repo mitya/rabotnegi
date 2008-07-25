@@ -32,6 +32,12 @@ I18n.backend.store_translations :'ru-RU', {
         :salary_min    => 'Зарплата от',
         :salary_max    => 'Зарплата до',
         :employer_name => 'Название работодателя'
+      },
+      :employer => {
+        :name     => 'Название',
+        :captcha  => 'Картинка',
+        :password => 'Пароль',
+        :login    => 'Логин'
       }
     },
     :error => {

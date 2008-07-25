@@ -1,6 +1,6 @@
 <% form_for @employer do |f| %>
 <% wrapper do %>
-  <%= trs f.error_messages %>
+  <%= tr2 errors_for(@employer) %>
 	<%= f.tr :name, 'Название компании', f.text_field(:name) %>
 	<%= f.tr :login, 'Логин', f.text_field(:login) %>
 	<%= f.tr :password, 'Пароль', f.password_field(:password) %>

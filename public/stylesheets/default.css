@@ -93,7 +93,7 @@ div.submit .action-button {}
 
 #nav-bar {height:25px; line-height:25px; padding-left: 5px; background:#ddd}
 #nav-bar a {margin:0 7px}
-#nav-bar a.selected {color:black; text-decoration:none}
+#nav-bar a.selected {color:black; font-weight: bold; text-decoration:none}
 
 #footer {
 	clear: left; width: 100%;
