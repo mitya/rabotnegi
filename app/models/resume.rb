@@ -42,7 +42,7 @@ class Resume < ActiveRecord::Base
 	  def authenticate(name, password)
   	  name =~ /(\w+)\s+(\w+)/ || raise(ArgumentError, "Имя имеет неправильный формат")
   	  first, last = $1, $2
-  	  resume = find_by_lname_and_fname(lname, fname) || raise(ArgumentError, "Резюме «#{name}» не найдено")
+  	  resume = find_by_lname_and_fname(last, first) || raise(ArgumentError, "Резюме «#{name}» не найдено")
       resume.password == password || raise(ArgumentError, "Неправильный пароль")
       resume
   	end

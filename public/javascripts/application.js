@@ -1,11 +1,4 @@
-function log(message) {
-	if (!navigator.userAgent.match(/safari/i))
-		return
-	window.console.log(message)
-}
-
-
-VacanciesSearch = {
+Vacancies = {
 	prepare: function(form) {
 		var city = form.city.value
 		var industry = form.industry.value

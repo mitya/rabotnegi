@@ -11,7 +11,7 @@ class Employer < ActiveRecord::Base
   validates_uniqueness_of :login
   validates_confirmation_of :password
 
-  apply_simple_captcha
+  apply_simple_captcha :message => "набранные буквы не совпадают"
   
   def to_s
     name
