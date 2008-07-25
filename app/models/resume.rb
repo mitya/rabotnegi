@@ -11,9 +11,9 @@ class Resume < ActiveRecord::Base
   property :about_me,     :text
   property :contact_info, :text
   
-	validates_presence_of :fname, :lname, :city, :job_title, :industry
-	validates_presence_of :contact_info, :message => "Укажите телефон или электронную почту в контактной информации."
-	validates_numericality_of :min_salary, :message => "Укажите зарплату — число в рублях."
+	validates_presence_of :fname, :lname, :city, :job_title, :industry, :min_salary
+	validates_presence_of :contact_info, :message => "укажите телефон или электронную почту"
+	validates_numericality_of :min_salary, :allow_blank => true
 	
 	def name
 	  [fname, lname].compact.join(' ')

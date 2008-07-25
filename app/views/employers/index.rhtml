@@ -10,9 +10,9 @@
 		<h3 id='login-h'>Войдите в систему</h3>
 		<% form_tag log_in_employers_path, :method => :post, :id => 'employer-login' do %>
 	  <% wrapper do %>
-			<%= line_for :login, 'Логин', text_field_tag(:login, params[:login]) %>
-			<%= line_for :password, 'Пароль', password_field_tag(:password, params[:password]) %>
-			<%= line_right submit_tag('Войти', :class => 'button') %>
+			<%= tr :login, 'Логин', text_field_tag(:login, params[:login]) %>
+			<%= tr :password, 'Пароль', password_field_tag(:password, params[:password]) %>
+			<%= tr2 submit_tag('Войти', :class => 'button') %>
 		<% end %>
 		<% end %>
 </table>

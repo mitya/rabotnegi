@@ -1,5 +1,5 @@
 class Industry < Struct.new(:code, :extrernal_id, :name, :group)
-  cattr_reader :for_select_with_groups
+  cattr_reader :all, :popular, :other
   
   def self.[](code)
     @@all.find { |industry| industry.code == code.to_sym }.code
@@ -43,8 +43,4 @@ class Industry < Struct.new(:code, :extrernal_id, :name, :group)
   ].sort_by(&:name)
 
   @@popular, @@other = @@all.partition { |industry| industry.group == :popular }
-  @@for_select_with_groups = [
-    ['Популярные', @@popular.map { |industry| [industry.name, industry.code.to_s] }], 
-    ['Остальные', @@other.map { |industry| [industry.name, industry.code.to_s] }]
-  ]
 end

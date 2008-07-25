@@ -202,3 +202,8 @@ html>body #resumes-search-form fieldset {border:1px solid silver}
 #vacancies-table td.controls span { display: none}
 #vacancies-table tr:hover td.controls span { display: inline; }
 #vacancies-table td.controls img {border: 0; margin: 0; padding: 0; width: 12px; height:12px;}
+
+
+span.invalid label {color: red;}
+div.form-errors h2 {padding-left: 0px; color: red;}
+div.form-errors ul {padding-left: 0px; list-style-position: outside;}

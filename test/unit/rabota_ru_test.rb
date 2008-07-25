@@ -81,7 +81,7 @@ require 'time'
 #       :description=>'Описание',
 #       :employer_name=>'MyTOSHIBA',
 #       :created_at=>Time.xmlschema('2007-09-12T12:50:00+04:00'),
-#       :salary=>Salary.new(:min=>20000, :max=>50000, :currency=>:rub)
+#       :salary=>Salary.make(:min=>20000, :max=>50000, :currency=>:rub)
 #     )
 # 
 #     @converter = PureDelegator.new(RabotaRu::VacancyConverter.new)
@@ -126,6 +126,6 @@ require 'time'
 #   def assert_convert_salary(expected_salary_parameters, salary_xml)
 #     salary_hash = XmlSimple.xml_in(salary_xml, 'forcearray' => false)
 #     result = @converter.convert_salary(salary_hash)
-#     assert_equal Salary.new(expected_salary_parameters), result
+#     assert_equal Salary.make(expected_salary_parameters), result
 #   end
 # end

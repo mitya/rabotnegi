@@ -4,10 +4,10 @@
 <% form_tag vacancies_url, :onsubmit => 'return VacanciesSearch.prepare(this)', :method => :get do %>
 <% field_set_tag do %>
 <% wrapper do %>
-  <%= line_for :city, 'Город', select_tag(:city, options_for_select(City.for_select, params[:city])) %>
-  <%= line_for :industry, 'Отрасль', select_tag(:industry, option_groups_for_select(Industry.for_select_with_groups, params[:industry]), :include_blank => 'любая') %>
-  <%= line_for :q, 'Ключевые слова', text_field_tag(:q, params[:q]) %>
-  <%= line_right submit_tag('Найти', :class => 'button') %>
+  <%= tr :city, 'Город', select_tag(:city, options_for_select(cities, params[:city])) %>
+  <%= tr :industry, 'Отрасль', select_tag(:industry, blank_option('любая') + option_groups_for_select(industry_groups, params[:industry])) %>
+  <%= tr :q, 'Ключевые слова', text_field_tag(:q, params[:q]) %>
+  <%= tr2 submit_tag('Найти', :class => 'button') %>
 <% end %>
 <% end %>
 <% end %>
