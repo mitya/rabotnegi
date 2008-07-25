@@ -15,8 +15,8 @@ class Vacancy < ActiveRecord::Base
 
   validates_presence_of :title, :description, :industry, :city
 
-  def_delegator :salary, :for_edit, :salary_text
-  def_delegator :salary, :for_edit=, :salary_text=
+  def_delegator :salary, :text, :salary_text
+  def_delegator :salary, :text=, :salary_text=
 
   def eql?(other)
     attributes == other.attributes

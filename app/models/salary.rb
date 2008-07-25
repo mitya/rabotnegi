@@ -1,19 +1,8 @@
 class Salary
-	@@fields = [:min, :max]
-	
-	# cal-seq:
-	#		new 
-	#		new(attributes: Hash)
-	#		new(min: int, max: int, exact: int, currency: CurrencySymbol, negotiable: bool)
-	def initialize(*args)
+	def initialize(min = nil, max = nil)
 		@currency = :rub
-		if args.empty?
-		elsif args.first.is_a? Hash
-			attributes = args.first
-			attributes.each { |name, value| send("#{name}=", value) }
-		else
-			@min, @max = args
-		end
+		@min = min
+		@max = max
 	end
 	
 	attr_accessor :min, :max, :currency
@@ -32,25 +21,24 @@ class Salary
   alias eql? ==
 
 	def to_s
-		return "договорная" if negotiable?
-		return swc("#{exact}")	if exact?
-		return swc("от #{min}") if min?
-		return swc("до #{max}") if max?
-		return swc("#{min}—#{max}") if range?
+	  case
+      when negotiable? then "договорная"
+      when exact? then "#{exact} р."
+      when min? then "от #{min} р."
+      when max? then "до #{max} р."
+      when range? then "#{min}—#{max} р."
+    end
 	end
-	
-	def to_plain_text
-		negotiable? ? '' : to_s
+
+	def text
+	  case
+      when negotiable? then ""
+      when exact? then "#{exact}"
+      when min? then "#{min}+"
+      when max? then "<#{max}"
+      when range? then "#{min}-#{max}"
+    end
 	end
-	
-	def for_edit
-		return '' if negotiable?
-		return "#{exact}"	if exact?
-		return "#{min}+" if min?
-		return "<#{max}" if max?
-		return "#{min}-#{max}" if range?
-	end
-	alias text for_edit
 	
 	def text=(value)
 	  other = parse(value)
@@ -58,45 +46,29 @@ class Salary
 	  max = other.max
 	end
 	
-  # Returns a copy of self in targetCurrency
-	def convert_currency(targetCurrency)
-		clone.convert_currency!(targetCurrency)
-	end
-	
-	# Converts self to targetCurrency
-	def convert_currency!(targetCurrency)
-		@min = CurrencyConverter.convert(@min, currency, targetCurrency) if @min
-		@max = CurrencyConverter.convert(@max, currency, targetCurrency) if @max
-		@currency = targetCurrency
+	def convert_currency(new_currency)
+		@min = CurrencyConverter.convert(@min, currency, new_currency) if @min
+		@max = CurrencyConverter.convert(@max, currency, new_currency) if @max
+		@currency = new_currency
 		self
 	end
 		
-private
-	# Returns salary string with currency sign if currency is defined; otherwise--just salary.
-	def salary_with_currency(salary_string)
-		# "#{salary_string}#{' ' + MapService.currency_name(currency) if currency}"				
-	  "#{salary_string} р."
-	end 
-  alias swc salary_with_currency
-  
   class << self
-    def parse(string_value)
-  		params = {}
-  		string_value.strip!
-  		case string_value
-  		when /(^\d+$)/
-  			params[:exact] = $1.to_i
-  		when /^(\d+)-(\d+)$/, /^(\d+)—(\d+)$/
-  			params[:min] = $1.to_i
-  			params[:max] = $2.to_i
-  		when /^от (\d+)$/, /^(\d+)\+$/ 
-  			params[:min] = $1.to_i
-  		when /^до (\d+)$/, /^<(\d+)$/
-  			params[:max] = $1.to_i
-  		else
-  			raise ArgumentError, "Невозможно конвертировать '#{string_value}'."
+    def make(attributes)
+  	  salary = new
+  		attributes.each { |name, value| salary.send("#{name}=", value) }
+  	end
+  	    
+  	def parse(string)
+  		string.strip!
+  		params = case string
+    		when /(^\d+$)/ then { :exact => $1.to_i }
+    		when /^(\d+)-(\d+)$/, /^(\d+)—(\d+)$/ then { :min => $1.to_i, :max => $2.to_i }
+    		when /^от (\d+)$/, /^(\d+)\+$/ then { :min => $1.to_i }
+    		when /^до (\d+)$/, /^<(\d+)$/ then { :max => $1.to_i }
+    		else raise ArgumentError, "Невозможно конвертировать '#{string}'."
   	  end
-  		new(params)
-  	end	
+  		make(params)
+  	end
   end
 end

@@ -1,5 +1,5 @@
 class City < Struct.new(:code, :external_id, :name)
-  cattr_reader :for_select
+  cattr_reader :all
 
   def self.[](code)
     @@all.find { |city| city.code == code.to_sym }.code
@@ -22,6 +22,4 @@ class City < Struct.new(:code, :external_id, :name)
   	City.new(:nn,  4, "Нижний Новгород"),
   	City.new(:nsk, 9, "Новосибирск")  
   ]
-  
-  @@for_select = @@all.map { |city| [city.name, city.code.to_s]  }
 end

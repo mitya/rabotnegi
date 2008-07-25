@@ -2,22 +2,22 @@ require 'test_helper'
 
 unit_test Salary do
   def setup
-    @between_1000_2000 = Salary.new(:min => 1000, :max => 2000)
-    @above_1000 = Salary.new(:min => 1000)
-    @below_1000 = Salary.new(:max => 1000)
-    @exactly_1000 = Salary.new(:exact => 1000)
+    @between_1000_2000 = Salary.make(:min => 1000, :max => 2000)
+    @above_1000 = Salary.make(:min => 1000)
+    @below_1000 = Salary.make(:max => 1000)
+    @exactly_1000 = Salary.make(:exact => 1000)
   end
   
   test "creation with one attribute" do
-    actual = Salary.new(:exact => 1000)
-		expected = Salary.new
+    actual = Salary.make(:exact => 1000)
+		expected = Salary.make
 		expected.exact = 1000
 		assert_equal expected, actual
   end
   
   test "creation with many attributes" do
-    actual = Salary.new(:min => 1000, :negotiable => false, :currency => :usd)
-    expected = Salary.new
+    actual = Salary.make(:min => 1000, :negotiable => false, :currency => :usd)
+    expected = Salary.make
 		expected.min = 1000
 		expected.currency = :usd
 		expected.negotiable = false
@@ -51,11 +51,11 @@ unit_test Salary do
   end
   
   test "equality" do
-    assert Salary.new(:exact => 1000, :currency => :usd) == Salary.new(:exact => 1000, :currency => :usd)
+    assert Salary.make(:exact => 1000, :currency => :usd) == Salary.make(:exact => 1000, :currency => :usd)
   end
   
   test "currency convertion" do
-    source = Salary.new(:exact => 1000, :currency => :usd)
+    source = Salary.make(:exact => 1000, :currency => :usd)
 
     target = source.convert_currency(:rub)
     
@@ -67,7 +67,7 @@ unit_test Salary do
   end
     
   test "currency convertion on self" do
-    source = Salary.new(:exact => 1000, :currency => :usd)
+    source = Salary.make(:exact => 1000, :currency => :usd)
 
     source.convert_currency!(:rub)
 
