@@ -22,7 +22,7 @@
   	<tbody>
   	<% @vacancies.each do |vacancy| %>
   		<tr id='<%= vacancy.id %>' class='<%= cycle('', 'alt') %>'>
-  			<td class='pos'><%= link_to vacancy.title, [:description, vacancy], :onclick => "return toggleVacancy(#{vacancy.id})" %>
+  			<td class='pos'><%= link_to vacancy.title, vacancy, :onclick => "return toggleVacancy(#{vacancy.id})" %>
   			<td class='emp'><%= vacancy.employer_name %>
   			<td class='sal'><%= vacancy.salary %>
   	<% end %>
