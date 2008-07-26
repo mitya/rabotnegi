@@ -4,7 +4,7 @@ ActionController::Routing::Routes.draw do |map|
     :requirements => {:city => /(?!(new|my|\d+))\w*/},
     :conditions => { :method => :get }
 
-	map.resources :vacancies, :member => { :description => :get	}, :collection => { :my => :get }
+	map.resources :vacancies, :collection => { :my => :get }
 	map.resources :resumes, :collection => { :login => :get, :log_in => :post, :log_out => :get, :my => :get }
 	map.resources :employers, :collection => { :log_in => :post, :log_out => :get }
 	

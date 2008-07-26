@@ -1,7 +1,7 @@
 class VacanciesController < ApplicationController
   before_filter :load_vacancy, :only => [:show, :edit, :update, :destroy, :description]
-  before_filter :authenticate, :only => [:my, :edit, :update, :delete]
-  before_filter :authorize, :only => [:edit, :update, :delete]
+  # before_filter :authenticate, :only => [:my, :edit, :update, :delete]
+  # before_filter :authorize, :only => [:edit, :update, :delete]
 
   def index
     @vacancies = Vacancy.
@@ -10,11 +10,11 @@ class VacanciesController < ApplicationController
       paginate(:page => params[:p], :per_page => 50, :order_by => params[:s] || 'salary_min') if params[:city]    
   end
 
-  def description
-    partial :description
-  end
-  
   def show
+    respond_to do |format|
+      format.html
+      format.js { partial :description }
+    end
   end
 
   def new
@@ -56,20 +56,20 @@ private
     @vacancy = Vacancy.find(params[:id])
   end
   
-  def load_employer
-    @employer = Employer.find(session[:employer_id]) unless defined? @employer
-    @employer
-  end 
-  
-  def authenticate
-    redirect_home if not session[:employer_id]
-  end
-
-  def authorize
-    redirect_home if not @employer.vacancies.find(params[:id])
-  end 
-
-  def redirect_home
-    redirect session[:employer_id] ? my_vacancies_url : employers_url
-  end
+  # def load_employer
+  #   @employer = Employer.find(session[:employer_id]) unless defined? @employer
+  #   @employer
+  # end 
+  # 
+  # def authenticate
+  #   redirect_home if not session[:employer_id]
+  # end
+  # 
+  # def authorize
+  #   redirect_home if not @employer.vacancies.find(params[:id])
+  # end 
+  # 
+  # def redirect_home
+  #   redirect session[:employer_id] ? my_vacancies_url : employers_url
+  # end
 end

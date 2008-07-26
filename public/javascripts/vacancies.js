@@ -2,7 +2,7 @@ function toggleVacancy(id) {
 	id = id.toString()
 	if (!rowLoaded(id)) {
 		showSpinner(id);
-		new Ajax.Updater(id, '/vacancies/'+id+'/description', {
+		new Ajax.Updater(id, '/vacancies/' + id, {
 			asynchronous:true, evalScripts:true,
 			insertion:Insertion.After,
 			method:'get',
