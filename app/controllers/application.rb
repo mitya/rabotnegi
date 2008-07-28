@@ -2,9 +2,13 @@ class ApplicationController < ActionController::Base
   include SslRequirement
   include SimpleCaptcha::ControllerHelpers
   
-  rescue_from(ActiveRecord::RecordInvalid) { template :form, :status => 422 }
+  RecordInvalid = ActiveRecord::RecordInvalid
+  RecordNotFound = ActiveRecord::RecordNotFound
+  
+  rescue_from(RecordInvalid) { template :form, :status => 422 }
   helper :all
-  before_filter :set_locale, :load_employer
+  helper_method :current_employer, :current_employer?
+  before_filter :set_locale
 
 protected
   def log_processing
@@ -20,12 +24,16 @@ protected
     I18n.locale = 'ru-RU'
   end
   
-  def load_employer
-    @employer = Employer.find(session[:employer_id]) if session[:employer_id]
+  def current_employer
+    @current_employer = Employer.find(session[:employer_id]) if session[:employer_id] unless instance_variable_defined?(:@current_employer)
+    @current_employer
   end
   
-  def current_employer
-    @employer
+  def current_employer?
+    session[:employer_id].present?
   end
-  helper_method :current_employer
+    
+  def employer_required
+    current_employer || redirect(employers_path)
+  end
 end

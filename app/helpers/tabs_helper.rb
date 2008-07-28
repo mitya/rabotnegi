@@ -2,7 +2,7 @@ SiteLocation = Struct.new(:tab, :navigation_bar, :navigation_link)
 
 module TabsHelper
 	def determine_location
-		location = @@routes[[controller.controller_name.to_sym, controller.action_name.to_sym]] || raise("Route Not Found")
+		location = @@routes[[params[:controller].to_sym, params[:action].to_sym]] || raise("Route Not Found")
 		location.navigation_bar = session[:employer_id] ? :pro_employers : :casual_employers if location.navigation_bar == :employers
 		location
 	rescue
@@ -22,10 +22,14 @@ module TabsHelper
 		[:resumes,   :edit    ] => SiteLocation.new("workers-tab",   :workers,          'my-resume-link'),
 		[:resumes,   :update  ] => SiteLocation.new("workers-tab",   :workers,          'my-resume-link'),
 		[:resumes,   :create  ] => SiteLocation.new("workers-tab",   :workers,          'my-resume-link'),
-		[:vacancies, :my      ] => SiteLocation.new("employers-tab", :pro_employers,    'vacancies-link'),
-		[:vacancies, :show    ] => SiteLocation.new("employers-tab", :employers,        'vacancies-link'),
-		[:vacancies, :new     ] => SiteLocation.new("employers-tab", :employers,        'vacancies-link'),
-		[:vacancies, :edit    ] => SiteLocation.new("employers-tab", :employers,        'vacancies-link'),
-		[:vacancies, :index   ] => SiteLocation.new("workers-tab",   :workers,          'vacancy-search-link')
+		[:vacancies, :index   ] => SiteLocation.new("workers-tab",   :workers,          'vacancy-search-link'),
+		[:'employers/casual/vacancies', :new] => SiteLocation.new("employers-tab", :casual_employers, 'vacancies-link'),
+		[:'employers/casual/vacancies', :create] => SiteLocation.new("employers-tab", :casual_employers, 'vacancies-link'),
+		[:'employers/pro/vacancies', :index] => SiteLocation.new("employers-tab", :pro_employers, 'vacancies-link'),
+		[:'employers/pro/vacancies', :edit] => SiteLocation.new("employers-tab", :pro_employers, 'vacancies-link'),
+		[:'employers/pro/vacancies', :new] => SiteLocation.new("employers-tab", :pro_employers, 'vacancies-link'),
+		[:'employers/pro/vacancies', :update] => SiteLocation.new("employers-tab", :pro_employers, 'vacancies-link'),
+		[:'employers/pro/vacancies', :create] => SiteLocation.new("employers-tab", :pro_employers, 'vacancies-link'),
+		[:'employers/pro/vacancies', :show] => SiteLocation.new("employers-tab", :pro_employers, 'vacancies-link')
 	}	
 end
