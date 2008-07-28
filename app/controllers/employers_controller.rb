@@ -14,7 +14,7 @@ class EmployersController < ApplicationController
 		@employer.save_with_captcha!
 		flash[:notice] = "Работодатель «#{@employer}» зарегистрирован"
 		session[:employer_id] = @employer.id
-		redirect my_vacancies_path
+		redirect pro_employer_vacancies_path
 	rescue RecordInvalid
 		template :new, :status => 422
 	end

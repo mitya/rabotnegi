@@ -26,10 +26,10 @@ module TabsHelper
 		[:'employers/casual/vacancies', :new] => SiteLocation.new("employers-tab", :casual_employers, 'vacancies-link'),
 		[:'employers/casual/vacancies', :create] => SiteLocation.new("employers-tab", :casual_employers, 'vacancies-link'),
 		[:'employers/pro/vacancies', :index] => SiteLocation.new("employers-tab", :pro_employers, 'vacancies-link'),
+		[:'employers/pro/vacancies', :show] => SiteLocation.new("employers-tab", :pro_employers, 'vacancies-link'),
 		[:'employers/pro/vacancies', :edit] => SiteLocation.new("employers-tab", :pro_employers, 'vacancies-link'),
 		[:'employers/pro/vacancies', :new] => SiteLocation.new("employers-tab", :pro_employers, 'vacancies-link'),
 		[:'employers/pro/vacancies', :update] => SiteLocation.new("employers-tab", :pro_employers, 'vacancies-link'),
-		[:'employers/pro/vacancies', :create] => SiteLocation.new("employers-tab", :pro_employers, 'vacancies-link'),
-		[:'employers/pro/vacancies', :show] => SiteLocation.new("employers-tab", :pro_employers, 'vacancies-link')
+		[:'employers/pro/vacancies', :create] => SiteLocation.new("employers-tab", :pro_employers, 'vacancies-link')
 	}	
 end
