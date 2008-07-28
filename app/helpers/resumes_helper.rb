@@ -1,7 +1,7 @@
 module ResumesHelper
 	def resumes_page_title
-		city = City[params[:city]] if params[:city]
-		industry = Industry[params[:industry]] if params[:industry]
+		city = City[params[:city]] if params[:city].present?
+		industry = Industry[params[:industry]] if params[:industry].present?
 		query = params[:q]
 		page = params[:p]
 		

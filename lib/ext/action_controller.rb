@@ -1,6 +1,8 @@
 class ActionController::Base
   def template(template, options = {})
-    render options.merge(:action => template.to_s)
+    template = template.to_s
+    template.include?('/') ? options.merge!(:template => template) : options.merge!(:action => template)
+    render options
   end
 
   def redirect(url)

@@ -46,10 +46,10 @@
   					<a id='my-resume-link' href='/resumes/my' class='ui'>Моё резюме</a>
   				<% when :pro_employers %>
   					<a id='resume-search-link' href='/resumes' class='ui'>Поиск резюме</a>
-  					<a id='vacancies-link' href='/vacancies/my' class='ui'>Мои вакансии</a>
+  					<a id='vacancies-link' href='/employers/pro/vacancies' class='ui'>Мои вакансии</a>
   				<% when :casual_employers %>
   					<a id='resume-search-link' href='/resumes' class='ui'>Поиск резюме</a>
-  					<a id='vacancies-link' href='/vacancies/new' class='ui'>Публикация вакансий</a>
+  					<a id='vacancies-link' href='/employers/casual/vacancies/new' class='ui'>Публикация вакансий</a>
   				<% end %>
 				  <% if current_employer %>
 				    <span style='float: right; padding-right: 20px'>
