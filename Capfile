@@ -2,21 +2,20 @@ load 'deploy' if respond_to?(:namespace) # cap2 differentiator
 Dir['vendor/plugins/*/recipes/*.rb'].each { |plugin| load(plugin) }
 Dir['lib/recipes/*.rb'].each { |recipe| load(recipe) }
 
-environment = ENV['ENV'] == 'prod' ? :prod : :stg
-
 set :repository,  "git@sokurenko.unfuddle.com:sokurenko/rabotnegi.git"
 set :deploy_via, :remote_cache
 set :scm, :git
 set :user, "root"
 set :runner, "mongrel"
-set :rails_env, 'staging'
+set :git_enable_submodules, true
 
-case environment
-when :prod
+set :rails_env, ENV['RAILS_ENV'] == 'production' ? :production : :staging
+case rails_env
+when :production
   set :host, 'rabotnegi.ru'
   set :application, "rabotnegi_prod"
   set :deploy_to, "/var/www/rabotnegi_prod"
-when :stg
+when :staging
   set :host, 'rabotnegi.sokurenko.name'
   set :application, "rabotnegi_stg"
   set :deploy_to, "/var/www/rabotnegi_stg"
