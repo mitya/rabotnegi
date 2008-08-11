@@ -7,8 +7,3 @@ end
 def d(expression, binding = nil)
   l(eval(expression.to_s, binding), expression.to_s)
 end
-
-def __caller_string(index)
-  caller[index] =~ /.*\/(\w+)\.rb:(\d+):in `(\w+)'/
-  "#{$1}:#{$3}:#{$2}"
-end

@@ -65,5 +65,3 @@ module I18n
   
   self.exception_handler = :use_default_locale
 end
-
-# 'active_record.error_messages.invalid'
