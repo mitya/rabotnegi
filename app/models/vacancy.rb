@@ -1,6 +1,6 @@
 class Vacancy < ActiveRecord::Base
   extend Forwardable
-
+  
   property :title, :string
   property :description, :text
   property :external_id, :integer

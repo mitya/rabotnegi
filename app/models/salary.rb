@@ -54,7 +54,7 @@ class Salary
 	end
 		
   class << self
-    def make(attributes)
+    def make(attributes = {})
   	  returning new do |salary|
   		  attributes.each { |name, value| salary.send("#{name}=", value) }
 		  end
