@@ -10,7 +10,7 @@
 
 	<div class='message warning'>Резюме в выбранном городе/отрасли пока нет.</div>
 
-<% else %>
+<% else @resumes.any? %>
 
   <% title resumes_page_title %>
   <%= partial :search %>

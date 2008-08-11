@@ -1,8 +1,8 @@
-<% if @vacancies.nil? %>
+<% case when @vacancies.nil? %>
 
   <%= partial :search %>
 
-<% elsif @vacancies.any? %>
+<% when @vacancies.any? %>
 
   <%= partial :search %>
 
@@ -37,7 +37,7 @@
   	<% end %>
   </table>
 
-<% elsif @vacancies.empty? %>
+<% when @vacancies.empty? %>
 
   <%= partial :search %>
 

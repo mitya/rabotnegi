@@ -13,5 +13,6 @@ ActionController::Routing::Routes.draw do |map|
   
   map.simple_captcha '/simple_captcha/:action', :controller => 'simple_captcha'
   map.system '/system/:action', :controller => 'system'
+  map.test '/test/:action', :controller => 'test'
   map.root :controller => 'vacancies', :action => 'index'
 end
