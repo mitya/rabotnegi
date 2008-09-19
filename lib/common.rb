@@ -7,8 +7,8 @@ class PureDelegator < ActiveSupport::BasicObject
     @target = target
   end
 
-  def method_missing(method, *args, &block)
-    @target.send(method, *args, &block)
+  def method_missing(selector, *args, &block)
+    @target.send(selector, *args, &block)
   end
 end
 
