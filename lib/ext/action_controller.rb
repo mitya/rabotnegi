@@ -1,7 +1,7 @@
 class ActionController::Base
   def template(template, options = {})
     template = template.to_s
-    template.include?('/') ? options.merge!(:template => template) : options.merge!(:action => template)
+    options.merge!((template.include?('/') ? :template : :action) => template)
     render options
   end
 
