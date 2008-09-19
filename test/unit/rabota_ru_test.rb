@@ -7,25 +7,25 @@ unit_test RabotaRu::VacancyLoader do
   fixtures :vacancies
   
   def setup
-    @loader = PureDelegator.new(RabotaRu::VacancyLoader)
+    @loader = PureDelegator.new(RabotaRu::VacancyLoader.new)
+    @loader.work_directory = "#{Rails.root}/tmp/rabotaru_test"
 
-    work_dir_path = @loader.work_directory
-    Dir.mkdir(work_dir_path) unless File.exists?(work_dir_path)
-    @work_dir = Dir.new(work_dir_path)
+    Dir.mkdir(@loader.work_directory) unless File.exists?(@loader.work_directory)
+    @work_dir = Dir.new(@loader.work_directory)
   end
   
-  test "directory clearing" do
-    %(1.test 2.test 3.test).each { |file| File.new("#{@work_dir_path}/#{file}", 'a') }
-    Dir["#{@work_dir_path}/*.test"].count.should == 3
+  xtest "directory clearing and remote loading" do
+    %w(1.test 2.test 3.test).each { |file| File.new("#{@work_dir.path}/#{file}", 'a') }
+    assert_equal 3, Dir["#{@work_dir.path}/*.test"].size
     
     @loader.load_to_files
     
-    assert Dir["#{@work_dir_path}/*.test"].empty?
-    assert_equal $city_list.size * $industry_list.size, @work_dir['*.rss'].count
+    assert Dir["#{@work_dir.path}/*.test"].empty?
+    assert_equal City.all.size * Industry.all.size, @work_dir['*.json'].size
   end
   
   test "loading" do
-    FileUtils.cp(Dir["#{RAILS_ROOT}/spec/fixtures/rabotaru/*"], "#{RAILS_ROOT}/tmp/rabotaru")
+    FileUtils.cp(Dir["#{Rails.root}/test/fixtures/rabotaru/*"], @work_dir.path)
     @loader.skip_remote_loading = true
     @loader.load
   end
@@ -33,10 +33,10 @@ unit_test RabotaRu::VacancyLoader do
   test "filtration" do
     load_vacancies
     @loader.filter
-    loaded_vacancies = @loader.instance_variable_get(:@loaded_vacancies)
-    assert loaded_vacancies.any? { |v| v.external_id == 102 }
-    assert !loaded_vacancies.any? { |v| v.external_id == 101 && v.title == 'Designer (upd)' && !v.new_record? }
-    assert loaded_vacancies.any? { |v| v.external_id == 100 }
+    filtered_vacancies = @loader.instance_variable_get(:@loaded_vacancies)
+    assert  filtered_vacancies.any? { |v| v.external_id == 100 }
+    assert  filtered_vacancies.any? { |v| v.external_id == 101 && v.description == 'new' }
+    assert !filtered_vacancies.any? { |v| v.external_id == 102 }
   end
   
   test "saving" do
@@ -44,14 +44,14 @@ unit_test RabotaRu::VacancyLoader do
     @loader.filter
     @loader.save
     assert Vacancy.exists?(:title => 'Manager')
-    assert Vacancy.exists?(:title => 'Designer (upd)')
+    assert Vacancy.exists?(:title => 'Designer', :description => 'new')
   end
   
   def load_vacancies
     loaded_vacancies = [
-      Vacancy.new(:title => 'Developer', :city => :spb, :created_at => Time.local(2008, 1, 1), :external_id => 100, :industry => :it, :description => 'no'),
-      Vacancy.new(:title => 'Designer (upd)', :city => :msk, :created_at => Time.local(2008, 1, 2), :external_id => 101, :industry => :it, :description => 'no'),
-      Vacancy.new(:title => 'Manager', :city => :spb, :created_at => Time.local(2007, 1, 2), :external_id => 102, :industry => :it, :description => 'no')
+      Vacancy.new(:title => 'Developer', :city => 'spb', :created_at => Time.utc(2008, 9, 1), :external_id => 100, :industry => 'it', :description => 'no'),
+      Vacancy.new(:title => 'Designer',  :city => 'msk', :created_at => Time.utc(2008, 9, 2), :external_id => 101, :industry => 'it', :description => 'new'),
+      Vacancy.new(:title => 'Manager',   :city => 'spb', :created_at => Time.utc(2008, 9, 1), :external_id => 102, :industry => 'it', :description => 'no')
     ]
     @loader.instance_variable_set(:@loaded_vacancies, loaded_vacancies)
   end
@@ -80,8 +80,8 @@ unit_test RabotaRu::VacancyConverter do
     
     @@expected_vacancy = Vacancy.new(
       :title => 'Менеджер',
-      :city => :spb,
-      :industry => :it,
+      :city => 'spb',
+      :industry => 'it',
       :external_id => 27047845,
       :employer_name => 'Apple',
       :description => 'blah-blah-blah',

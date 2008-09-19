@@ -4,6 +4,7 @@ require File.join(File.dirname(__FILE__), 'boot')
 Rails::Initializer.run do |config|
   config.action_controller.session = { :session_key => "_jobs_session", :secret => "REDACTED" }
   config.gem 'will_paginate'
+  config.gem 'json', :lib => 'json/add/rails'
   config.time_zone = 'Moscow'
 
   config.after_initialize do

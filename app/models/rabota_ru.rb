@@ -34,14 +34,18 @@ require 'time'
 module RabotaRu
   # Загружает вакансии с Работы.ру. 
   class VacancyLoader
-    UrlTemplate = '/v3_rssExport.html?wt=f&c=%d&r=%d&cu=2&p=30&d=desc&fv=f&rc=2123&new=1&t=1'
+    RssUrlTemplate = '/v3_rssExport.html?wt=f&c=%d&r=%d&cu=2&p=30&d=desc&fv=f&rc=2123&new=1&t=1'
+    JsonUrlTemplate = '/v3_jsonExport.html?wt=f&c=%d&r=%d&cu=1&p=7&d=desc&start=180&pp=20&fv=f&rc=1687&new=1&t=1'
     
     attr_writer :skip_remote_loading
     def skip_remote_loading?() @skip_remote_loading end
+      
+    attr_accessor :work_directory
   
     def initialize
       @loaded_vacancies = []
-      @skip_remote_loading = false
+      @skip_remote_loading = true
+      @work_directory = "#{Rails.root}/tmp/rabotaru"
       @vacancy_converter = VacancyConverter.new
     end
   
@@ -65,7 +69,7 @@ module RabotaRu
     
       City.each do |city|
         Industry.each do |industry|
-          json_text = Net::HTTP.get 'www.rabota.ru',  UrlTemplate % [city.external_id, industry.external_id]
+          json_text = Net::HTTP.get 'www.rabota.ru',  JsonUrlTemplate % [city.external_id, industry.external_id]
           File.open("#{work_directory}/#{city.code}-#{industry.code}.json", 'w') { |file| file << json_text }
         end
       end    
@@ -74,22 +78,23 @@ module RabotaRu
     # Конвертирует загруженные файлы в объекты и помещает результат в @loaded_vacancies.
     def convert
       Dir["#{work_directory}/*.json"].each do |file|
-        items = ActiveSupport::JSON.decode(file)
+        items = JSON.parse(File.read(file).sub!(/;\s*$/, ''))
         log "Конверсия #{File.basename(file)} (#{items.size})..."
-        items.each { |item| @loaded_vacancies << convert_item(item) }
+        items.each { |item| convert_item(item) }
       end    
       log "Загружено #{@loaded_vacancies.size} вакансий."
     end
     
     def convert_item(item)
-      @vacancy_converter.convert(item)
+      @loaded_vacancies << @vacancy_converter.convert(item)
     rescue => e
-      log "Пропущена вакансия '#{item['position']}', так как #{e.class} '#{e.message}'."
+      log "Пропущена вакансия '#{item['position']}', так как #{e.class}: #{e.message} [#{e.backtrace.first(4).join(', ')}]."
     end
   
     def remove_duplicates
+      log "Выносим дубликаты #{@loaded_vacancies.size}..."
       @loaded_vacancies.uniq!
-      log "После устранения дубликатов осталось #{@loaded_vacancies.count} вакансий."
+      log "После устранения дубликатов осталось #{@loaded_vacancies.size} вакансий."
     end
   
     # Фильтрует сисок вакансий в @loaded_vacancies, остовляет только новые и обновленные вакансии.
@@ -97,7 +102,7 @@ module RabotaRu
       loaded_external_ids = @loaded_vacancies.map(&:external_id)
       existed_vacancies = Vacancy.find_all_by_external_id(loaded_external_ids)
       existed_vacancies_map = existed_vacancies.index_by(&:external_id)
-    
+          
       new_vacancies, updated_vacancies = [], []
       @loaded_vacancies.each do |loaded_vacancy|
         existed_vacancy = existed_vacancies_map[loaded_vacancy.external_id]
@@ -110,7 +115,7 @@ module RabotaRu
       end
     
       @loaded_vacancies = new_vacancies + updated_vacancies
-      log "После фильтрации осталось #{@loaded_vacancies.count} вакансий."
+      log "После фильтрации осталось #{@loaded_vacancies.size} вакансий."
     end
   
     # Сохраняет загруженные вакансии в базе.
@@ -118,10 +123,6 @@ module RabotaRu
       Vacancy.transaction { @loaded_vacancies.each(&:save) }
     end
   
-    def work_directory
-      "#{Rails.root}/tmp/rabotaru"
-    end
-
     def log(message)
       Rails.logger.debug("VacancyLoader: #{message}")
     end
@@ -135,15 +136,25 @@ module RabotaRu
       vacancy.title         = hash['position']
       vacancy.description   = hash['responsibility']['value']
       vacancy.external_id   = extract_id(hash['link'])
-      vacancy.employer_name = hash['employer']['value']
-      vacancy.city          = City.find_by_external_id(hash['city']['id'])
-      vacancy.industry      = Industry.find_by_external_id(hash['rubric_0']['id'])
+      vacancy.employer_name = hash['employer'] && hash['employer']['value']
+      vacancy.city          = City.find_by_external_id(hash['city']['id']).to_s
+      vacancy.industry      = Industry.find_by_external_ids(
+        hash['rubric_0'] && hash['rubric_0']['id'], 
+        hash['rubric_1'] && hash['rubric_1']['id'], 
+        hash['rubric_2'] && hash['rubric_2']['id']).to_s
       vacancy.salary        = convert_salary(hash['salary'])
       vacancy.created_at    = Time.parse(hash['publishDate'])
       vacancy
     end
 
   private
+    def get(hash, *keys)
+      result = hash
+      keys.each do |key|
+        hash[key.to_s]
+      end
+    end
+    
     # http://www.rabota.ru/vacancy1234567.html' => 1234567
     def extract_id(link)
       %r{http://www.rabota.ru/vacancy(\d+).html} =~ link

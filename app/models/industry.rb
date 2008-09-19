@@ -14,6 +14,12 @@ class Industry < Struct.new(:code, :external_id, :name, :group)
     industry = @@all.find { |industry| industry.external_id == external_id } || raise(ArgumentError, "Отрасль ##{external_id} не найдена")
     industry.code
   end
+
+  def self.find_by_external_ids(*external_ids)
+    external_ids.each do |eid|
+      return find_by_external_id(eid) rescue next
+    end
+  end
     
   @@all = [
      Industry.new(:it,                      19, 'Информационные технологии',    :popular),
@@ -44,3 +50,5 @@ class Industry < Struct.new(:code, :external_id, :name, :group)
 
   @@popular, @@other = @@all.partition { |industry| industry.group == :popular }
 end
+
+# 1002, 1007, 1015
