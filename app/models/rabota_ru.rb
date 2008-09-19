@@ -2,9 +2,40 @@ require 'fileutils'
 require 'net/http'
 require 'time'
 
+# Rabota.ru params:
+# w      - ключевые слова
+# ot (1) - только по названию
+# c      - город
+# sf     - salary
+# su     - salary unit (1 usd, 2 rub, 3 eur)
+# os     - график
+# ek     - excluded words
+# pp     - per page
+# p      - day count (1, 7 30)
+# 
+# Response item sample:
+# {
+#   "publishDate": "Fri, 19 Sep 2008 20:07:18 +0400",
+#   "expireDate": "Fri, 26 Sep 2008 20:07:18 +0400",
+#   "position": "Менеджер по персоналу (IT направление)",
+#   "link": "http://www.rabota.ru/vacancy27047845.html",
+#   "description": "Работодатель <a href=\"http://www.rabota.ru/agency15440.html\" target=\"_blank\">Spbnews</a> (Санкт-Петербург) предлагает вакансию на должность Менеджер по персоналу (IT направление). Зарплата <b>1173 - 1521</b> USD. Опыт работы до 2 лет. Образование неполное высшее. Вакансия опубликована cегодня, 20:07.<br/><strong>Требования:</strong><br /><br /><strong>Требования:</strong>\r\nМужчина\\Женщина.\r\nВозраст от 22 до 35\r\nОбязательно: опыт работы в подборе персонала от 1 года&sbquo; опыт\r\n поиска специалистов из IT сферы.\r\nЖелательно: знания в других направлений в управлени персоналом\r\n (КДП&sbquo; мотивация&sbquo; обучение).<br /><br /><strong>Обязанности:</strong><br /><br />В компанию по созданию Интернет проектов (штат 30 человек) требуется менеджер по подбору персонала.\r\n<strong>Обязанности:</strong>\r\n * Поиск и подбор персонала ( IT технологии).\r\n * Разработка систем мотивации.\r\n * Планирование обучения.<br /><br /><strong>Условия:</strong><br /><br /><strong>Условия:</strong>\r\n * Молодой коллектив\r\n * Офис - рядом со ст.м. Петроградская.\r\n * Оклад - от 27000 рублей.", 
+#   "rubric_0": {"id": "14", "value": "Секретариат, делопроизводство, АХО"}, 
+#   "rubric_1": {"id": "19", "value": "IT, компьютеры, работа в интернете"}, 
+#   "rubric_2": {"id": "12", "value": "Кадровые службы, HR"}, 
+#   "city": {"id": "2", "value": "Санкт-Петербург"}, 
+#   "schedule": {"id": "1", "value": "полный рабочий день"}, 
+#   "education": {"id": "3", "value": "неполное высшее"}, 
+#   "experience": {"id": "2", "value": "до 2 лет"}, 
+#   "employer": {"id": "15440", "value": "Spbnews", "link": "http://www.rabota.ru/agency15440.html"}, 
+#   "salary": {"min": "27000", "max": "35000", "currency": {"value": "руб", "id": "2"}}, 
+#   "responsibility": {"value": "<strong>Требования:</strong><br /><br /><strong>Требования:</strong>\r\nМужчина\\Женщина.\r\nВозраст от 22 до 35\r\nОбязательно: опыт работы в подборе персонала от 1 года&sbquo; опыт\r\n поиска специалистов из IT сферы.\r\nЖелательно: знания в других направлений в управлени персоналом\r\n (КДП&sbquo; мотивация&sbquo; обучение).<br /><br /><strong>Обязанности:</strong><br /><br />В компанию по созданию Интернет проектов (штат 30 человек) требуется менеджер по подбору персонала.\r\n<strong>Обязанности:</strong>\r\n * Поиск и подбор персонала ( IT технологии).\r\n * Разработка систем мотивации.\r\n * Планирование обучения.<br /><br /><strong>Условия:</strong><br /><br /><strong>Условия:</strong>\r\n * Молодой коллектив\r\n * Офис - рядом со ст.м. Петроградская.\r\n * Оклад - от 27000 рублей."}
+# }
 module RabotaRu
   # Загружает вакансии с Работы.ру. 
   class VacancyLoader
+    UrlTemplate = '/v3_rssExport.html?wt=f&c=%d&r=%d&cu=2&p=30&d=desc&fv=f&rc=2123&new=1&t=1'
+    
     attr_writer :skip_remote_loading
     def skip_remote_loading?() @skip_remote_loading end
   
@@ -29,35 +60,31 @@ module RabotaRu
     # Загружает RSS-ленты в файлы в tmp/rabotaru/:industry.rss.
     # Предварительно очищает рабочий каталог.
     def load_to_files
-      FileUtils.rm_r(work_directory) if File.exists?(work_directory)
-      Dir.mkdir(work_directory)
+      FileUtils.rm_r work_directory if File.exists? work_directory
+      Dir.mkdir work_directory
     
       City.each do |city|
         Industry.each do |industry|
-          rss_text = Net::HTTP.get('www.rabota.ru', '/v3_rssExport.html?c=%d&r=%d' % [city.external_id, industry.external_id])
-          File.open("#{work_directory}/#{city.code}-#{industry.code}.rss", 'w') { |file| file << rss_text }
+          json_text = Net::HTTP.get 'www.rabota.ru',  UrlTemplate % [city.external_id, industry.external_id]
+          File.open("#{work_directory}/#{city.code}-#{industry.code}.json", 'w') { |file| file << json_text }
         end
       end    
     end
   
     # Конвертирует загруженные файлы в объекты и помещает результат в @loaded_vacancies.
     def convert
-      Dir["#{work_directory}/*.rss"].each do |rss_file|
-        rss_hash = read_rss_file_to_hash(rss_file)
-        
-        log "Конверсия '#{File.basename(rss_file, '.rss')} (#{rss_hash['channel']['item'].length})'..." 
-      
-        rss_hash['channel']['item'].each do |rss_item|
-          begin
-            vacancy = @vacancy_converter.convert(rss_item)
-            @loaded_vacancies << vacancy
-          rescue => e
-            log "Пропущена вакансия '#{rss_item['title']}', так как #{e.class} '#{e.message}'."
-          end
-        end        
-      end
-    
+      Dir["#{work_directory}/*.json"].each do |file|
+        items = ActiveSupport::JSON.decode(file)
+        log "Конверсия #{File.basename(file)} (#{items.size})..."
+        items.each { |item| @loaded_vacancies << convert_item(item) }
+      end    
       log "Загружено #{@loaded_vacancies.size} вакансий."
+    end
+    
+    def convert_item(item)
+      @vacancy_converter.convert(item)
+    rescue => e
+      log "Пропущена вакансия '#{item['position']}', так как #{e.class} '#{e.message}'."
     end
   
     def remove_duplicates
@@ -88,21 +115,11 @@ module RabotaRu
   
     # Сохраняет загруженные вакансии в базе.
     def save
-      Vacancy.transaction do
-        @loaded_vacancies.each(&:save)
-      end
+      Vacancy.transaction { @loaded_vacancies.each(&:save) }
     end
   
     def work_directory
       "#{Rails.root}/tmp/rabotaru"
-    end
-
-    def read_rss_file_to_hash(rss_file)
-      rss_text = File.read(rss_file)
-      returning XmlSimple.xml_in(rss_text, 'forcearray' => false) do |rss_hash|
-        rss_hash['channel']['item'] = [rss_hash['channel']['item']] if rss_hash['channel']['item'].is_a?(Hash)
-        rss_hash['channel']['item'] = [] if !rss_hash['channel']['item']
-      end
     end
 
     def log(message)
@@ -113,70 +130,62 @@ module RabotaRu
 
   # Converts RSS items with vacancy XML to vacancy objects.
   class VacancyConverter
-    def convert(rss_item)
+    def convert(hash)
       vacancy = Vacancy.new
-      vacancy.title = rss_item['position']
-      vacancy.description = format_description(rss_item['description'], rss_item['responsibility'])
-      vacancy.external_id = extract_id(rss_item['guid'])
-      vacancy.employer_name = rss_item['employer']['content']
-      vacancy.city = City.find_by_external_id(rss_item['city']['vacancy:number']).to_s
-      vacancy.industry = Industry.find_by_external_id(rss_item['rubric_0']['vacancy:number']).to_s
-      vacancy.salary = convert_salary(rss_item['salary'])
-      vacancy.created_at = Time.parse(rss_item['date']['vacancy:publishDate'])
+      vacancy.title         = hash['position']
+      vacancy.description   = hash['responsibility']['value']
+      vacancy.external_id   = extract_id(hash['link'])
+      vacancy.employer_name = hash['employer']['value']
+      vacancy.city          = City.find_by_external_id(hash['city']['id'])
+      vacancy.industry      = Industry.find_by_external_id(hash['rubric_0']['id'])
+      vacancy.salary        = convert_salary(hash['salary'])
+      vacancy.created_at    = Time.parse(hash['publishDate'])
       vacancy
     end
-  
+
   private
-    def format_description(description, responsibility)
-      description
-    end
-  
-    # Extracts external vacancy ID from link like 'http://www.rabota.ru/vacancy1234567.html'
-    def extract_id(external_vacancy_link)
-      %r{http://www.rabota.ru/vacancy(\d+).html} =~ external_vacancy_link
+    # http://www.rabota.ru/vacancy1234567.html' => 1234567
+    def extract_id(link)
+      %r{http://www.rabota.ru/vacancy(\d+).html} =~ link
       $1.to_i
     end
   
-    # Конвертирует XML зарплаты в объект Salary.
-    # Обрабатываемые ситуации:
-    #   <vacancy:salary vacancy:min="1000" vacancy:max="2000" vacancy:currency="USD"/>
-    #   <vacancy:salary vacancy:min="1000" vacancy:max="1000" vacancy:currency="руб"/>
-    #   <vacancy:salary vacancy:min="1000" vacancy:max="" vacancy:currency="USD"/>
-    #   <vacancy:salary vacancy:min="" vacancy:max="1000" vacancy:currency="USD"/>
-    #   <vacancy:salary vacancy:agreed="yes"/>
-    def convert_salary(salary_xml)
+    # {"min": "27000", "max": "35000", "currency": {"value": "руб", "id": "2"}}
+    # {"min": "10000, "max": "10000", "currency": {"value": "руб", "id": "2"}}
+    # {"min": "27000", "currency": {"value": "руб", "id": "2"}}
+    # {"agreed":"yes"}
+    def convert_salary(hash)
       salary = Salary.new
-    
-      if salary_xml['vacancy:agreed'] == 'yes'
+      if hash['agreed'] == 'yes'
         salary.negotiable = true
-        return salary 
-      end
-    
-      salary.negotiable = false
-      if salary_xml['vacancy:min'] == salary_xml['vacancy:max']
-        salary.exact = salary_xml['vacancy:min'].to_i
-      elsif salary_xml['vacancy:max'] == ''
-        salary.min = salary_xml['vacancy:min'].to_i
-      elsif salary_xml['vacancy:min'] == ''
-        salary.max = salary_xml['vacancy:max'].to_i
       else
-        salary.min = salary_xml['vacancy:min'].to_i
-        salary.max = salary_xml['vacancy:max'].to_i
+        salary.negotiable = false
+        case 
+          when hash['min'] == hash['max']
+            salary.exact = hash['min'].to_i
+          when hash['max'].blank?
+            salary.min = hash['min'].to_i
+          when hash['min'].blank?
+            salary.max = hash['max'].to_i
+          else
+            salary.min = hash['min'].to_i
+            salary.max = hash['max'].to_i
+        end
+        salary.currency = convert_currency(hash['currency'])
+        salary.convert_currency(:rub)
       end
-
-      salary.currency = convert_currency(salary_xml['vacancy:currency'])
-      salary.convert_currency!(:rub)
-
       salary
     end
   
-    def convert_currency(currency_string)
-      assert currency_string, "Currency string can't be nil"
-      case currency_string.downcase
+    # {"value": "руб", "id": "2"}
+    def convert_currency(hash)
+      case hash['value'].downcase
         when 'руб': :rub
         when 'usd': :usd
         when 'eur': :eur
-        else; raise ArgumentError, "Неизвестная валюта #{currency_string}"
+        else
+          Rails.logger.warn('Неизвестная валюта #{currency_string}')
+          :rub
       end
     end
   end
