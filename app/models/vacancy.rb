@@ -19,13 +19,13 @@ class Vacancy < ActiveRecord::Base
   def_delegator :salary, :text=, :salary_text=
 
   def eql?(other)
-    attributes == other.attributes
+    external_id? && other.external_id? ? external_id == other.external_id : super
   end
 
   def to_s
     title
   end
-
+  
 protected
   def after_initialize
     if new?
@@ -35,6 +35,7 @@ protected
 
   class << self
     def search(params)
+      params.symbolize_keys!
       conditions = []
       conditions << {:city => params[:city]} if params[:city].present?
       conditions << {:industry => params[:industry]} if params[:industry].present?

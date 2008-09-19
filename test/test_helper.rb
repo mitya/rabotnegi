@@ -8,6 +8,9 @@ class Test::Unit::TestCase
   self.use_instantiated_fixtures  = false
   
   class << self
+    def xtest(*args)
+    end
+    
     def visual_test(name, &block)
       # test(name, &block)
     end

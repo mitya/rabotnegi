@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 3) do
+ActiveRecord::Schema.define(:version => 1) do
 
   create_table "employers", :force => true do |t|
     t.string   "name",       :null => false
@@ -28,8 +28,8 @@ ActiveRecord::Schema.define(:version => 3) do
     t.string   "city",                                       :null => false
     t.string   "job_title",    :limit => 100,                :null => false
     t.string   "industry",                                   :null => false
-    t.integer  "min_salary",   :limit => 11,                 :null => false
-    t.integer  "view_count",   :limit => 11,  :default => 0, :null => false
+    t.integer  "min_salary",                                 :null => false
+    t.integer  "view_count",                  :default => 0, :null => false
     t.text     "job_reqs"
     t.text     "about_me"
     t.text     "contact_info"
@@ -50,17 +50,17 @@ ActiveRecord::Schema.define(:version => 3) do
   end
 
   create_table "vacancies", :force => true do |t|
-    t.string   "title",                       :null => false
-    t.text     "description",                 :null => false
-    t.integer  "external_id",   :limit => 11
-    t.string   "industry",                    :null => false
-    t.string   "city",                        :null => false
-    t.integer  "salary_min",    :limit => 11
-    t.integer  "salary_max",    :limit => 11
-    t.integer  "employer_id",   :limit => 11
+    t.string   "title",         :null => false
+    t.text     "description",   :null => false
+    t.integer  "external_id"
+    t.string   "industry",      :null => false
+    t.string   "city",          :null => false
+    t.integer  "salary_min"
+    t.integer  "salary_max"
+    t.integer  "employer_id"
     t.string   "employer_name"
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   add_index "vacancies", ["external_id"], :name => "uq_vacancies_external_id", :unique => true
