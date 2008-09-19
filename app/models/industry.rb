@@ -1,4 +1,4 @@
-class Industry < Struct.new(:code, :extrernal_id, :name, :group)
+class Industry < Struct.new(:code, :external_id, :name, :group)
   cattr_reader :all, :popular, :other
   
   def self.[](code)
@@ -11,7 +11,7 @@ class Industry < Struct.new(:code, :extrernal_id, :name, :group)
   
   def self.find_by_external_id(external_id)
     external_id = external_id.to_i
-    industry = @@all.find { |industry| industry.external_id == required_external_id } || raise(ArgumentError, "Отрасль ##{external_id} не найдена")
+    industry = @@all.find { |industry| industry.external_id == external_id } || raise(ArgumentError, "Отрасль ##{external_id} не найдена")
     industry.code
   end
     
