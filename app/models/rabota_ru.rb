@@ -44,7 +44,6 @@ module RabotaRu
   
     def initialize
       @loaded_vacancies = []
-      @skip_remote_loading = true
       @work_directory = "#{Rails.root}/tmp/rabotaru"
       @vacancy_converter = VacancyConverter.new
     end
