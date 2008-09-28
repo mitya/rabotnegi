@@ -40,3 +40,7 @@ task :log do
   line_count = ENV['N'] || 200
   puts capture("tail -n #{line_count} #{current_path}/log/#{rails_env}.log")
 end
+
+after 'deploy:setup' do
+  try_sudo "ln -s #{current_path}/config/cron/rabotnegi /etc/cron.d"
+end if rails_env == :production
