@@ -42,5 +42,5 @@ task :log do
 end
 
 after 'deploy:setup' do
-  try_sudo "ln -s #{current_path}/config/cron/rabotnegi /etc/cron.d"
+  try_sudo "cp #{current_path}/config/cron/rabotnegi /etc/cron.d"
 end if rails_env == :production

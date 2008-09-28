@@ -124,7 +124,7 @@ module RabotaRu
     end
   
     def log(message)
-      Rails.logger.debug("VacancyLoader: #{message}")
+      Rails.logger.info("VacancyLoader: #{message}")
     end
   end
 
