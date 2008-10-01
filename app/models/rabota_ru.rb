@@ -57,6 +57,7 @@ module RabotaRu
       remove_duplicates
       filter
       save
+      Rails.logger.flush
     end
 
   private
@@ -91,7 +92,6 @@ module RabotaRu
     end
   
     def remove_duplicates
-      log "Выносим дубликаты #{@loaded_vacancies.size}..."
       @loaded_vacancies.uniq!
       log "После устранения дубликатов осталось #{@loaded_vacancies.size} вакансий."
     end
