@@ -1,0 +1,19 @@
+= Perf tests
+== Web
+  3 mongrels
+* httperf --server rabotnegi.ru --port 80 --uri /vacancies/msk --num-conns 200 --rate 10
+  ab -n 200 -c 10 http://rabotnegi.ru/vacancies/msk
+  6.6 | 6.3 -- with database
+  9.6 | 8.1 -- no database (class var cache) + system queries (set names, set sql_auto_is_null)
+* httperf --server rabotnegi.ru --port 80 --uri /vacancies/327 --num-conns 200 --rate 40
+  ab -n 200 -c 40 http://rabotnegi.ru/vacancies/327
+  31.1 -- with database
+  35.5 -- without database
+  35   -- no database and no rendering
+  35   -- 2200 bytes of text
+  10.5 -- 20000 bytes of text
+
+== SQL
+* ruby sqlperf.rb -d rabotnegi_prod "select id, title, external_id, salary_min, salary_max, employer_name from vacancies where (vacancies.city = 'msk') order by salary_min asc limit 0, 50"
+  29ms
+* ruby sqlperf.rb -d jobs_dev "select id, title, external_id, salary_min, salary_max, employer_name from vacancies where (vacancies.city = 'msk') order by salary_min asc limit 0, 50"
