@@ -15,4 +15,5 @@ ActionController::Routing::Routes.draw do |map|
   map.system '/system/:action', :controller => 'system'
   map.test '/test/:action', :controller => 'test'
   map.root :controller => 'vacancies', :action => 'index'
+  map.sitemap '/sitemap.:format', :controller => 'site', :action => 'map'
 end
