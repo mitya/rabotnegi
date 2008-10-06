@@ -15,5 +15,6 @@
 
 == SQL
 * ruby sqlperf.rb -d rabotnegi_prod "select id, title, external_id, salary_min, salary_max, employer_name from vacancies where (vacancies.city = 'msk') order by salary_min asc limit 0, 50"
-  29ms
+  33ms on m1
+  15ms on c1
 * ruby sqlperf.rb -d jobs_dev "select id, title, external_id, salary_min, salary_max, employer_name from vacancies where (vacancies.city = 'msk') order by salary_min asc limit 0, 50"
