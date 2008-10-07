@@ -2,7 +2,7 @@ class City < Struct.new(:code, :external_id, :name)
   cattr_reader :all
 
   def self.[](code)
-    @@all.find { |city| city.code == code.to_sym }.code
+    @@all.find { |city| city.code == code.to_sym }
   end
   
   def self.each(&block)

@@ -28,6 +28,36 @@ module ApplicationHelper
    
     content_tag :div, result, :class => 'form-errors'
   end
+  
+  def title_for_vacancies
+		city = City[params[:city]]
+		industry = Industry[params[:industry]] if params[:industry].present?
+		query = params[:q]
+		page = params[:p]
+		
+		content = "Вакансии — #{city.name}"
+		content << " — #{industry.name}" if industry
+		content << " — #{query}" if query
+		content << ", стр. №#{page}" if page
+		title content
+  end
+  
+	def title_for_resumes
+		city = City[params[:city]] if params[:city].present?
+		industry = Industry[params[:industry]] if params[:industry].present?
+		query = params[:q]
+		page = params[:p]
+		
+		content = "Резюме — #{city.name}"
+		content << " — #{industry.name}" if industry
+		content << " — #{query}" if query
+		content << ", стр. №#{page}" if page
+		title content
+	end
+  
+  def desc_for_site
+    desc "Работнеги.ру — это сайт который позволяет быстро найти работу или работников. Простой в использовании и не требует регистрации."
+  end
 end
 
 ActionView::Base.field_error_proc = proc do |html_tag, instance|

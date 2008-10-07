@@ -1,18 +1,19 @@
 <% case when @resumes.nil? %>
 
   <% title 'Поиск резюме' %>
+  <% desc_for_site %>
   <%= partial :search %>
 
 <% when @resumes.empty? %>
 
-  <% title resumes_page_title %>
+  <% title_for_resumes %>
   <%= partial :search %>
 
 	<div class='message warning'>Резюме в выбранном городе/отрасли пока нет.</div>
 
 <% else @resumes.any? %>
 
-  <% title resumes_page_title %>
+  <% title_for_resumes %>
   <%= partial :search %>
 
 	<table id='resume-list'>

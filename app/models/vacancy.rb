@@ -26,6 +26,14 @@ class Vacancy < ActiveRecord::Base
     title
   end
   
+  def city_name
+    City[city].name
+  end
+
+  def industry_name
+    Industry[industry].name
+  end
+  
 protected
   def after_initialize
     if new?

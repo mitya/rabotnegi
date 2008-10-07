@@ -1,11 +1,15 @@
 <% case when @vacancies.nil? %>
 
+  <% title "Поиск вакансий" %>
+  <% desc_for_site %>
+  <% keywords "работа, вакансии" %>
   <%= partial :search %>
 
 <% when @vacancies.any? %>
 
+  <% title_for_vacancies %>
   <%= partial :search %>
-
+  
   <script src='/javascripts/vacancies.js'></script>
 
   <div class='search-result-message'>
@@ -39,6 +43,7 @@
 
 <% when @vacancies.empty? %>
 
+  <% title_for_vacancies %>
   <%= partial :search %>
 
   <div class='message warning'>
