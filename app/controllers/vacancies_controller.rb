@@ -8,6 +8,9 @@ class VacanciesController < ApplicationController
 
   def show
     @vacancy = Vacancy.find(params[:id])
-    partial @vacancy
+    respond_to do |f|
+      f.js { partial @vacancy }
+      f.html
+    end    
   end
 end

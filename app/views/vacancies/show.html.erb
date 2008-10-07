@@ -1,0 +1,5 @@
+<% div_for @vacancy do %>
+  <h2><%= @vacancy.title %></h2>
+  <%= @vacancy.description %>
+  <p><a href='http://www.rabota.ru/vacancy<%= @vacancy.external_id %>.html' class='rabota-ru'>Контактная информация на Работе.ру</a>
+<% end %>
