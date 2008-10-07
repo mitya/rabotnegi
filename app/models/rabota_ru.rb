@@ -32,6 +32,13 @@ require 'time'
 #   "responsibility": {"value": "<strong>Требования:</strong><br /><br /><strong>Требования:</strong>\r\nМужчина\\Женщина.\r\nВозраст от 22 до 35\r\nОбязательно: опыт работы в подборе персонала от 1 года&sbquo; опыт\r\n поиска специалистов из IT сферы.\r\nЖелательно: знания в других направлений в управлени персоналом\r\n (КДП&sbquo; мотивация&sbquo; обучение).<br /><br /><strong>Обязанности:</strong><br /><br />В компанию по созданию Интернет проектов (штат 30 человек) требуется менеджер по подбору персонала.\r\n<strong>Обязанности:</strong>\r\n * Поиск и подбор персонала ( IT технологии).\r\n * Разработка систем мотивации.\r\n * Планирование обучения.<br /><br /><strong>Условия:</strong><br /><br /><strong>Условия:</strong>\r\n * Молодой коллектив\r\n * Офис - рядом со ст.м. Петроградская.\r\n * Оклад - от 27000 рублей."}
 # }
 module RabotaRu
+  mattr_accessor :logger
+  self.logger = Logger.new("#{Rails.root}/log/loader_#{Rails.env}.log")
+  
+  def self.load
+    VacancyLoader.new.load
+  end
+  
   # Загружает вакансии с Работы.ру. 
   class VacancyLoader
     RssUrlTemplate = '/v3_rssExport.html?wt=f&c=%d&r=%d&cu=2&p=30&d=desc&fv=f&rc=2123&new=1&t=1'
@@ -69,6 +76,7 @@ module RabotaRu
     
       City.each do |city|
         Industry.each do |industry|
+          log "Загрузка #{city.code}/#{industry.code}..."
           json_text = Net::HTTP.get 'www.rabota.ru',  JsonUrlTemplate % [city.external_id, industry.external_id]
           File.open("#{work_directory}/#{city.code}-#{industry.code}.json", 'w') { |file| file << json_text }
         end
@@ -124,7 +132,7 @@ module RabotaRu
     end
   
     def log(message)
-      Rails.logger.info("VacancyLoader: #{message}")
+      RabotaRu.logger.info("VacancyLoader: #{message}")
     end
   end
 

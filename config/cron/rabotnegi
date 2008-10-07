@@ -1,2 +1,2 @@
 # symlink to /etc/cron.d/rabotnegi
-*	*/8	*	*	*	root	/u/rabotnegi_prod/current/script/runner -e production "RabotaRu::VacancyLoader.new.load"
+*	*/8	*	*	*	root	/u/rabotnegi_prod/current/script/runner -e production "RabotaRu.load"
