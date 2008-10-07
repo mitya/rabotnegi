@@ -33,7 +33,10 @@ require 'time'
 # }
 module RabotaRu
   mattr_accessor :logger
-  self.logger = Logger.new("#{Rails.root}/log/loader_#{Rails.env}.log")
+  self.logger = Logger.new("#{Rails.root}/log/loader_#{Rails.env}.log", Logger::DEBUG)
+  def logger.format_message(severity, timestamp, progname, msg)
+    "#{timestamp.xmlschema} #{msg}\n"
+  end
   
   def self.load
     VacancyLoader.new.load
@@ -58,7 +61,7 @@ module RabotaRu
     # Загружает новые вакансии с Работы.ру в базу. 
     def load
       log "Начинается загрузка..."
-    
+      return
       load_to_files unless @skip_remote_loading
       convert
       remove_duplicates
@@ -132,7 +135,7 @@ module RabotaRu
     end
   
     def log(message)
-      RabotaRu.logger.info("VacancyLoader: #{message}")
+      RabotaRu.logger.info(message)
     end
   end
 
