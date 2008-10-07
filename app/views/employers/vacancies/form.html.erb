@@ -1,3 +1,5 @@
+<% title "Публикация вакансий" %>
+
 <% url = current_employer??
   (@vacancy.new?? pro_employer_vacancies_path : [:pro_employer, @vacancy]) :
   (@vacancy.new?? casual_employer_vacancies_path : [:casual_employer, @vacancy]) %>

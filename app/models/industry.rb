@@ -2,7 +2,7 @@ class Industry < Struct.new(:code, :external_id, :name, :group)
   cattr_reader :all, :popular, :other
   
   def self.[](code)
-    @@all.find { |industry| industry.code == code.to_sym }.code
+    @@all.find { |industry| industry.code == code.to_sym }
   end
   
   def self.each(&block)

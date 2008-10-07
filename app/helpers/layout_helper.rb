@@ -1,17 +1,12 @@
 module LayoutHelper
-  def title(value)
-    @page_title = value
-  end
+  include ActionMailer::AdvAttrAccessor
+  adv_attr_accessor :title, :identifier, :desc, :keywords
   
 	def page_title
-		@page_title || 'Работнеги.ру'
+		title ? "#{title} @ Работнеги.ру" : 'Работнеги.ру'
 	end
 
-  def identifier(value)
-    @page_id = value
-  end
-	
 	def page_id
-	  "id='#{@page_id}'" if @page_id
+	  "id='#{identifier}'" if identifier
 	end  
 end
