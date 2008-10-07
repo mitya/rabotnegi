@@ -26,21 +26,13 @@ role :web, host
 role :db,  host, :primary => true
 
 namespace :deploy do
-  task :after_update_code do
-    run "chown -R #{runner}:#{runner} #{release_path}"
-  end
-  
-  task :restart do run "god restart #{application}" end  
-  task :start   do run "god start   #{application}" end
-  task :stop    do run "god stop    #{application}" end
+  task(:restart) { run "god restart #{application}" }
+  task(:start) { run "god start #{application}" }
+  task(:stop) { run "god stop #{application}" }
 end
 
-desc "Prints server log"
-task :log do
-  line_count = ENV['N'] || 200
-  puts capture("tail -n #{line_count} #{current_path}/log/#{rails_env}.log")
-end
+task(:log) { puts capture("tail -n #{ENV['N'] || 200} #{current_path}/log/#{rails_env}.log") }
+task(:rake) { run "cd #{current_path} && RAILS_ENV=#{rails_env} rake #{ENV['T']}" }
 
-after 'deploy:setup' do
-  try_sudo "cp #{current_path}/config/cron/rabotnegi /etc/cron.d"
-end if rails_env == :production
+after('deploy:setup') { try_sudo "cp #{current_path}/config/cron/rabotnegi /etc/cron.d" } if rails_env == :production
+after('deploy:update_code') { run "chown -R #{runner}:#{runner} #{release_path}" }
