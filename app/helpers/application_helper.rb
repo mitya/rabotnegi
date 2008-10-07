@@ -58,6 +58,10 @@ module ApplicationHelper
   def desc_for_site
     desc "Работнеги.ру — это сайт который позволяет быстро найти работу или работников. Простой в использовании и не требует регистрации."
   end
+  
+  def back_to_all_vacancies_url_for(vacancy)
+    request.referer =~ /vacancies/ ? :back : nice_vacancies_path(:city => vacancy.city, :industry => vacancy.industry)
+  end
 end
 
 ActionView::Base.field_error_proc = proc do |html_tag, instance|
