@@ -13,4 +13,8 @@ class SystemController < ApplicationController
 	 reset_session
 	 redirect root_path
 	end
+	
+	def error
+	  raise ArgumentError, "You requested an error!"
+	end
 end
