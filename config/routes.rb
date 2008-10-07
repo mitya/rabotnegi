@@ -16,4 +16,9 @@ ActionController::Routing::Routes.draw do |map|
   map.test '/test/:action', :controller => 'test'
   map.root :controller => 'vacancies', :action => 'index'
   map.sitemap '/sitemap.:format', :controller => 'site', :action => 'map'
+  
+  map.namespace :admin do |admin|
+    admin.resource :dashboard, :controller => 'dashboard'
+    admin.root :controller => 'dashboard', :action => 'show'
+  end
 end

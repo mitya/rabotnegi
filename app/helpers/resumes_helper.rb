@@ -1,3 +1,0 @@
-module ResumesHelper
-
-end

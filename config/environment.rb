@@ -18,5 +18,10 @@ Rails::Initializer.run do |config|
     HoptoadNotifier.configure do |config|
       config.api_key = '8b0496b81118139d93e5be18b130a7a8'
     end
+    
+    ADMIN_LOGIN = 'admin'
+    ADMIN_PASSWORD = '0000'
+    
+    DB = ActiveRecord::Base.connection
   end
 end
