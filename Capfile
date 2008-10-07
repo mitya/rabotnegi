@@ -34,5 +34,5 @@ end
 task(:log) { puts capture("tail -n #{ENV['N'] || 200} #{current_path}/log/#{rails_env}.log") }
 task(:rake) { run "cd #{current_path} && RAILS_ENV=#{rails_env} rake #{ENV['T']}" }
 
-after('deploy:setup') { try_sudo "cp #{current_path}/config/cron/rabotnegi /etc/cron.d" } if rails_env == :production
+after('deploy:setup') { try_sudo "cp #{current_path}/config/crontab /etc/cron.d" } if rails_env == :production
 after('deploy:update_code') { run "chown -R #{runner}:#{runner} #{release_path}" }

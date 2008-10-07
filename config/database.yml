@@ -1,27 +1,27 @@
 development:
   adapter: mysql
-  database: jobs_dev
-  username: root
   host: localhost
+  database: rabotnegi_dev
+  username: root
   encoding: utf8
 
 test:
   adapter: mysql
-  database: jobs_test
-  username: root
   host: localhost
+  database: rabotnegi_test
+  username: root
   encoding: utf8
   
 staging:
   adapter: mysql
+  socket: /var/run/mysqld/mysqld.sock
   database: rabotnegi_stg
   username: root
-  socket: /var/run/mysqld/mysqld.sock
   encoding: utf8
 
 production:
   adapter: mysql
+  socket: /var/run/mysqld/mysqld.sock
   database: rabotnegi_prod
   username: root
-  socket: /var/run/mysqld/mysqld.sock
   encoding: utf8

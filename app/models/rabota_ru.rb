@@ -61,7 +61,8 @@ module RabotaRu
     # Загружает новые вакансии с Работы.ру в базу. 
     def load
       log "Начинается загрузка..."
-      return
+      @loading = VacancyLoading.new :started_at => Time.current
+
       load_to_files unless @skip_remote_loading
       convert
       remove_duplicates
@@ -125,18 +126,34 @@ module RabotaRu
       end
     
       @loaded_vacancies = new_vacancies + updated_vacancies
-      log "После фильтрации осталось #{@loaded_vacancies.size} вакансий."      
+      @loading.new_count = new_vacancies.size
+      @loading.updated_count = updated_vacancies.size      
+      @loading.details = {}
+      @loaded_vacancies.each { |v|
+        @loading.details[v.city] ||= {}
+        @loading.details[v.city][v.industry] ||= 0
+        @loading.details[v.city][v.industry] += 1
+      }
+      log "После фильтрации осталось #{@loaded_vacancies.size} вакансий."
     end
   
     # Сохраняет загруженные вакансии в базе.
     def save
-      Vacancy.transaction { @loaded_vacancies.each(&:save) }
-      # VacancyLoading.create! :count => @loaded_vacancies.size, :details => {}
+      Vacancy.transaction {
+        @loaded_vacancies.each(&:save)
+        @loading.finished_at = Time.current
+        @loading.save!
+      }
     end
   
     def log(message)
-      RabotaRu.logger.info(message)
+      RabotaRu.logger.info message
+      puts message if $0 =~ /rake|runner/
     end
+  end
+  
+  class VacancyLoading < ActiveRecord::Base
+    serialize :details
   end
 
 
