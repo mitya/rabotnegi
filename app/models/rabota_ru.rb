@@ -114,12 +114,13 @@ module RabotaRu
       end
     
       @loaded_vacancies = new_vacancies + updated_vacancies
-      log "После фильтрации осталось #{@loaded_vacancies.size} вакансий."
+      log "После фильтрации осталось #{@loaded_vacancies.size} вакансий."      
     end
   
     # Сохраняет загруженные вакансии в базе.
     def save
       Vacancy.transaction { @loaded_vacancies.each(&:save) }
+      # VacancyLoading.create! :count => @loaded_vacancies.size, :details => {}
     end
   
     def log(message)
