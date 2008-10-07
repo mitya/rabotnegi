@@ -10,7 +10,7 @@ class VacanciesControllerTest < ActionController::TestCase
   end
   
   test 'index' do
-    get :index, :city => :spb, :industry => :it
+    get :index, :city => 'spb', :industry => 'it'
     assert assigns(:vacancies)
     assert assigns(:vacancies).include?(vacancies(:boss))
     assert_response :ok 
