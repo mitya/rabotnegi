@@ -16,7 +16,7 @@ Rails::Initializer.run do |config|
     require 'locale/ru-RU'
     
     HoptoadNotifier.configure do |config|
-      config.api_key = 'd63821f1a3a191615790181db26aa35b'
+      config.api_key = '8b0496b81118139d93e5be18b130a7a8'
     end
   end
 end
