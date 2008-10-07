@@ -4,6 +4,7 @@ require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
 require 'tasks/rails'
+require 'pp'
 
 namespace :db do
 	desc "Backups production database on rabotnegi.ru"

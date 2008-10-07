@@ -17,4 +17,8 @@ class SystemController < ApplicationController
 	def error
 	  raise ArgumentError, "You requested an error!"
 	end
+	
+	def starter
+	 render :text => $0
+	end
 end
