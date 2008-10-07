@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   include SslRequirement
   include SimpleCaptcha::ControllerHelpers
+  include HoptoadNotifier::Catcher
   
   RecordInvalid = ActiveRecord::RecordInvalid
   RecordNotFound = ActiveRecord::RecordNotFound

@@ -9,7 +9,7 @@ set :user, "root"
 set :runner, "mongrel"
 set :git_enable_submodules, true
 
-set :rails_env, ENV['RAILS_ENV'] == 'production' ? :production : :staging
+set :rails_env, ENV['E'] == 'prod' ? :production : :staging
 case rails_env
 when :production
   set :host, 'rabotnegi.ru'
