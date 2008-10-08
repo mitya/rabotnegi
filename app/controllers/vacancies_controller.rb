@@ -1,4 +1,6 @@
 class VacanciesController < ApplicationController
+  caches_page :show, :if => proc { |c| c.request.format.ajax? }
+
   def index
     @vacancies = Vacancy.
       search(params.slice(:city, :industry, :q)).
@@ -9,8 +11,8 @@ class VacanciesController < ApplicationController
   def show
     @vacancy = Vacancy.find(params[:id])
     respond_to do |f|
-      f.js { partial @vacancy }
       f.html
-    end    
+      f.ajax { partial @vacancy }
+    end
   end
 end

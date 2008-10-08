@@ -1,4 +1,4 @@
-def l(object, comment = nil)
+def w(object, comment = nil)
   comment &&= "#{comment}: "
   inspection = PP.pp(object, StringIO.new, 100).string rescue object.inspect
   Rails.logger.debug("/// #{comment}#{inspection}")

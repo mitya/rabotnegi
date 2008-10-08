@@ -17,6 +17,14 @@ development:
   # Normally no reason to collect exceptions in development
   # NOTE: for trial purposes you may want to enable exceptional in development
   enabled: false
+
+local:
+  <<: *default_settings
+  enabled: false
+
+devcache:
+  <<: *default_settings
+  enabled: false
   
 test:
   <<: *default_settings

@@ -18,3 +18,15 @@
   33ms on m1
   15ms on c1
 * ruby sqlperf.rb -d jobs_dev "select id, title, external_id, salary_min, salary_max, employer_name from vacancies where (vacancies.city = 'msk') order by salary_min asc limit 0, 50"
+
+
+== Local
+RAILS_ENV=local script/performance/request -b test/perf/main.rb
+ab -n 300 -c 100 http://127.0.0.1:3000/
+httperf --num-conns 300 --rate 150 --server 127.0.0.1 --uri / --port 3000
+
+=== vacancies/index
+75 (httperf)
+
+=== vacancies/show (ajax)
+dynamic = 55, page = 540, fragment-fs = 65
