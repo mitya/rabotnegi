@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
 protected
   def log_processing
     super
-    logger.debug "  Session: #{session.instance_variable_get(:@data).inspect}"
+    # logger.debug "  Session: #{session.instance_variable_get(:@data).inspect}"
   end
 
   def ensure_proper_protocol

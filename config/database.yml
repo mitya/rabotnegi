@@ -5,6 +5,20 @@ development:
   username: root
   encoding: utf8
 
+devcache:
+  adapter: mysql
+  host: localhost
+  database: rabotnegi_dev
+  username: root
+  encoding: utf8
+
+local:
+  adapter: mysql
+  host: localhost
+  database: rabotnegi_dev
+  username: root
+  encoding: utf8
+
 test:
   adapter: mysql
   host: localhost

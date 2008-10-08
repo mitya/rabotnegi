@@ -6,6 +6,7 @@ Rails::Initializer.run do |config|
   config.gem 'will_paginate'
   config.gem 'json', :lib => 'json/add/rails'
   config.time_zone = 'Moscow'
+  config.action_controller.cache_store = :file_store, "tmp/cache"
 
   config.after_initialize do
     require 'forwardable'
