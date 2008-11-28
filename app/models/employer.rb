@@ -1,7 +1,7 @@
 class Employer < ActiveRecord::Base
-  property :name, :string
-  property :login, :string
-  property :password, :string
+  property :name,       :string,   :null => false, :limit => 255
+  property :login,      :string,   :limit => 255
+  property :password,   :string,   :limit => 255
 
   attr_accessor :password_confirmation
   
