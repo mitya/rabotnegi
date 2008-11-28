@@ -1,14 +1,14 @@
 class Vacancy < ActiveRecord::Base
+  property :title,         :string,   :null => false, :limit => 255
+  property :description,   :text,     :null => false, :default => ''
+  property :external_id,   :integer   
+  property :industry,      :string,   :null => false, :limit => 255
+  property :city,          :string,   :null => false, :limit => 255
+  property :salary_min,    :integer   
+  property :salary_max,    :integer   
+  property :employer_id,   :integer   
+  property :employer_name, :string,   :limit => 255
   extend Forwardable
-  
-  property :title, :string
-  property :description, :text
-  property :external_id, :integer
-  property :industry, :string
-  property :city, :string
-  property :salary_min, :integer
-  property :salary_max, :integer
-  property :employer_name, :string
 
   belongs_to :employer
   composed_of :salary, :mapping => {:salary_min => :min, :salary_max => :max}.to_a

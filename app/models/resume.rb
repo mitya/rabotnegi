@@ -1,15 +1,15 @@
 class Resume < ActiveRecord::Base	
-  property :fname,        :string
-  property :lname,        :string
-  property :password,     :string
-  property :city,         :string
-  property :industry,     :string
-  property :job_title,    :string
-  property :min_salary,   :integer, :default => 0
-  property :view_count,   :integer
-  property :job_reqs,     :text
-  property :about_me,     :text
-  property :contact_info, :text
+  property :fname,        :string,   :null => false, :limit => 30
+  property :lname,        :string,   :null => false, :limit => 30
+  property :password,     :string,   :limit => 30
+  property :city,         :string,   :null => false, :limit => 255
+  property :job_title,    :string,   :null => false, :limit => 100
+  property :industry,     :string,   :null => false, :limit => 255
+  property :min_salary,   :integer,  :null => false
+  property :view_count,   :integer,  :null => false, :default => 0
+  property :job_reqs,     :text      
+  property :about_me,     :text      
+  property :contact_info, :text      
   
 	validates_presence_of :fname, :lname, :city, :job_title, :industry, :min_salary
 	validates_presence_of :contact_info, :message => "укажите телефон или электронную почту"
