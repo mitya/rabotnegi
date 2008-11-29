@@ -22,7 +22,7 @@ protected
   end
   
   def set_locale
-    I18n.locale = 'ru-RU'
+    I18n.locale = 'ru'
   end
   
   def current_employer

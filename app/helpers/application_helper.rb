@@ -15,7 +15,7 @@ module ApplicationHelper
   def errors_for(object, options = {})
     return '' if object.errors.empty?
     
-    header_message = options.delete(:header_message) || translate("active_record.error.default_header")
+    header_message = options.delete(:header_message) || translate("active_record.errors.template.default_header")
     error_messages = []
     object.errors.each do |attr, msg|
       attr_name = translate("active_record.human_attribute_names.#{object.class.name.underscore}.#{attr}")
