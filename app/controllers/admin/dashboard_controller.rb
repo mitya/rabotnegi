@@ -1,6 +1,5 @@
 class Admin::DashboardController < ApplicationController
   before_filter :admin_required
-  ssl_required :show
   layout 'admin'
 
 protected

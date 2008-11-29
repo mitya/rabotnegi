@@ -1,6 +1,4 @@
 class EmployersController < ApplicationController
-  ssl_required :new, :create
-  
 	def index
 		redirect pro_employer_vacancies_path if current_employer?
 	end
