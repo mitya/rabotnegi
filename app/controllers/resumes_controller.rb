@@ -1,7 +1,7 @@
 class ResumesController < ApplicationController
   before_filter :try_login_from_cookie
   verify :only => [:edit, :update, :destroy, :my], :session => :resume_id, :redirect_to => { :action => :login }
-  ssl_required :login, :log_in
+  # ssl_required :login, :log_in
   
   def index
     @resumes = Resume.
