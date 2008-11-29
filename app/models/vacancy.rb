@@ -51,4 +51,12 @@ protected
       conditions.inject(scoped({})) { |scope, condition| scope.scoped(:conditions => condition) }
     end    
   end
+  
+  class << self
+    def cleanup
+      old_vacancy_count = Vacancy.count :conditions => ["updated_at < ?", 2.weeks.ago]
+      puts "Удаление #{old_vacancy_count} вакансий"
+      Vacancy.delete_all ["updated_at < ?", 2.weeks.ago]
+    end
+  end
 end
