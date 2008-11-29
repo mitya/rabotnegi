@@ -37,4 +37,10 @@ protected
   def employer_required
     current_employer || redirect(employers_path)
   end
+  
+  class << self
+    def ssl_required(*actions)
+      # skip
+    end
+  end
 end
