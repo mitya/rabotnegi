@@ -38,7 +38,7 @@ class ResumesController < ApplicationController
     @resume = Resume.find(session[:resume_id])
     @resume.update_attributes!(params[:resume])
     flash[:notice] = "Резюме сохранено"
-    redirect :show
+    redirect :my
   end
   
   def destroy

@@ -3,7 +3,6 @@
 <% form_for @resume do |f| %>
 <% wrapper do %>
 	<%= tr2 errors_for(@resume) %>
-	<%#= tr2 f.error_messages %>
 	
 	<% section do %>
 		<%= f.tr :fname, 'Имя', f.text_field(:fname), :required => true %>
