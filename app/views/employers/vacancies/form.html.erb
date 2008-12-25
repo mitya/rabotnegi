@@ -5,8 +5,7 @@
   (@vacancy.new?? casual_employer_vacancies_path : [:casual_employer, @vacancy]) %>
 <% form_for @vacancy, :html => { :id => 'vacancy-edit-form' }, :url => url do |f| %>
 <% wrapper do %>
-	<%= tr2 f.error_messages %>
-	<%#= tr2 errors_for(@vacancy) %>
+	<%= tr2 errors_for(@vacancy) %>
 	<%= f.tr :employer_name, 'Работодатель', f.text_field(:employer_name) unless current_employer %>
 	<%= f.tr :title, 'Должность', f.text_field(:title) %>
 	<%= f.tr :city, 'Город', f.select(:city, cities) %>
