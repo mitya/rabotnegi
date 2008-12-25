@@ -63,11 +63,12 @@
 			</div>
 		</div>
 		
+		<%= content_tag :div, flash[:notice], :id => 'flash-notice' if flash[:notice] %>
+		<%= content_tag :div, flash[:error], :id => 'flash-error' if flash[:error] %>		
+		
 	</div>
 
 	<div id='content'>
-		<%= content_tag :div, flash[:notice], :id => 'flash-notice' if flash[:notice] %>
-		<%= content_tag :div, flash[:error], :id => 'flash-error' if flash[:error] %>		
 		<%= yield :layout %>
 	</div>
 	

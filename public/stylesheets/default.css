@@ -72,10 +72,7 @@ div.submit .action-button {}
 #logo a { text-decoration: none; }
 #logo #logo-pro { color: red; }
 #logo #logo-rabotu { font-variant: small-caps; color: black; }
-#flash-notice,
-#flash-error {
-	padding: 8px; margin: 8px 0 8px;
-	text-align: center; font-weight: bold; color: white;}
+#flash-notice, #flash-error { padding: 8px; text-align: center; font-weight: bold; color: white;}
 #flash-notice {background: green}
 #flash-error {background: red}
 
