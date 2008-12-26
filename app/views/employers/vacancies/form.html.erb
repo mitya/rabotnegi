@@ -1,10 +1,11 @@
-<% title "Публикация вакансий" %>
+<% title "Новая вакансия", :custom => true %>
 
 <% url = current_employer??
   (@vacancy.new?? pro_employer_vacancies_path : [:pro_employer, @vacancy]) :
   (@vacancy.new?? casual_employer_vacancies_path : [:casual_employer, @vacancy]) %>
 <% form_for @vacancy, :html => { :id => 'vacancy-edit-form' }, :url => url do |f| %>
 <% wrapper do %>
+  <%= tr2 title_html %>
 	<%= tr2 errors_for(@vacancy) %>
 	<%= f.tr :employer_name, 'Работодатель', f.text_field(:employer_name) unless current_employer %>
 	<%= f.tr :title, 'Должность', f.text_field(:title) %>

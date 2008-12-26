@@ -6,7 +6,7 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />	
 	<%= tag :meta, :name => 'description', :content => desc if desc %>
 	<%= tag :meta, :name => 'keywords', :content => keywords if keywords %>
-	<title><%= page_title %></title>
+	<title><%= window_title %></title>
 	<%= stylesheet_link_tag 'default.css' %>
 	<%= javascript_include_tag :defaults %>
 </head>
@@ -69,6 +69,7 @@
 	</div>
 
 	<div id='content'>
+	  <%= content_tag :h1, page_title, :class => 'page_title' if page_title %>
 		<%= yield :layout %>
 	</div>
 	
