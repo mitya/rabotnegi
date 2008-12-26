@@ -14,7 +14,5 @@ class VacanciesController < ApplicationController
       f.html
       f.ajax { partial @vacancy }
     end
-  # rescue RecordNotFound
-    
   end
 end

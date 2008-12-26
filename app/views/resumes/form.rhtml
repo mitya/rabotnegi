@@ -1,7 +1,8 @@
-<% title @resume.new?? 'Публикация резюме' : 'Редактирование резюме' %>
+<% title @resume.new?? 'Создание резюме' : 'Редактирование резюме', :custom => true %>
 
 <% form_for @resume do |f| %>
 <% wrapper do %>
+  <%= tr2 title_html %>
 	<%= tr2 errors_for(@resume) %>
 	
 	<% section do %>
