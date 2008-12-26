@@ -47,10 +47,10 @@ a.page.current { border: 1px solid black; color: black; padding: 0 3px; cursor: 
 a.tmp { color: green; }
 
 /* Pagination */
-.pagination a { padding: 0 2px; text-decoration: none; }
-.pagination a:hover { padding: 0 1px; border: 1px solid blue; color: blue; }
-.pagination a:visited:hover { padding: 0 1px; border: 1px solid purple; color: purple; }
-.pagination span.current { border: 1px solid black; color: white; background: blue; padding: 0 1px; cursor: default; }
+.pagination a { padding: 3px; text-decoration: none; }
+.pagination a:hover { padding: 2px; border: 1px solid blue; color: white; background: blue;  }
+.pagination a:visited:hover { padding: 2px; border: 1px solid purple; color: white; background: purple;  }
+.pagination span.current { border: 1px solid black; color: white; background: black; padding: 2px; cursor: default; }
 
 
 span.spinner { background: green; color: white; }
@@ -128,9 +128,9 @@ html>body #resumes-search-form fieldset {border:1px solid silver}
 .vacancies-list td.emp,
 .vacancies-list th.emp {text-align: left}
 .vacancies-list thead tr { background: #dfefff; }
-.vacancies-list thead tr th { padding-bottom: 0.8em; }
+.vacancies-list thead tr th { padding: 10px 5px; }
 .vacancies-list tfoot tr {	background: #dfefff; }
-.vacancies-list tfoot tr td { padding-top: 0.8em; }
+.vacancies-list tfoot tr td { padding: 10px 5px; }
 .vacancies-list tr.alt { background: #eee; }
 .vacancies-list th,
 .vacancies-list td {padding:1px 5px}
