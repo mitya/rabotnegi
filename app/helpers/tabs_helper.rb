@@ -23,6 +23,7 @@ module TabsHelper
 		[:resumes,   :update  ] => SiteLocation.new("workers-tab",   :workers,          'my-resume-link'),
 		[:resumes,   :create  ] => SiteLocation.new("workers-tab",   :workers,          'my-resume-link'),
 		[:vacancies, :index   ] => SiteLocation.new("workers-tab",   :workers,          'vacancy-search-link'),
+		[:vacancies, :show    ] => SiteLocation.new("workers-tab",   :workers,          'vacancy-search-link'),
 		[:'employers/casual/vacancies', :new] => SiteLocation.new("employers-tab", :casual_employers, 'vacancies-link'),
 		[:'employers/casual/vacancies', :create] => SiteLocation.new("employers-tab", :casual_employers, 'vacancies-link'),
 		[:'employers/pro/vacancies', :index] => SiteLocation.new("employers-tab", :pro_employers, 'vacancies-link'),

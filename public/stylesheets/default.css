@@ -142,6 +142,7 @@ html>body #resumes-search-form fieldset {border:1px solid silver}
 .vacancies-list tr.desc div.content a.rabota-ru {float: right;}
 .search-result-message {margin: 1em 0 0.5em 0; text-align: center; }
 
+.vacancy p.links { margin-top: 10px;}
 
 #vacancy-edit-form input { width: 220px }
 #vacancy-edit-form select { width: 224px }

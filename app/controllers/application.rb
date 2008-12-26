@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   RecordNotFound = ActiveRecord::RecordNotFound
   
   rescue_from(RecordInvalid) { template :form, :status => 422 }
+  rescue_from(RecordNotFound) { flash[:error] = "К сожалению, то что вы искали, мы уже куда-то похерили. Если оно вообще здесь было."; redirect '/' }
   helper :all
   helper_method :current_employer, :current_employer?
   before_filter :set_locale

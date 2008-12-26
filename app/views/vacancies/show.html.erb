@@ -2,8 +2,10 @@
 
 <% div_for @vacancy do %>
   <h2><%= @vacancy.title %></h2>
-  <%= @vacancy.description %>
-  <p>
+  
+  <div class='description'><%= @vacancy.description %></div>
+
+  <p class='links'>
     <%= link_to "» Контактная информация на Работе.ру", "http://www.rabota.ru/vacancy#{@vacancy.external_id}.html" %><br/>
     <%= link_to "« Все вакансии раздела #{@vacancy.city_name} — #{@vacancy.industry_name}", back_to_all_vacancies_url_for(@vacancy) %>
 <% end %>
