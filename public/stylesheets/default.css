@@ -51,7 +51,7 @@ a.tmp { color: green; }
 .pagination a:hover { padding: 2px; border: 1px solid blue; color: white; background: blue;  }
 .pagination a:visited:hover { padding: 2px; border: 1px solid purple; color: white; background: purple;  }
 .pagination span.current { border: 1px solid black; color: white; background: black; padding: 2px; cursor: default; }
-
+.pagination span.disabled { color: gray; }
 
 span.spinner { background: green; color: white; }
 table.devgrid td {border: 1px dashed black;}
