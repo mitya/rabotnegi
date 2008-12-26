@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>Публикация резюме</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Публикация резюме</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/system/reset</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>my-resume-link</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Опубликовать резюме</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>resume_fname</td>
+	<td>Вася</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>resume_lname</td>
+	<td>Иванов</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>resume_job_title</td>
+	<td>Грузчик</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>resume_min_salary</td>
+	<td>2000</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>resume_about_me</td>
+	<td>тащщу и не пущщаю</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>resume_job_reqs</td>
+	<td>ек</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>resume_contact_info</td>
+	<td>тут</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>resume_password</td>
+	<td>0000</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Опубликовать']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Вася Иванов</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Грузчик</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>тащщу и не пущщаю</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
