@@ -1,15 +1,18 @@
 body {
-	margin:10px 0; font: 14px 'Lucida Grande', Verdana, sans-serif;
+	margin:10px 0; 
+	font: 14px 'Lucida Grande', Verdana, sans-serif;
 	behavior: url('/stylesheets/csshover2.htc');
-	min-width: 600px }
+	min-width: 600px
+}
 body #content {margin:0 20px}
 
-input, select { margin: 0; padding: 0 }
+/* Reset */
+input, select {margin: 0; padding: 0}
 a:link {color: mediumblue}
 a:visited {color: purple}
 a:hover {color: darkred}
-table { border-collapse: collapse; }
-h1, h2, h3, h4, h5, h6, p, pre { margin: 0}
+table {border-collapse: collapse;}
+h1, h2, h3, h4, h5, h6, p, pre {margin: 0}
 h1 {margin: 1em 0 .25em}
 h2 {margin: 1em 0 .25em}
 h3 {margin: 1em 0 0}
@@ -18,11 +21,7 @@ p {margin: .25em 0}
 pre {margin: .25em 0}
 
 
-input.inner-tooltip,
-textarea.inner-tooltip { color: gray; font-style: italic; }
-input.required-field,
-textarea.required-field { background: #FF6; }
-
+/* Forms */
 table.form-layout col.labels { width: 120px}
 table.form-layout td {padding-bottom: 5px;}
 table.form-layout th {text-align: right; vertical-align: top; padding-right: 5px;}
@@ -36,7 +35,21 @@ table.form-layout td span.required-mark {color: gray; font-size: 11px}
 * html table.form-layout td {padding-top: 0}
 * html table.form-layout td input.checkbox {margin-left: -3px}
 
+input.inner-tooltip,
+textarea.inner-tooltip { color: gray; font-style: italic; }
+input.required-field,
+textarea.required-field { background: #FF6; }
 
+div.submit {margin-top: 3px;}
+div.submit span.cancel {font-size: small;}
+div.submit .action-button {}
+
+span.invalid label {color: red;}
+div.form-errors h2 {margin-top: 10px; padding-left: 0px; color: red;}
+div.form-errors ul {padding-left: 0px; list-style-position: outside;}
+
+
+/* Links */
 a.ui:link, a.ui:visited {color: mediumblue;}
 a.ui:hover {color: darkred;}
 a.cmd:link, a.cmd:visited { color: green; border-bottom: 1px dashed; text-decoration: none; }
@@ -46,11 +59,12 @@ a.page:hover { padding: 0 3px; border: 1px solid #df0f5f; }
 a.page.current { border: 1px solid black; color: black; padding: 0 3px; cursor: default; }
 a.tmp { color: green; }
 
+
 /* Pagination */
-.pagination a { padding: 3px; text-decoration: none; }
-.pagination a:hover { padding: 2px; border: 1px solid blue; color: white; background: blue;  }
-.pagination a:visited:hover { padding: 2px; border: 1px solid purple; color: white; background: purple;  }
-.pagination span.current { border: 1px solid black; color: white; background: black; padding: 2px; cursor: default; }
+.pagination a { padding: 3px 4px; text-decoration: none; }
+.pagination a:hover { color: white; background: blue;  }
+.pagination a:visited:hover { color: white; background: purple;  }
+.pagination span.current { padding: 3px 4px; color: white; background: black; cursor: default; }
 .pagination span.disabled { color: gray; }
 
 span.spinner { background: green; color: white; }
@@ -58,38 +72,40 @@ table.devgrid td {border: 1px dashed black;}
 table.centered {margin:0 auto}
 br.clearer { clear: both; display: block;}
 
-.message {text-align: center; font-weight: bold; padding: 8px; margin: 8px 0 8px;}
-.warning {background: gold;}
-.sort-mark {text-decoration:none}
-
-div.submit {margin-top: 3px;}
-div.submit span.cancel {font-size: small;}
-div.submit .action-button {}
+/* Special divs */
+div.message {text-align: center; font-weight: bold; padding: 8px; margin: 8px 0 8px;}
+div.warning {background: gold;}
 
 
+/* Master page */
 #header { margin-bottom: 10px; }
+
 #logo { font-weight:bold; font-size:x-large; }
 #logo a { text-decoration: none; }
 #logo #logo-pro { color: red; }
 #logo #logo-rabotu { font-variant: small-caps; color: black; }
+
+/* Flash */
 #flash-notice, #flash-error { padding: 8px; text-align: center; font-weight: bold; color: white;}
 #flash-notice {background: green}
 #flash-error {background: red}
 
+/* Tabs */
 #tab-bar {width:100%; height:25px }
 #tab-bar .tab {border:1px solid #555; border-bottom:1px solid #555; padding:0 10px; background:#777;}
 #tab-bar .tab a {color:black; text-decoration:none}
 #tab-bar .tab a:hover {color:white}
 #tab-bar .selected-tab {
-	border-top:1px solid #555; border-left:1px solid #555;
-	border-right:1px solid #555; border-bottom:1px solid #ddd;
-	background:#ddd}
+	border:1px solid #555;
+  border-bottom:1px solid #ddd; 
+  background:#ddd
+}
 #tab-bar .selected-tab a:hover {color:black}
 #tab-bar .spacer {border-bottom:1px solid #555}
 #tab-bar #logo-pseudo-tab {border-bottom:1px solid #555}
 
-#nav-bar {height:25px; line-height:25px; padding-left: 5px; background:#ddd}
-#nav-bar a {margin:0 7px}
+#nav-bar {height:25px; line-height:25px; padding:5px; background:#ddd}
+#nav-bar a {margin:0 7px;}
 #nav-bar a.selected {color:black; font-weight: bold; text-decoration:none}
 
 #footer {
@@ -97,27 +113,33 @@ div.submit .action-button {}
 	margin-top: 20px; padding-top: 3px; border-top: thin solid gray;
 	text-align: center; color: gray; }
 
+/* Page headers */
+#content h1.page_title { margin: 20px 0 10px; }
+#content form h1.page_title { margin: 10px 0 0; }
 
+
+/* Debug panel */
 #info-panel { clear: both; width: 100%; margin-top: 20px; padding: 5px }
 #info-panel pre { font-family: 'CMU Typewriter Text'; font-size: 12pt; }
 #info-panel p#trace-contents { text-align: center; font-size: larger; }
 #info-panel h2#info-panel-show {text-align: center;}
 
 
-#vacancies-search-form fieldset {padding:10px}
+/* Vacancy search form */
+#vacancies-search-form fieldset {padding:10px; border:1px solid silver}
 #vacancies-search-form input {width:200px}
 #vacancies-search-form select,
 #vacancies-search-form input.button {width:205px}
-html>body #vacancies-search-form fieldset {border:1px solid silver}
 
 
+/* Resume search form */
 #resumes-search-form input {width:200px}
 #resumes-search-form select,
 #resumes-search-form input.button {width:205px}
-#resumes-search-form fieldset {padding:10px}
-html>body #resumes-search-form fieldset {border:1px solid silver}
+#resumes-search-form fieldset {padding:10px; border:1px solid silver}
 
 
+/* Vacancy list */
 #vacancies-search-page #content {margin:0}
 .vacancies-list { width: 100%; margin: 10px 0}
 .vacancies-list span.pos {font-weight: bold; }
@@ -140,15 +162,19 @@ html>body #resumes-search-form fieldset {border:1px solid silver}
 .vacancies-list tr.alt-desc-active td {padding-bottom: 5px;}
 .vacancies-list tr.desc div.content {white-space: pre-wrap}
 .vacancies-list tr.desc div.content a.rabota-ru {float: right;}
-.search-result-message {margin: 1em 0 0.5em 0; text-align: center; }
 
+.search-result-message {margin: 1em 0 0.5em 0; text-align: center;}
+.sort-mark {text-decoration:none}
 .vacancy p.links { margin-top: 10px;}
 
+
+/* Vacancy form */
 #vacancy-edit-form input { width: 220px }
 #vacancy-edit-form select { width: 224px }
 #vacancy-edit-form textarea { width: 400px; height: 170px }
 
 
+/* Resume form */
 #resume-form {width: 800px}
 #name-section, #job-section, #about-me-section, #job-reqs-section, 
 #contact-section, #security-section {margin: 16px 0}
@@ -161,6 +187,7 @@ html>body #resumes-search-form fieldset {border:1px solid silver}
 #resume_city, #resume_industry {width: 205px}
 
 
+/* Resume view */
 #resume #name {font-size:200%; font-weight:bold}
 #resume #job-title {font-size:200%; color:green}
 #resume #salary {font-size:150%; margin-left:20px}
@@ -171,16 +198,20 @@ html>body #resumes-search-form fieldset {border:1px solid silver}
 #resume pre {white-space:pre-wrap; font:100% Verdana, sans-serif; margin:3px 0}
 #resume h4 {margin:12px 0 3px 0; font-size: larger}
 
+
+/* Resume list */
 #resume-list {margin: 0 auto}
 #resume-list .sal {padding-left: 20px; text-align: right}
 #resume-list .pos {text-align: left}
 
 
+/* Resume open */
 #workers-login-form #name,
 #workers-login-form #password {width: 140px;}
 #workers-login-form #log_in {width:145px}
 
 
+/* Employers home */
 #emp-idx {width:100%}
 #emp-idx #casual-div, #emp-idx #pro-div {width:50%}
 #emp-idx #casual-div {font-size:xx-large; line-height:1.5; border-right:silver 1px solid;}
@@ -194,14 +225,10 @@ html>body #resumes-search-form fieldset {border:1px solid silver}
 .pro-empoloyers-index-section {margin-left:20px}
 
 
+/* Employer vacancies */
 #vacancies-table {position:relative; left: -35px; margin-bottom: 8px;}
 #vacancies-table th { padding: 1px 20px 1px 0; text-align: left;}
 #vacancies-table td.controls { width: 30px; padding-right: 5px; padding-left: 0;}
 #vacancies-table td.controls span { display: none}
 #vacancies-table tr:hover td.controls span { display: inline; }
 #vacancies-table td.controls img {border: 0; margin: 0; padding: 0; width: 12px; height:12px;}
-
-
-span.invalid label {color: red;}
-div.form-errors h2 {padding-left: 0px; color: red;}
-div.form-errors ul {padding-left: 0px; list-style-position: outside;}
