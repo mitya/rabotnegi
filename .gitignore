@@ -1,4 +1,5 @@
 log/*
 tmp/*
+db/data/*
 jobs.tmproj
 .DS_Store
