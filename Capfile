@@ -40,3 +40,4 @@ end
 
 after('deploy:setup', 'deploy:fix_permissions')
 after('deploy:migrate', 'deploy:fix_permissions')
+after('deploy:update', 'deploy:fix_permissions')
