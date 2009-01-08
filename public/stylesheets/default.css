@@ -45,7 +45,11 @@ div.submit span.cancel {font-size: small;}
 div.submit .action-button {}
 
 span.invalid label {color: red;}
-div.form-errors h2 {margin-top: 10px; padding-left: 0px; color: red;}
+tr.high td span.required-mark {vertical-align:top;}
+table.form-layout td span.invalid + span.required-mark {color:red;}
+table.form-layout td span.invalid textarea.inner-tooltip {color:red;}
+
+div.form-errors h2 {margin: 10px 0; padding-left: 0px; color: red;}
 div.form-errors ul {padding-left: 0px; list-style-position: outside;}
 
 

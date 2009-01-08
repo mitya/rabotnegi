@@ -24,7 +24,7 @@ module ApplicationHelper
     
     result = ''
     result << content_tag(:h2, header_message)
-    result << content_tag(:ul, error_messages)
+    # result << content_tag(:ul, error_messages)
    
     content_tag :div, result, :class => 'form-errors'
   end
