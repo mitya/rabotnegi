@@ -9,8 +9,11 @@ module FormLayoutHelper
     
     row_options = {}
     row_options[:id] = "#{row_id}_row" if row_id
-    row_options[:class] = "required" if options[:required]
-    
+    row_options[:class] = []
+    row_options[:class] << "required" if options[:required]
+    row_options[:class] << "high" if options[:high]
+    row_options[:class] = row_options[:class].any?? row_options[:class].join(' ') : nil
+        
     content.unshift options[:before] if options[:before]
     content.push content_tag(:span, '(обязательное поле)', :class => 'required-mark') if options[:required]
     content.push options[:after] if options[:after]
