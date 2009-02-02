@@ -35,7 +35,6 @@ task(:rake) { run "cd #{current_path} && RAILS_ENV=#{rails_env} rake #{ENV['T']}
 namespace :deploy do
   task(:copy_crontab) { run "cp #{current_path}/config/crontab /etc/cron.d/rabotnegi" }
   task(:fix_permissions) { run "chown -R #{runner}:#{runner} #{current_path}/ #{shared_path}/log #{shared_path}/pids" }
-  task(:restart) { stop; start }
 end
 
 after('deploy:setup', 'deploy:fix_permissions')
