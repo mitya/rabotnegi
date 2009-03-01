@@ -1,2 +1,0 @@
-#!/bin/sh
-script/process/spawner -p 4071 -i 3 -e production
