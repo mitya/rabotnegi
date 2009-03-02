@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 1) do
+ActiveRecord::Schema.define(:version => 20090302000108) do
 
   create_table "employers", :force => true do |t|
     t.string   "name",       :null => false
@@ -37,10 +37,10 @@ ActiveRecord::Schema.define(:version => 1) do
     t.datetime "updated_at",                                 :null => false
   end
 
-  add_index "resumes", ["lname", "fname"], :name => "ix_resumes_lname_fname"
+  add_index "resumes", ["city", "industry"], :name => "ix_resumes_city_industry"
   add_index "resumes", ["city"], :name => "ix_resumes_city"
   add_index "resumes", ["industry"], :name => "ix_resumes_industry"
-  add_index "resumes", ["city", "industry"], :name => "ix_resumes_city_industry"
+  add_index "resumes", ["lname", "fname"], :name => "ix_resumes_lname_fname"
 
   create_table "simple_captcha_data", :force => true do |t|
     t.string   "key",        :limit => 40
@@ -63,10 +63,38 @@ ActiveRecord::Schema.define(:version => 1) do
     t.datetime "updated_at",    :null => false
   end
 
-  add_index "vacancies", ["external_id"], :name => "uq_vacancies_external_id", :unique => true
-  add_index "vacancies", ["city"], :name => "ix_vacancies_city"
-  add_index "vacancies", ["industry"], :name => "ix_vacancies_industry"
+  add_index "vacancies", ["city", "industry", "salary_min"], :name => "city_industry_salary_min"
+  add_index "vacancies", ["city", "industry", "salary_min"], :name => "index_vacancies_on_city_and_industry_and_salary_min"
   add_index "vacancies", ["city", "industry"], :name => "ix_vacancies_city_industry"
+  add_index "vacancies", ["city", "salary_min"], :name => "city_salary_min"
+  add_index "vacancies", ["city", "salary_min"], :name => "index_vacancies_on_city_and_salary_min"
+  add_index "vacancies", ["city"], :name => "ix_vacancies_city"
   add_index "vacancies", ["employer_id"], :name => "fk_vacancies_employers"
+  add_index "vacancies", ["external_id"], :name => "uq_vacancies_external_id", :unique => true
+  add_index "vacancies", ["industry"], :name => "ix_vacancies_industry"
+
+  create_table "vacancy_loadings", :force => true do |t|
+    t.integer  "new_count",     :null => false
+    t.integer  "updated_count", :null => false
+    t.text     "details"
+    t.datetime "started_at"
+    t.datetime "finished_at"
+  end
+
+  create_table "workers", :force => true do |t|
+    t.integer  "c1",                                        :default => 12
+    t.float    "c2",                                        :default => 12.345
+    t.decimal  "c3",         :precision => 10, :scale => 4, :default => 123.456
+    t.datetime "c4",                                        :default => '2007-11-01 00:00:00'
+    t.date     "c5"
+    t.datetime "c6"
+    t.time     "c7"
+    t.text     "c8"
+    t.string   "c9",                                        :default => "hello"
+    t.binary   "c10"
+    t.boolean  "c11",                                       :default => true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end

@@ -6,7 +6,7 @@ set :repository,  "git@sokurenko.unfuddle.com:sokurenko/rabotnegi.git"
 set :deploy_via, :remote_cache
 set :scm, :git
 set :user, "root"
-set :runner, "mongrel"
+set :runner, "www-data"
 set :git_enable_submodules, true
 set :keep_releases, 3
 set :rails_env, ENV['E'] == 'stg' ? :staging : :production
