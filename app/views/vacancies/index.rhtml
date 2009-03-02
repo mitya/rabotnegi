@@ -10,7 +10,6 @@
   <% title_for_vacancies %>
   <%= partial :search %>
   
-<% bench "table header" do %>
   <script src='/javascripts/vacancies.js'></script>
 
   <div class='search-result-message'>
@@ -24,23 +23,20 @@
     		<th class='pos'><%= sort_link @vacancies, "Должность", :title %>
     		<th class='emp'><%= sort_link @vacancies, "Компания", :employer_name %>
   		  <th class='sal'><%= sort_link @vacancies, "Зарплата", :salary_min %>
-<% end %>
   	
 <% bench "table body" do %>
-  	<tbody>
+    <tbody>
   	<% @vacancies.each_with_index do |vacancy, i| %>
   		<tr id='<%= vacancy.id %>' class='<%= i.odd?? '' : 'alt' %>'>
-  			<td class='pos'><a href='<%= vacancy_path(vacancy) %>' onclick='return toggleVacancy(<%= vacancy.id %>)'><%= vacancy.title %></a>
+  			<td class='pos'><a href='/vacancies/<%= vacancy.id %>' onclick='return toggleVacancy(<%= vacancy.id %>)'><%= vacancy.title %></a>
   			<td class='emp'><%= vacancy.employer_name %>
   			<td class='sal'><%= vacancy.salary %>
   	<% end %>
 <% end %>
     
-<% bench "footer" do %>    
     <tfoot>
       <%= render "pager" if @vacancies.total_pages > 1 %>
   </table>
-<% end %>
 
 <% when @vacancies.empty? %>
 

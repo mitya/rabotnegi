@@ -33,7 +33,7 @@ test:
 
 production:
   <<: *default_settings
-  enabled: true
+  enabled: false
 
 staging:
   # It's common development practice to have a staging environment that closely
