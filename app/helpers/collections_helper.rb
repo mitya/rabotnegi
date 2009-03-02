@@ -19,7 +19,10 @@ module CollectionsHelper
       when curdir == :desc then ["#{field}", '▼']
     end
 
-		link_to content_tag(:span, sign, :class => 'sort-mark') + label,
-		  params.merge(:p => nil, :s => param), :class => 'ui'
+    %{
+      <a href='#{url_for(params.merge(:p => nil, :s => param))}' class='ui'>
+        <span class='sort-mark'>#{sign}</span> #{label}
+      </a>
+    }
 	end
 end

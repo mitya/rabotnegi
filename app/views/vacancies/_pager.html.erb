@@ -1,0 +1,5 @@
+<tr>
+  <td colspan='3' class='pagination'>
+		<strong>Страницы:</strong>
+		<%= will_paginate @vacancies, :inner_window => 8, :params => params, :param_name => :p,
+			  :prev_label => "« предыдущая", :next_label => "следующая »", :container => false %>

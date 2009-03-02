@@ -4,6 +4,10 @@ class ActionView::Base
     render_options[:partial] = Symbol === partial ? partial.to_s : partial
     render render_options
   end
+  
+  def bench(title, &block)
+    benchmark("Outputted #{title}", :level => :debug, &block)
+  end
 end
 
 module ActionView::Helpers::FormOptionsHelper
