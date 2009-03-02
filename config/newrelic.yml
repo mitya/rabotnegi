@@ -96,7 +96,7 @@ development:
   # turn off communication to RPM service in development mode.
   # NOTE: for initial evaluation purposes, you may want to temporarily turn
   # the agent on in development mode.
-  enabled: false
+  enabled: true
 
   # When running in Developer Mode, the New Relic Agent will present 
   # performance information on the last 100 transactions you have 
@@ -115,7 +115,7 @@ test:
 # all the time without incurring any user-visible performance degredation.
 production:
   <<: *default_settings
-  enabled: true
+  enabled: false
 
 # many applications have a staging environment which behaves identically to production.
 # Support for that environment is provided here.  By default, the staging environment has
