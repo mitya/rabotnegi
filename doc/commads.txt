@@ -1,0 +1,8 @@
+== SQL
+create index salary_min on vacancies(salary_min);
+create index city_salary_min on vacancies(city, salary_min);
+create index city_industry_salary_min on vacancies(city, industry, salary_min);
+
+drop index salary_min on vacancies;
+drop index city_salary_min on vacancies;
+drop index city_industry_salary_min on vacancies;
