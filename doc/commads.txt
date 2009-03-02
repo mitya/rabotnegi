@@ -6,3 +6,6 @@ create index city_industry_salary_min on vacancies(city, industry, salary_min);
 drop index salary_min on vacancies;
 drop index city_salary_min on vacancies;
 drop index city_industry_salary_min on vacancies;
+
+== Ruby
+Vacancy.all(:select => "id, title, external_id, salary_min, salary_max, employer_name", :conditions => {:city => "msk"}, :order => "salary_min", :limit => 50)
