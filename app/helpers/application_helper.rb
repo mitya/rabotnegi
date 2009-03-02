@@ -34,7 +34,7 @@ module ApplicationHelper
 		industry = Industry[params[:industry]] if params[:industry].present?
 		query = params[:q]
 		page = params[:p]
-		
+	
 		content = "Вакансии — #{city.name}"
 		content << " — #{industry.name}" if industry
 		content << " — #{query}" if query
