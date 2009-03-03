@@ -1,3 +1,3 @@
 # copy (not symlink) to /etc/cron.d/rabotnegi
-0	3	*	*	*	root	/u/rabotnegi_prod/current/script/runner -e production "RabotaRu.load" &> /u/rabotnegi_prod/current/log/cron-loading.log
-0	4	*	*	*	root	/u/rabotnegi_prod/current/script/runner -e production "Vacancy.cleanup" &> /u/rabotnegi_prod/current/log/cron-cleanup.log
+0	3	*	*	1,4	root	/u/rabotnegi_prod/current/script/runner -e production "RabotaRu.load" &> /u/rabotnegi_prod/current/log/cron-loading.log
+0	4	*	*	2	root	/u/rabotnegi_prod/current/script/runner -e production "Vacancy.cleanup" &> /u/rabotnegi_prod/current/log/cron-cleanup.log
