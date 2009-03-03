@@ -25,17 +25,31 @@ end
 server host, :web, :app, :db, :primary => true 
 
 namespace :deploy do
-  task(:copy_crontab) { run "cp #{current_path}/config/crontab /etc/cron.d/rabotnegi" }
-  task(:fix_permissions) { run "chown -R #{runner}:#{runner} #{current_path}/ #{shared_path}/log #{shared_path}/pids" }
   task(:start)   { }  
   task(:stop)    { }
   task(:restart) { run "touch #{current_path}/tmp/restart.txt" }
 end
 
-after 'deploy:setup', 'deploy:fix_permissions'
-after 'deploy:migrate', 'deploy:fix_permissions'
-after 'deploy:update', 'deploy:fix_permissions'
+after 'deploy:setup', 'fix_permissions'
+after 'deploy:setup', 'copy_crontab'
+after 'deploy:setup', 'setup_logrotate'
+after 'deploy:migrate', 'fix_permissions'
+after 'deploy:update', 'fix_permissions'
 
 task(:log)  { puts capture("tail -n #{ENV['N'] || 200} #{current_path}/log/#{rails_env}.log") }
 task(:rake) { run "cd #{current_path} && RAILS_ENV=#{rails_env} rake #{ENV['T']} #{ENV['P']}" }
 task(:push) { run_locally "git push"; deploy.default }
+task(:copy_crontab) { run "cp #{current_path}/config/crontab /etc/cron.d/#{application}" }
+task(:fix_permissions) { run "chown -R #{runner}:#{runner} #{current_path}/ #{shared_path}/log #{shared_path}/pids" }
+task(:setup_logrotate) do
+  put <<-config, "/etc/logrotate.d/#{application}"
+    #{current_path}/log/*.log {
+    	daily
+    	missingok
+    	rotate 30
+    	compress
+    	copytruncate
+    	notifempty
+    }
+  config
+end
