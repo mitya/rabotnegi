@@ -1,9 +1,9 @@
-RAILS_GEM_VERSION = '2.3.0' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '2.3.2' unless defined? RAILS_GEM_VERSION
 require File.join(File.dirname(__FILE__), 'boot')
 
 Rails::Initializer.run do |config|
   config.action_controller.session = { :session_key => "_jobs_session", :secret => "REDACTED" }
-  config.gem 'will_paginate'
+ 	config.gem 'mislav-will_paginate', :version => '~> 2.3.8', :lib => 'will_paginate', :source => 'http://gems.github.com'
   config.gem 'json', :lib => 'json/add/rails'
   config.time_zone = 'Moscow'
   config.action_controller.cache_store = :file_store, "tmp/cache"
