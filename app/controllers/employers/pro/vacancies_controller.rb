@@ -16,10 +16,6 @@ class Employers::Pro::VacanciesController < ApplicationController
     template 'employers/vacancies/form'
   end
 
-  def edit
-    template 'employers/vacancies/form'
-  end
-  
   def create
     @vacancy = current_employer.vacancies.new(params[:vacancy])
     @vacancy.save!
@@ -29,6 +25,10 @@ class Employers::Pro::VacanciesController < ApplicationController
     template 'employers/vacancies/form'
   end
   
+  def edit
+    template 'employers/vacancies/form'
+  end
+
   def update
     @vacancy.update_attributes!(params[:vacancy])
     flash[:notice] = 'Вакансия сохранена'

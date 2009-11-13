@@ -1,5 +1,3 @@
-// General purpose JavaScript functions and classes
-
 Element.addMethods('A', {
   disable:  function(link) {
     link.addClassName('disabled');
@@ -97,3 +95,21 @@ function CommandLink(link, command) {
     e.stop()
   })
 }
+
+jQuery.fn.extend({
+  self: function() {
+    return this.get(0)
+  },
+  dump: function() {
+    console.debug(this.get())
+    return this
+  },
+  loaded: function(fn) {
+    if (this.length > 0)
+      q(fn)
+    return this
+  },
+  record_id: function() {
+    return this.attr('id').match(/\d+/)[0]
+  }
+})

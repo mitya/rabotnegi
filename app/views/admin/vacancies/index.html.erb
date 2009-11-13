@@ -1,0 +1,19 @@
+<% identifier :admin_vacancies %>
+<div id='vacancies'>
+  <%= render 'list' %>  
+  <%= grid_view :vacancies, @vacancies,
+    :columns => [
+      {:title => {
+        :label => 'Title',
+        :view => proc { |v| truncate(v.title) },
+        :edit => proc { |v| text_field(:vacancy, :title, :object => vacancy) }
+      }},
+      {:employer_name => {:label => 'Employer Name'}}
+    ],
+    :editable => true,
+    :adding => true,
+    :deleting => true,
+    :paging => 25,
+    :sorting => 'title'
+  %>
+</div>

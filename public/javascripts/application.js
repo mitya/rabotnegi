@@ -87,3 +87,38 @@ RequiredFieldExtender.prototype = {
 Element.addMethods(['INPUT', 'TEXTAREA'], {
 	makeTooltip: function(self) { new TooltipControlExtender(self) }
 })
+
+q(function() {
+  var edited_rows = {}
+  q('#admin_vacancies').loaded(function() {
+    q("#vacancies .pagination a").live('click', function() {
+      q("#vacancies").load(this.href)
+      return false
+    })
+    q("#vacancies tr td.actions .edit").live('click', function() {
+      var row = q(this).closest('tr'), id = row.record_id()
+      edited_rows[id] = row
+      q.get("/admin/vacancies/" + id + '/edit', function(result) {
+        row.replaceWith(result)
+      })
+    })
+    q("#vacancies tr td.actions .cancel").live('click', function() {
+      var row = q(this).closest('tr'), id = row.record_id()
+      row.replaceWith(edited_rows[id])
+      delete edited_rows[id]      
+    })
+    q("#vacancies tr td.actions .save").live('click', function() {
+      var row = q(this).closest('tr'), id = row.record_id()
+      console.debug(row.find(':input').serialize())
+      q.ajax({
+        url: "/admin/vacancies/" + id,
+        type: 'POST',
+        data: row.find(':input').serialize() + "&_method=PUT",
+        success: function() {
+          console.debug(1)
+        }
+      })
+      delete edited_rows[id]      
+    })
+  })
+})

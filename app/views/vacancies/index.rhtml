@@ -18,21 +18,18 @@
 
   <table class='vacancies-list'>
   	<thead>
-      <%= render "pager" if @vacancies.total_pages > 1 %>
 	    <tr>
     		<th class='pos'><%= sort_link @vacancies, "Должность", :title %>
     		<th class='emp'><%= sort_link @vacancies, "Компания", :employer_name %>
   		  <th class='sal'><%= sort_link @vacancies, "Зарплата", :salary_min %>
   	
-<% bench "table body" do %>
     <tbody>
   	<% @vacancies.each_with_index do |vacancy, i| %>
-  		<tr id='<%= vacancy.id %>' class='<%= i.odd?? '' : 'alt' %>'>
-  			<td class='pos'><a href='/vacancies/<%= vacancy.id %>' onclick='return toggleVacancy(<%= vacancy.id %>)'><%= vacancy.title %></a>
+  		<tr id='<%= vacancy.id %>' class='<%= i.odd?? '' : 'alt' %> header' onclick='return toggleVacancy(<%= vacancy.id %>)'>
+  			<td class='pos'><a href='/vacancies/<%= vacancy.id %>'><%= vacancy.title %></a>
   			<td class='emp'><%= vacancy.employer_name %>
   			<td class='sal'><%= vacancy.salary %>
   	<% end %>
-<% end %>
     
     <tfoot>
       <%= render "pager" if @vacancies.total_pages > 1 %>

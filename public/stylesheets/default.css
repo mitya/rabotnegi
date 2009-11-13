@@ -158,14 +158,17 @@ div.warning {background: gold;}
 .vacancies-list tfoot tr {	background: #dfefff; }
 .vacancies-list tfoot tr td { padding: 10px 5px; }
 .vacancies-list tr.alt { background: #eee; }
-.vacancies-list th,
-.vacancies-list td {padding:1px 5px}
-.vacancies-list tr.active {background:#ffc}
-.vacancies-list tr.desc-active td {padding-bottom: 5px;}
-.vacancies-list tr.alt-active {background:#cfc}
-.vacancies-list tr.alt-desc-active td {padding-bottom: 5px;}
-.vacancies-list tr.desc div.content {white-space: pre-wrap}
-.vacancies-list tr.desc div.content a.rabota-ru {float: right;}
+.vacancies-list tbody tr.active {background:#ffc}
+.vacancies-list tbody tr.desc-active td {padding-bottom: 5px;}
+.vacancies-list tbody tr.alt-active {background:#cfc}
+.vacancies-list tbody tr.alt-desc-active td {padding-bottom: 5px;}
+.vacancies-list tbody tr.desc td { padding: 0 5px; }
+.vacancies-list tbody tr.desc div.content {white-space: pre-wrap}
+.vacancies-list tbody tr.desc div.content a.rabota-ru {float: right;}
+.vacancies-list tbody tr.header:hover { background: #ffc; cursor: pointer;}
+.vacancies-list tbody tr.header.alt:hover { background: #cfc; cursor: pointer;}
+.vacancies-list tbody tr.header td {padding:4px 5px}
+.vacancies-list tbody tr.header td a { color: black; text-decoration: none; }
 
 .search-result-message {margin: 1em 0 0.5em 0; text-align: center;}
 .sort-mark {text-decoration:none}
@@ -236,3 +239,19 @@ div.warning {background: gold;}
 #vacancies-table td.controls span { display: none}
 #vacancies-table tr:hover td.controls span { display: inline; }
 #vacancies-table td.controls img {border: 0; margin: 0; padding: 0; width: 12px; height:12px;}
+
+
+/* Admin vacancies */
+.grid { width: 100%; border: #999 2px solid; }
+.grid thead th { padding: 4px; background: #e0ebf7; }
+.grid tbody td { padding: 4px; border: #aaa 1px solid; }
+.grid tfoot td { padding: 8px 4px; background: #e0ebf7; }
+.grid tbody tr.alt { background: #eee; }
+
+#admin_vacancies #vacancies .grid td.actions { width: 120px; }
+#admin_vacancies #vacancies .grid td.title { width: 50%; }
+
+/*#admin_vacancies #vacancies .grid tr.edit td { border: dashed 2px red;}*/
+/*#admin_vacancies #vacancies .grid tr.edit td { padding: 1px; }*/
+#admin_vacancies #vacancies .grid tr.edit td input { width: 90%; padding: 3px; font-size: 14px; }
+

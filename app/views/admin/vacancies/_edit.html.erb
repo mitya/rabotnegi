@@ -1,0 +1,16 @@
+<% vacancy = object %>
+
+<tr id='vacancy_<%= vacancy.id %>' class='<%= cycle '', 'alt' %> edit'>
+  <td class='title'>
+    <%= text_field :vacancy, :title, :object => vacancy %>
+    <%= error_message_on :vacancy, :title, :object => vacancy %>
+  </td>
+  <td class='employer'>
+    <%= text_field :vacancy, :employer_name, :object => vacancy %>
+    <%= error_message_on :vacancy, :employer_name, :object => vacancy %>
+  </td>
+  <td class='actions'>
+    <button class='save'>Save</button>
+    <button class='cancel'>Cancel</button>
+  </td>
+</tr>
