@@ -4,7 +4,8 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />	
 	<title>Управление Работнеги.ру</title>
 	<%= stylesheet_link_tag 'default.css' %>
-	<%= javascript_include_tag :defaults %>
+	<%= javascript_include_tag 'prototype', 'effects', 'dragdrop', 'controls', 'jquery', :cache => 'lib' %>
+	<%= javascript_include_tag 'common', 'application', :cache => 'app' %>
 </head>
 
 <body <%= page_id %>>

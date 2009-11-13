@@ -8,7 +8,8 @@
 	<%= tag :meta, :name => 'keywords', :content => keywords if keywords %>
 	<title><%= window_title %></title>
 	<%= stylesheet_link_tag 'default.css' %>
-	<%= javascript_include_tag :defaults %>
+	<%= javascript_include_tag 'prototype', 'effects', 'dragdrop', 'controls', 'jquery', :cache => 'lib' %>
+	<%= javascript_include_tag 'common', 'application', :cache => 'app' %>
 </head>
 
 <body <%= page_id %>>
