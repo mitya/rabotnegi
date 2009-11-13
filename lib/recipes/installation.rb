@@ -24,6 +24,7 @@ set :ssh_config_path, "/root/.ssh/config"
 namespace :deploy do
   namespace :install do
     task :default do
+      setup
       git
     	update
       db
@@ -36,7 +37,15 @@ namespace :deploy do
       top.upload local_git_key_path, git_key_path, :mode => "600"
       run "touch #{ssh_config_path}"
       run "chmod 600 #{ssh_config_path}"
-      append_text ssh_config, ssh_config_path
+
+      entry_delimiter = "## config for #{git_host_alias}"
+      entry = "\n" + entry_delimiter + "\n" + ssh_config + entry_delimiter + "\n"
+      
+      current_config = capture "cat #{ssh_config_path}"
+      current_config.gsub! /(\n|\r)+/, "\n" # there is a bunch of "\r" here
+      current_config.gsub! /^#{entry_delimiter}$.*^#{entry_delimiter}$/m, ''
+          
+      put current_config + entry, ssh_config_path
     end
 
     task :db do
