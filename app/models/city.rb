@@ -4,6 +4,7 @@ class City < Struct.new(:code, :external_id, :name)
   def self.[](code)
     @@all.find { |city| city.code == code.to_sym }
   end
+  metaclass.send(:alias_method, :get, :[])
   
   def self.each(&block)
     @@all.each(&block)

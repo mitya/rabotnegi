@@ -9,7 +9,7 @@
 
 <% when @vacancies.any? %>
 
-  <% title_for_vacancies %>
+  <% title vacancies_title %>
   <%= partial :search %>
   
   <script src='/javascripts/vacancies.js'></script>
@@ -26,12 +26,12 @@
   		  <th class='sal'><%= sort_link @vacancies, "Зарплата", :salary_min %>
   	
     <tbody>
-  	<% @vacancies.each_with_index do |vacancy, i| %>
-  		<tr id='<%= vacancy.id %>' class='<%= i.odd?? '' : 'alt' %> header' onclick='return toggleVacancy(<%= vacancy.id %>)'>
-  			<td class='pos'><a href='/vacancies/<%= vacancy.id %>'><%= vacancy.title %></a>
-  			<td class='emp'><%= vacancy.employer_name %>
-  			<td class='sal'><%= vacancy.salary %>
-  	<% end %>
+    	<% @vacancies.each_with_index do |vacancy, i| %>
+    		<tr id='<%= vacancy.id %>' class='header <%= i.odd?? '' : 'alt' %>'>
+    			<td class='pos'><a href='/vacancies/<%= vacancy.id %>'><%= vacancy.title %></a>
+    			<td class='emp'><%= vacancy.employer_name %>
+    			<td class='sal'><%= vacancy.salary %>
+    	<% end %>
     
     <tfoot>
       <%= render "pager" if @vacancies.total_pages > 1 %>
@@ -39,7 +39,7 @@
 
 <% when @vacancies.empty? %>
 
-  <% title_for_vacancies %>
+  <% title vacancies_title %>
   <%= partial :search %>
 
   <div class='message warning'>

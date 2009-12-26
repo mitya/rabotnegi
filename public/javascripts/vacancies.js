@@ -1,54 +1,26 @@
-function toggleVacancy(id) {
-	id = id.toString()
-	if (!rowLoaded(id)) {
-		showSpinner(id);
-		new Ajax.Updater(id, '/vacancies/' + id + '.ajax', {
-			asynchronous:true, evalScripts:true,
-			insertion:Insertion.After,
-			method:'get',
-			onComplete:function(request) {hideSpinner(id); processResult(request, id)}
-		});
-	}
-	return false			
-}
+function Spinner() { return q("<span>").addClass("spinner").text('загрузка...') }
 
-function rowLoaded(rid) {
-  row = $(rid)
-  descRow = $(descriptionRowId(rid))
-  if (descRow != null) {
-    Effect.toggle($(descriptionDivId(rid)), 'blind')
-    return true
-  }
+q(".vacancies-list tr.header").live("click", function() {
+  var vacancy_id = this.id
+	var $row = q(this)
+	
+	if ($row.next().is(".desc")) {
+	  $row.next().find(".content").slideToggle()
+  } else {
+    $row.find("td:first").append(new Spinner())
+    q.get('/vacancies/' + vacancy_id + '.ajax', function(html) {
+      var $desc = q(html).insertAfter($row)
+    	if ($row.hasClass('alt')) {
+    		$row.addClass('alt-active')
+    		$desc.addClass('alt-active').addClass('alt-desc-active')
+    	} else {
+    		$row.addClass('active')
+    		$desc.addClass('active').addClass('desc-active')
+    	}
+      $row.find(".spinner").remove()
+    	$desc.find(".content").slideDown()
+    })
+	}
+	
   return false
-}
-
-function processResult(xhr, rid) {
-	if ($(rid).hasClassName('alt')) {
-		$(rid).addClassName('alt-active')
-		$(descriptionRowId(rid)).addClassName('alt-active')
-		$(descriptionRowId(rid)).addClassName('alt-desc-active')				
-	} else {
-		$(rid).addClassName('active')
-		$(descriptionRowId(rid)).addClassName('active')
-		$(descriptionRowId(rid)).addClassName('desc-active')
-	}
-	new Effect.BlindDown($(descriptionDivId(rid)), {duration: 0.5})
-}
-
-function showSpinner(rid) {
-  baseCell = $(rid).cells[0]
-  spinner = document.createElement('span')
-  spinner.id = spinnerId(rid)
-  spinner.className = 'spinner'
-  spinner.innerText = 'загрузка...'
-  baseCell.appendChild(spinner)
-}
-
-function hideSpinner(rid) {
-  baseCell = $(rid).cells[0]
-  baseCell.removeChild($(spinnerId(rid)))
-}
-
-function spinnerId(rid) { return rid + '-spinner' }
-function descriptionRowId(rid) { return rid + '-description' }
-function descriptionDivId(rid) { return rid + '-description-content' }
+})

@@ -1,3 +1,5 @@
+var q = jQuery.noConflict()
+
 Vacancies = {
 	prepare: function(form) {
 		var city = form.city.value
