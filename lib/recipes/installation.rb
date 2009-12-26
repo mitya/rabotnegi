@@ -1,6 +1,7 @@
 default_run_options[:pty] = true # required for the first time repo access to answer "yes"
 
 def run_rake(task, params = "", options = {})
+  options[:sudo] ||= runner
 	sudo_modifier = "#{sudo :as => options[:sudo]}" if options[:sudo]
 	run "cd #{current_path} && #{sudo_modifier} RAILS_ENV=#{rails_env} rake #{task} #{params}"
 end
@@ -35,8 +36,8 @@ namespace :deploy do
 
     task :git do
       top.upload local_git_key_path, git_key_path, :mode => "600"
-      run "touch #{ssh_config_path}"
-      run "chmod 600 #{ssh_config_path}"
+      sudo "touch #{ssh_config_path}"
+      sudo "chmod 600 #{ssh_config_path}"
 
       entry_delimiter = "## config for #{git_host_alias}"
       entry = "\n" + entry_delimiter + "\n" + ssh_config + entry_delimiter + "\n"
@@ -58,8 +59,8 @@ namespace :deploy do
     
     task :passenger do
       put passenger_config, "/etc/apache2/sites-available/#{application}"
-      run "a2ensite #{application}"
-      run "/etc/init.d/apache2 reload"
+      sudo "a2ensite #{application}"
+      sudo "/etc/init.d/apache2 reload"
     end
 
     def append_text(text, file)
@@ -73,5 +74,5 @@ namespace :deploy do
 end
 
 before "deploy:setup" do
-	run "mkdir -p /u"
+	sudo "mkdir -p /u"
 end
