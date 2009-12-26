@@ -1,0 +1,63 @@
+body#vacancies {
+  #content { margin: 0; }
+
+  .search-result-message {margin: 1em 0 0.5em 0; text-align: center;}
+
+  table.vacancies-list {
+    width: 100%;
+    margin: 10px 0;
+    span.pos {font-weight: bold; }
+    td.sal, th.sal {text-align: right; white-space:nowrap }
+    td.pos, th.pos {text-align: left}
+    td.emp, th.emp {text-align: left}
+    thead tr { background: #dfefff; }
+    thead tr th { padding: 10px 5px; }
+    tfoot tr {	background: #dfefff; }
+    tfoot tr td { padding: 10px 5px; }
+    tr.alt { background: #eee; }
+    tbody tr.active {background:#ffc}
+    tbody tr.desc-active td {padding-bottom: 5px;}
+    tbody tr.alt-active {background:#cfc}
+    tbody tr.alt-desc-active td {padding-bottom: 5px;}
+    tbody tr.desc td { padding: 0 5px; }
+    tbody tr.desc div.content {white-space: pre-wrap}
+    tbody tr.desc div.content a.rabota-ru {float: right;}
+    tbody tr.header:hover { background: #ffc; cursor: pointer;}
+    tbody tr.header.alt:hover { background: #cfc; cursor: pointer;}
+    tbody tr.header td {padding:4px 5px}
+    tbody tr.header td a { color: black; text-decoration: none; }
+  }  
+
+  .vacancy p.links { margin-top: 10px; }
+  
+  #vacancies-search-form {
+    fieldset {padding:10px; border:1px solid silver}
+    input {width:200px}
+    select, input.button {width:205px}
+  }
+}
+
+body#edit-resume {
+  form#resume-form {
+    width: 800px;
+    
+    #name-section, #job-section, 
+    #about-me-section, #job-reqs-section, 
+    #contact-section, #security-section {margin: 16px 0}
+    
+    #resume_job_reqs, #resume_contact_info, #resume_about_me {width: 500px}
+    #resume_about_me {height: 200px}
+    #resume_job_reqs {height: 100px}
+    #resume_contact_info {height: 50px}
+    #resume_min_salary {text-align: center; width: 60px}
+    #resume_fname, #resume_lname, #resume_job_title {width: 200px}
+    #resume_city, #resume_industry {width: 205px}   
+  }
+}
+
+body#workers-login {
+  #workers-login-form {
+    #name, #password {width: 140px;}
+    #log_in {width:145px}
+  }  
+}

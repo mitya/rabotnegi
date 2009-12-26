@@ -12,7 +12,7 @@ module LayoutHelper
   end
   
 	def window_title
-		title ? "#{title} @ Работнеги.ру" : 'Работнеги.ру'
+		title ? "#{title} - Работнеги.ру" : 'Работнеги.ру'
 	end
 	
 	def page_title
