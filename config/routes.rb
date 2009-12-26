@@ -21,4 +21,6 @@ ActionController::Routing::Routes.draw do |map|
 		admin.resources :vacancies
     admin.root :controller => 'dashboard', :action => 'show'
   end
+  
+  map.connect "#{Less::More.destination_path}/*id.css", :controller => 'less_cache', :action => "show"
 end

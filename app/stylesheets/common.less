@@ -1,0 +1,90 @@
+@link_color: #0000cd;
+@hovered_link_color: #880000;
+
+.rounded_corners (@radius: 5px) {
+  -moz-border-radius: @radius;
+  -webkit-border-radius: @radius;
+  border-radius: @radius;
+}
+
+/* Reset */
+input, select {margin: 0; padding: 0}
+a:link {color: @link_color;}
+a:visited {color: purple}
+a:hover {color: @hovered_link_color}
+table {border-collapse: collapse;}
+h1, h2, h3, h4, h5, h6, p, pre {margin: 0}
+h1 {margin: 1em 0 .25em}
+h2 {margin: 1em 0 .25em}
+h3 {margin: 1em 0 0}
+h4 {margin: 1em 0 0}
+p {margin: .25em 0}
+pre {margin: .25em 0}
+
+
+/* Forms */
+table.form-layout {
+  col.labels { width: 120px}
+  td {padding-bottom: 5px;}
+  th {text-align: right; vertical-align: top; padding-right: 5px;}
+  th label { font-variant: small-caps; font-size: smaller;}
+  input {width: 150px}
+  select {width: 155px}
+  input.button {width: 155px}
+  label input {width: auto} /*fix for checkbox & radiobuttons*/
+  td small {color: gray; font-size: 11px;}
+  td span.required-mark {color: gray; font-size: 11px}
+}
+
+* html table.form-layout {
+  td {padding-top: 0}
+  td input.checkbox {margin-left: -3px}
+} 
+
+input.inner-tooltip, textarea.inner-tooltip { color: gray; font-style: italic; }
+input.required-field, textarea.required-field { background: #FF6; }
+
+div.submit {
+  margin-top: 3px;
+  span.cancel {font-size: small;}
+  .action-button {}
+}
+
+span.invalid label {color: red;}
+tr.high td span.required-mark {vertical-align:top;}
+table.form-layout {
+  td span.invalid + span.required-mark {color:red;}
+  td span.invalid textarea.inner-tooltip {color:red;}
+} 
+
+div.form-errors {
+  h2 {margin: 10px 0; padding-left: 0px; color: red;}
+  ul {padding-left: 0px; list-style-position: outside;}  
+} 
+
+/* Links */
+a.ui:link, a.ui:visited { color: @link_color; }
+a.ui:hover { color: @hovered_link_color; }
+a.cmd:link, a.cmd:visited { color: green; border-bottom: 1px dashed; text-decoration: none; }
+a.cmd:hover { color: firebrick; }
+a.page { padding: 0 4px; text-decoration: none; }
+a.page:hover { padding: 0 3px; border: 1px solid #df0f5f; }
+a.page.current { border: 1px solid black; color: black; padding: 0 3px; cursor: default; }
+a.tmp { color: green; }
+a span.sort-mark { text-decoration:none }
+
+/* Pagination */
+.pagination {
+  a { padding: 3px 4px; text-decoration: none; }
+  a:hover { color: white; background: blue;  }
+  a:visited:hover { color: white; background: purple;  }
+  span.current { padding: 3px 4px; color: white; background: black; cursor: default; }
+  span.disabled { color: gray; }
+}
+
+span.spinner { background: green; color: white; }
+table.devgrid td {border: 1px dashed black;}
+table.centered {margin:0 auto}
+br.clearer { clear: both; display: block;}
+div.message {text-align: center; font-weight: bold; padding: 8px; margin: 8px 0 8px;}
+div.warning {background: gold;}

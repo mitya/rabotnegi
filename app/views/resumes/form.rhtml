@@ -1,6 +1,8 @@
+<% identifier "edit-resume" %>
+
 <% title @resume.new?? 'Создание резюме' : 'Редактирование резюме', :custom => true %>
 
-<% form_for @resume do |f| %>
+<% form_for @resume, :html => {:id => "resume-form"} do |f| %>
 <% wrapper do %>
   <%= tr2 title_html %>
 	<%= tr2 errors_for(@resume) %>

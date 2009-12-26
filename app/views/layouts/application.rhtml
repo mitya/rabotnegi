@@ -7,7 +7,7 @@
 	<%= tag :meta, :name => 'description', :content => desc if desc %>
 	<%= tag :meta, :name => 'keywords', :content => keywords if keywords %>
 	<title><%= window_title %></title>
-	<%= stylesheet_link_tag 'default.css' %>
+	<%= stylesheet_link_tag %w(common public workers employers) %>
 	<%= javascript_include_tag 'prototype', 'effects', 'dragdrop', 'controls', 'jquery', :cache => 'lib' %>
 	<%= javascript_include_tag 'common', 'application', :cache => 'app' %>
 </head>

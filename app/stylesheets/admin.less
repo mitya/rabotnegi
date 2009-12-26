@@ -1,0 +1,17 @@
+@import "_layout";
+
+.grid { width: 100%; border: #999 2px solid; }
+.grid thead th { padding: 4px; background: #e0ebf7; }
+.grid tbody td { padding: 4px; border: #aaa 1px solid; }
+.grid tfoot td { padding: 8px 4px; background: #e0ebf7; }
+.grid tbody tr.alt { background: #eee; }
+
+table th {text-align: left;}
+
+body#admin-vacancies {
+  #vacancies .grid {
+     td.actions { width: 120px; }
+     td.title { width: 50%; }
+     tr.edit td input { width: 90%; padding: 3px; font-size: 14px; }     
+  }
+} 
