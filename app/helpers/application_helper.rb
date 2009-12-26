@@ -29,9 +29,9 @@ module ApplicationHelper
     content_tag :div, result, :class => 'form-errors'
   end
   
-  def title_for_vacancies
-		city = City[params[:city]]
-		industry = Industry[params[:industry]] if params[:industry].present?
+  def vacancies_title
+		city = City.get(params[:city])
+		industry = Industry.get(params[:industry]) if params[:industry].present?
 		query = params[:q]
 		page = params[:p]
 	
@@ -39,7 +39,6 @@ module ApplicationHelper
 		content << " — #{industry.name}" if industry
 		content << " — #{query}" if query
 		content << ", стр. №#{page}" if page
-		title content
   end
   
 	def title_for_resumes

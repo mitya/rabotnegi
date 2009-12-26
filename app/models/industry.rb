@@ -4,6 +4,7 @@ class Industry < Struct.new(:code, :external_id, :name, :group)
   def self.[](code)
     @@all.find { |industry| industry.code == code.to_sym }
   end
+  metaclass.send(:alias_method, :get, :[])
   
   def self.each(&block)
     @@all.each(&block)
