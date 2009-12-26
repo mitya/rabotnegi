@@ -9,6 +9,7 @@ set :user, "root"
 set :runner, "www-data"
 set :git_enable_submodules, true
 set :keep_releases, 3
+set :use_sudo, true
 
 set :server_env, :demo # ENV['E'] == 'stg' ? :staging : :production
 
@@ -25,8 +26,8 @@ when :staging
   set :deploy_to, "/u/rabotnegi_stg"
 when :demo
 	set :rails_env, :staging
-  set :host, 'ec2-174-129-45-5.compute-1.amazonaws.com'
-	set :ssh_options, {:keys => ["/users/dima/.ssh/id_demo"]}
+  set :host, "174.143.148.66"
+	# set :ssh_options, {:keys => ["/users/dima/.ssh/id_rsa"]}
 	set :application, "rabotnegi_stg"
   set :deploy_to, "/u/rabotnegi_stg"
 end
