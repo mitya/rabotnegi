@@ -2,23 +2,17 @@
 
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />	
-	<title>Управление Работнеги.ру</title>
+	<title><%= @page_title %> - Админская Работнегов</title>
 	<%= stylesheet_link_tag %w(common admin), :cache => "pack/admin" %>
 	<%= javascript_include_tag %w(jquery), :cache => 'pack/lib' %>
 	<%= javascript_include_tag %w(common application), :cache => 'pack/app' %>
 </head>
 
-<body <%= page_id %> class="admin">
+<body id="<%= @page_id %>" class="admin">
 	<div id='header'>
 		<div id='nav'>
 			<table id='tab-bar'>
 				<col width=10>
-				<col width=1>
-				<col width=10>
-				<col width=10>
-				<col width=1>
-				<col width=10>
-				<col width=1>
 				<col width=*>
 				<tr>
 					<td class='spacer'>

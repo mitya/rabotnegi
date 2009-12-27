@@ -1,10 +1,8 @@
-<% identifier "edit-resume" %>
-
-<% title @resume.new?? 'Создание резюме' : 'Редактирование резюме', :custom => true %>
+<% page "edit-resume", @resume.new? ? 'Создание резюме' : 'Редактирование резюме', :path => %w(workers workers my-resume) %>
 
 <% form_for @resume, :html => {:id => "resume-form"} do |f| %>
 <% wrapper do %>
-  <%= tr2 title_html %>
+  <%= tr2 content_tag(:h1, @page_title, :class => "page_title") %>
 	<%= tr2 errors_for(@resume) %>
 	
 	<% section do %>

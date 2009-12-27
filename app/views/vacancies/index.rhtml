@@ -1,54 +1,50 @@
-<% identifier 'vacancies' %>
+<% page "vacancies", vacancies_page_title, :path => %w(workers workers vacancy-search) %>
+<% meta :description, site_desc %>
+<% meta :keywords, "работа, вакансии" %>
 
-<% case when @vacancies.nil? %>
+<%= partial :search %>
 
-  <% title "Поиск вакансий" %>
-  <% desc_for_site %>
-  <% keywords "работа, вакансии" %>
-  <%= partial :search %>
+<% if @vacancies %>
+  <% if @vacancies.any? %>
 
-<% when @vacancies.any? %>
+    <div class='search-result-message'>
+    	<%= found_objects_info @vacancies, 'ваканс', 'ия', 'ии', 'ий' %>.
+    </div>
 
-  <% title vacancies_title %>
-  <%= partial :search %>
-  
-  <div class='search-result-message'>
-  	<%= found_objects_info @vacancies, 'ваканс', 'ия', 'ии', 'ий' %>.
-  </div>
-
-  <table class='vacancies-list'>
-  	<thead>
-	    <tr>
-    		<th class='pos'><%= sort_link @vacancies, "Должность", :title %>
-    		<th class='emp'><%= sort_link @vacancies, "Компания", :employer_name %>
-  		  <th class='sal'><%= sort_link @vacancies, "Зарплата", :salary_min %>
+    <table class='vacancies-list'>
+    	<thead>
+  	    <tr>
+      		<th class='pos'><%= sort_link @vacancies, "Должность", :title %>
+      		<th class='emp'><%= sort_link @vacancies, "Компания", :employer_name %>
+    		  <th class='sal'><%= sort_link @vacancies, "Зарплата", :salary_min %>
+      </thead>
   	
-    <tbody>
-    	<% @vacancies.each_with_index do |vacancy, i| %>
-    		<tr id='<%= vacancy.id %>' class='header <%= i.odd?? '' : 'alt' %>'>
-    			<td class='pos'><a href='/vacancies/<%= vacancy.id %>'><%= vacancy.title %></a>
-    			<td class='emp'><%= vacancy.employer_name %>
-    			<td class='sal'><%= vacancy.salary %>
-    	<% end %>
+      <tbody>
+      	<% @vacancies.each_with_index do |vacancy, i| %>
+      		<tr id='<%= vacancy.id %>' class='header <%= i.odd?? '' : 'alt' %>'>
+      			<td class='pos'><a href='/vacancies/<%= vacancy.id %>'><%= vacancy.title %></a>
+      			<td class='emp'><%= vacancy.employer_name %>
+      			<td class='sal'><%= vacancy.salary %>
+      	<% end %>
+      </tbody>
     
-    <tfoot>
-      <%= render "pager" if @vacancies.total_pages > 1 %>
-  </table>
+      <tfoot>
+        <%= render "pager" if @vacancies.total_pages > 1 %>
+      </tfoot>
+    </table>
 
-<% when @vacancies.empty? %>
+  <% else %>
 
-  <% title vacancies_title %>
-  <%= partial :search %>
+    <div class='message warning'>
+    	<% if params[:q] %>
+    		По вашему запросу ничего не найдено
+    		<br>
+    		Попробуйте изменить ключевые слова или 
+    		<%=	link_to 'поискать без указания ключевых слов', request.request_parameters.merge(:q => nil), :class => 'ui' %>
+    	<% else %>
+    		Иформации о вакансиях в выбранном городе/отрасли сейчас нет
+    	<% end %>
+    </div>
 
-  <div class='message warning'>
-  	<% if params[:q] %>
-  		По вашему запросу ничего не найдено
-  		<br>
-  		Попробуйте изменить ключевые слова или 
-  		<%=	link_to 'поискать без указания ключевых слов', request.request_parameters.merge(:q => nil), :class => 'ui' %>
-  	<% else %>
-  		Иформации о вакансиях в выбранном городе/отрасли сейчас нет
-  	<% end %>
-  </div>
-
+  <% end %>
 <% end %>

@@ -11,7 +11,7 @@ module ApplicationHelper
   def blank_option(label = '', value = '')
     content_tag :option, label, :value => value
   end
-  
+
   def errors_for(object, options = {})
     return '' if object.errors.empty?
     
@@ -29,33 +29,42 @@ module ApplicationHelper
     content_tag :div, result, :class => 'form-errors'
   end
   
-  def vacancies_title
-		city = City.get(params[:city])
-		industry = Industry.get(params[:industry]) if params[:industry].present?
-		query = params[:q]
-		page = params[:p]
+  def vacancies_page_title
+    if @vacancies
+  		city = City.get(params[:city])
+  		industry = Industry.get(params[:industry]) if params[:industry].present?
+  		query = params[:q]
+  		page = params[:p]
 	
-		content = "Вакансии — #{city.name}"
-		content << " — #{industry.name}" if industry
-		content << " — #{query}" if query
-		content << ", стр. №#{page}" if page
+  		content = "Вакансии — #{city.name}"
+  		content << " — #{industry.name}" if industry
+  		content << " — #{query}" if query
+  		content << ", стр. №#{page}" if page
+  		content
+  	else
+  	  "Поиск вакансий"
+  	end
   end
   
-	def title_for_resumes
-		city = City[params[:city]] if params[:city].present?
-		industry = Industry[params[:industry]] if params[:industry].present?
-		query = params[:q]
-		page = params[:p]
+	def resumes_page_title
+	  if @resumes
+  		city = City[params[:city]] if params[:city].present?
+  		industry = Industry[params[:industry]] if params[:industry].present?
+  		query = params[:q]
+  		page = params[:p]
 		
-		content = "Резюме — #{city.name}"
-		content << " — #{industry.name}" if industry
-		content << " — #{query}" if query
-		content << ", стр. №#{page}" if page
-		title content
+  		content = "Резюме — #{city.name}"
+  		content << " — #{industry.name}" if industry
+  		content << " — #{query}" if query
+  		content << ", стр. №#{page}" if page
+  		content
+	  else
+	    "Поиск резюме"
+    end
 	end
   
-  def desc_for_site
-    desc "Работнеги.ру — это сайт который позволяет быстро найти работу или работников. Простой в использовании и не требует регистрации."
+  def site_desc
+    "Работнеги.ру — это сайт который позволяет быстро найти работу или работников. Простой в использовании и не требует регистрации."
   end
   
   def back_to_all_vacancies_url_for(vacancy)
