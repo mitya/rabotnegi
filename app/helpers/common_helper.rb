@@ -1,6 +1,6 @@
 module CommonHelper
 	def add_css_class(element_id, klass)
-		content_tag :script, "$('#{element_id}').addClassName('#{klass}')"
+		content_tag :script, "$('##{element_id}').addClass('#{klass}')"
 	end
 	
 	def div(id, options = {}, &proc)
