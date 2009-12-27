@@ -1,45 +1,5 @@
 var q = jQuery.noConflict()
 
-Vacancies = {
-	prepare: function(form) {
-		var city = form.city.value
-		var industry = form.industry.value
-		var url = form.action + '/' + city + '/' + industry
-		if (form.q.value != '') {
-			q = form.q.value
-			q = q.replace(' ', '+')
-			url += '?q=' + encodeURI(q)
-		}
-		window.location = url
-		return false
-	}
-}
-
-
-RequiredFieldExtender = Class.create()
-RequiredFieldExtender.cssClassName = 'required-field'
-RequiredFieldExtender.prototype = {
-	initialize: function(control) {
-		this.control = control
-		this.control.observe('blur', this.onBlur.bindAsEventListener(this))
-		this.onInit()
-	},
-	onInit: function() {
-		if (this.hasContent())
-			this.resetStyle()
-	},
-	onBlur: function() {
-		if (this.hasContent())
-			this.resetStyle()
-		else
-			this.setStyle()
-	},
-	hasContent: function() { return !this.control.value.match(/^\s*$/) && this.control.value != this.control.title },
-	resetStyle: function() { this.control.removeClassName(this.klass.cssClassName) },
-	setStyle: function() { this.control.addClassName(this.klass.cssClassName) },
-	klass: RequiredFieldExtender
-}
-
 q(function() {
   var edited_rows = {}
   q('#admin_vacancies').loaded(function() {
@@ -76,6 +36,21 @@ q(function() {
 })
 
 q.fn.extend({
+  requiredField: function() {
+    this.each(function() {
+      var $input = q(this)
+      var tip = $input.attr('title')      
+
+      $input.blur(function() {
+        console.debug($input.val())
+        if ($input.val().present() && $input.val() != tip) {
+          $input.removeClass('required-field')
+        } else {
+          $input.addClass('required-field')
+        }
+      })      
+    })    
+  },
   tooltip: function() {
     this.each(function() {
       var $input = q(this)
@@ -102,4 +77,18 @@ q.fn.extend({
 
 q(function() {
   q("#edit-resume").find("#resume_about_me, #resume_job_reqs, #resume_contact_info").tooltip()
+  q("#edit-resume").find("#resume_fname, #resume_lname").requiredField()
+  
+  q("#vacancies-search-form form:first").submit(function() {
+    var form = this
+     var url = form.action + '/' + form.city.value
+     if (form.industry.value.present()) {
+       url += '/' + form.industry.value
+     }   
+     if (form.q.value.present()) {
+       url += '?q=' + encodeURIComponent(form.q.value).replace(/(%20)+/g, '+')
+     }
+     window.location = url
+     return false
+  })
 })

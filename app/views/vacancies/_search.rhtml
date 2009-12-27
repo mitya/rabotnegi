@@ -1,5 +1,5 @@
 <% center 'vacancies-search-form' do %>
-<% form_tag vacancies_url, :onsubmit => 'return Vacancies.prepare(this)', :method => :get do %>
+<% form_tag vacancies_url, :method => :get do %>
 <% field_set_tag do %>
 <% wrapper do %>
   <%= tr :city, 'Город', select_tag(:city, options_for_select(cities, params[:city])) %>
