@@ -20,6 +20,10 @@ $.extend(String.prototype, {
   }
 })
 
+jQuery.extend({
+  initializers: {}
+})
+
 jQuery.fn.extend({
   self: function() {
     return this.get(0)
@@ -29,8 +33,8 @@ jQuery.fn.extend({
     return this
   },
   loaded: function(fn) {
-    if (this.length > 0)
-      $(fn)
+    $.initializers[this.selector] = $.initializers[this.selector] || []
+    $.initializers[this.selector].push(fn)
     return this
   },
   record_id: function() {
@@ -73,4 +77,13 @@ jQuery.fn.extend({
       })
     })
   }
+})
+
+function Spinner() { return $("<span>").addClass("spinner").text('загрузка...') }
+
+$(function() {
+  for (var selector in $.initializers)
+    if ($(selector).length > 0)
+      for (var i = 0; i < $.initializers[selector].length; i++)
+        $.initializers[selector][i]()
 })
