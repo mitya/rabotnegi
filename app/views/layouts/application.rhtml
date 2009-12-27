@@ -3,13 +3,13 @@
 <% location = determine_location %>
 
 <head>
+	<title><%= window_title %></title>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />	
 	<%= tag :meta, :name => 'description', :content => desc if desc %>
 	<%= tag :meta, :name => 'keywords', :content => keywords if keywords %>
-	<title><%= window_title %></title>
-	<%= stylesheet_link_tag %w(common public workers employers) %>
-	<%= javascript_include_tag 'prototype', 'effects', 'dragdrop', 'controls', 'jquery', :cache => 'lib' %>
-	<%= javascript_include_tag 'common', 'application', :cache => 'app' %>
+	<%= stylesheet_link_tag %w(common public workers employers), :cache => 'pack/public' %>
+	<%= javascript_include_tag %w(jquery), :cache => 'pack/lib' %>
+	<%= javascript_include_tag %w(common application vacancies), :cache => 'pack/app' %>
 </head>
 
 <body <%= page_id %>>
