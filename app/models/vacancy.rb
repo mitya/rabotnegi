@@ -8,15 +8,11 @@ class Vacancy < ActiveRecord::Base
   property :salary_max,    :integer   
   property :employer_id,   :integer   
   property :employer_name, :string,   :limit => 255
-  extend Forwardable
 
   belongs_to :employer
   composed_of :salary, :mapping => {:salary_min => :min, :salary_max => :max}.to_a
-
   validates_presence_of :title, :description, :industry, :city
-
-  def_delegator :salary, :text, :salary_text
-  def_delegator :salary, :text=, :salary_text=
+  delegate :text, :text=, :to => :salary, :prefix => true
 
   def eql?(other)
     external_id? && other.external_id? ? external_id == other.external_id : super
@@ -27,11 +23,11 @@ class Vacancy < ActiveRecord::Base
   end
   
   def city_name
-    City[city].name
+    City.get(city).name
   end
 
   def industry_name
-    Industry[industry].name
+    Industry.get(industry).name
   end
   
 protected
@@ -41,22 +37,19 @@ protected
     end
   end
 
-  class << self
-    def search(params)
-      params.symbolize_keys!
-      conditions = []
-      conditions << {:city => params[:city]} if params[:city].present?
-      conditions << {:industry => params[:industry]} if params[:industry].present?
-      conditions << ["title LIKE :q or employer_name LIKE :q", {:q => "%#{params[:q]}%"}] if params[:q].present?
-      conditions.inject(scoped({})) { |scope, condition| scope.scoped(:conditions => condition) }
-    end    
-  end
-  
-  class << self
-    def cleanup
-      old_vacancy_count = Vacancy.count :conditions => ["updated_at < ?", 2.weeks.ago]
-      puts "Удаление #{old_vacancy_count} вакансий"
-      Vacancy.delete_all ["updated_at < ?", 2.weeks.ago]
-    end
+  def self.search(params)
+    params.symbolize_keys!
+    conditions = []
+    conditions << {:city => params[:city]} if params[:city].present?
+    conditions << {:industry => params[:industry]} if params[:industry].present?
+    conditions << ["title LIKE :q OR employer_name LIKE :q", {:q => "%#{params[:q]}%"}] if params[:q].present?
+    scoped :conditions => merge_conditions(*conditions)
+  end    
+
+
+  def self.cleanup
+    old_vacancy_count = count :conditions => ["updated_at < ?", 2.weeks.ago]
+    logger.info "Удаление #{old_vacancy_count} вакансий"
+    delete_all ["updated_at < ?", 2.weeks.ago]
   end
 end

@@ -1,12 +1,10 @@
-<% center 'vacancies-search-form' do %>
-<% form_tag vacancies_url, :method => :get do %>
-<% field_set_tag do %>
-<% wrapper do %>
-  <%= tr :city, 'Город', select_tag(:city, options_for_select(cities, params[:city])) %>
-  <%= tr :industry, 'Отрасль', select_tag(:industry, blank_option('любая') + option_groups_for_select(industry_groups, params[:industry])) %>
-  <%= tr :q, 'Ключевые слова', text_field_tag(:q, params[:q]) %>
-  <%= tr2 submit_tag('Найти', :class => 'button') %>
-<% end %>
-<% end %>
-<% end %>
+<% centered do %>
+  <% form_tag vacancies_url, :method => :get, :class => "", :id => "vacancies-search-form" do %>
+    <% wrapper do %>
+      <%= tr :city, 'Город', select_tag(:city, options_for_select(cities, params[:city])) %>
+      <%= tr :industry, 'Отрасль', select_tag(:industry, blank_option('любая') + option_groups_for_select(industry_groups, params[:industry])) %>
+      <%= tr :q, 'Ключевые слова', text_field_tag(:q, params[:q]) %>
+      <%= tr2 submit_tag('Найти', :class => 'button') %>
+    <% end %>    
+  <% end %>  
 <% end %>

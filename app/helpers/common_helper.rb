@@ -7,8 +7,8 @@ module CommonHelper
 		concat '</div>'
 	end
 
-	def center(id, &proc)
-		concat "<table id='#{id}' class='centered'><tr><td>"
+	def centered(&proc)
+		concat "<table class='centered'><tr><td>"
 		yield
 		concat '</table>'
 	end

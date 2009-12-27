@@ -51,5 +51,3 @@ class Industry < Struct.new(:code, :external_id, :name, :group)
 
   @@popular, @@other = @@all.partition { |industry| industry.group == :popular }
 end
-
-# 1002, 1007, 1015

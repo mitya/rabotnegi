@@ -1,11 +1,12 @@
 class Salary
+	attr_accessor :min, :max, :currency
+
 	def initialize(min = nil, max = nil)
 		@currency = :rub
 		@min = min
 		@max = max
 	end
 	
-	attr_accessor :min, :max, :currency
 	def exact?; @min && @max && @min == @max end
 	def exact; @min end
 	def exact=(value); @min = value; @max = value end
@@ -52,24 +53,22 @@ class Salary
 		@currency = new_currency
 		self
 	end
-		
-  class << self
-    def make(attributes = {})
-  	  returning new do |salary|
-  		  attributes.each { |name, value| salary.send("#{name}=", value) }
-		  end
-  	end
-  	    
-  	def parse(string)
-  		string.squish!
-  		params = case string
-    		when /(\d+)\s?[-—]\s?(\d+)/, /от (\d+) до (\d+)/ then { :min => $1.to_i, :max => $2.to_i }
-    		when /от (\d+)/, /(\d+)\+/ then { :min => $1.to_i }
-    		when /до (\d+)/, /<(\d+)/ then { :max => $1.to_i }
-    		when /(\d+)/ then { :exact => $1.to_i }
-    		else {}
-  	  end
-  		make(params)
-  	end
-  end
+
+  def self.make(attributes = {})
+    salary = new
+    attributes.each { |n,v| salary.send("#{n}=", v) }
+    salary
+	end
+	    
+	def self.parse(string)
+		string.squish!
+		params = case string
+  		when /(\d+)\s?[-—]\s?(\d+)/, /от (\d+) до (\d+)/ then { :min => $1.to_i, :max => $2.to_i }
+  		when /от (\d+)/, /(\d+)\+/ then { :min => $1.to_i }
+  		when /до (\d+)/, /<(\d+)/ then { :max => $1.to_i }
+  		when /(\d+)/ then { :exact => $1.to_i }
+  		else {}
+	  end
+		make(params)
+	end
 end
