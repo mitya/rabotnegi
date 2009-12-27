@@ -17,6 +17,9 @@ $.extend(String.prototype, {
   },
   trim: function() {
     return $.trim(this)
+  },
+  query: function() {
+    return $(this)
   }
 })
 
