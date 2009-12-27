@@ -3,12 +3,12 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />	
 	<title>Управление Работнеги.ру</title>
-	<%= stylesheet_link_tag %w(common admin) %>
-	<%= javascript_include_tag 'prototype', 'effects', 'dragdrop', 'controls', 'jquery', :cache => 'lib' %>
-	<%= javascript_include_tag 'common', 'application', :cache => 'app' %>
+	<%= stylesheet_link_tag %w(common admin), :cache => "pack/admin" %>
+	<%= javascript_include_tag %w(jquery), :cache => 'pack/lib' %>
+	<%= javascript_include_tag %w(common application), :cache => 'pack/app' %>
 </head>
 
-<body <%= page_id %>>
+<body <%= page_id %> class="admin">
 	<div id='header'>
 		<div id='nav'>
 			<table id='tab-bar'>
@@ -28,8 +28,8 @@
 								<span id='logo-pro'>Р</span><span id='logo-rabotu'>аботнеги.ру Админ</span>
 							</a>
 						</div>
-			</table>			
-		</div>		
+			</table>
+		</div>
 	</div>
 
 	<div id='content'>

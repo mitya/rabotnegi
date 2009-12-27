@@ -8,14 +8,12 @@
 	<%= tag :meta, :name => 'description', :content => desc if desc %>
 	<%= tag :meta, :name => 'keywords', :content => keywords if keywords %>
 	<%= stylesheet_link_tag %w(common public workers employers), :cache => 'pack/public' %>
-	<%= javascript_include_tag %w(jquery), :cache => 'pack/lib' %>
-	<%= javascript_include_tag %w(common application vacancies), :cache => 'pack/app' %>
 </head>
 
-<body <%= page_id %>>
+<body <%= page_id %> class="public">
 	<div id='header'>
 		<div id='nav'>
-			<table id='tab-bar'>
+			<table id='tab-bar' data-selected-tab='#<%= location.tab %>'>
 				<col width=10>
 				<col width=1>
 				<col width=10>
@@ -38,10 +36,9 @@
 					<td class='spacer'>
 					<td id='employers-tab' class='tab'><a href='/employers'>Работодателям</a>
 					<td class='spacer'>
-					<%= add_css_class(location.tab, 'selected-tab') %>
 			</table>
 			
-			<div id='nav-bar'>
+			<div id='nav-bar' data-selected-link='<%= location.navigation_link && "##{location.navigation_link}" %>'>
 				<div id='<%= location.navigation_bar.to_s.gsub(/_/, '-') %>-nav-bar'>
   				<% case location.navigation_bar
   					 when :workers %>
@@ -60,7 +57,6 @@
 				    </span>
 					<% end %>
 				</div>
-				<%= add_css_class(location.navigation_link, 'selected') if location.navigation_link.present? %>
 			</div>
 		</div>
 		
@@ -80,18 +76,16 @@
   	</pre>
 	<% end %>
 	
-	<div id='plumbing'>
-	  <div id='ga-scripts'>
-    	<% if Rails.env.production? %>
-      	<script type="text/javascript">
-          var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-          document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-        </script>
-        <script type="text/javascript">
-          var pageTracker = _gat._getTracker('<%= GOOGLE_ANALYTICS_ID %>');
-          pageTracker._trackPageview();
-        </script>
-      <% end %>
-	  </div>
-	</div>
+	<%= javascript_include_tag %w(jquery), :cache => 'pack/lib' %>
+	<%= javascript_include_tag %w(common application), :cache => 'pack/app' %>
+	<% if Rails.env.production? %>
+  	<script>
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script>
+      var pageTracker = _gat._getTracker('<%= GOOGLE_ANALYTICS_ID %>');
+      pageTracker._trackPageview();
+    </script>
+  <% end %>
 </body>
