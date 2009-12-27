@@ -1,10 +1,11 @@
-<% title "Моё резюме" %>
+<% page "view-resume", "Моё резюме", :path => %w(workers workers my-resume) %>
 
-<%= link_to 'Редактировать', edit_resume_path('my'), :class => 'ui' %> |
-<%= link_to 'Удалить', resume_path('my'), :method => :delete, :class => 'ui' %> |
-<%= link_to 'Выход', log_out_resumes_path, :class => 'ui' %> |
+<p>
+  <%= link_to 'Редактировать', edit_resume_path('my'), :class => 'ui' %> |
+  <%= link_to 'Удалить', resume_path('my'), :method => :delete, :class => 'ui' %> |
+  <%= link_to 'Выход', log_out_resumes_path, :class => 'ui' %>  
+</p>
+
 <hr>
-
-<!-- Резюме просмотрено работодателями <b><%= @resume.view_count %></b> раз. -->
 
 <%= partial :show %>

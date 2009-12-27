@@ -1,29 +1,46 @@
 module LayoutHelper
   include ActionMailer::AdvAttrAccessor
-  adv_attr_accessor :title, :identifier, :desc, :keywords
-  
-  def title(*args)
-    if args.empty?
-      @title
-    else
-      @title = args.first
-      @title_options = args.extract_options!
+  adv_attr_accessor :page_id, :page_title, :page_class
+
+	# sets the page title, id, class
+  def page(id, title = nil, options = {})
+    @page_id = id
+    @page_title = title
+    @page_class = options[:class]
+
+    if options[:path]
+      options.merge! :tab => options[:path].first, :navbar => options[:path].second, :navlink => options[:path].third
+    end
+
+    @current_tab = "#{options[:tab]}-tab" if options[:tab]
+    @current_navbar = "#{options[:navbar]}-nav-bar" if options[:navbar]
+    @current_navlink = "#{options[:navlink]}-link" if options[:navlink]
+    
+    if @current_navbar == "casual-employers-nav-bar" && session[:employer_id]
+      @current_navbar = "pro-employers-nav-bar"
     end
   end
   
+  # window title - <title>
+  # (nil) => "Работнеги.ру"
+  # ("Вакансии") => "Вакансии - Работнеги.ру"
+  # ("Строители", "Вакансии") => "Строители - Вакансии - Работнеги.ру"
+  # ("Строители", " ", "Вакансии") => "Строители - Вакансии - Работнеги.ру"
 	def window_title
-		title ? "#{title} - Работнеги.ру" : 'Работнеги.ру'
+	  [@page_title, "Работнеги.ру"].flatten.reject(&:blank?).join(' - ')
 	end
 	
-	def page_title
-	  @title_options[:page] ? @title : nil
+  # a title that is shown on the page - <h1>
+	def content_title
+    @page_title
 	end
 	
-	def title_html
-    content_tag :h1, title, :class => 'page_title'
+	def meta(name, content)
+  	@meta_properties ||= {}
+  	@meta_properties[name] = content
 	end
-
-	def page_id
-	  "id='#{identifier}'" if identifier
-	end  
+	
+	def meta_properties
+  	@meta_properties || {}
+	end
 end
