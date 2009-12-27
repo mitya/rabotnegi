@@ -1,3 +1,5 @@
+@import "_helpers";
+
 body#vacancies {
   #content { margin: 0; }
 
@@ -5,7 +7,7 @@ body#vacancies {
 
   table.vacancies-list {
     width: 100%;
-    margin: 10px 0;
+    margin: 30px 0;
     span.pos {font-weight: bold; }
     td.sal, th.sal {text-align: right; white-space:nowrap }
     td.pos, th.pos {text-align: left}
@@ -31,9 +33,12 @@ body#vacancies {
   .vacancy p.links { margin-top: 10px; }
   
   #vacancies-search-form {
-    fieldset {padding:10px; border:1px solid silver}
-    input {width:200px}
-    select, input.button {width:205px}
+    float: left;
+    padding: 10px;
+    border: 1px solid silver;
+    .rounded(10px);
+    input { width: 200px; }
+    select, input.button { width: 205px; }
   }
 }
 

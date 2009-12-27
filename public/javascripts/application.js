@@ -63,7 +63,7 @@ $("body#vacancies").loaded(function() {
     return false
   })
   
-  $("#vacancies-search-form form:first").submit(function() {
+  $("#vacancies-search-form").submit(function() {
     var form = this
      var url = form.action + '/' + form.city.value
      if (form.industry.value.present()) {

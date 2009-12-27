@@ -1,13 +1,13 @@
-<% center 'resumes-search-form' do %>
-<% form_tag resumes_url, :method => :get do %>
-<% field_set_tag do %>
-<% wrapper do %>
-  <%= tr :city, 'Город', select_tag(:city, options_for_select(cities, params[:city])) %>
-  <%= tr :industry, 'Отрасль', select_tag(:industry, blank_option('любая') + option_groups_for_select(industry_groups, params[:industry])) %>
-	<%= tr :keywords, 'Ключевые слова', text_field_tag(:keywords) %>
-	<%= tr :salary, 'Зарплата', select_tag(:salary, blank_option('любая') + options_for_select(salaries, params[:salary])) %>
-	<%= tr2 submit_tag('Найти', :class => 'button') %>
-<% end %>
-<% end %>
-<% end %>
+<% centered do %>
+  <% form_tag resumes_url, :method => :get, :id => 'resumes-search-form' do %>
+    <% field_set_tag do %>
+      <% wrapper do %>
+        <%= tr :city, 'Город', select_tag(:city, options_for_select(cities, params[:city])) %>
+        <%= tr :industry, 'Отрасль', select_tag(:industry, blank_option('любая') + option_groups_for_select(industry_groups, params[:industry])) %>
+      	<%= tr :keywords, 'Ключевые слова', text_field_tag(:keywords) %>
+      	<%= tr :salary, 'Зарплата', select_tag(:salary, blank_option('любая') + options_for_select(salaries, params[:salary])) %>
+      	<%= tr2 submit_tag('Найти', :class => 'button') %>
+      <% end %>
+    <% end %>
+  <% end %>
 <% end %>

@@ -1,11 +1,4 @@
-@link_color: #0000cd;
-@hovered_link_color: #880000;
-
-.rounded_corners (@radius: 5px) {
-  -moz-border-radius: @radius;
-  -webkit-border-radius: @radius;
-  border-radius: @radius;
-}
+@import "_helpers";
 
 /* Reset */
 input, select {margin: 0; padding: 0}
@@ -84,7 +77,7 @@ a span.sort-mark { text-decoration:none }
 
 span.spinner { background: green; color: white; }
 table.devgrid td {border: 1px dashed black;}
-table.centered {margin:0 auto}
+.centered { margin: 0 auto; }
 br.clearer { clear: both; display: block;}
 div.message {text-align: center; font-weight: bold; padding: 8px; margin: 8px 0 8px;}
 div.warning {background: gold;}
