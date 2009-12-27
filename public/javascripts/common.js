@@ -96,6 +96,29 @@ function CommandLink(link, command) {
   })
 }
 
+$.extend(String.prototype, {
+  evalJSON: function() {
+    return eval("(" + this + ")")
+  },
+  unescapeHTML: function() {
+    return this.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&')
+  },
+  modelId: function() {
+    var digitsFound = this.match(/\d+/)
+    return digitsFound && digitsFound[0]
+  },
+  blank: function() {
+    return /^\s*$/.test(this)
+  },
+  present: function() {
+    return !this.blank()
+  },
+  trim: function() {
+    return $.trim(this)
+  }
+})
+
+
 jQuery.fn.extend({
   self: function() {
     return this.get(0)
