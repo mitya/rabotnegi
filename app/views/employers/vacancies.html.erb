@@ -7,7 +7,7 @@
 			<tr>
 				<td class='controls'>
 					<span>
-  					<%= link_to image_tag('edit.gif', :title => 'Редактировать', :alt => 'Редактировать'), edit_pro_employer_vacancy_path(vacancy), :class => 'ui' %>
+  					<%= link_to image_tag('edit.gif', :title => 'Редактировать', :alt => 'Редактировать'), edit_employer_vacancy_path(vacancy), :class => 'ui' %>
   					<%= link_to image_tag('delete.gif', :title => 'Удалить', :alt => 'Удалить'), [:pro_employer, vacancy],
   							:confirm => "Удаляем «#{vacancy.title}», да?", :method => :delete, :class => 'ui' %>
 					</span>
@@ -15,5 +15,5 @@
 				<td><%= vacancy.salary %>
 		<% end %>
 	</table>
-	<%= link_to "Новая вакансия", new_pro_employer_vacancy_path, :class => 'ui' %>
+	<%= link_to "Новая вакансия", new_employer_vacancy_path, :class => 'ui' %>
 </div>

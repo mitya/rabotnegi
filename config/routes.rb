@@ -5,8 +5,10 @@ ActionController::Routing::Routes.draw do |map|
     :conditions => { :method => :get }
 
 	map.resources :vacancies, :only => [:index, :show]
-  map.resources :vacancies, :namespace => 'employers/pro/', :path_prefix => 'employers/pro', :name_prefix => 'pro_employer_'
-  map.resources :vacancies, :namespace => 'employers/casual/', :path_prefix => 'employers/casual', :name_prefix => 'casual_employer_', :only => [:new, :create]
+  map.resources :vacancies, :path_prefix => 'employers', :name_prefix => 'employer_', :controller => "employer_vacancies"
+  # map.namespace :employers do |emp|
+  #   emp.resources :vacancies
+  # end
 
   map.resources :employers, :collection => { :log_in => :post, :log_out => :get }, :only => [:new, :create, :index]
 	map.resources :resumes, :collection => { :login => :get, :log_in => :post, :log_out => :get, :my => :get }
