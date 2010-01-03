@@ -12,7 +12,7 @@ class VacanciesController < ApplicationController
     @vacancy = Vacancy.find(params[:id])
     respond_to do |f|
       f.html
-      f.ajax { partial @vacancy }
+      f.ajax { render :partial => "vacancy", :object => @vacancy }
     end
   end
 end

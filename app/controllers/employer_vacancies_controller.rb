@@ -1,10 +1,10 @@
 class EmployerVacanciesController < ApplicationController
   before_filter :employer_required, :except => %w(new create)
-  before_filter :load_vacancy, :except => [:index, :new, :create]
+  before_filter :load_vacancy, :only => %w(show edit update destroy)
 
   def new
     @vacancy = Vacancy.new
-    template 'employers/vacancy_form'
+    render 'employers/vacancy_form'
   end
 
   def create
@@ -15,36 +15,36 @@ class EmployerVacanciesController < ApplicationController
     end
     @vacancy.save!
     flash[:notice] = 'Вакансия опубликована'
-    redirect employers_path
+    redirect_to employers_path
   rescue RecordInvalid
-    template 'employers/vacancy_form'
+    render 'employers/vacancy_form'
   end
 
   def index
     @vacancies = current_employer.vacancies.all(:order => 'title', :select => 'id, title, external_id, salary_min, salary_max, employer_name')
-    template 'employers/vacancies'
+    render 'employers/vacancies'
   end
 
   def show
-    template 'employers/vacancy'
+    render 'employers/vacancy'
   end
 
   def edit
-    template 'employers/vacancy_form'
+    render 'employers/vacancy_form'
   end
 
   def update
     @vacancy.update_attributes!(params[:vacancy])
     flash[:notice] = 'Вакансия сохранена'
-    redirect :index
+    redirect_to employer_vacancies_path
   rescue RecordInvalid
-    template 'employers/vacancy_form'
+    render 'employers/vacancy_form'
   end
 
   def destroy
     @vacancy.destroy
     flash[:notice] = "Вакансия «#{@vacancy.title}» удалена"
-    redirect :index
+    redirect_to employer_vacancies_path
   end
 
 private

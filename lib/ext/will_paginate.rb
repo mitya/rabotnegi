@@ -11,7 +11,8 @@ module WillPaginate::Finder::ClassMethods
 
     if sort_string.present?
       fld, dir = sort_string_to_pair(sort_string)
-      results.define_constant_methods(:sort_field => fld, :sort_direction => dir)
+      results.metaclass.send(:define_method, :sort_field) { fld }
+      results.metaclass.send(:define_method, :sort_direction) { dir }
     end
     
     results

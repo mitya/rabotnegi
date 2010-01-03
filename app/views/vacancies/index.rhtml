@@ -2,7 +2,7 @@
 <% meta :description, site_desc %>
 <% meta :keywords, "работа, вакансии" %>
 
-<%= partial :search %>
+<%= render "search" %>
 
 <% if @vacancies %>
   <% if @vacancies.any? %>

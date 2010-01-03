@@ -11,7 +11,7 @@ class SystemController < ApplicationController
 	
 	def reset
 	 reset_session
-	 redirect root_path
+	 redirect_to root_path
 	end
 	
 	def error

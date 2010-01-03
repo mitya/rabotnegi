@@ -1,4 +1,4 @@
-<% page "edit-resume", @resume.new? ? 'Создание резюме' : 'Редактирование резюме', :path => %w(workers workers my-resume) %>
+<% page "edit-resume", @resume.new_record? ? 'Создание резюме' : 'Редактирование резюме', :path => %w(workers workers my-resume) %>
 
 <% form_for @resume, :html => {:id => "resume-form"} do |f| %>
 <% wrapper do %>
@@ -24,6 +24,6 @@
 		<%= f.tr :password, 'Пароль', f.password_field(:password), :comment => 'Пароль нужен если вы предпологаете редактировать резюме в будущем.' %>
 	<% end %>
 	
-	<%= tr2 submit_section(@resume.new?? 'Опубликовать' : 'Сохранить') %>
+	<%= tr2 submit_section(@resume.new_record? ? 'Опубликовать' : 'Сохранить') %>
 <% end %>
 <% end %>

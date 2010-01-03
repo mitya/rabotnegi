@@ -6,8 +6,8 @@ class ApplicationController < ActionController::Base
   RecordInvalid = ActiveRecord::RecordInvalid
   RecordNotFound = ActiveRecord::RecordNotFound
   
-  rescue_from(RecordInvalid) { template :form, :status => 422 }
-  rescue_from(RecordNotFound) { flash[:error] = "К сожалению, то что вы искали, мы уже куда-то похерили. Если оно вообще здесь было."; redirect '/' }
+  rescue_from(RecordInvalid) { render :form, :status => 422 }
+  rescue_from(RecordNotFound) { flash[:error] = "К сожалению, то что вы искали, мы уже куда-то похерили. Если оно вообще здесь было."; redirect_to '/' }
   helper :all
   helper_method :current_employer, :current_employer?
   before_filter :set_locale
@@ -36,7 +36,7 @@ protected
   end
     
   def employer_required
-    current_employer || redirect(employers_path)
+    current_employer || redirect_to(employers_path)
   end
 
   def admin_required
