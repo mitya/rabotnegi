@@ -17,12 +17,12 @@ class ResumesController < ApplicationController
   
   def new
     @resume = Resume.new
-    template :form
+    render :form
   end
   
   def edit
     @resume = Resume.find(session[:resume_id])
-    template :form
+    render :form
   end
   
   def create
@@ -30,14 +30,14 @@ class ResumesController < ApplicationController
     @resume.save!
     flash[:notice] = "Резюме опубликовано"
     session[:resume_id] = @resume.id
-    redirect my_resumes_path
+    redirect_to my_resumes_path
   end
   
   def update
     @resume = Resume.find(session[:resume_id])
     @resume.update_attributes!(params[:resume])
     flash[:notice] = "Резюме сохранено"
-    redirect :my
+    redirect_to my_resumes_path
   end
   
   def destroy

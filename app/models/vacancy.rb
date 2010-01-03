@@ -32,7 +32,7 @@ class Vacancy < ActiveRecord::Base
   
 protected
   def after_initialize
-    if new?
+    if new_record?
       self.city = 'msk' unless city.present?
     end
   end

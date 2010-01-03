@@ -1,8 +1,8 @@
 <% page "edit-vacancy", "Новая вакансия", :path => %w(employers casual-employers vacancies) %>
 
 <% url = current_employer??
-  (@vacancy.new?? employer_vacancies_path : [:pro_employer, @vacancy]) :
-  (@vacancy.new?? employer_vacancies_path : [:casual_employer, @vacancy]) %>
+  (@vacancy.new_record? ? employer_vacancies_path : [:pro_employer, @vacancy]) :
+  (@vacancy.new_record? ? employer_vacancies_path : [:casual_employer, @vacancy]) %>
 <% form_for @vacancy, :html => { :id => 'vacancy-edit-form' }, :url => url do |f| %>
 <% wrapper do %>
   <%= tr2 content_tag(:h1, @page_title, :class => "page_title") %>
@@ -13,6 +13,6 @@
 	<%= f.tr :industry, 'Отрасль', f.group_select(:industry, industry_groups) %>
 	<%= f.tr :salary_text, 'Зарплата', f.text_field(:salary_text), :after => 'рублей', :comment => 'Формат: 10000 | от 10000 | до 20000 | от 10000 до 20000.' %>
 	<%= f.tr :description, 'Описание', f.text_area(:description), :required => true, :high => true %>
-	<%= tr2 submit_section(@vacancy.new?? 'Опубликовать' : 'Сохранить') %>
+	<%= tr2 submit_section(@vacancy.new_record? ? 'Опубликовать' : 'Сохранить') %>
 <% end %>
 <% end %>

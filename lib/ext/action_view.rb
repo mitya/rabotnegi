@@ -1,10 +1,4 @@
 class ActionView::Base
-  def partial(partial, options = {})
-    render_options, render_options[:locals] = options.partition_by(:layout, :object, :collection, :status, :spacer_template)
-    render_options[:partial] = Symbol === partial ? partial.to_s : partial
-    render render_options
-  end
-  
   def bench(title, &block)
     benchmark("Outputted #{title}", :level => :debug, &block)
   end

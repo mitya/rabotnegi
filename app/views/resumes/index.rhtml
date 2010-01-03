@@ -1,6 +1,6 @@
 <% page "resumes", resumes_page_title, :path => %w(employers casual-employers resume-search) %>
 
-<%= partial :search %>
+<%= render "search" %>
 
 <% if @resumes %>
   <% if @resumes.any? %>
