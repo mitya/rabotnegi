@@ -35,7 +35,7 @@ if $0 == __FILE__
 		print RussianInflector.inflect(i, 'ваканс', 'ия', 'ии', 'ий' )
 		print "\n"
 	end
-	
+
 	1.upto(150) do |i|
 		print "более #{i} "
 		print RussianInflector.inflect(i, 'ваканс', 'ия', 'ии', 'ий', :more)

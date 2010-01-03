@@ -30,14 +30,14 @@ class ResumesController < ApplicationController
     @resume.save!
     flash[:notice] = "Резюме опубликовано"
     session[:resume_id] = @resume.id
-    redirect_to my_resumes_path
+    redirect_to my_resume_path
   end
   
   def update
     @resume = Resume.find(session[:resume_id])
     @resume.update_attributes!(params[:resume])
     flash[:notice] = "Резюме сохранено"
-    redirect_to my_resumes_path
+    redirect_to my_resume_path
   end
   
   def destroy

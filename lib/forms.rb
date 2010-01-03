@@ -1,6 +1,6 @@
 module FormLayoutHelper
-  # Options: :required, :id, :before, :after, :comment
   def trb(label, content, options = {})
+    options.assert_valid_keys(:required, :id, :before, :after, :comment)
     label = [label]
     content = [content]
     
@@ -61,6 +61,4 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
     label = label(property, title + ':')
     @template.trb(label, content, options)
   end
-end	
-
-ActionView::Base.default_form_builder = CustomFormBuilder
+end
