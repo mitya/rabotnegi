@@ -1,3 +1,9 @@
+module SimpleCaptcha::ModelHelpers::InstanceMethods
+  def save_with_captcha!
+    save_with_captcha || raise(ActiveRecord::RecordInvalid.new(self))
+  end
+end
+
 module WillPaginate::Finder::ClassMethods
   # Extends result collection with #sort_field and #sort_direction methods if there are :order_by option.
   # Format for :order_by is "field" for asc sorting, and "-field" for desc.

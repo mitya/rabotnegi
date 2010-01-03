@@ -1,3 +1,17 @@
+class ActiveRecord::Base
+end
+
+class << ActiveRecord::Base
+  def property(*args)
+  end
+end
+
+class ActionController::Base
+  def render_partial(partial, locals = {})
+    render :partial => partial, :locals => locals
+  end  
+end
+
 class ActionView::Base
   def bench(title, &block)
     benchmark("Outputted #{title}", :level => :debug, &block)

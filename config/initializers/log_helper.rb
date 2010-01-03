@@ -1,3 +1,7 @@
+def assert(condition, message = "Assertion failed")
+  condition || raise(mesage)
+end
+
 def w(object, comment = nil)
   comment &&= "#{comment}: "
   inspection = PP.pp(object, StringIO.new, 100).string rescue object.inspect
