@@ -1,6 +1,5 @@
 class ResumesController < ApplicationController
-  before_filter :try_login_from_cookie
-  verify :only => [:edit, :update, :destroy, :my], :session => :resume_id, :redirect_to => { :action => :login }
+  before_filter :resume_required, :only => [:edit, :update, :destroy, :my]
   
   def index
     @resumes = Resume.
@@ -45,30 +44,5 @@ class ResumesController < ApplicationController
     @resume = Resume.destroy(session[:resume_id])
     flash[:notice] = 'Резюме удалено'
     log_out
-  end
-  
-  def login  
-  end 
-  
-  def log_in
-    @resume = Resume.authenticate(params[:name], params[:password])   
-    session[:resume_id] = @resume.id
-    cookies[:resume_id] = { :value => @resume.id.to_s, :expires => 14.days.from_now, :path => '/' } if params[:remember_me] == 'on'
-    redirect my_resumes_path
-  rescue ArgumentError => e
-    flash[:error] = e.message
-    template :login
-  end
-  
-  def log_out
-    reset_session
-    cookies.delete(:resume_id)
-    redirect :login
-  end
-
-private
-  def try_login_from_cookie
-    return if session[:resume_id]
-    session[:resume_id] = cookies[:resume_id].to_i if cookies[:resume_id] && Resume.exists?(cookies[:resume_id])
   end
 end

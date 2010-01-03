@@ -1,4 +1,9 @@
 ActionController::Routing::Routes.draw do |map|
+  GET = { :method => :get } unless defined? GET
+  POST = { :method => :post } unless defined? POST
+  PUT = { :method => :put } unless defined? PUT
+  DELETE = { :method => :delete } unless defined? DELETE
+
   map.nice_vacancies '/vacancies/:city/:industry', :controller => 'vacancies', :action => 'index',
     :requirements => {:city => /(?!(new|my|\d+))\w*/},
     :defaults => {:city => nil, :industry => nil},
@@ -6,9 +11,14 @@ ActionController::Routing::Routes.draw do |map|
 
 	map.resources :vacancies, :only => [:index, :show]
   map.resources :vacancies, :path_prefix => 'employers', :name_prefix => 'employer_', :controller => "employer_vacancies"
+
   # map.namespace :employers do |emp|
   #   emp.resources :vacancies
   # end
+  
+  map.workers_login "workers/login", :controller => "workers", :action => "login_page", :conditions => GET
+  map.workers_login "workers/login", :controller => "workers", :action => "login", :conditions => POST
+  map.workers_logout "workers/logout", :controller => "workers", :action => "logout", :conditions => GET
 
   map.resources :employers, :collection => { :log_in => :post, :log_out => :get }, :only => [:new, :create, :index]
 	map.resources :resumes, :collection => { :login => :get, :log_in => :post, :log_out => :get, :my => :get }
