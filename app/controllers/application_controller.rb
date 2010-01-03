@@ -27,8 +27,8 @@ protected
   end
   
   def current_employer
-    @current_employer = Employer.find(session[:employer_id]) if session[:employer_id] unless instance_variable_defined?(:@current_employer)
-    @current_employer
+    return @current_employer if defined? @current_employer
+    @current_employer = session[:employer_id] ? Employer.find_by_id(session[:employer_id]) : nil
   end
   
   def current_employer?
@@ -45,4 +45,21 @@ protected
       login == ADMIN_LOGIN && password == ADMIN_PASSWORD
     end
   end  
+  
+  def resume_required
+    current_resume || redirect_to(workers_login_path)
+  end
+  
+  def current_resume
+    return @current_resume if defined? @current_resume
+    resume_id = session[:resume_id] || cookies[:resume_id]
+    if @current_resume = resume_id ? Resume.find_by_id(resume_id) : nil
+      session[:resume_id] = @current_resume.id
+      cookies[:resume_id] = @current_resume.id
+    else
+      session[:resume_id] = nil
+      cookies.delete(:resume_id)
+    end
+    @current_resume
+  end
 end

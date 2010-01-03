@@ -31,9 +31,9 @@
 						</div>
 					<td class='spacer'>
 					<td class='spacer'>
-					<td id='workers-tab' class='tab'><a href='/vacancies'>Работникам</a>
+					<td id='workers-tab' class='tab'><a href='<%= vacancies_path %>'>Работникам</a>
 					<td class='spacer'>
-					<td id='employers-tab' class='tab'><a href='/employers'>Работодателям</a>
+					<td id='employers-tab' class='tab'><a href='<%= employers_path %>'>Работодателям</a>
 					<td class='spacer'>
 			</table>
 			
@@ -41,13 +41,13 @@
 				<div id='<%= @current_navbar %>'>
   				<% case @current_navbar
   					 when "workers-nav-bar" %>
-  					<a id='vacancy-search-link' href='/vacancies' class='ui'>Поиск вакансий</a>
-  					<a id='my-resume-link' href='/resumes/my' class='ui'>Моё резюме</a>
+  					<a id='vacancy-search-link' href='<%= vacancies_path %>' class='ui'>Поиск вакансий</a>
+  					<a id='my-resume-link' href='<%= my_resumes_path %>' class='ui'>Моё резюме</a>
   				<% when "pro-employers-nav-bar" %>
-  					<a id='resume-search-link' href='/resumes' class='ui'>Поиск резюме</a>
+  					<a id='resume-search-link' href='<%= resumes_path %>' class='ui'>Поиск резюме</a>
   					<a id='vacancies-link' href='<%= employer_vacancies_path %>' class='ui'>Мои вакансии</a>
   				<% when "casual-employers-nav-bar" %>
-  					<a id='resume-search-link' href='/resumes' class='ui'>Поиск резюме</a>
+  					<a id='resume-search-link' href='<%= resumes_path %>' class='ui'>Поиск резюме</a>
   					<a id='vacancies-link' href='<%= new_employer_vacancy_path %>' class='ui'>Публикация вакансий</a>
   				<% end %>
 				  <% if current_employer %>

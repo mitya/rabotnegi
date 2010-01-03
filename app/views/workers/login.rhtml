@@ -1,10 +1,12 @@
 <% page "workers-login", "Размещение резюме", :path => %w(workers workers my-resume) %>
 
-<h2><a href='/resumes/new' class='ui'>Опубликовать резюме</a></h2>
+<h2><a href='<%= new_resume_path %>' class='ui'>Опубликовать резюме</a></h2>
 <br>
+
 или
+
 <h2>Отредактировать резюме</h2>
-<% form_tag log_in_resumes_path, :method => :post, :id => 'workers-login-form' do %>
+<% form_tag workers_login_path, :method => :post, :id => 'workers-login-form' do %>
 <% wrapper do %>
 		<%= tr :name, 'Имя, фамилия', text_field_tag(:name, params[:name]) %>
 		<%= tr :password, 'Пароль', password_field_tag(:password, params[:password]) %>    
