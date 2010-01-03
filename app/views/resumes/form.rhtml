@@ -11,8 +11,8 @@
 	<% end %>
 
 	<% section :title => 'Требования к работе', :id => 'job-info' do %>
-		<%= f.tr :city, 'Город', f.select(:city, cities) %>
-		<%= f.tr :industry, 'Отрастль', f.group_select(:industry, industry_groups) %>
+		<%= f.tr :city, 'Город', f.select(:city, ModelHelper::CityOptions) %>
+		<%= f.tr :industry, 'Отрастль', f.grouped_select(:industry, ModelHelper::IndustryOptions) %>
 		<%= f.tr :job_title, 'Должность', f.text_field(:job_title), :required => true %>
 		<%= f.tr :min_salary, 'Зарплата', f.text_field(:min_salary), :before => 'от', :after => 'рублей' %>
 	<% end %>
