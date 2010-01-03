@@ -9,8 +9,8 @@
 	<%= tr2 errors_for(@vacancy) %>
 	<%= f.tr :employer_name, 'Работодатель', f.text_field(:employer_name) unless current_employer %>
 	<%= f.tr :title, 'Должность', f.text_field(:title), :required => true %>
-	<%= f.tr :city, 'Город', f.select(:city, cities) %>
-	<%= f.tr :industry, 'Отрасль', f.group_select(:industry, industry_groups) %>
+	<%= f.tr :city, 'Город', f.select(:city, ModelHelper::CityOptions) %>
+	<%= f.tr :industry, 'Отрасль', f.grouped_select(:industry, ModelHelper::IndustryOptions) %>
 	<%= f.tr :salary_text, 'Зарплата', f.text_field(:salary_text), :after => 'рублей', :comment => 'Формат: 10000 | от 10000 | до 20000 | от 10000 до 20000.' %>
 	<%= f.tr :description, 'Описание', f.text_area(:description), :required => true, :high => true %>
 	<%= tr2 submit_section(@vacancy.new_record? ? 'Опубликовать' : 'Сохранить') %>
