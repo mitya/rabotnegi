@@ -1,6 +1,6 @@
 class EmployersController < ApplicationController
 	def index
-		redirect pro_employer_vacancies_path if current_employer?
+		redirect employer_vacancies_path if current_employer?
 	end
 	
 	def new
@@ -12,7 +12,7 @@ class EmployersController < ApplicationController
 		@employer.save_with_captcha!
 		flash[:notice] = "Работодатель «#{@employer}» зарегистрирован"
 		session[:employer_id] = @employer.id
-		redirect pro_employer_vacancies_path
+		redirect employer_vacancies_path
 	rescue RecordInvalid
 		template :new, :status => 422
 	end
@@ -20,7 +20,7 @@ class EmployersController < ApplicationController
 	def log_in
 		@employer = Employer.authenticate(params[:login], params[:password])
 		session[:employer_id] = @employer.id
-		redirect pro_employer_vacancies_path
+		redirect employer_vacancies_path
 	rescue ArgumentError
 		flash[:error] = 'Неправильная комбинация логина и пароля'
 		template :index	  
