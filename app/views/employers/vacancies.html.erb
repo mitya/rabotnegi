@@ -7,11 +7,10 @@
 			<tr>
 				<td class='controls'>
 					<span>
-  					<%= link_to image_tag('edit.gif', :title => 'Редактировать', :alt => 'Редактировать'), edit_employer_vacancy_path(vacancy), :class => 'ui' %>
-  					<%= link_to image_tag('delete.gif', :title => 'Удалить', :alt => 'Удалить'), [:pro_employer, vacancy],
-  							:confirm => "Удаляем «#{vacancy.title}», да?", :method => :delete, :class => 'ui' %>
+  					<%= link_to edit_icon, edit_employer_vacancy_path(vacancy), :class => 'ui' %>
+  					<%= link_to delete_icon, employer_vacancy_path(vacancy), :class => 'ui', :confirm => "Удаляем «#{vacancy.title}», да?", :method => :delete %>
 					</span>
-				<th><%= link_to vacancy.title, [:pro_employer, vacancy], :class => 'ui'  %>
+				<th><%= link_to vacancy.title, employer_vacancy_path(vacancy), :class => 'ui' %>
 				<td><%= vacancy.salary %>
 		<% end %>
 	</table>

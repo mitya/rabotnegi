@@ -33,7 +33,7 @@
 					<td class='spacer'>
 					<td id='workers-tab' class='tab'><a href='<%= vacancies_path %>'>Работникам</a>
 					<td class='spacer'>
-					<td id='employers-tab' class='tab'><a href='<%= employers_path %>'>Работодателям</a>
+					<td id='employers-tab' class='tab'><a href='<%= employer_home_path %>'>Работодателям</a>
 					<td class='spacer'>
 			</table>
 			
@@ -42,7 +42,7 @@
   				<% case @current_navbar
   					 when "workers-nav-bar" %>
   					<a id='vacancy-search-link' href='<%= vacancies_path %>' class='ui'>Поиск вакансий</a>
-  					<a id='my-resume-link' href='<%= my_resume_path %>' class='ui'>Моё резюме</a>
+  					<a id='my-resume-link' href='<%= resume_path %>' class='ui'>Моё резюме</a>
   				<% when "pro-employers-nav-bar" %>
   					<a id='resume-search-link' href='<%= resumes_path %>' class='ui'>Поиск резюме</a>
   					<a id='vacancies-link' href='<%= employer_vacancies_path %>' class='ui'>Мои вакансии</a>
@@ -52,7 +52,7 @@
   				<% end %>
 				  <% if current_employer %>
 				    <span style='float: right; padding-right: 20px'>
-    					<%= current_employer %> |<%= link_to 'Выйти', log_out_employers_path, { :class => 'ui' } %>
+    					<%= current_employer %> |<%= link_to 'Выйти', employer_logout_path, { :class => 'ui' } %>
 				    </span>
 					<% end %>
 				</div>

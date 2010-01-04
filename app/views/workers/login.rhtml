@@ -6,7 +6,7 @@
 или
 
 <h2>Отредактировать резюме</h2>
-<% form_tag workers_login_path, :method => :post, :id => 'workers-login-form' do %>
+<% form_tag worker_login_path, :method => :post, :id => 'workers-login-form' do %>
 <% wrapper do %>
 		<%= tr :name, 'Имя, фамилия', text_field_tag(:name, params[:name]) %>
 		<%= tr :password, 'Пароль', password_field_tag(:password, params[:password]) %>    

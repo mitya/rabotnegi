@@ -1,4 +1,4 @@
-class EmployerVacanciesController < ApplicationController
+class Employers::VacanciesController < ApplicationController
   before_filter :employer_required, :except => %w(new create)
   before_filter :load_vacancy, :only => %w(show edit update destroy)
 
@@ -15,7 +15,7 @@ class EmployerVacanciesController < ApplicationController
     end
     @vacancy.save!
     flash[:notice] = 'Вакансия опубликована'
-    redirect_to employers_path
+    redirect_to employer_path
   rescue RecordInvalid
     render 'employers/vacancy_form'
   end

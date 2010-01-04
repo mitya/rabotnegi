@@ -1,18 +1,16 @@
 <% page "edit-vacancy", "Новая вакансия", :path => %w(employers casual-employers vacancies) %>
 
-<% url = current_employer??
-  (@vacancy.new_record? ? employer_vacancies_path : [:pro_employer, @vacancy]) :
-  (@vacancy.new_record? ? employer_vacancies_path : [:casual_employer, @vacancy]) %>
+<% url = @vacancy.new_record? ? employer_vacancies_path : employer_vacancy_path(@vacancy) %>
 <% form_for @vacancy, :html => { :id => 'vacancy-edit-form' }, :url => url do |f| %>
-<% wrapper do %>
-  <%= tr2 content_tag(:h1, @page_title, :class => "page_title") %>
-	<%= tr2 errors_for(@vacancy) %>
-	<%= f.tr :employer_name, 'Работодатель', f.text_field(:employer_name) unless current_employer %>
-	<%= f.tr :title, 'Должность', f.text_field(:title), :required => true %>
-	<%= f.tr :city, 'Город', f.select(:city, ModelHelper::CityOptions) %>
-	<%= f.tr :industry, 'Отрасль', f.grouped_select(:industry, ModelHelper::IndustryOptions) %>
-	<%= f.tr :salary_text, 'Зарплата', f.text_field(:salary_text), :after => 'рублей', :comment => 'Формат: 10000 | от 10000 | до 20000 | от 10000 до 20000.' %>
-	<%= f.tr :description, 'Описание', f.text_area(:description), :required => true, :high => true %>
-	<%= tr2 submit_section(@vacancy.new_record? ? 'Опубликовать' : 'Сохранить') %>
-<% end %>
+  <% wrapper do %>
+    <%= tr2 content_tag(:h1, @page_title, :class => "page_title") %>
+  	<%= tr2 errors_for(@vacancy) %>
+  	<%= f.tr :employer_name, 'Работодатель', f.text_field(:employer_name) unless current_employer %>
+  	<%= f.tr :title, 'Должность', f.text_field(:title), :required => true %>
+  	<%= f.tr :city, 'Город', f.select(:city, ModelHelper::CityOptions) %>
+  	<%= f.tr :industry, 'Отрасль', f.grouped_select(:industry, ModelHelper::IndustryOptions) %>
+  	<%= f.tr :salary_text, 'Зарплата', f.text_field(:salary_text), :after => 'рублей', :comment => 'Формат: 10000 | от 10000 | до 20000 | от 10000 до 20000.' %>
+  	<%= f.tr :description, 'Описание', f.text_area(:description), :required => true %>
+  	<%= tr2 submit_section(@vacancy.new_record? ? 'Опубликовать' : 'Сохранить') %>
+  <% end %>
 <% end %>
