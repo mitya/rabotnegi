@@ -68,7 +68,7 @@ module ApplicationHelper
   end
   
   def back_to_all_vacancies_url_for(vacancy)
-    request.referer =~ /vacancies/ ? :back : nice_vacancies_path(:city => vacancy.city, :industry => vacancy.industry)
+    request.referer =~ /vacancies/ ? :back : vacancies_path(vacancy.city, vacancy.industry)
   end
 end
 

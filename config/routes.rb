@@ -4,12 +4,10 @@ ActionController::Routing::Routes.draw do |map|
   PUT = { :method => :put } unless defined? PUT
   DELETE = { :method => :delete } unless defined? DELETE
 
-  map.nice_vacancies '/vacancies/:city/:industry', :controller => 'vacancies', :action => 'index',
-    :requirements => {:city => /(?!(new|my|\d+))\w*/},
-    :defaults => {:city => nil, :industry => nil},
-    :conditions => { :method => :get }
+  map.vacancies "vacancies/:city/:industry", :controller => 'vacancies', :action => 'index', :conditions => GET,
+    :requirements => {:city => /(?!(new|my|\d+))\w*/}, :defaults => {:city => nil, :industry => nil}
 
-	map.resources :vacancies, :only => [:index, :show]
+	map.resources :vacancies, :only => :show
 
   map.resource :employer, :only => [:new, :create] do |employer|
     employer.root :controller => "employers", :action => "welcome", :conditions => GET
@@ -18,11 +16,14 @@ ActionController::Routing::Routes.draw do |map|
     employer.resources :vacancies, :path_prefix => 'employer', :name_prefix => 'employer_', :namespace => "employers/"    
   end
   
-  map.worker_login "worker/login", :controller => "workers", :action => "login_page", :conditions => GET
-  map.worker_login "worker/login", :controller => "workers", :action => "login", :conditions => POST
-  map.worker_logout "worker/logout", :controller => "workers", :action => "logout", :conditions => GET
+  map.resource :worker, :only => :none do |worker|
+    worker.login "login", :controller => "workers", :action => "login_page", :conditions => GET
+    worker.login "login", :controller => "workers", :action => "login", :conditions => POST
+    worker.logout "logout", :controller => "workers", :action => "logout", :conditions => GET
+  end
 
 	map.resource :resume
+	
 	map.resources :resumes, :only => %w(index)
   
   map.namespace :admin do |admin|
