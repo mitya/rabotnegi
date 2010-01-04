@@ -65,7 +65,7 @@ $("body#vacancies").loaded(function() {
   
   $("#vacancies-search-form").submit(function() {
     var form = this
-     var url = form.action + '/' + form.city.value
+     var url = '/vacancies/' + form.city.value
      if (form.industry.value.present()) {
        url += '/' + form.industry.value
      }   
