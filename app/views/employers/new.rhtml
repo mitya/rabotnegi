@@ -1,13 +1,13 @@
 <% page "employers-signup", "Регистрация работодателя", :path => %w(employers casual-employers) %>
 
-<% form_for @employer do |f| %>
-<% wrapper do %>
-  <%= tr2 errors_for(@employer) %>
-	<%= f.tr :name, 'Название компании', f.text_field(:name) %>
-	<%= f.tr :login, 'Логин', f.text_field(:login) %>
-	<%= f.tr :password, 'Пароль', f.password_field(:password) %>
-	<%= f.tr :password_confirmation, 'Подтверждение пароля', f.password_field(:password_confirmation) %>
-	<%= trb label_tag(nil, 'Надпись на картинке:'), show_simple_captcha(:object => 'employer') %>
-	<%= tr2 submit_tag('Зарегистрироваться') %>
-<% end %>
+<% form_for @employer, :url => employer_path do |f| %>
+  <% wrapper do %>
+    <%= tr2 errors_for(@employer) %>
+  	<%= f.tr :name, 'Название компании', f.text_field(:name) %>
+  	<%= f.tr :login, 'Логин', f.text_field(:login) %>
+  	<%= f.tr :password, 'Пароль', f.password_field(:password) %>
+  	<%= f.tr :password_confirmation, 'Подтверждение пароля', f.password_field(:password_confirmation) %>
+  	<%= trb label_tag(nil, 'Надпись на картинке:'), show_simple_captcha(:object => 'employer') %>
+  	<%= tr2 submit_tag('Зарегистрироваться') %>
+  <% end %>
 <% end %>

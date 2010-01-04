@@ -1,8 +1,4 @@
 class EmployersController < ApplicationController
-	def index
-		redirect_to employer_vacancies_path if current_employer?
-	end
-	
 	def new
 		@employer = Employer.new
 	end
@@ -16,17 +12,22 @@ class EmployersController < ApplicationController
 	rescue RecordInvalid
 		render :new, :status => 422
 	end
+
+	def welcome
+		redirect_to employer_vacancies_path if current_employer?
+		render :index
+	end
 	
-	def log_in
+	def login
 		@employer = Employer.authenticate(params[:login], params[:password])
 		session[:employer_id] = @employer.id
 		redirect_to employer_vacancies_path
 	rescue ArgumentError
 		flash[:error] = 'Неправильная комбинация логина и пароля'
-		render :index	  
+		render :index
 	end
 
-	def log_out
+	def logout
 		reset_session
 		flash[:notice] = 'Вы вышли из системы'
 		redirect_to employer_vacancies_path

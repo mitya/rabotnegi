@@ -11,15 +11,19 @@ ActionController::Routing::Routes.draw do |map|
 
 	map.resources :vacancies, :only => [:index, :show]
 
-  map.resources :employers, :collection => { :log_in => :post, :log_out => :get }, :only => [:new, :create, :index]
-  map.resources :vacancies, :path_prefix => 'employers', :name_prefix => 'employer_', :controller => "employer_vacancies"
+  map.resource :employer, :only => [:new, :create] do |employer|
+    employer.root :controller => "employers", :action => "welcome", :conditions => GET
+    employer.login "login", :controller => "employers", :action => "login", :conditions => POST
+    employer.logout "logout", :controller => "employers", :action => "logout", :conditions => GET
+    employer.resources :vacancies, :path_prefix => 'employer', :name_prefix => 'employer_', :namespace => "employers/"    
+  end
+  
+  map.worker_login "worker/login", :controller => "workers", :action => "login_page", :conditions => GET
+  map.worker_login "worker/login", :controller => "workers", :action => "login", :conditions => POST
+  map.worker_logout "worker/logout", :controller => "workers", :action => "logout", :conditions => GET
 
-  map.workers_login "workers/login", :controller => "workers", :action => "login_page", :conditions => GET
-  map.workers_login "workers/login", :controller => "workers", :action => "login", :conditions => POST
-  map.workers_logout "workers/logout", :controller => "workers", :action => "logout", :conditions => GET
-
-	map.my_resume "resumes/my", :controller => "resumes", :action => "my", :conditions => GET
-	map.resources :resumes
+	map.resource :resume
+	map.resources :resumes, :only => %w(index)
   
   map.namespace :admin do |admin|
     admin.root :controller => 'dashboard', :action => 'show', :conditions => GET

@@ -9,14 +9,16 @@
   	<td id='pro-div'>
   		<h2>Публикуете много вакансий?</h2>
   		<h3 id='register-h'><%= link_to "Зарегистрируйтесь", new_employer_path, :class => 'ui' %></h3>
-  		<p id='or-p'>или
+
+  		<p id='or-p'>или<p>
+
   		<h3 id='login-h'>Войдите в систему</h3>
-  		<% form_tag log_in_employers_path, :method => :post, :id => 'employer-login' do %>
-  	  <% wrapper do %>
-  			<%= tr :login, 'Логин', text_field_tag(:login, params[:login]) %>
-  			<%= tr :password, 'Пароль', password_field_tag(:password, params[:password]) %>
-  			<%= tr2 submit_tag('Войти', :class => 'button') %>
-  		<% end %>
+  		<% form_tag employer_login_path, :method => :post, :id => 'employer-login' do %>
+    	  <% wrapper do %>
+    			<%= tr :login, 'Логин', text_field_tag(:login, params[:login]) %>
+    			<%= tr :password, 'Пароль', password_field_tag(:password, params[:password]) %>
+    			<%= tr2 submit_tag('Войти', :class => 'button') %>
+    		<% end %>
   		<% end %>
   	</td>
   </tr>

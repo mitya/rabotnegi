@@ -1,6 +1,6 @@
 <% page "edit-resume", @resume.new_record? ? 'Создание резюме' : 'Редактирование резюме', :path => %w(workers workers my-resume) %>
 
-<% form_for @resume, :html => {:id => "resume-form"} do |f| %>
+<% form_for @resume, :url => resume_path, :html => {:id => "resume-form"} do |f| %>
 <% wrapper do %>
   <%= tr2 content_tag(:h1, @page_title, :class => "page_title") %>
 	<%= tr2 errors_for(@resume) %>

@@ -1,9 +1,9 @@
 <% page "view-resume", "Моё резюме", :path => %w(workers workers my-resume) %>
 
 <p>
-  <%= link_to 'Редактировать', edit_resume_path('my'), :class => 'ui' %> |
-  <%= link_to 'Удалить', resume_path('my'), :method => :delete, :class => 'ui' %> |
-  <%= link_to 'Выход', workers_logout_path, :class => 'ui' %>  
+  <%= link_to 'Редактировать', edit_resume_path, :class => 'ui' %> |
+  <%= link_to 'Удалить', resume_path, :method => :delete, :class => 'ui' %> |
+  <%= link_to 'Выход', worker_logout_path, :class => 'ui' %>  
 </p>
 
 <hr>
