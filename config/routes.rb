@@ -26,8 +26,8 @@ ActionController::Routing::Routes.draw do |map|
 	
 	map.resources :resumes, :only => %w(index)
   
-  map.namespace :admin do |admin|
-    admin.root :controller => 'dashboard', :action => 'show', :conditions => GET
+  map.admin_dashboard "admin", :controller => 'admin', :action => "dashboard", :conditions => GET
+  map.namespace :admin do |admin|    
 		admin.resources :vacancies
   end
 
