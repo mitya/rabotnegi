@@ -4,12 +4,12 @@ class VacanciesController < ApplicationController
   def index
     @vacancies = Vacancy.
       search(params.slice(:city, :industry, :q)).
-      paginate(:page => params[:p], :per_page => 50, :order_by => params[:s] || 'salary_min', 
-							 :select => 'id, title, external_id, salary_min, salary_max, employer_name') if params[:city]
+      all(:order => params[:s] || :salary_min).
+      paginate(:page => params[:p], :per_page => 50) if params[:city]
   end
 
   def show
-    @vacancy = Vacancy.find(params[:id])
+    @vacancy = Vacancy.get(params[:id])
     respond_to do |f|
       f.html
       f.ajax { render :partial => "vacancy", :object => @vacancy }

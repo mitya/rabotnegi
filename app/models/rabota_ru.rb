@@ -72,6 +72,7 @@ module RabotaRu
     end
 
   private
+  
     # Загружает RSS-ленты в файлы в tmp/rabotaru/:industry.rss.
     # Предварительно очищает рабочий каталог.
     def load_to_files
@@ -176,6 +177,7 @@ module RabotaRu
     end
 
   private
+  
     def get(hash, *keys)
       result = hash
       keys.each do |key|

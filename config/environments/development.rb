@@ -4,3 +4,9 @@ config.action_controller.consider_all_requests_local = true
 config.action_controller.perform_caching             = false
 config.action_view.debug_rjs                         = true
 config.action_mailer.raise_delivery_errors = false
+
+config.after_initialize do
+  DataMapper.logger.set_log(File.join(Rails.root, "log/#{Rails.env}.log"), :debug)
+  DataMapper.logger.auto_flush = true
+  DataMapper.setup(:default, 'mysql://localhost/rabotnegi_dev')  
+end
