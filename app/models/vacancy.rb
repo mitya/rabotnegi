@@ -1,25 +1,33 @@
-class Vacancy < ActiveRecord::Base
-  property :title,         :string,   :null => false, :limit => 255
-  property :description,   :text,     :null => false, :default => ''
-  property :external_id,   :integer   
-  property :industry,      :string,   :null => false, :limit => 255
-  property :city,          :string,   :null => false, :limit => 255
-  property :salary_min,    :integer   
-  property :salary_max,    :integer   
-  property :employer_id,   :integer   
-  property :employer_name, :string,   :limit => 255
+class Vacancy
+  include DataMapper::Resource
+
+  property :id,            Serial
+  property :title,         String, :required => true, :length => 255
+  property :description,   Text, :required => true
+  property :external_id,   Integer   
+  property :industry,      String, :required => true, :length => 255
+  property :city,          String, :required => true, :length => 255
+  property :salary_min,    Integer   
+  property :salary_max,    Integer   
+  property :employer_id,   Integer   
+  property :employer_name, String, :length => 255
+  property :created_at, DateTime
+  property :updated_at, DateTime
 
   belongs_to :employer
-  composed_of :salary, :mapping => {:salary_min => :min, :salary_max => :max}.to_a
-  validates_presence_of :title, :description, :industry, :city
+
   delegate :text, :text=, :to => :salary, :prefix => true
 
   def eql?(other)
-    external_id? && other.external_id? ? external_id == other.external_id : super
+    self.external_id? && other.external_id? ? self.external_id == other.external_id : super
   end
 
   def to_s
     title
+  end
+  
+  def salary
+    @salary ||= Salary.new(salary_min, salary_max)
   end
   
   def city_name
@@ -30,26 +38,34 @@ class Vacancy < ActiveRecord::Base
     Industry.get(industry).name
   end
   
-protected
-  def after_initialize
-    if new_record?
-      self.city = 'msk' unless city.present?
-    end
+  def initialize(attributes = {})
+    super
+    self.city ||= 'msk'
   end
 
+  before :save do
+    if employer
+      self.employer_id = employer.id
+  		self.employer_name = employer.name
+    end
+  end 
+  
   def self.search(params)
-    params.symbolize_keys!
+    params = params.symbolize_keys
+    params.assert_valid_keys(:city, :industry, :q)
+    
     conditions = []
     conditions << {:city => params[:city]} if params[:city].present?
     conditions << {:industry => params[:industry]} if params[:industry].present?
-    conditions << ["title LIKE :q OR employer_name LIKE :q", {:q => "%#{params[:q]}%"}] if params[:q].present?
-    scoped :conditions => merge_conditions(*conditions)
+    conditions << {:conditions => ["title LIKE ? OR employer_name LIKE ?", "%#{params[:q]}%", "%#{params[:q]}%"]} if params[:q].present?
+
+    Rails.logger.debug conditions.inspect
+
+    conditions.inject(all) { |results, c| results.all(c) }
   end    
 
-
   def self.cleanup
-    old_vacancy_count = count :conditions => ["updated_at < ?", 2.weeks.ago]
-    logger.info "Удаление #{old_vacancy_count} вакансий"
-    delete_all ["updated_at < ?", 2.weeks.ago]
+    olds = all(:updated_at.lt => 2.weeks.ago)
+    olds.destroy!
   end
 end

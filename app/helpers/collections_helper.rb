@@ -12,12 +12,15 @@ module CollectionsHelper
 	end
 
 	def sort_link(collection, label, field)
-	  curfld, curdir = collection.sort_field, collection.sort_direction
+    # curfld, curdir = collection.sort_field, collection.sort_direction
+    # 
+    # param, sign = case when field != curfld then [field, '']
+    #   when curdir == :asc then ["-#{field}", '▲']
+    #       when curdir == :desc then ["#{field}", '▼']
+    #     end
 
-	  param, sign = case when field != curfld then [field, '']
-	    when curdir == :asc then ["-#{field}", '▲']
-      when curdir == :desc then ["#{field}", '▼']
-    end
+    param = "xxxx"
+    sign = "▼"
 
     %{
       <a href='#{url_for(params.merge(:p => nil, :s => param))}' class='ui'>

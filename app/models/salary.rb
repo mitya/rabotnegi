@@ -19,6 +19,7 @@ class Salary
 	def ==(other)
 		min == other.min && max == other.max && currency == other.currency
 	end 
+	
   alias eql? ==
 
 	def to_s
