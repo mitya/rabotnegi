@@ -57,7 +57,7 @@ protected
   def current_resume
     return @current_resume if defined? @current_resume
     resume_id = session[:resume_id] || cookies[:resume_id]
-    if @current_resume = resume_id ? Resume.find_by_id(resume_id) : nil
+    if @current_resume = resume_id ? Resume.get(resume_id) : nil
       session[:resume_id] = @current_resume.id
       cookies[:resume_id] = @current_resume.id
     else

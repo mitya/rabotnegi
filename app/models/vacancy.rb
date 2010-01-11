@@ -18,8 +18,10 @@ class Vacancy
 
   delegate :text, :text=, :to => :salary, :prefix => true
 
-  def eql?(other)
-    self.external_id? && other.external_id? ? self.external_id == other.external_id : super
+  def ==(other)
+    self.external_id? && other.external_id? ? 
+      self.external_id == other.external_id : 
+      super
   end
 
   def to_s
@@ -49,7 +51,7 @@ class Vacancy
   		self.employer_name = employer.name
     end
   end 
-  
+
   def self.search(params)
     params = params.symbolize_keys
     params.assert_valid_keys(:city, :industry, :q)
@@ -58,8 +60,6 @@ class Vacancy
     conditions << {:city => params[:city]} if params[:city].present?
     conditions << {:industry => params[:industry]} if params[:industry].present?
     conditions << {:conditions => ["title LIKE ? OR employer_name LIKE ?", "%#{params[:q]}%", "%#{params[:q]}%"]} if params[:q].present?
-
-    Rails.logger.debug conditions.inspect
 
     conditions.inject(all) { |results, c| results.all(c) }
   end    
