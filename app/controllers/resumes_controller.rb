@@ -10,7 +10,7 @@ class ResumesController < ApplicationController
 
   def show
     if params[:id]
-      @resume = Resume.find(params[:id])
+      @resume = Resume.get!(params[:id])
       render :show
     else
       @resume = current_resume
@@ -19,7 +19,7 @@ class ResumesController < ApplicationController
   end
 
   def edit
-    @resume = Resume.find(session[:resume_id])
+    @resume = Resume.get!(session[:resume_id])
     render :form
   end
 
@@ -37,7 +37,7 @@ class ResumesController < ApplicationController
   end
   
   def update
-    @resume = Resume.find(session[:resume_id])
+    @resume = Resume.get!(session[:resume_id])
     @resume.update_attributes!(params[:resume])
     flash[:notice] = "Резюме сохранено"
     redirect_to resume_path

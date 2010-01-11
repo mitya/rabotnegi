@@ -4,20 +4,6 @@ require 'pp'
 Vacancy.all(:city => "msk").count
 
 
-Vacancy.all(:select => 'id, title').size
+v = Vacancy.create(:title => "Test 1", :description => "Hey", :industry => "it", :city => "msk")
+
 Employer.first
-
-conditions = [{:city => "msk"}, {:industry => "it"}, ["title LIKE ? OR employer_name LIKE ?", "%java%", "%java%"]]
-
-conditions.inject(Vacancy.all) { |results, c| results.all(:conditions => c) }.size
-
-Vacancy.all(:city => "msk").all(:industry => "it").paginate(:page => 1, :per_page => 50)
-Vacancy.all(:conditions => {:city => "msk"}).all(:conditions => {:industry => "it"}).paginate(:page => 1, :per_page => 50)
-
-Vacancy.all(:title.like => "%java%")
-Vacancy.all(:conditions => {:title.like => "%java%"})
-Vacancy.all(:conditions => ["`title` LIKE ?", "%java%"]).all(:conditions => {:city => "msk"})
-
-
-
-Vacancy.search(:city => "msk", :industry => "it")

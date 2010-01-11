@@ -46,7 +46,7 @@ class Resume
   def self.authenticate(name, password)
 	  name =~ /(\w+)\s+(\w+)/ || raise(ArgumentError, "Имя имеет неправильный формат")
 	  first, last = $1, $2
-	  resume = first(:lname => lname, :fname => fname) || raise(ArgumentError, "Резюме «#{name}» не найдено")
+	  resume = first(:lname => last, :fname => first) || raise(ArgumentError, "Резюме «#{name}» не найдено")
     resume.password == password || raise(ArgumentError, "Неправильный пароль")
     resume
 	end

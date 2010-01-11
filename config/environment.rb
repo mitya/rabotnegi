@@ -10,6 +10,7 @@ Rails::Initializer.run do |config|
   config.gem "dm-core"
   config.gem "dm-validations"
   config.gem "dm-aggregates"
+  config.gem "dm-timestamps"
 
   # config.frameworks -= [ :active_record ]
 

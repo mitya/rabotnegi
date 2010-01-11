@@ -17,7 +17,9 @@ class Salary
 	def range?; @max && @min && @max != @min end
 
 	def ==(other)
-		min == other.min && max == other.max && currency == other.currency
+		self.min == other.min && 
+		self.max == other.max && 
+		self.currency == other.currency
 	end 
 	
   alias eql? ==
