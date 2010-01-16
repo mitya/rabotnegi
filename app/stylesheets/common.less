@@ -68,11 +68,12 @@ a span.sort-mark { text-decoration:none }
 
 /* Pagination */
 .pagination {
-  a { padding: 3px 4px; text-decoration: none; }
-  a:hover { color: white; background: blue;  }
-  a:visited:hover { color: white; background: purple;  }
-  span.current { padding: 3px 4px; color: white; background: black; cursor: default; }
-  span.disabled { color: gray; }
+  em { font-style: normal; padding: 5px 10px; color: white; background: black; cursor: default; }
+  a { padding: 5px 10px; text-decoration: none; }
+  a:visited { color: @link_color; }
+  a:hover { color: white; background: @link_color;  }
+  a:visited:hover { color: white; background: @link_color;  }
+  span.disabled { color: #ccc; }
 }
 
 span.spinner { background: green; color: white; }

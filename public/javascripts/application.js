@@ -49,12 +49,10 @@ $("body#vacancies").loaded(function() {
       $row.find("td:first").append(new Spinner())
       $.get('/vacancies/' + vacancy_id + '.ajax', function(html) {
         var $desc = $(html).insertAfter($row)
+    		$row.addClass('loaded')
+    		$desc.addClass('loaded')
       	if ($row.hasClass('alt')) {
-      		$row.addClass('alt-active')
-      		$desc.addClass('alt-active').addClass('alt-desc-active')
-      	} else {
-      		$row.addClass('active')
-      		$desc.addClass('active').addClass('desc-active')
+      		$desc.addClass('alt')
       	}
         $row.find(".spinner").remove()
       	$desc.find(".content").slideDown()
