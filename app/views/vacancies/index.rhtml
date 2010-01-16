@@ -17,6 +17,7 @@
       		<th class='pos'><%= sort_link @vacancies, "Должность", :title %>
       		<th class='emp'><%= sort_link @vacancies, "Компания", :employer_name %>
     		  <th class='sal'><%= sort_link @vacancies, "Зарплата", :salary_min %>
+    		</tr>
       </thead>
   	
       <tbody>
@@ -25,11 +26,16 @@
       			<td class='pos'><a href='<%= vacancy_path(id) %>'><%= vacancy.title %></a>
       			<td class='emp'><%= vacancy.employer_name %>
       			<td class='sal'><%= vacancy.salary %>
+      		</tr>
       	<% end %>
       </tbody>
     
       <tfoot>
-        <%= render "pager" if @vacancies.total_pages > 1 %>
+        <tr>
+          <td colspan='3' class='pagination'>        
+            <%= render "pager" if @vacancies.total_pages > 1 %>
+          </td>
+        </tr>
       </tfoot>
     </table>
 

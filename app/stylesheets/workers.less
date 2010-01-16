@@ -3,37 +3,60 @@
 body#vacancies {
   #content { margin: 0; }
 
-  .search-result-message {margin: 1em 0 0.5em 0; text-align: center;}
+  .search-result-message {
+    margin: 5px 0;
+    text-align: center;
+  }
 
   table.vacancies-list {
     width: 100%;
-    margin: 30px 0;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    
     span.pos {font-weight: bold; }
-    td.sal, th.sal {text-align: right; white-space:nowrap }
-    td.pos, th.pos {text-align: left}
-    td.emp, th.emp {text-align: left}
-    thead tr { background: #dfefff; }
-    thead tr th { padding: 10px 5px; }
-    tfoot tr {	background: #dfefff; }
-    tfoot tr td { padding: 10px 5px; }
-    tr.alt { background: #eee; }
-    tbody tr.active {background:#ffc}
-    tbody tr.desc-active td {padding-bottom: 5px;}
-    tbody tr.alt-active {background:#cfc}
-    tbody tr.alt-desc-active td {padding-bottom: 5px;}
-    tbody tr.desc td { padding: 0 5px; }
-    tbody tr.desc div.content {white-space: pre-wrap}
-    tbody tr.desc div.content a.rabota-ru {float: right;}
-    tbody tr.header:hover { background: #ffc; cursor: pointer;}
-    tbody tr.header.alt:hover { background: #cfc; cursor: pointer;}
-    tbody tr.header td {padding:4px 5px}
-    tbody tr.header td a { color: black; text-decoration: none; }
+
+    td, th { padding: 5px; border-top: 1px solid #ccc; }
+
+    td.pos, th.pos { text-align: left; width: 52%; }
+    td.emp, th.emp { text-align: left; width: 30%;}
+    td.sal, th.sal { text-align: right; white-space: nowrap; width: 18%; }
+
+    thead {
+      tr { background: #f3f3f3; }
+      a { text-decoration: none; }
+    } 
+
+    tfoot {
+      tr {	background: #f3f3f3; }
+    }
+    
+    tbody {
+      tr.header {
+        td { background: #f3f3f3; }
+        td.pos { background: #e3e3e3; }
+        a { color: black; text-decoration: none; font-weight: bold; }
+        span.spinner { background: green; color: white; padding: 5px; }
+      }       
+      
+      tr.header:hover { cursor: pointer; }
+       
+      tr.desc {
+        td { padding: 0; border: none; color: #666; }
+        td div.content { 
+/*          white-space: pre-wrap;                    */
+          div.inner { margin: 5px 5px 10px; }
+          p.links { float: right; }
+          ul { margin: 5px 0; padding: 0 0 0 20px; }
+        }
+      }
+    }    
   }  
 
   .vacancy p.links { margin-top: 10px; }
   
   #vacancies-search-form {
-    float: left;
+    width: 330px;
+    margin: 10px auto;
     padding: 10px;
     border: 1px solid silver;
     .rounded(10px);
