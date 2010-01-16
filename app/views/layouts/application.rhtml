@@ -11,52 +11,38 @@
 
 <body id="<%= @page_id %>" class="public">
 	<div id='header'>
-		<div id='nav'>
-			<table id='tab-bar' data-selected-tab='#<%= @current_tab %>'>
-				<col width=10>
-				<col width=1>
-				<col width=10>
-				<col width=10>
-				<col width=1>
-				<col width=10>
-				<col width=1>
-				<col width=*>
-				<tr>
-					<td class='spacer'>
-					<td id='logo-pseudo-tab'>
-						<div id='logo'>
-							<a href='/'>
-								<span id='logo-pro'>Р</span><span id='logo-rabotu'>аботнеги.ру</span>
-							</a>
-						</div>
-					<td class='spacer'>
-					<td class='spacer'>
-					<td id='workers-tab' class='tab'><a href='<%= vacancies_path %>'>Работникам</a>
-					<td class='spacer'>
-					<td id='employers-tab' class='tab'><a href='<%= employer_home_path %>'>Работодателям</a>
-					<td class='spacer'>
-			</table>
-			
-			<div id='nav-bar' data-selected-link='<%= @current_navlink && "##{@current_navlink}" %>'>
-				<div id='<%= @current_navbar %>'>
-  				<% case @current_navbar
-  					 when "workers-nav-bar" %>
-  					<a id='vacancy-search-link' href='<%= vacancies_path %>' class='ui'>Поиск вакансий</a>
-  					<a id='my-resume-link' href='<%= resume_path %>' class='ui'>Моё резюме</a>
-  				<% when "pro-employers-nav-bar" %>
-  					<a id='resume-search-link' href='<%= resumes_path %>' class='ui'>Поиск резюме</a>
-  					<a id='vacancies-link' href='<%= employer_vacancies_path %>' class='ui'>Мои вакансии</a>
-  				<% when "casual-employers-nav-bar" %>
-  					<a id='resume-search-link' href='<%= resumes_path %>' class='ui'>Поиск резюме</a>
-  					<a id='vacancies-link' href='<%= new_employer_vacancy_path %>' class='ui'>Публикация вакансий</a>
-  				<% end %>
-				  <% if current_employer %>
-				    <span style='float: right; padding-right: 20px'>
-    					<%= current_employer %> |<%= link_to 'Выйти', employer_logout_path, { :class => 'ui' } %>
-				    </span>
-					<% end %>
-				</div>
-			</div>
+    <div id="logo">
+    	<a href='/'>
+    		<span id='logo-pro'>Р</span><span id='logo-rabotu'>аботнеги.ру</span>
+    	</a>
+    </div>
+
+    <ul id='tabs' data-selected='#<%= @current_tab %>'>
+      <li id='workers-tab' class="tab">
+        <a href='<%= vacancies_path %>'>Работникам</a>
+      </li>
+      <li id='employers-tab' class="tab">
+        <a href='<%= employer_home_path %>'>Работодателям</a>
+      </li>
+    </ul>
+
+		<div id='links' data-selected='<%= @current_navlink && "##{@current_navlink}" %>'>
+			<% case @current_navbar
+				 when "workers-nav-bar" %>
+				<a id='vacancy-search-link' href='<%= vacancies_path %>' class='ui'>Поиск вакансий</a>
+				<a id='my-resume-link' href='<%= resume_path %>' class='ui'>Моё резюме</a>
+			<% when "pro-employers-nav-bar" %>
+				<a id='resume-search-link' href='<%= resumes_path %>' class='ui'>Поиск резюме</a>
+				<a id='vacancies-link' href='<%= employer_vacancies_path %>' class='ui'>Мои вакансии</a>
+			<% when "casual-employers-nav-bar" %>
+				<a id='resume-search-link' href='<%= resumes_path %>' class='ui'>Поиск резюме</a>
+				<a id='vacancies-link' href='<%= new_employer_vacancy_path %>' class='ui'>Публикация вакансий</a>
+			<% end %>
+		  <% if current_employer %>
+		    <span style='float: right; padding-right: 20px'>
+					<%= current_employer %> |<%= link_to 'Выйти', employer_logout_path, { :class => 'ui' } %>
+		    </span>
+			<% end %>
 		</div>
 		
 		<%= content_tag :div, flash[:notice], :id => 'flash-notice' if flash[:notice] %>
@@ -64,11 +50,12 @@
 	</div>
 
 	<div id='content'>
-	  <%#= content_tag :h1, content_title, :class => 'page_title' if content_title %>
 		<%= yield :layout %>
 	</div>
 	
-	<div id='footer'>© 2008 Работнеги.ру</div>
+	<div id='footer'>
+	  © 2008 Работнеги.ру
+	</div>
 	
 	<% if Rails.env.development? %>
   	<pre id='sandbox'>
@@ -77,6 +64,7 @@
 	
 	<%= javascript_include_tag %w(jquery), :cache => 'pack/lib' %>
 	<%= javascript_include_tag %w(common application), :cache => 'pack/app' %>
+
 	<% if Rails.env.production? %>
   	<script>
       var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");

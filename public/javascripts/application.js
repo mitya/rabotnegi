@@ -1,6 +1,6 @@
 $("body.public").loaded(function() {
-  $("#tab-bar").attr("data-selected-tab").query().addClass("selected-tab")
-  $("#nav-bar").attr("data-selected-link").query().addClass("selected")
+  $("#tabs").attr("data-selected").query().addClass("selected")
+  $("#links").attr("data-selected").query().addClass("selected")
 })
 
 $("body#admin-vacancies").loaded(function() {
