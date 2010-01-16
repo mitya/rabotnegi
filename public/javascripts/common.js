@@ -19,7 +19,7 @@ $.extend(String.prototype, {
     return $.trim(this)
   },
   query: function() {
-    return $(this)
+    return $(this.toString())
   }
 })
 
