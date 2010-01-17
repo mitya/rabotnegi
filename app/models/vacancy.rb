@@ -63,7 +63,7 @@ class Vacancy
 
     conditions.inject(all) { |results, c| results.all(c) }
   end    
-
+  
   def self.cleanup
     olds = all(:updated_at.lt => 2.weeks.ago)
     olds.destroy!

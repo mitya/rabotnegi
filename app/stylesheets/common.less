@@ -71,9 +71,9 @@ a span.sort-mark { text-decoration:none }
   em { font-style: normal; padding: 5px 10px; color: white; background: black; cursor: default; }
   a { padding: 5px 10px; text-decoration: none; }
   a:visited { color: @link_color; }
-  a:hover { color: white; background: @link_color;  }
+  a:hover { color: white; background: @link_color; }
   a:visited:hover { color: white; background: @link_color;  }
-  span.disabled { color: #ccc; }
+  span.disabled { visibility: hidden; }
 }
 
 span.spinner { background: green; color: white; }
@@ -82,3 +82,7 @@ table.devgrid td {border: 1px dashed black;}
 br.clearer { clear: both; display: block;}
 div.message {text-align: center; font-weight: bold; padding: 8px; margin: 8px 0 8px;}
 div.warning {background: gold;}
+
+.centered {
+  margin: 0 auto;
+}
