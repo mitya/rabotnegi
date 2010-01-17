@@ -4,8 +4,8 @@ class VacanciesController < ApplicationController
   def index
     @vacancies = Vacancy.
       search(params.slice(:city, :industry, :q)).
-      all(:order => params[:s] || :salary_min).
-      paginate(:page => params[:p], :per_page => 50) if params[:city]
+      all(:order => decode_order_to_expr(params[:sort]) || :title).
+      paginate(:page => params[:page], :per_page => 50) if params[:city]
   end
 
   def show

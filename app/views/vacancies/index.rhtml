@@ -14,9 +14,9 @@
     <table class='vacancies-list'>
     	<thead>
   	    <tr>
-      		<th class='pos'><%= sort_link @vacancies, "Должность", :title %>
-      		<th class='emp'><%= sort_link @vacancies, "Компания", :employer_name %>
-    		  <th class='sal'><%= sort_link @vacancies, "Зарплата", :salary_min %>
+      		<th class='pos <%= order_class(:title) %>'><%= link_to "Должность", :sort => encode_order(:title) %>
+      		<th class='emp <%= order_class(:employer_name) %>'><%= link_to "Компания", :sort => encode_order(:employer_name) %>
+      		<th class='sal <%= order_class(:salary_min) %>'><%= link_to "Зарплата", :sort => encode_order(:salary_min) %>
     		</tr>
       </thead>
   	
@@ -43,8 +43,7 @@
 
     <div class='message warning'>
     	<% if params[:q] %>
-    		По вашему запросу ничего не найдено
-    		<br>
+    		По вашему запросу ничего не найдено<br>
     		Попробуйте изменить ключевые слова или 
     		<%=	link_to 'поискать без указания ключевых слов', request.request_parameters.merge(:q => nil), :class => 'ui' %>
     	<% else %>

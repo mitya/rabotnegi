@@ -1,6 +1,10 @@
 class ActiveRecord::Base
   def self.property(*args)
   end
+
+  def save_with_captcha!
+    save_with_captcha || raise(ActiveRecord::RecordInvalid.new(self))
+  end
 end
 
 class ActionController::Base

@@ -6,7 +6,7 @@
 	<% for name, content in meta_properties %>
 	  <%= tag :meta, :name => name, :content => content %>
 	<% end %>
-	<%= stylesheet_link_tag %w(common public workers employers), :cache => 'pack/public' %>
+	<%= stylesheet_link_tag %w(common public workers employers vacancies), :cache => 'pack/public' %>
 </head>
 
 <body id="<%= @page_id %>" class="public">

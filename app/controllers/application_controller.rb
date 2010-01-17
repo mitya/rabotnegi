@@ -2,13 +2,14 @@ class ApplicationController < ActionController::Base
   include SslRequirement
   include SimpleCaptcha::ControllerHelpers
   include HoptoadNotifier::Catcher
+  include ControllerHelper
   
   RecordInvalid = ActiveRecord::RecordInvalid
   RecordNotFound = ActiveRecord::RecordNotFound
   
   rescue_from(RecordInvalid) { render :form, :status => 422 }
   rescue_from(RecordNotFound) { |e|
-    Rails.logger.debug e
+    Rails.logger.debug(e)
     flash[:error] = "К сожалению, то что вы искали, мы уже куда-то похерили. Если оно вообще здесь было."
     redirect_to '/'
   }
