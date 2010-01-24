@@ -1,7 +1,5 @@
-class Resume
-  include DataMapper::Resource
-  
-  property :id,           Serial
+class Resume < ActiveRecord::Base
+  property :id,           :Serial
   property :fname,        String,   :required => true, :length => 30
   property :lname,        String,   :length => 30
   property :password,     String,   :length => 30
@@ -16,8 +14,9 @@ class Resume
   property :created_at, DateTime
   property :updated_at, DateTime
   
-	validates_is_number :min_salary
-	
+  validates_presence_of :fname, :lname, :city, :job_title, :industry, :contact_info
+  validates_numericality_of :min_salary
+
 	def name
 	  "#{fname} #{lname}".squish
 	end
@@ -33,20 +32,20 @@ class Resume
 	  conditions = []
     conditions << {:city => params[:city]} if params[:city].present?
 	  conditions << {:industry => params[:industry]} if params[:industry].present?
-	  conditions << {:conditions => ["job_title LIKE ?", "%#{params[:keywords]}%"]} if params[:keywords].present?	  
+    conditions << ["job_title LIKE ?", "%#{params[:keywords]}%"] if params[:keywords].present?
 		if params[:salary].present?
 			direction, value = params[:salary].match(/(-?)(\d+)/).captures
 			op = direction == '-' ? :<= : :>=
 			conditions << ["min_salary #{op} ?", value]
 		end
 		
-		conditions.inject(all) { |results, c| results.all(c) }
+		scoped :conditions => merge_conditions(*conditions)
 	end
 
   def self.authenticate(name, password)
 	  name =~ /(\w+)\s+(\w+)/ || raise(ArgumentError, "Имя имеет неправильный формат")
 	  first, last = $1, $2
-	  resume = first(:lname => last, :fname => first) || raise(ArgumentError, "Резюме «#{name}» не найдено")
+	  resume = first(:conditions => {:lname => last, :fname => first}) || raise(ArgumentError, "Резюме «#{name}» не найдено")
     resume.password == password || raise(ArgumentError, "Неправильный пароль")
     resume
 	end

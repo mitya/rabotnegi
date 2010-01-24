@@ -1,4 +1,4 @@
-<% form_tag vacancies_url, :method => :get, :class => "", :id => "vacancies-search-form" do %>
+<% form_tag vacancies_url, :method => :get, :class => "search", :id => "vacancies-search-form" do %>
   <% wrapper do %>
     <%= tr :city, 'Город', select_tag(:city, options_for_select(ModelHelper::CityOptions, params[:city])) %>
     <%= tr :industry, 'Отрасль', select_tag(:industry, grouped_options_for_select(ModelHelper::IndustryOptions, params[:industry], 'любая')) %>

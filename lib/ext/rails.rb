@@ -1,10 +1,16 @@
 class ActiveRecord::Base
   def self.property(*args)
   end
-
-  def save_with_captcha!
-    save_with_captcha || raise(ActiveRecord::RecordInvalid.new(self))
+  
+  def self.get(*args)
+    find(*args)
+  rescue RecordNotFound
+    nil
   end
+  
+  def self.get!(*args)
+    find(*args)
+  end  
 end
 
 class ActionController::Base

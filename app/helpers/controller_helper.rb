@@ -25,13 +25,13 @@ module ControllerHelper
       [nil, false]
   end  
 
-  # "date"  => :date.asc
-  # "-date" => :date.desc
+  # "date"  => "date asc"
+  # "-date" => "date desc"
   def decode_order_to_expr(param = params[OrderParam])
     field, reverse = decode_order(param)
     field.nil??
       nil :
-      field.to_sym.send(reverse_to_symbol(reverse))
+      "#{field} #{reverse_to_symbol(reverse)}"
   end
   
   def reverse_to_symbol(reverse)
