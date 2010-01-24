@@ -30,17 +30,24 @@ class ResumesController < ApplicationController
   
   def create
     @resume = Resume.new(params[:resume])
-    @resume.save!
-    flash[:notice] = "Резюме опубликовано"
-    session[:resume_id] = @resume.id
-    redirect_to resume_path
+    if @resume.save
+      flash[:notice] = "Резюме опубликовано"
+      session[:resume_id] = @resume.id
+      redirect_to resume_path
+    else
+      render "form", :status => 422
+    end
   end
+
   
   def update
     @resume = Resume.get!(session[:resume_id])
-    @resume.update_attributes!(params[:resume])
-    flash[:notice] = "Резюме сохранено"
-    redirect_to resume_path
+    if @resume.update_attributes(params[:resume])
+      flash[:notice] = "Резюме сохранено"
+      redirect_to resume_path
+    else
+      render "form", :status => 422
+    end
   end
   
   def destroy

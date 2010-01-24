@@ -21,7 +21,7 @@ class Employers::VacanciesController < ApplicationController
   end
 
   def index
-    @vacancies = current_employer.vacancies.all(:order => 'title', :select => 'id, title, external_id, salary_min, salary_max, employer_name')
+    @vacancies = current_employer.vacancies.all(:order => :title)
     render 'employers/vacancies'
   end
 

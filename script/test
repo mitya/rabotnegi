@@ -1,9 +1,28 @@
 #!/usr/bin/env /volumes/code/rabotnegi/script/runner
 require 'pp'
 
-Vacancy.all(:city => "msk").count
+# Vacancy.all(:city => "msk").count
+# 
+# v = Vacancy.create(:title => "Test 1", :description => "Hey", :industry => "it", :city => "msk")
+# 
+# Employer.first
+# 
+# Resume.create(:fname => "Joe", :lname => "Smith", :job_title => "Boss", :city => "msk", :industry => "it", :min_salary => 20000, :contact_info => "5552211")
 
 
-v = Vacancy.create(:title => "Test 1", :description => "Hey", :industry => "it", :city => "msk")
+v = Resume.new
+v.save
 
-Employer.first
+
+p v.errors
+
+puts
+v.errors.each_pair do |a, x|
+  p a
+  p x
+end
+  
+puts
+v.errors.each do |e|
+  p e
+end

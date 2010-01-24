@@ -13,8 +13,6 @@ class Employer
 
   has n, :vacancies
 
-  # apply_simple_captcha :message => "набранные буквы не совпадают"
-
   attr_accessor :password_confirmation
   
   def to_s

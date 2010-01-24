@@ -1,4 +1,24 @@
-@import "_layout";
+body {
+	margin: 10px 0; 
+	font: 13px 'Lucida Grande', Verdana, sans-serif;
+	min-width: 600px;
+	behavior: url('/stylesheets/csshover2.htc');
+}
+
+#header { }
+#footer {
+	clear: left; width: 100%;
+	margin-top: 10px; padding-top: 3px; border-top: thin solid gray;
+	text-align: center; color: gray; 
+}
+
+#logo {
+  font-weight: bold; 
+  font-size: x-large;
+  a { text-decoration: none; }
+  #logo-pro { color: red; }
+  #logo-rabotu { font-variant: small-caps; color: black; }
+}
 
 #header {
   #logo {
@@ -24,7 +44,7 @@
     li.tab {
       border: 1px solid #555;
       border-bottom: none;
-      background: #777;      
+      background: #aaa;
 
       a { 
         padding: 5px 10px;
@@ -36,7 +56,7 @@
     }
     
     li.selected {
-      background: #ddd;
+      background: #eee;
       border: 1px solid #555;
       border-bottom: none;
       a:hover { color: black; }
@@ -48,7 +68,7 @@
     height: 25px;
     line-height: 25px;
     padding: 5px; 
-    background: #ddd;
+    background: #eee;
     a { margin: 0 7px;}
     a.selected { color: black; font-weight: bold; text-decoration: none }  
   }  
@@ -56,10 +76,9 @@
 
 
 #content {
-  padding: 5px;
+  padding: 5px 10px;
+  h1 { margin: 10px 0 5px; }
 }
-#content h1.page_title { margin: 20px 0 10px; }
-#content form h1.page_title { margin: 10px 0 0; }
 
 #flash-notice, #flash-error { padding: 8px; text-align: center; font-weight: bold; color: white; }
 #flash-notice { background: green }

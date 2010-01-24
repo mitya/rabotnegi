@@ -1,3 +1,5 @@
+@import "_helpers";
+
 body#resumes {
   #resumes-search-form {
     input {width:200px}
@@ -64,4 +66,14 @@ body#employer-vacancies {
   }
 }
 
-
+body#employer-signup {
+  p.intro { }
+  form.new_employer {    
+    margin-top: 10px;
+    border-top: 2px solid #666;    
+    padding-top: 10px;
+    tr.captcha {
+      td img { padding-left: 30px; }
+    }
+  }
+}

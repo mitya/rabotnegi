@@ -1,7 +1,6 @@
 @import "_helpers";
 
 /* Reset */
-input, select {margin: 0; padding: 0}
 a:link {color: @link_color;}
 a:visited {color: purple}
 a:hover {color: @hovered_link_color}
@@ -14,19 +13,28 @@ h4 {margin: 1em 0 0}
 p {margin: .25em 0}
 pre {margin: .25em 0}
 
-
 /* Forms */
-table.form-layout {
-  col.labels { width: 120px}
-  td {padding-bottom: 5px;}
-  th {text-align: right; vertical-align: top; padding-right: 5px;}
-  th label { font-variant: small-caps; font-size: smaller;}
-  input {width: 150px}
-  select {width: 155px}
-  input.button {width: 155px}
-  label input {width: auto} /*fix for checkbox & radiobuttons*/
-  td small {color: gray; font-size: 11px;}
-  td span.required-mark {color: gray; font-size: 11px}
+form {
+  .form-errors {
+    margin: 10px 0 15px;
+    color: #ad0000;
+    h2 { margin: 5px 0; font-size: 16px; color: #ad0000; }
+    ul { margin: 5px 0; padding-left: 0px; list-style-position: inside; }
+  }
+  table.form-layout {
+    td { padding-bottom: 5px; }
+    th { text-align: left; vertical-align: top; padding-right: 10px; }
+    th label { font-variant: small-caps; line-height: 1.7; }
+
+    input[type=text], input[type=password] { width: 195px; padding: 3px; font-size: 13px; }
+    select { width: 205px; }
+    input.button, input[type=submit] { width: 200px; }
+
+    label input {width: auto} /*fix for checkbox & radiobuttons*/
+
+    td small {color: gray; font-size: 11px;}
+    td span.required-mark {color: gray; font-size: 11px}  
+  }  
 }
 
 * html table.form-layout {
@@ -50,10 +58,6 @@ table.form-layout {
   td span.invalid textarea.inner-tooltip {color:red;}
 } 
 
-div.form-errors {
-  h2 {margin: 10px 0; padding-left: 0px; color: red;}
-  ul {padding-left: 0px; list-style-position: outside;}  
-} 
 
 /* Links */
 a.ui:link, a.ui:visited { color: @link_color; }
@@ -66,15 +70,17 @@ a.page.current { border: 1px solid black; color: black; padding: 0 3px; cursor: 
 a.tmp { color: green; }
 a span.sort-mark { text-decoration:none }
 
+
 /* Pagination */
 .pagination {
-  em { font-style: normal; padding: 5px 10px; color: white; background: black; cursor: default; }
-  a { padding: 5px 10px; text-decoration: none; }
+  em { font-style: normal; padding: 5px 5px; color: white; background: black; cursor: default; }
+  a { padding: 5px 5px; text-decoration: none; }
   a:visited { color: @link_color; }
   a:hover { color: white; background: @link_color; }
   a:visited:hover { color: white; background: @link_color;  }
   span.disabled { visibility: hidden; }
 }
+
 
 span.spinner { background: green; color: white; }
 table.devgrid td {border: 1px dashed black;}

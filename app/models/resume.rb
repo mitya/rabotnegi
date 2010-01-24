@@ -3,16 +3,16 @@ class Resume
   
   property :id,           Serial
   property :fname,        String,   :required => true, :length => 30
-  property :lname,        String,   :required => true, :length => 30
+  property :lname,        String,   :length => 30
   property :password,     String,   :length => 30
   property :city,         String,   :required => true, :length => 255
   property :job_title,    String,   :required => true, :length => 100
   property :industry,     String,   :required => true, :length => 255
   property :min_salary,   Integer,  :required => true
-  property :view_count,   Integer,  :required => true, :default => 0
+  property :view_count,   Integer,  :default => 0
   property :job_reqs,     Text, :lazy => [:show]
   property :about_me,     Text, :lazy => [:show]
-  property :contact_info, Text, :required => true, :lazy => [:show], :messages => {:presence => "укажите телефон или электронную почту"}
+  property :contact_info, Text, :required => true, :lazy => [:show]
   property :created_at, DateTime
   property :updated_at, DateTime
   

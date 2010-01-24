@@ -1,6 +1,6 @@
 module FormLayoutHelper
   def trb(label, content, options = {})
-    options.assert_valid_keys(:required, :id, :before, :after, :comment)
+    options.assert_valid_keys(:required, :id, :before, :after, :comment, :class)
     label = [label]
     content = [content]
     
@@ -9,7 +9,7 @@ module FormLayoutHelper
     
     row_options = {}
     row_options[:id] = "#{row_id}_row" if row_id
-    row_options[:class] = []
+    row_options[:class] = options[:class].present?? [options[:class]] : []
     row_options[:class] << "required" if options[:required]
     row_options[:class] << "high" if options[:high]
     row_options[:class] = row_options[:class].any?? row_options[:class].join(' ') : nil
@@ -21,7 +21,8 @@ module FormLayoutHelper
 
     content_tag :tr, row_options do
       content_tag(:th, label.join(' ')) +
-      content_tag(:td, content.join(' '))
+      content_tag(:td, content.join(' ')) + 
+      content_tag(:td, "", :class => "other")
     end
   end
   
