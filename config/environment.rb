@@ -6,20 +6,11 @@ Rails::Initializer.run do |config|
   config.action_controller.cache_store = :file_store, "tmp/cache"
 
   config.gem 'json', :lib => 'json/add/rails'
-  config.gem "do_mysql"
-  config.gem "dm-core"
-  config.gem "dm-validations"
-  config.gem "dm-aggregates"
-  config.gem "dm-timestamps"
-
-  # config.frameworks -= [ :active_record ]
 
   config.time_zone = 'Moscow'
 
   config.after_initialize do
     require 'will_paginate'
-    require 'will_paginate/finders/data_mapper'
-
     require 'ext/core'
     require 'ext/rails'
     require 'ext/libs'

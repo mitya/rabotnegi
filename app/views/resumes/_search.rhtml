@@ -1,5 +1,5 @@
 <% centered do %>
-  <% form_tag resumes_url, :method => :get, :id => 'resumes-search-form' do %>
+  <% form_tag resumes_url, :method => :get, :id => 'resumes-search-form', :class => "search" do %>
     <% field_set_tag do %>
       <% wrapper do %>
         <%= tr :city, 'Город', select_tag(:city, options_for_select(ModelHelper::CityOptions, params[:city])) %>

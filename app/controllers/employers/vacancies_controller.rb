@@ -36,7 +36,7 @@ class Employers::VacanciesController < ApplicationController
   end
 
   def update
-    if @vacancy.update(params[:vacancy])
+    if @vacancy.update_attributes(params[:vacancy])
       flash[:notice] = 'Вакансия сохранена'
       redirect_to employer_vacancies_path
     else

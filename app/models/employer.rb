@@ -1,17 +1,16 @@
-class Employer
-  include DataMapper::Resource
-
-  property :id,         Serial
+class Employer < ActiveRecord::Base
+  property :id,         :Serial
   property :name,       String, :required => true, :length => 255
   property :login,      String, :required => true, :length => 255
   property :password,   String, :required => true, :length => 255
   property :created_at, DateTime
   property :updated_at, DateTime
 
-  validates_is_unique :login
-  validates_is_confirmed :password
+  validates_presence_of :name, :login, :password
+  validates_uniqueness_of :login
+  validates_confirmation_of :password
 
-  has n, :vacancies
+  has_many :vacancies, :before_add => :initialize_vacancy
 
   attr_accessor :password_confirmation
   
@@ -20,12 +19,12 @@ class Employer
   end
   
 private
-  # def initialize_vacancy(vacancy)
-  #   vacancy.employer_id = id
-  #   vacancy.employer_name = name    
-  # end
-  
+  def initialize_vacancy(vacancy)
+    vacancy.employer_id = id
+    vacancy.employer_name = name    
+  end
+
   def self.authenticate(login, password)
-    first(:login => login, :password => password) || raise(ArgumentError)
+    first(:conditions => {:login => login, :password => password}) || raise(ArgumentError)
   end
 end

@@ -1,7 +1,5 @@
-class Vacancy
-  include DataMapper::Resource
-
-  property :id,            Serial
+class Vacancy < ActiveRecord::Base
+  property :id,            :Serial
   property :title,         String, :required => true, :length => 255
   property :description,   Text, :required => true
   property :external_id,   Integer   
@@ -13,6 +11,8 @@ class Vacancy
   property :employer_name, String, :length => 255
   property :created_at, DateTime
   property :updated_at, DateTime
+
+  validates_presence_of :title, :description, :industry, :city
 
   belongs_to :employer
 
@@ -49,12 +49,12 @@ class Vacancy
     self.city ||= 'msk'
   end
 
-  before :save do
+  def before_save
     if employer
       self.employer_id = employer.id
-  		self.employer_name = employer.name
+      self.employer_name = employer.name
     end
-  end 
+  end
 
   def self.search(params)
     params = params.symbolize_keys
@@ -63,13 +63,13 @@ class Vacancy
     conditions = []
     conditions << {:city => params[:city]} if params[:city].present?
     conditions << {:industry => params[:industry]} if params[:industry].present?
-    conditions << {:conditions => ["title LIKE ? OR employer_name LIKE ?", "%#{params[:q]}%", "%#{params[:q]}%"]} if params[:q].present?
-
-    conditions.inject(all) { |results, c| results.all(c) }
+    conditions << ["title LIKE :q OR employer_name LIKE :q", {:q => "%#{params[:q]}%"}] if params[:q].present?
+    
+    scoped :conditions => merge_conditions(*conditions)
   end    
   
   def self.cleanup
-    olds = all(:updated_at.lt => 2.weeks.ago)
+    olds = all(:conditions => ["updated_at < ?", 2.weeks.ago])
     olds.destroy!
   end
 end

@@ -1,2 +1,2 @@
+say "GET /"
 get "/"
-say "GET #{path}"
