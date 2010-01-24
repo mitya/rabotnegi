@@ -28,6 +28,10 @@ class Vacancy
     title
   end
   
+  def to_param
+    "#{id}"
+  end
+  
   def salary
     @salary ||= Salary.new(salary_min, salary_max)
   end

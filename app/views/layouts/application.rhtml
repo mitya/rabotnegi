@@ -6,7 +6,7 @@
 	<% for name, content in meta_properties %>
 	  <%= tag :meta, :name => name, :content => content %>
 	<% end %>
-	<%= stylesheet_link_tag %w(common public workers employers vacancies), :cache => 'pack/public' %>
+	<%= stylesheet_link_tag %w(common public workers employers resumes vacancies), :cache => 'pack/public' %>
 </head>
 
 <body id="<%= @page_id %>" class="public">
@@ -40,7 +40,8 @@
 			<% end %>
 		  <% if current_employer %>
 		    <span style='float: right; padding-right: 20px'>
-					<%= current_employer %> |<%= link_to 'Выйти', employer_logout_path, { :class => 'ui' } %>
+					<b><%= current_employer %></b>
+					<%= link_to 'Выйти', employer_logout_path %>
 		    </span>
 			<% end %>
 		</div>
