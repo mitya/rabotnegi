@@ -1,30 +1,27 @@
-development:
+common: &local_settings
   adapter: mysql
   host: localhost
+  encoding: utf8
+
+development:
+  <<: *local_settings  
   database: rabotnegi_dev
   username: root
-  encoding: utf8
 
 devcache:
-  adapter: mysql
-  host: localhost
+  <<: *local_settings
   database: rabotnegi_dev
   username: root
-  encoding: utf8
 
 local:
-  adapter: mysql
-  host: localhost
+  <<: *local_settings  
   database: rabotnegi_dev
   username: root
-  encoding: utf8
 
 test:
-  adapter: mysql
-  host: localhost
+  <<: *local_settings  
   database: rabotnegi_test
   username: root
-  encoding: utf8
   
 staging:
   adapter: mysql
