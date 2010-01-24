@@ -4,13 +4,21 @@ class EmployersController < ApplicationController
 	end
 
 	def create
-		@employer = Employer.new(params[:employer])
-		@employer.save_with_captcha!
-		flash[:notice] = "Работодатель «#{@employer}» зарегистрирован"
-		session[:employer_id] = @employer.id
-		redirect_to employer_vacancies_path
-	rescue RecordInvalid
-		render :new, :status => 422
+	  @employer = Employer.new(params[:employer])
+
+    if not simple_captcha_valid?(:keep => true)
+      @employer.errors.add(:captcha, "not valid")
+      render :new, :status => 422 and return
+    end
+    
+		if @employer.save		
+  		flash[:notice] = "Работодатель «#{@employer}» зарегистрирован"
+  		session[:employer_id] = @employer.id
+  		simple_captcha_passed!
+  		redirect_to employer_vacancies_path
+	  else
+		  render :new, :status => 422
+		end
 	end
 
 	def welcome

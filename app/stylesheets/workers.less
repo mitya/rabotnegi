@@ -2,19 +2,21 @@
 
 body#edit-resume {
   form#resume-form {
-    width: 800px;
+    margin-top: 10px;
+    border-top: 2px solid #666;    
+    padding-top: 10px;
+  
     
     #name-section, #job-section, 
     #about-me-section, #job-reqs-section, 
     #contact-section, #security-section {margin: 16px 0}
     
-    #resume_job_reqs, #resume_contact_info, #resume_about_me {width: 500px}
-    #resume_about_me {height: 200px}
-    #resume_job_reqs {height: 100px}
-    #resume_contact_info {height: 50px}
-    #resume_min_salary {text-align: center; width: 60px}
-    #resume_fname, #resume_lname, #resume_job_title {width: 200px}
-    #resume_city, #resume_industry {width: 205px}   
+    textarea { width: 500px; }
+    textarea#resume_about_me { height: 200px; }
+    textarea#resume_job_reqs { height: 100px; }
+    textarea#resume_contact_info { height: 50px; }
+    
+    input#resume_min_salary {text-align: center; width: 60px}
   }
 }
 

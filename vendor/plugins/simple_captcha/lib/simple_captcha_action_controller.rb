@@ -18,12 +18,12 @@ module SimpleCaptcha #:nodoc
     #   flash[:notice] = "captcha did not match"
     #   redirect_to :action => "myaction"
     #  end
-    def simple_captcha_valid?
+    def simple_captcha_valid?(options = {})
       return true if RAILS_ENV == 'test'
       if params[:captcha]
         data = simple_captcha_value
         result = data == params[:captcha].delete(" ").upcase
-        simple_captcha_passed! if result
+        simple_captcha_passed! if result unless options[:keep]
         return result
       else
         return false

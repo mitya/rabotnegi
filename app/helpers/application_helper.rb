@@ -17,14 +17,17 @@ module ApplicationHelper
     
     header_message = options.delete(:header_message) || translate("activerecord.errors.template.header")
     error_messages = []
-    object.errors.each do |attr, msg|
-      attr_name = translate("activerecord.attributes.#{object.class.name.underscore}.#{attr}")
-      error_messages << content_tag(:li, content_tag(:b, attr_name) + ' — ' + msg)
+    object.errors.each_pair do |attr, messages|
+      message = translate("errors.#{object.class.name.tableize}.#{attr}", :default => messages.to_sentence)
+      error_messages << content_tag(:li, message)
+
+      # attr_name = translate("activerecord.attributes.#{object.class.name.underscore}.#{attr}")
+      # error_messages << content_tag(:li, content_tag(:b, attr_name) + ' — ' + msg)
     end
     
     result = ''
     result << content_tag(:h2, header_message)
-    # result << content_tag(:ul, error_messages)
+    result << content_tag(:ul, error_messages)
    
     content_tag :div, result, :class => 'form-errors'
   end

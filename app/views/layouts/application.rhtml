@@ -54,7 +54,7 @@
 	</div>
 	
 	<div id='footer'>
-	  © 2008 Работнеги.ру
+	  © 2007—2010 Работнеги.ру
 	</div>
 	
 	<% if Rails.env.development? %>
@@ -65,14 +65,5 @@
 	<%= javascript_include_tag %w(jquery), :cache => 'pack/lib' %>
 	<%= javascript_include_tag %w(common application), :cache => 'pack/app' %>
 
-	<% if Rails.env.production? %>
-  	<script>
-      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-    </script>
-    <script>
-      var pageTracker = _gat._getTracker('<%= GOOGLE_ANALYTICS_ID %>');
-      pageTracker._trackPageview();
-    </script>
-  <% end %>
+	<%= render "layout/google_analytics" if Rails.env.production? %>
 </body>

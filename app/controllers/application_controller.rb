@@ -33,7 +33,7 @@ protected
   
   def current_employer
     return @current_employer if defined? @current_employer
-    @current_employer = session[:employer_id] ? Employer.find_by_id(session[:employer_id]) : nil
+    @current_employer = session[:employer_id] ? Employer.get(session[:employer_id]) : nil
   end
   
   def current_employer?
