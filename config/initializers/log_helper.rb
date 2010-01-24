@@ -1,7 +1,3 @@
-def assert(condition, message = "Assertion failed")
-  condition || raise(mesage)
-end
-
 # __w(customer.name, "Customer") => /// Customer = "Joe"
 # __w(customer.name) => /// "Joe"
 def __w(object, comment = nil)
