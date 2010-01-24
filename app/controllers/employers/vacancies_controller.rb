@@ -13,11 +13,13 @@ class Employers::VacanciesController < ApplicationController
     else
       Vacancy.new(params[:vacancy])
     end
-    @vacancy.save!
-    flash[:notice] = 'Вакансия опубликована'
-    redirect_to employer_path
-  rescue RecordInvalid
-    render 'employers/vacancy_form'
+    
+    if @vacancy.save
+      flash[:notice] = 'Вакансия опубликована'
+      redirect_to employer_path
+    else
+      render 'employers/vacancy_form', :status => 422
+    end
   end
 
   def index
@@ -34,11 +36,12 @@ class Employers::VacanciesController < ApplicationController
   end
 
   def update
-    @vacancy.update_attributes!(params[:vacancy])
-    flash[:notice] = 'Вакансия сохранена'
-    redirect_to employer_vacancies_path
-  rescue RecordInvalid
-    render 'employers/vacancy_form'
+    if @vacancy.update(params[:vacancy])
+      flash[:notice] = 'Вакансия сохранена'
+      redirect_to employer_vacancies_path
+    else
+      render 'employers/vacancy_form'
+    end
   end
 
   def destroy
@@ -49,6 +52,6 @@ class Employers::VacanciesController < ApplicationController
 
 private
   def load_vacancy
-    @vacancy ||= current_employer.vacancies.find(params[:id])
+    @vacancy ||= current_employer.vacancies.get(params[:id])
   end
 end

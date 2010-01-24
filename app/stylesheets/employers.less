@@ -1,31 +1,25 @@
 @import "_helpers";
 
-body#resumes {
-  #resumes-search-form {
-    input {width:200px}
-    select, input.button {width:205px}
-    fieldset {padding:10px; border:1px solid silver}
-  }  
-  
-  #resume-list {
-    margin: 0 auto;
-    .sal {padding-left: 20px; text-align: right}
-    .pos {text-align: left}
-  }  
+body#employer-vacancies {
+  #vacancies-table {
+    position:relative; 
+    margin-bottom: 8px;
+    th { padding: 3px 10px 3px 0; text-align: left; }
+    td { padding: 3px 10px; text-align: left; }
+    td.controls { padding-left: 25px; }
+  }
 }
 
-body#view-resume {
-  #resume {
-    #name {font-size:200%; font-weight:bold}
-    #job-title {font-size:200%; color:green}
-    #salary {font-size:150%; margin-left:20px}
-    #salary-value {font-weight:bold}
-    #about-me,
-    #job-reqs,
-    #contact-info {margin:10px 0}
-    pre {white-space:pre-wrap; font:100% Verdana, sans-serif; margin:3px 0}
-    h4 {margin:12px 0 3px 0; font-size: larger}  
-  }  
+body#employer-signup {
+  p.intro { }
+  form.new_employer {    
+    margin-top: 10px;
+    border-top: 2px solid #666;    
+    padding-top: 10px;
+    tr.captcha {
+      td img { padding-left: 30px; }
+    }
+  }
 }
 
 body#employers-login {
@@ -42,38 +36,4 @@ body#employers-login {
       form th {text-align:left}    
     }
   }  
-}
-
-body#edit-vacancy {
-  #vacancy-edit-form {
-    input { width: 220px }
-    select { width: 224px }
-    textarea { width: 400px; height: 170px }
-  }  
-}
-
-body#employer-vacancies {
-  .pro-empoloyers-index-section {margin-left:20px}
-  #vacancies-table {
-    position:relative; 
-    left: -35px; 
-    margin-bottom: 8px;
-    th { padding: 1px 20px 1px 0; text-align: left;}
-    td.controls { width: 30px; padding-right: 5px; padding-left: 0;}
-    td.controls span { display: none}
-    tr:hover td.controls span { display: inline; }
-    td.controls img {border: 0; margin: 0; padding: 0; width: 12px; height:12px;}
-  }
-}
-
-body#employer-signup {
-  p.intro { }
-  form.new_employer {    
-    margin-top: 10px;
-    border-top: 2px solid #666;    
-    padding-top: 10px;
-    tr.captcha {
-      td img { padding-left: 30px; }
-    }
-  }
 }

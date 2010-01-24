@@ -39,7 +39,6 @@ class ResumesController < ApplicationController
     end
   end
 
-  
   def update
     @resume = Resume.get!(session[:resume_id])
     if @resume.update_attributes(params[:resume])

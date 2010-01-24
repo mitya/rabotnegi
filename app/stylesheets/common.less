@@ -29,6 +29,7 @@ form {
     input[type=text], input[type=password] { width: 195px; padding: 3px; font-size: 13px; }
     select { width: 205px; }
     input.button, input[type=submit] { width: 200px; }
+    textarea { font-size: 13px; }
 
     label input {width: auto} /*fix for checkbox & radiobuttons*/
 
@@ -60,8 +61,8 @@ table.form-layout {
 
 
 /* Links */
-a.ui:link, a.ui:visited { color: @link_color; }
-a.ui:hover { color: @hovered_link_color; }
+a:link, a:visited { color: @link_color; }
+a:hover { color: @hovered_link_color; }
 a.cmd:link, a.cmd:visited { color: green; border-bottom: 1px dashed; text-decoration: none; }
 a.cmd:hover { color: firebrick; }
 a.page { padding: 0 4px; text-decoration: none; }
