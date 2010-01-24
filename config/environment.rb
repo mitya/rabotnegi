@@ -6,11 +6,11 @@ Rails::Initializer.run do |config|
   config.action_controller.cache_store = :file_store, "tmp/cache"
 
   config.gem 'json', :lib => 'json/add/rails'
+  config.gem 'will_paginate'
 
   config.time_zone = 'Moscow'
 
   config.after_initialize do
-    require 'will_paginate'
     require 'ext/core'
     require 'ext/rails'
     require 'ext/libs'
