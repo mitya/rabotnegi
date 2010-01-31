@@ -7,7 +7,6 @@ body {
 	behavior: url('/stylesheets/csshover2.htc');
 }
 
-#header { }
 #footer {
 	clear: left; width: 100%;
 	margin-top: 10px; padding-top: 3px; border-top: thin solid gray;
@@ -17,9 +16,18 @@ body {
 #logo {
   font-weight: bold; 
   font-size: x-large;
-  a { text-decoration: none; }
-  #logo-pro { color: red; }
-  #logo-rabotu { font-variant: small-caps; color: black; }
+  a { 
+    text-decoration: none;
+  }
+}
+
+#logo-pro { 
+  color: red;
+}
+
+#logo-rabotu { 
+  font-variant: small-caps; 
+  color: black;
 }
 
 #header {
@@ -46,8 +54,10 @@ body {
     li.tab {
       border: 1px solid #555;
       border-bottom: none;
-      background: #aaa;
-
+      background: #eee;
+      background: #eee -webkit-gradient(linear, left top, left bottom, from(#eee), to(#ccc));
+      background: #eee -moz-linear-gradient(top, #eee, #ccc);
+      .rounded-top(5px);
       a { 
         padding: 5px 10px;
         color: black; 
@@ -58,7 +68,7 @@ body {
     }
     
     li.selected {
-      background: #eee;
+      font-weight: bold;
       border: 1px solid #555;
       border-bottom: none;
       a:hover { color: black; }
@@ -70,7 +80,9 @@ body {
     height: 25px;
     line-height: 25px;
     padding: 5px; 
-    background: #eee;
+    background: #ccc;
+    background: #ccc -webkit-gradient(linear, left top, left bottom, from(#ccc), to(#999));
+    background: #ccc -moz-linear-gradient(top, #ccc, #999);
     a { margin: 0 7px; }
     a.selected { color: black; font-weight: bold; text-decoration: none; }
   }  

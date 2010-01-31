@@ -12,17 +12,23 @@ body#vacancies {
     width: 100%;
     margin: 10px 0;
     border: 1px solid #ccc;
+    .rounded(10px);
     
     span.pos {font-weight: bold; }
 
-    td, th { padding: 5px; border-top: 1px solid #ccc; }
+    td { padding: 5px; border-top: 1px solid #ccc; }
+    th { padding: 5px; }
 
     td.pos, th.pos { text-align: left; width: 52%; }
     td.emp, th.emp { text-align: left; width: 30%; }
     td.sal, th.sal { text-align: right; white-space: nowrap; width: 18%; }
 
     thead {
-      tr { background: #ddd; }
+      tr th { 
+        background: #ccc;
+        background: #ccc -webkit-gradient(linear, left top, left bottom, from(#ccc), to(#ddd));
+        background: #ccc -moz-linear-gradient(top, #ccc, #ddd);        
+      }
       th.sorted {
         a { color: black; }
       }
@@ -32,7 +38,11 @@ body#vacancies {
     } 
 
     tfoot {
-      tr {	background: #ddd; }
+      tr td {	
+        background: #ddd;
+        background: #ddd -webkit-gradient(linear, left top, left bottom, from(#ddd), to(#ccc));
+        background: #ddd -moz-linear-gradient(top, #ddd, #ccc);
+      }
     }
     
     tbody {
