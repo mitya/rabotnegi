@@ -11,7 +11,7 @@
     	<%= found_objects_info @vacancies, 'ваканс', 'ия', 'ии', 'ий' %>.
     </div>
 
-    <table class='vacancies-list'>
+    <table class='vacancies-list rounded' cellspacing="0">
     	<thead>
   	    <tr>
       		<th class='pos <%= order_class(:title) %>'><%= link_to "Должность", :sort => encode_order(:title) %>
