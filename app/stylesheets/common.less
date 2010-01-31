@@ -4,7 +4,7 @@
 a:link {color: @link_color;}
 a:visited {color: purple}
 a:hover {color: @hovered_link_color}
-table {border-collapse: separate;}
+table {border-collapse: collapse;}
 h1, h2, h3, h4, h5, h6, p, pre {margin: 0}
 h1 {margin: 1em 0 .25em}
 h2 {margin: 1em 0 .25em}
@@ -24,7 +24,7 @@ form {
   table.form-layout {
     td { padding-bottom: 5px; }
     th { text-align: left; vertical-align: top; padding-right: 10px; }
-    th label { font-variant: small-caps; line-height: 1.7; }
+    th label { font-variant: small-caps; line-height: 1.7; padding: 2px 0; margin: 2px 0; display: block; }
 
     input[type=text], input[type=password] { width: 195px; padding: 3px; font-size: 13px; }
     select { width: 205px; }
@@ -101,6 +101,8 @@ div.warning {background: gold;}
 }
 
 table.rounded {
+  border-collapse: separate;
+  
   tr:first-child th:first-child {
   	-moz-border-radius-topleft: 10px;
   	-webkit-border-top-left-radius: 10px;
