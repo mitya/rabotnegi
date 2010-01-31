@@ -55,7 +55,7 @@ jQuery.fn.extend({
         } else {
           $input.addClass('required-field')
         }
-      })      
+      })
     })    
   },
   tooltip: function() {

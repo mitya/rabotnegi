@@ -46,10 +46,10 @@ $("body#vacancies").loaded(function() {
   	if ($row.next().is(".desc")) {
   	  $row.next().find(".content").slideToggle()
     } else {
-      $row.find("td:first").append(new Spinner())
+      $row.addClass("loading")
       $.get('/vacancies/' + vacancy_id + '.ajax', function(html) {
         var $desc = $(html).insertAfter($row)
-    		$row.addClass('loaded')
+    		$row.removeClass("loading").addClass('loaded')
     		$desc.addClass('loaded')
       	if ($row.hasClass('alt')) {
       		$desc.addClass('alt')
