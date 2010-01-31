@@ -54,9 +54,8 @@ body {
     li.tab {
       border: 1px solid #555;
       border-bottom: none;
+      
       background: #eee;
-      background: #eee -webkit-gradient(linear, left top, left bottom, from(#eee), to(#ccc));
-      background: #eee -moz-linear-gradient(top, #eee, #ccc);
       .rounded-top(5px);
       a { 
         padding: 5px 10px;
@@ -66,15 +65,17 @@ body {
     }
     
     li:hover {
-      background: #666;
-      background: #666 -webkit-gradient(linear, left top, left bottom, from(#666), to(#ccc));
-      background: #666 -moz-linear-gradient(top, #666, #ccc);
+      background: #eee;
+      background: #eee -webkit-gradient(linear, left top, left bottom, from(#eee), to(#ccc));
+      background: #eee -moz-linear-gradient(top, #eee, #ccc);      
       a { 
-        color: white;
       }      
     }
     
     li.selected {
+      background: #eee;
+      background: #eee -webkit-gradient(linear, left top, left bottom, from(#eee), to(#ccc));
+      background: #eee -moz-linear-gradient(top, #eee, #ccc);
       font-weight: bold;
       border: 1px solid #555;
       border-bottom: none;
@@ -83,7 +84,6 @@ body {
     
     li.selected:hover {
       a:hover {
-        color: white;
       }
     }
   }
@@ -92,7 +92,7 @@ body {
     clear: both;
     height: 25px;
     line-height: 25px;
-    padding: 5px 5px 5px 0;
+    padding: 5px 0;
     background: #ccc;
     background: #ccc -webkit-gradient(linear, left top, left bottom, from(#ccc), to(#999));
     background: #ccc -moz-linear-gradient(top, #ccc, #999);

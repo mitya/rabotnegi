@@ -1,6 +1,7 @@
 @import "_helpers";
 
 /* Reset */
+a { text-decoration: none;}
 a:link {color: @link_color;}
 a:visited {color: purple}
 a:hover {color: @hovered_link_color}
@@ -80,12 +81,12 @@ a span.sort-mark { text-decoration:none }
 
 /* Pagination */
 .pagination {
-  em { font-style: normal; padding: 5px 5px; color: white; background: black; cursor: default; }
-  a { padding: 5px 5px; text-decoration: none; }
-  a:visited { color: @link_color; }
-  a:hover { color: white; background: @link_color; }
-  a:visited:hover { color: white; background: @link_color;  }
-  span.disabled { visibility: hidden; }
+  a { padding: 5px 5px; text-decoration: none; color: black; .rounded(5px); }
+  a:visited { color: black; }
+  a:hover { color: white; background: #333; }
+  a:visited:hover { color: white; background: #333;  }
+  span.disabled { color: #999; cursor: default; }
+  span.current { padding: 5px 5px; color: white; background: #333; cursor: default; .rounded(5px); }  
 }
 
 
