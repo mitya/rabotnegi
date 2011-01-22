@@ -6,7 +6,13 @@
 	<% for name, content in meta_properties %>
 	  <%= tag :meta, :name => name, :content => content %>
 	<% end %>
-	<%= stylesheet_link_tag %w(common public workers employers resumes vacancies), :cache => 'pack/public' %>
+	<%#= stylesheet_link_tag %w(common public workers employers resumes vacancies), :cache => 'pack/public' %>
+	<link rel="stylesheet" type="text/css" href="/stylesheets/common.css">
+  <link rel="stylesheet" type="text/css" href="/stylesheets/public.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/stylesheets/workers.css">
+  <link rel="stylesheet" type="text/css" href="/stylesheets/employers.css">
+  <link rel="stylesheet" type="text/css" href="/stylesheets/resumes.css">
+  <link rel="stylesheet" type="text/css" href="/stylesheets/vacancies.css"> -->
 </head>
 
 <body id="<%= @page_id %>" class="public">

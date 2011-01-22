@@ -51,9 +51,9 @@ module FormLayoutHelper
   end
   
   def wrapper(&block)
-    concat "<table class='form-layout'>"
+    concat "<table class='form-layout'>".html_safe
     yield
-    concat '</table>'
+    concat '</table>'.html_safe
   end
 end
 
