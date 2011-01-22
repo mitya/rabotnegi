@@ -20,8 +20,7 @@ class Vacancy < ActiveRecord::Base
 
   def ==(other)
     self.external_id? && other.external_id? ? 
-      self.external_id == other.external_id : 
-      super
+      self.external_id == other.external_id : super
   end
 
   def to_s
@@ -65,11 +64,11 @@ class Vacancy < ActiveRecord::Base
     conditions << {:industry => params[:industry]} if params[:industry].present?
     conditions << ["title LIKE :q OR employer_name LIKE :q", {:q => "%#{params[:q]}%"}] if params[:q].present?
     
-    scoped :conditions => merge_conditions(*conditions)
+    conditions.inject(self) { |results, condition| results.where(condition) }
   end    
   
   def self.cleanup
-    olds = all(:conditions => ["updated_at < ?", 2.weeks.ago])
+    olds = where(["updated_at < ?", 2.weeks.ago])
     olds.destroy!
   end
 end

@@ -1,12 +1,9 @@
 require File.expand_path('../config/application', __FILE__)
 
 require 'rake'
-# require 'rake/testtask'
-# require 'rake/rdoctask'
-
 require 'pp'
 
-Rails::Application.load_tasks
+Rabotnegi::Application.load_tasks
 
 namespace :db do
 	desc "Backups production database on rabotnegi.ru"

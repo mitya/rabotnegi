@@ -23,7 +23,7 @@ module FormLayoutHelper
       content_tag(:th, label.join(' ')) +
       content_tag(:td, content.join(' ')) + 
       content_tag(:td, "", :class => "other")
-    end
+    end.html_safe
   end
   
   def trs(content, row_options = {})
