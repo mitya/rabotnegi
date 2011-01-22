@@ -51,9 +51,6 @@ module Rabotnegi
     config.after_initialize do  
       ActionView::Base.default_form_builder = CustomFormBuilder
       
-      Less::More.header = false
-      Less::More.destination_path = "stylesheets/gen"
-
       Sass::Plugin.options[:style] = :compact
       Sass::Plugin.options[:template_location] = "#{config.root}/app/stylesheets"
       Sass::Plugin.options[:css_location] = "#{config.root}/public/stylesheets/gen"

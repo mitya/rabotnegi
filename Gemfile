@@ -8,15 +8,12 @@ gem 'rails', '3.0.3'
 gem 'mysql2'
 gem 'json', :require => 'json/add/rails'
 gem 'will_paginate'
-gem 'less'
 gem "haml"
 gem 'rmagick'
+gem 'capistrano'
 
 # Use unicorn as the web server
 # gem 'unicorn'
-
-# Deploy with Capistrano
-# gem 'capistrano'
 
 # To use debugger (ruby-debug for Ruby 1.8.7+, ruby-debug19 for Ruby 1.9.2+)
 # gem 'ruby-debug'
