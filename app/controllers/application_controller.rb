@@ -3,11 +3,8 @@ class ApplicationController < ActionController::Base
   include SimpleCaptcha::ControllerHelpers
   include ControllerHelper
   
-  RecordInvalid = ActiveRecord::RecordInvalid
-  RecordNotFound = ActiveRecord::RecordNotFound
-  
-  rescue_from(RecordInvalid) { render :form, :status => 422 }
-  rescue_from(RecordNotFound) { |e|
+  rescue_from(ActiveRecord::RecordInvalid) { render :form, :status => 422 }
+  rescue_from(ActiveRecord::RecordNotFound) { |e|
     Rails.logger.debug(e)
     flash[:error] = "К сожалению, то что вы искали, мы уже куда-то похерили. Если оно вообще здесь было."
     redirect_to '/'
@@ -16,7 +13,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_employer, :current_employer?
   before_filter :set_locale
 
-  # protect_from_forgery
+  protect_from_forgery
 
 protected
   def log_processing

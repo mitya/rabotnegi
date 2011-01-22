@@ -1,16 +1,16 @@
 class Vacancy < ActiveRecord::Base
-  property :id,            :Serial
-  property :title,         String, :required => true, :length => 255
-  property :description,   Text, :required => true
-  property :external_id,   Integer   
-  property :industry,      String, :required => true, :length => 255
-  property :city,          String, :required => true, :length => 255
-  property :salary_min,    Integer   
-  property :salary_max,    Integer   
-  property :employer_id,   Integer   
-  property :employer_name, String, :length => 255
-  property :created_at, DateTime
-  property :updated_at, DateTime
+  # property :id,            :Serial
+  # property :title,         String, :required => true, :length => 255
+  # property :description,   Text, :required => true
+  # property :external_id,   Integer   
+  # property :industry,      String, :required => true, :length => 255
+  # property :city,          String, :required => true, :length => 255
+  # property :salary_min,    Integer   
+  # property :salary_max,    Integer   
+  # property :employer_id,   Integer   
+  # property :employer_name, String, :length => 255
+  # property :created_at, DateTime
+  # property :updated_at, DateTime
 
   validates_presence_of :title, :description, :industry, :city
 
