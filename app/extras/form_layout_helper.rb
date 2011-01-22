@@ -20,15 +20,15 @@ module FormLayoutHelper
     content.push tag(:br) + content_tag(:small, options[:comment]) if options[:comment]
 
     content_tag :tr, row_options do
-      content_tag(:th, label.join(' ')) +
-      content_tag(:td, content.join(' ')) + 
+      content_tag(:th, label.join(' ').html_safe) +
+      content_tag(:td, content.join(' ').html_safe) + 
       content_tag(:td, "", :class => "other")
-    end.html_safe
+    end
   end
   
   def trs(content, row_options = {})
     content_tag :tr, row_options do
-      content_tag :td, content, :colspan => 2
+      content_tag :td, content.html_safe, :colspan => 2
     end
   end
   
@@ -51,15 +51,6 @@ module FormLayoutHelper
   end
   
   def wrapper(&block)
-    concat "<table class='form-layout'>".html_safe
-    yield
-    concat '</table>'.html_safe
-  end
-end
-
-class CustomFormBuilder < ActionView::Helpers::FormBuilder
-  def tr(property, title, content, options = {})
-    label = label(property, title + ':')
-    @template.trb(label, content, options)
+    "<table class='form-layout'>#{capture(&block)}</table>".html_safe
   end
 end

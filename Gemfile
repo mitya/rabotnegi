@@ -9,6 +9,7 @@ gem 'mysql2'
 gem 'json', :require => 'json/add/rails'
 gem 'will_paginate'
 gem 'less'
+gem "haml"
 gem 'rmagick'
 
 # Use unicorn as the web server

@@ -1,8 +1,6 @@
 module CommonHelper
 	def centered(&proc)
-		concat "<table class='centered'><tr><td>"
-		yield
-		concat '</table>'
+	  "<table class='centered'><tr><td>#{capture(&proc)}</table>".html_safe
 	end
 
 	def required_mark(options = {})

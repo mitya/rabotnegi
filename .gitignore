@@ -3,3 +3,5 @@ tmp/*
 db/data/*
 jobs.tmproj
 .DS_Store
+Gemfile.lock
+public/stylesheets/gen
