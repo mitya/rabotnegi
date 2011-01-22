@@ -10,7 +10,9 @@ gem 'json', :require => 'json/add/rails'
 gem 'will_paginate'
 gem "haml"
 gem 'rmagick'
+gem 'xml-simple'
 gem 'capistrano'
+gem 'simple_captcha', :git => 'git://github.com/galetahub/simple-captcha.git'
 
 # Use unicorn as the web server
 # gem 'unicorn'
