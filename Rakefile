@@ -1,10 +1,12 @@
-require(File.join(File.dirname(__FILE__), 'config', 'boot'))
+require File.expand_path('../config/application', __FILE__)
 
 require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
-require 'tasks/rails'
+
 require 'pp'
+
+Rails::Application.load_tasks
 
 namespace :db do
 	desc "Backups production database on rabotnegi.ru"

@@ -16,6 +16,8 @@ class ApplicationController < ActionController::Base
   helper_method :current_employer, :current_employer?
   before_filter :set_locale
 
+  # protect_from_forgery
+
 protected
   def log_processing
     super
