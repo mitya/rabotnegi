@@ -4,7 +4,7 @@ class ActiveRecord::Base
   
   def self.get(*args)
     find(*args)
-  rescue RecordNotFound
+  rescue ActiveRecord::RecordNotFound
     nil
   end
   

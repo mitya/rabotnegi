@@ -1,10 +1,10 @@
 class Employer < ActiveRecord::Base
-  property :id,         :Serial
-  property :name,       String, :required => true, :length => 255
-  property :login,      String, :required => true, :length => 255
-  property :password,   String, :required => true, :length => 255
-  property :created_at, DateTime
-  property :updated_at, DateTime
+  # property :id,         :Serial
+  # property :name,       String, :required => true, :length => 255
+  # property :login,      String, :required => true, :length => 255
+  # property :password,   String, :required => true, :length => 255
+  # property :created_at, DateTime
+  # property :updated_at, DateTime
 
   validates_presence_of :name, :login, :password
   validates_uniqueness_of :login
