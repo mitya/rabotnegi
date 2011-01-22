@@ -1,0 +1,122 @@
+@import _helpers
+
+body
+  margin: 10px 0
+  font: 13px "Lucida Grande", Verdana, sans-serif
+  min-width: 480px
+  behavior: url("/stylesheets/csshover2.htc")
+
+#footer
+  clear: left
+  width: 100%
+  margin-top: 10px
+  border-top: thin solid #aaaaaa
+  padding-top: 5px
+  text-align: center
+  color: #aaaaaa
+
+#logo
+  font-weight: bold
+  font-size: x-large
+  a
+    text-decoration: none
+  #logo-pro
+    color: red
+  #logo-rabotu
+    font-variant: small-caps
+    color: black
+
+#header
+  #logo
+    float: left
+    margin: 0 10px
+    height: 30px
+    line-height: 30px
+  #tabs
+    float: left
+    padding: 0
+    margin: 0
+    li
+      float: left
+      height: 30px
+      line-height: 30px
+      margin: 0 5px
+      list-style-type: none
+    li.tab
+      border: 1px solid #555555
+      border-bottom: none
+      background: #eeeeee
+      +rounded-top(5px)
+      a
+        padding: 5px 10px
+        color: black
+        text-decoration: none
+    li:hover
+      background: #eeeeee
+      background: #eeeeee -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#cccccc))
+      background: #eeeeee -moz-linear-gradient(top, #eeeeee, #cccccc)
+      a
+    li.selected
+      background: #eeeeee
+      background: #eeeeee -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#cccccc))
+      background: #eeeeee -moz-linear-gradient(top, #eeeeee, #cccccc)
+      font-weight: bold
+      border: 1px solid #555555
+      border-bottom: none
+      a:hover
+        color: black
+    li.selected:hover a:hover
+  #links
+    clear: both
+    height: 25px
+    line-height: 25px
+    padding: 5px 0
+    background: #cccccc
+    background: #cccccc -webkit-gradient(linear, left top, left bottom, from(#cccccc), to(#999999))
+    background: #cccccc -moz-linear-gradient(top, #cccccc, #999999)
+    a
+      margin: 0 7px
+      padding: 5px
+      text-decoration: none
+      color: #333333
+    a:hover
+      color: white
+      background: #666666
+      +rounded(5px)
+    a.selected
+      color: black
+      font-weight: bold
+      text-decoration: none
+    a.selected:hover
+      color: white
+
+#content
+  padding: 5px 10px
+  h1
+    margin: 10px 0 5px
+
+#flash-notice, #flash-error
+  padding: 8px
+  text-align: center
+  font-weight: bold
+  color: white
+
+#flash-notice
+  background: green
+
+#flash-error
+  background: red
+
+#info-panel
+  clear: both
+  width: 100%
+  margin-top: 20px
+  padding: 5px
+  pre
+    font-family: "CMU Typewriter Text"
+    font-size: 12pt
+  p#trace-contents
+    text-align: center
+    font-size: larger
+  h2#info-panel-show
+    text-align: center
