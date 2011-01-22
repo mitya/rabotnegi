@@ -48,7 +48,8 @@ class Vacancy < ActiveRecord::Base
     self.city ||= 'msk'
   end
 
-  def before_save
+  before_save :cache_employer_data, :if => :employer
+  def cache_employer_data
     if employer
       self.employer_id = employer.id
       self.employer_name = employer.name

@@ -23,7 +23,7 @@
       <tbody>
       	<% @vacancies.each_with_index do |vacancy, i| %>
       		<tr id='<%= vacancy.id %>' class='header <%= i.odd?? '' : 'alt' %>'>
-      			<td class='pos'><a href='<%= vacancy_path(id) %>'><%= vacancy.title %></a>
+      			<td class='pos'><a href='<%= vacancy_path(vacancy) %>'><%= vacancy.title %></a>
       			<td class='emp'><%= vacancy.employer_name %>
       			<td class='sal'><%= vacancy.salary %>
       		</tr>

@@ -2,7 +2,7 @@
   <td colspan=3>
     <div id='<%= @vacancy.id %>-description-content' class='content' style='display:none'>
       <div class="inner">
-        <%= @vacancy.description %><p class="links"><a href='http://www.rabota.ru/vacancy<%= @vacancy.external_id %>.html' class='rabota-ru'>Контактная информация на Работе.ру</a>
+        <%= raw @vacancy.description %><p class="links"><a href='http://www.rabota.ru/vacancy<%= @vacancy.external_id %>.html' class='rabota-ru'>Контактная информация на Работе.ру</a>
       </div>
     </div>
   </td>

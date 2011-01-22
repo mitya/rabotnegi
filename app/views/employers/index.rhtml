@@ -13,8 +13,8 @@
   		<p id='or-p'>или</p>
 
   		<h3 id='login-h'>Войдите в систему</h3>
-  		<% form_tag employer_login_path, :method => :post, :id => 'employer-login' do %>
-    	  <% wrapper do %>
+  		<%= form_tag employer_login_path, :method => :post, :id => 'employer-login' do %>
+    	  <%= wrapper do %>
     			<%= tr :login, 'Логин', text_field_tag(:login, params[:login]) %>
     			<%= tr :password, 'Пароль', password_field_tag(:password, params[:password]) %>
     			<%= tr2 submit_tag('Войти', :class => 'button') %>

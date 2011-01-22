@@ -1,9 +1,7 @@
 Rabotnegi::Application.routes.draw do
-  # root :to => 'vacancies#index'
-  
-  # get 'vacancies/:city/:industry' => 'vacancies#index', :as => :vacancies, 
-  #   :constraints => {:city => /(?!(new|my|\d+))\w*/}, 
-  #   :defaults => {:city => nil, :industry => nil}
+  root :to => 'vacancies#index'
+
+  get 'vacancies(/:city(/:industry))' => 'vacancies#index', :as => :nice_vacancies, :city => Regexp.new(City.all.map(&:code).join('|'))
 
   resources :vacancies, :only => [:show, :index]
   resource  :resume  

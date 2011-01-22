@@ -8,6 +8,6 @@ module CollectionsHelper
 		end
 
 		"Найдено <b>#{collection.total_entries}</b> #{object}.
-		 Показаны <b>#{collection.offset + 1}</b> — <b>#{collection.offset + collection.length}</b>"
+		 Показаны <b>#{collection.offset + 1}</b> — <b>#{collection.offset + collection.length}</b>".html_safe
 	end
 end
