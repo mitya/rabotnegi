@@ -7,9 +7,9 @@
   <%= title %>
 </h1>
 
-<% form_for @vacancy, :html => { :id => 'vacancy-edit-form' }, :url => url do |f| %>
+<%= form_for @vacancy, :html => { :id => 'vacancy-edit-form' }, :url => url do |f| %>
   <%= errors_for(@vacancy) %>
-  <% wrapper do %>
+  <%= wrapper do %>
   	<%= f.tr :employer_name, 'Работодатель', f.text_field(:employer_name) unless current_employer %>
   	<%= f.tr :title, 'Должность', f.text_field(:title), :required => true %>
   	<%= f.tr :city, 'Город', f.select(:city, ModelHelper::CityOptions) %>

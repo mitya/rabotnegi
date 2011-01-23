@@ -8,28 +8,26 @@ Rabotnegi::Application.routes.draw do
   resources :resumes, :only => [:index]
   
   resource :employer, :only => [:new, :create]
-  namespace :employer do  
-    root :to => "employers#welcome"
-    post 'login' => 'employers#login', :as => :login
-    get  'logout' => 'employers#logout', :as => :logout
+
+  namespace :employer, :module => "employers" do
+    root :action => "welcome"
+    post "login", :action => 'login', :as => :login
+    get  "logout", :action => 'logout', :as => :logout
     resources :vacancies
   end
-  
-  resource :worker, :only => []
-  namespace :worker do  
-    get  'login' => 'workers#login_page', :as => :login
-    post 'login' => 'workers#login', :as => :login
-    get  'logout' => 'workers#logout', :as => :logout
+
+  namespace :worker, :module => "workers" do
+    get  "login", :action => 'login_page', :as => :login
+    post "login", :action => 'login'
+    get  "logout", :action => 'logout', :as => :logout
   end
-  
+
   namespace :admin do
-    root :to => 'admin#dashboard', :as => :dashboard
+    root :action => 'dashboard', :as => :dashboard
     resources :vacancies
   end
-  
+
   match '/system/:action', :controller => "system", :as => :system
   match '/sitemap' => 'site#map', :as => :sitemap
   match '/test' => 'system#test'
-
-  # match ':controller(/:action(/:id(.:format)))'
 end
