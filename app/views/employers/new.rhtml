@@ -8,9 +8,9 @@
   Пожалуйста, заполните форму. Все поля в ней обязательные.
 </p>
 
-<% form_for @employer, :url => employer_path do |f| %>
+<%= form_for @employer, :url => employer_path do |f| %>
   <%= errors_for(@employer) %>
-  <% wrapper do %>
+  <%= wrapper do %>
   	<%= f.tr :name, 'Название компании', f.text_field(:name), :comment => "Например: «Газпром» или «Рога и Копыта». <br/>Не нужно указывать форму собственности (ООО, ЗАО, и т.д.)." %>
   	<%= f.tr :login, 'Логин', f.text_field(:login), :comment => "" %>
   	<%= f.tr :password, 'Пароль', f.password_field(:password), :comment => "Придумайте пароль, он может быть любой длины и содежать любые буквы, цифры и знаки." %>
