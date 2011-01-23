@@ -12,6 +12,6 @@ unit_test Employer do
   test "creation without password" do
     @bad_microsoft = Employer.new(:name => 'Microsoft', :login => 'ms')
     assert !@bad_microsoft.valid?
-    assert @bad_microsoft.errors.invalid?(:password)
+    assert @bad_microsoft.errors[:password].any?
   end    
 end

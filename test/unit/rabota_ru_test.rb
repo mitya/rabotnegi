@@ -27,7 +27,7 @@ unit_test RabotaRu::VacancyLoader do
   test "loading" do
     FileUtils.cp(Dir["#{Rails.root}/test/fixtures/rabotaru/*"], @work_dir.path)
     @loader.skip_remote_loading = true
-    @loader.load
+    @loader.call(:load)
   end
   
   test "filtration" do
@@ -54,6 +54,7 @@ unit_test RabotaRu::VacancyLoader do
       Vacancy.new(:title => 'Manager',   :city => 'spb', :created_at => Time.utc(2008, 9, 1), :external_id => 102, :industry => 'it', :description => 'no')
     ]
     @loader.instance_variable_set(:@loaded_vacancies, loaded_vacancies)
+    @loader.instance_variable_set(:@loading, RabotaRu::VacancyLoading.new(:started_at => Time.current))
   end
 end
 

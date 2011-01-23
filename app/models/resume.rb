@@ -39,7 +39,7 @@ class Resume < ActiveRecord::Base
 			conditions << ["min_salary #{op} ?", value]
 		end
 		
-		scoped :conditions => merge_conditions(*conditions)
+    conditions.inject(self) { |results, condition| results.where(condition) }		
 	end
 
   def self.authenticate(name, password)

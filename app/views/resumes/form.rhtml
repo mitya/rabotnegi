@@ -4,7 +4,7 @@
   Публикация резюме
 </h1>
 
-<%= form_for @resume, :url => resume_path, :html => {:id => "resume-form"} do |f| %>
+<%= form_for @resume, :url => my_resume_path, :html => {:id => "resume-form"} do |f| %>
   <%= errors_for(@resume) %>
   <%= wrapper do %>
     <%= section do %>

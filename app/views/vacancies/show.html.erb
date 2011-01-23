@@ -1,6 +1,6 @@
 <% page "vacancy", "#{@vacancy.title} — #{@vacancy.city_name}", :path => %w(workers workers vacancy-search) %>
 
-<% div_for @vacancy do %>
+<%= div_for @vacancy do %>
   <h2><%= @vacancy.title %></h2>
   
   <div class='description'><%= @vacancy.description %></div>

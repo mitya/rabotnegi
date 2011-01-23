@@ -9,6 +9,10 @@ class SystemController < ApplicationController
     render :text => request.ssl? ? 'SSL' : 'not SSL'
   end
   
+  def locale
+    render :text => I18n.locale
+  end
+  
   def reset
     reset_session
     redirect_to root_path

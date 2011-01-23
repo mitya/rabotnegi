@@ -26,10 +26,10 @@ module ApplicationHelper
     end
     
     result = ''
-    result << content_tag(:h2, header_message)
-    result << content_tag(:ul, error_messages)
+    result << content_tag(:h2, header_message.html_safe)
+    result << content_tag(:ul, error_messages.join.html_safe)
    
-    content_tag :div, result, :class => 'form-errors'
+    content_tag :div, result.html_safe, :class => 'form-errors'
   end
   
   def vacancies_page_title
