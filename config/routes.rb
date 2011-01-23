@@ -1,8 +1,8 @@
 Rabotnegi::Application.routes.draw do
   root :to => 'vacancies#index'
-
+  
   get 'vacancies(/:city(/:industry))' => 'vacancies#index', :as => :nice_vacancies, :city => Regexp.new(City.all.map(&:code).join('|'))
-
+  
   resources :vacancies, :only => [:show, :index]
   resource  :resume  
   resources :resumes, :only => [:index]
@@ -26,9 +26,10 @@ Rabotnegi::Application.routes.draw do
     root :to => 'admin#dashboard', :as => :dashboard
     resources :vacancies
   end
+  
+  match '/system/:action', :controller => "system", :as => :system
+  match '/sitemap' => 'site#map', :as => :sitemap
+  match '/test' => 'system#test'
 
-  match '/simple_captcha/:action' => 'simple_captcha#index', :as => :simple_captcha
-  match '/system/:action' => 'system#index', :as => :system
-  match '/test/:action' => 'test#index', :as => :test
-  match '/sitemap.:format' => 'site#map', :as => :sitemap  
+  # match ':controller(/:action(/:id(.:format)))'
 end
