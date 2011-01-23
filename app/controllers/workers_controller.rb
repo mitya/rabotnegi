@@ -7,7 +7,7 @@ class WorkersController < ApplicationController
     @resume = Resume.authenticate(params[:name], params[:password])
     session[:resume_id] = @resume.id
     cookies[:resume_id] = { :value => @resume.id.to_s, :expires => 14.days.from_now, :path => '/' } if params[:remember_me] == 'on'
-    redirect_to resume_path
+    redirect_to my_resume_path
   rescue ArgumentError => e
     flash[:error] = e.message
     render :login

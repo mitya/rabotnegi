@@ -4,8 +4,8 @@ Rabotnegi::Application.routes.draw do
   get 'vacancies(/:city(/:industry))' => 'vacancies#index', :as => :nice_vacancies, :city => Regexp.new(City.all.map(&:code).join('|'))
   
   resources :vacancies, :only => [:show, :index]
-  resource  :resume  
-  resources :resumes, :only => [:index]
+  resource  :resume, :as => :my_resume
+  resources :resumes, :only => [:index, :show]
   
   resource :employer, :only => [:new, :create]
 

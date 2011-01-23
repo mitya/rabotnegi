@@ -33,7 +33,7 @@ class ResumesController < ApplicationController
     if @resume.save
       flash[:notice] = "Резюме опубликовано"
       session[:resume_id] = @resume.id
-      redirect_to resume_path
+      redirect_to my_resume_path
     else
       render "form", :status => 422
     end
@@ -43,7 +43,7 @@ class ResumesController < ApplicationController
     @resume = Resume.get!(session[:resume_id])
     if @resume.update_attributes(params[:resume])
       flash[:notice] = "Резюме сохранено"
-      redirect_to resume_path
+      redirect_to my_resume_path
     else
       render "form", :status => 422
     end

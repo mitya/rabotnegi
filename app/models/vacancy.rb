@@ -15,6 +15,7 @@ class Vacancy < ActiveRecord::Base
   validates_presence_of :title, :description, :industry, :city
 
   belongs_to :employer
+  composed_of :salary, :mapping => [ %w(salary_min min), %w(salary_max max) ]
 
   delegate :text, :text=, :to => :salary, :prefix => true
 
@@ -29,10 +30,6 @@ class Vacancy < ActiveRecord::Base
   
   def to_param
     "#{id}"
-  end
-  
-  def salary
-    @salary ||= Salary.new(salary_min, salary_max)
   end
   
   def city_name
