@@ -45,9 +45,8 @@ module FormLayoutHelper
     trb(label, content, options)
   end
     
-  def section(options = {}, &block)
-    concat tag(:tbody, options, true)
-    yield
+  def section(options = {}, &block)    
+    content_tag(:tbody, capture(&block), options)
   end
   
   def wrapper(&block)
