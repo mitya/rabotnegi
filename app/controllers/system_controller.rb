@@ -29,4 +29,9 @@ class SystemController < ApplicationController
   def test
     render "site/test", :layout => false
   end
+  
+  def lorem
+    @count = params[:count].to_i
+    render "test/lorem", :layout => false
+  end
 end
