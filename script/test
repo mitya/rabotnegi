@@ -1,28 +1,35 @@
-#!/usr/bin/env /volumes/code/rabotnegi/script/runner
-require 'pp'
+RECORD_COUNT = 1000
 
-# Vacancy.all(:city => "msk").count
-# 
-# v = Vacancy.create(:title => "Test 1", :description => "Hey", :industry => "it", :city => "msk")
-# 
-# Employer.first
-# 
-# Resume.create(:fname => "Joe", :lname => "Smith", :job_title => "Boss", :city => "msk", :industry => "it", :min_salary => 20000, :contact_info => "5552211")
+mysql = Mysql2::Client.new(:host => "localhost", :username => "root", :database => "rabotnegi_dev")
+query = "SELECT `vacancies`.* FROM `vacancies` LIMIT #{RECORD_COUNT}"
 
-
-v = Resume.new
-v.save
-
-
-p v.errors
-
-puts
-v.errors.each_pair do |a, x|
-  p a
-  p x
+p_ar = proc do
+  results = Vacancy.limit(RECORD_COUNT).all[1]
 end
-  
-puts
-v.errors.each do |e|
-  p e
+
+p_select_rows = proc do
+  Vacancy.connection.select_rows(query)[1]
+end
+
+p_select_all = proc do
+  Vacancy.connection.select_all(query)[1]
+end
+
+p_mysql_2 = proc do
+  results = []
+  mysql.query(query).each { |x| results << x }
+  results
+end
+
+Vacancy.uncached do
+  Vacancy.limit(5).all
+
+  Benchmark.bm(20) do |b|
+    Rails.logger.debug "---------------------------------------"
+    
+    b.report("p_ar", &p_ar)
+    b.report("p_select_rows", &p_select_rows)
+    b.report("p_select_all", &p_select_all)
+    b.report("p_mysql_2", &p_mysql_2)
+  end
 end

@@ -30,4 +30,5 @@ Rabotnegi::Application.routes.draw do
   match '/system/:action', :controller => "system", :as => :system
   match '/sitemap' => 'site#map', :as => :sitemap
   match '/test' => 'system#test'
+  match '/test/lorem/(:count)' => 'system#lorem', :count => 5
 end
