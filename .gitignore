@@ -5,3 +5,5 @@ jobs.tmproj
 .DS_Store
 Gemfile.lock
 public/stylesheets/gen
+public/javascripts/common.js
+public/javascripts/application.js
