@@ -9,6 +9,7 @@ gem 'rmagick'
 gem 'xml-simple'
 gem 'capistrano'
 gem 'simple_captcha', :git => 'git://github.com/galetahub/simple-captcha.git'
+gem "barista"
 
 group :development, :test do
   gem 'ruby-prof'
