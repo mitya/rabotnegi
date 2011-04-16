@@ -9,5 +9,5 @@ module CurrencyConverter
 	  @@rates[currency]
 	end
 
-	@@rates = { :rub => 1.0, :usd => 28, :eur => 40	}
+	@@rates = { rub: 1.0, usd: 28, eur: 40	}
 end

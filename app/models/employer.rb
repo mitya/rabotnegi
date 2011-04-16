@@ -25,6 +25,6 @@ private
   end
 
   def self.authenticate(login, password)
-    first(:conditions => {:login => login, :password => password}) || raise(ArgumentError)
+    where(:login => login, :password => password).first || raise(ArgumentError)
   end
 end

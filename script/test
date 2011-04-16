@@ -1,21 +1,21 @@
 RECORD_COUNT = 1000
 
-mysql = Mysql2::Client.new(:host => "localhost", :username => "root", :database => "rabotnegi_dev")
+mysql = Mysql2::Client.new(host: "localhost", username: "root", database: "rabotnegi_dev")
 query = "SELECT `vacancies`.* FROM `vacancies` LIMIT #{RECORD_COUNT}"
 
-p_ar = proc do
+p_ar = -> do
   results = Vacancy.limit(RECORD_COUNT).all[1]
 end
 
-p_select_rows = proc do
+p_select_rows = -> do
   Vacancy.connection.select_rows(query)[1]
 end
 
-p_select_all = proc do
+p_select_all = -> do
   Vacancy.connection.select_all(query)[1]
 end
 
-p_mysql_2 = proc do
+p_mysql_2 = -> do
   results = []
   mysql.query(query).each { |x| results << x }
   results

@@ -2,7 +2,7 @@
 
 class ResumesController < ApplicationController
   before_filter :resume_required, :only => [:edit, :update, :destroy, :my]
-  before_filter :resume_required, :only => :show, :if => proc { |c| !c.params[:id] }
+  before_filter :resume_required, :only => :show, :if => -> c { !c.params[:id] }
   
   def index
     @resumes = Resume.
