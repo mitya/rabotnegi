@@ -36,37 +36,37 @@ module ApplicationHelper
   
   def vacancies_page_title
     if @vacancies
-  		city = City.get(params[:city])
-  		industry = Industry.get(params[:industry]) if params[:industry].present?
-  		query = params[:q]
-  		page = params[:page]
-	
-  		content = "Вакансии — #{city.name}"
-  		content << " — #{industry.name}" if industry
-  		content << " — #{query}" if query
-  		content << ", стр. №#{page}" if page
-  		content
-  	else
-  	  "Поиск вакансий"
-  	end
+      city = City.get(params[:city])
+      industry = Industry.get(params[:industry]) if params[:industry].present?
+      query = params[:q]
+      page = params[:page]
+  
+      content = "Вакансии — #{city.name}"
+      content << " — #{industry.name}" if industry
+      content << " — #{query}" if query
+      content << ", стр. №#{page}" if page
+      content
+    else
+      "Поиск вакансий"
+    end
   end
   
-	def resumes_page_title
-	  if @resumes
-  		city = City[params[:city]] if params[:city].present?
-  		industry = Industry[params[:industry]] if params[:industry].present?
-  		query = params[:q]
-  		page = params[:page]
-		
-  		content = "Резюме — #{city.name}"
-  		content << " — #{industry.name}" if industry
-  		content << " — #{query}" if query
-  		content << ", стр. №#{page}" if page
-  		content
-	  else
-	    "Поиск резюме"
+  def resumes_page_title
+    if @resumes
+      city = City[params[:city]] if params[:city].present?
+      industry = Industry[params[:industry]] if params[:industry].present?
+      query = params[:q]
+      page = params[:page]
+    
+      content = "Резюме — #{city.name}"
+      content << " — #{industry.name}" if industry
+      content << " — #{query}" if query
+      content << ", стр. №#{page}" if page
+      content
+    else
+      "Поиск резюме"
     end
-	end
+  end
   
   def site_desc
     "Работнеги.ру — это сайт который позволяет быстро найти работу или работников. Простой в использовании и не требует регистрации."
@@ -77,7 +77,7 @@ module ApplicationHelper
   end
 end
 
-ActionView::Base.field_error_proc = proc do |html_tag, instance|
+ActionView::Base.field_error_proc = -> html_tag, instance do
   if html_tag =~ /<label/
     "<span class='invalid' title='#{instance.error_message}'>#{html_tag}</span>"
   else

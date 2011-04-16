@@ -2,15 +2,15 @@ class SystemController < ApplicationController
   def load_data_from_rabota_ru
     loader = RabotaRu::VacancyLoader.new
     loader.load
-    render :text => 'ok'
+    render text: 'ok'
   end
   
   def ssl
-    render :text => request.ssl? ? 'SSL' : 'not SSL'
+    render text: request.ssl? ? 'SSL' : 'not SSL'
   end
   
   def locale
-    render :text => I18n.locale
+    render text: I18n.locale
   end
   
   def reset
@@ -23,15 +23,15 @@ class SystemController < ApplicationController
   end
   
   def starter
-    render :text => $0
+    render text: $0
   end
   
   def test
-    render "site/test", :layout => false
+    render "site/test", layout: false
   end
   
   def lorem
     @count = params[:count].to_i
-    render "test/lorem", :layout => false
+    render "test/lorem", layout: false
   end
 end

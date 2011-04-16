@@ -8,9 +8,9 @@ class EmployersController < ApplicationController
 	def create
 	  @employer = Employer.new(params[:employer])
 
-    if not simple_captcha_valid?(:keep => true)
+    if not simple_captcha_valid?(keep: true)
       @employer.errors.add(:captcha, "not valid")
-      render :new, :status => 422 and return
+      render :new, status: 422 and return
     end
     
 		if @employer.save		
@@ -19,7 +19,7 @@ class EmployersController < ApplicationController
   		simple_captcha_passed!
   		redirect_to employer_vacancies_path
 	  else
-		  render :new, :status => 422
+		  render :new, status: 422
 		end
 	end
 

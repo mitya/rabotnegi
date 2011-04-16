@@ -48,6 +48,7 @@ class Salary
 	
 	def text=(value)
 	  other = self.class.parse(value)
+	  self.min = self.max = nil
 	  self.min = other.min
 	  self.max = other.max
 	end

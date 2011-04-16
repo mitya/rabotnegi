@@ -19,36 +19,36 @@ class Resume < ActiveRecord::Base
   validates_presence_of :fname, :lname, :city, :job_title, :industry, :contact_info
   validates_numericality_of :min_salary
 
-	def name
-	  "#{fname} #{lname}".squish
-	end
-		
-	def to_s
-		"#{name} — #{job_title} (от #{min_salary} р.)"
-	end
-		
-	def self.search(params)
-	  params = params.symbolize_keys
-	  params.assert_valid_keys(:city, :industry, :salary, :keywords)
-	  
-	  conditions = []
-    conditions << {:city => params[:city]} if params[:city].present?
-	  conditions << {:industry => params[:industry]} if params[:industry].present?
+  def name
+    "#{fname} #{lname}".squish
+  end
+    
+  def to_s
+    "#{name} — #{job_title} (от #{min_salary} р.)"
+  end
+    
+  def self.search(params)
+    params = params.symbolize_keys
+    params.assert_valid_keys(:city, :industry, :salary, :keywords)
+    
+    conditions = []
+    conditions << {city: params[:city]} if params[:city].present?
+    conditions << {industry: params[:industry]} if params[:industry].present?
     conditions << ["job_title LIKE ?", "%#{params[:keywords]}%"] if params[:keywords].present?
-		if params[:salary].present?
-			direction, value = params[:salary].match(/(-?)(\d+)/).captures
-			op = direction == '-' ? :<= : :>=
-			conditions << ["min_salary #{op} ?", value]
-		end
-		
-    conditions.inject(self) { |results, condition| results.where(condition) }		
-	end
+    if params[:salary].present?
+      direction, value = params[:salary].match(/(-?)(\d+)/).captures
+      op = direction == '-' ? :<= : :>=
+      conditions << ["min_salary #{op} ?", value]
+    end
+    
+    conditions.inject(self) { |results, condition| results.where(condition) }   
+  end
 
   def self.authenticate(name, password)
-	  name =~ /(\w+)\s+(\w+)/ || raise(ArgumentError, "Имя имеет неправильный формат")
-	  first, last = $1, $2
-	  resume = first(:conditions => {:lname => last, :fname => first}) || raise(ArgumentError, "Резюме «#{name}» не найдено")
+    name =~ /(\w+)\s+(\w+)/ || raise(ArgumentError, "Имя имеет неправильный формат")
+    first, last = $1, $2
+    resume = where(lname: last, fname: first).first || raise(ArgumentError, "Резюме «#{name}» не найдено")
     resume.password == password || raise(ArgumentError, "Неправильный пароль")
     resume
-	end
+  end
 end

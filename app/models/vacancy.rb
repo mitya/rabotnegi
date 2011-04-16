@@ -19,7 +19,7 @@ class Vacancy < ActiveRecord::Base
   belongs_to :employer
   composed_of :salary, :mapping => [ %w(salary_min min), %w(salary_max max) ]
 
-  delegate :text, :text=, :to => :salary, :prefix => true
+  delegate :text, :to => :salary, :prefix => true
 
   def ==(other)
     self.external_id? && other.external_id? ? 
@@ -45,6 +45,10 @@ class Vacancy < ActiveRecord::Base
   def initialize(attributes = {})
     super
     self.city ||= 'msk'
+  end
+  
+  def salary_text=(value)
+    self.salary = Salary.parse(value)
   end
 
   before_save :cache_employer_data, :if => :employer
