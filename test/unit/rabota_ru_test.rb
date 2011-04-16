@@ -2,7 +2,6 @@
 
 require 'test_helper'
 require 'fileutils'
-require 'xmlsimple'
 require 'time'
 
 unit_test RabotaRu::VacancyLoader do

@@ -51,6 +51,8 @@ module Rabotnegi
     config.after_initialize do  
       ActionView::Base.default_form_builder = CustomFormBuilder
       
+      ActiveSupport::JSON.backend = "JSONGem"
+      
       Sass::Plugin.options[:style] = :compact
       Sass::Plugin.options[:template_location] = "#{config.root}/app/stylesheets"
       Sass::Plugin.options[:css_location] = "#{config.root}/public/stylesheets/gen"
