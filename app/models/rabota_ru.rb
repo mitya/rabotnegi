@@ -1,3 +1,5 @@
+# coding: utf-8
+
 require 'fileutils'
 require 'net/http'
 require 'time'
@@ -221,9 +223,9 @@ module RabotaRu
     # {"value": "руб", "id": "2"}
     def convert_currency(hash)
       case hash['value'].downcase
-        when 'руб': :rub
-        when 'usd': :usd
-        when 'eur': :eur
+        when 'руб' then :rub
+        when 'usd' then :usd
+        when 'eur' then :eur
         else
           Rails.logger.warn('Неизвестная валюта #{currency_string}')
           :rub

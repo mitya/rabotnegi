@@ -1,3 +1,5 @@
+# coding: utf-8
+
 module LayoutHelper
   include AdvAttrAccessor
   adv_attr_accessor :page_id, :page_title, :page_class

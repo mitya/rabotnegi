@@ -1,3 +1,5 @@
+# coding: utf-8
+
 class Employers::VacanciesController < ApplicationController
   before_filter :employer_required, :except => %w(new create)
   before_filter :load_vacancy, :only => %w(show edit update destroy)

@@ -1,3 +1,5 @@
+# coding: utf-8
+
 class Resume < ActiveRecord::Base
   # property :id,           :Serial
   # property :fname,        String,   :required => true, :length => 30

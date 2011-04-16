@@ -1,3 +1,5 @@
+# coding: utf-8
+
 module CollectionsHelper
 	def found_objects_info(collection, word, e1, e2, e5)
 		if collection.total_pages <= 1

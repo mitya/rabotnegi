@@ -16,6 +16,6 @@ Rabotnegi::Application.configure do
   config.after_initialize do
   end
   
-  # config.cache_classes = true
-  # config.log_level = :info
+  config.cache_classes = true
+  config.log_level = :info
 end

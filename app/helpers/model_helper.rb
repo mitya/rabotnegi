@@ -1,3 +1,5 @@
+# coding: utf-8
+
 module ModelHelper
   IndustryOptions = [
     ['Популярные', Industry.popular.map { |industry| [industry.name, industry.code.to_s] }],

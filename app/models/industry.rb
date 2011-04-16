@@ -1,3 +1,5 @@
+# coding: utf-8
+
 class Industry < Struct.new(:code, :external_id, :name, :group)
   cattr_reader :all, :popular, :other
   

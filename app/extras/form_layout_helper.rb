@@ -1,3 +1,5 @@
+# coding: utf-8
+
 module FormLayoutHelper
   def trb(label, content, options = {})
     options.assert_valid_keys(:required, :id, :before, :after, :comment, :class)

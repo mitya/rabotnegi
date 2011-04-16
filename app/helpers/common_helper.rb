@@ -1,3 +1,5 @@
+# coding: utf-8
+
 module CommonHelper
 	def centered(&proc)
 	  "<table class='centered'><tr><td>#{capture(&proc)}</table>".html_safe

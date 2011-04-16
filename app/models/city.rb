@@ -1,3 +1,5 @@
+# coding: utf-8
+
 class City < Struct.new(:code, :external_id, :name)
   cattr_reader :all
 
