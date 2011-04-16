@@ -1,3 +1,5 @@
+# coding: utf-8
+
 require 'test_helper'
 require 'fileutils'
 require 'xmlsimple'
@@ -61,7 +63,7 @@ end
 
 unit_test RabotaRu::VacancyConverter do
   def setup
-    @@hash = ActiveSupport::JSON.decode('{
+    @hash = ActiveSupport::JSON.decode('{
       "publishDate": "Fri, 19 Sep 2008 20:07:18 +0400",
       "expireDate": "Fri, 26 Sep 2008 20:07:18 +0400",
       "position": "Менеджер",
@@ -79,7 +81,7 @@ unit_test RabotaRu::VacancyConverter do
       "responsibility": {"value": "blah-blah-blah"}
     }')
     
-    @@expected_vacancy = Vacancy.new(
+    @expected_vacancy = Vacancy.new(
       :title => 'Менеджер',
       :city => 'spb',
       :industry => 'it',
@@ -94,7 +96,7 @@ unit_test RabotaRu::VacancyConverter do
   end
   
   test "conversion" do
-    assert_equal @@expected_vacancy.attributes, @converter.convert(@@hash).attributes
+    assert_equal @expected_vacancy.attributes, @converter.convert(@hash).attributes
   end
   
   test "extraction of ID from URL" do

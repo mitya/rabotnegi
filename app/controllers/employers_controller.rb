@@ -1,3 +1,5 @@
+# coding: utf-8
+
 class EmployersController < ApplicationController
 	def new
 		@employer = Employer.new

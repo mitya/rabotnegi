@@ -1,3 +1,5 @@
+# coding: utf-8
+
 class Vacancy < ActiveRecord::Base
   # property :id,            :Serial
   # property :title,         String, :required => true, :length => 255

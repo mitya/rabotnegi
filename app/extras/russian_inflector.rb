@@ -1,27 +1,29 @@
+# coding: utf-8
+
 module RussianInflector
 	def self.inflect(number, word, end1, end2, end5, strategy = :normal)
 		number_by_100 = number % 100
 	  ending = case strategy
 		when :normal
 			case number_by_100
-			when 1: end1
-			when 2..4: end2
-			when 5..20: end5
+			when 1 then end1
+			when 2..4 then end2
+			when 5..20 then end5
 			else
 				case number_by_100 % 10
-				when 1: end1
-				when 2..4: end2
-				when 0, 5..9: end5
+				when 1 then end1
+				when 2..4 then end2
+				when 0, 5..9 then end5
 				end
 			end
 		when :more
 			case number_by_100
-			when 1: end2
-			when 2..20: end5
+			when 1 then end2
+			when 2..20 then end5
 			else
 				case number_by_100 % 10
-				when 1: end2
-				when 0, 2..9: end5
+				when 1 then end2
+				when 0, 2..9 then end5
 				end
 			end	
 		end

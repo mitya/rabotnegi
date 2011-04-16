@@ -43,10 +43,10 @@ module Rabotnegi
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]   
 
-    require "lib/ext/core"
-    require 'lib/ext/rails'
-    require 'lib/ext/libs'
-    require 'lib/utilities'
+    require "ext/core"
+    require 'ext/rails'
+    require 'ext/libs'
+    require 'utilities'
 
     config.after_initialize do  
       ActionView::Base.default_form_builder = CustomFormBuilder

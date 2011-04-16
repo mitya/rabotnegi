@@ -1,3 +1,5 @@
+# coding: utf-8
+
 class ResumesController < ApplicationController
   before_filter :resume_required, :only => [:edit, :update, :destroy, :my]
   before_filter :resume_required, :only => :show, :if => proc { |c| !c.params[:id] }
