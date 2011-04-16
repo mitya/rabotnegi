@@ -93,7 +93,8 @@ module RabotaRu
     # Конвертирует загруженные файлы в объекты и помещает результат в @loaded_vacancies.
     def convert
       Dir["#{work_directory}/*.json"].each do |file|
-        items = JSON.parse(File.read(file).sub!(/;\s*$/, ''))
+        file = File.read(file).sub!(/;\s*$/, '')
+        items = ActiveSupport::JSON.decode(file)
         log "Конверсия #{File.basename(file)} (#{items.size})..."
         items.each { |item| convert_item(item) }
       end    
