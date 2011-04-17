@@ -3,7 +3,10 @@ tmp/*
 db/data/*
 jobs.tmproj
 .DS_Store
+.powenv
 Gemfile.lock
-public/stylesheets/gen
 public/javascripts/common.js
 public/javascripts/application.js
+public/stylesheets/pack
+public/stylesheets/gen
+public/javascripts/pack

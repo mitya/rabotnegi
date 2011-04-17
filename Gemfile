@@ -11,4 +11,5 @@ gem "barista"
 group :development, :test do
   gem 'capistrano'
   gem 'ruby-prof'
+  gem 'test-unit'
 end

@@ -1,0 +1,27 @@
+<table class='vacancies-list rounded' cellspacing="0">
+	<thead>
+    <tr>
+  		<th class='pos <%= order_class(:title) %>'><%= link_to "Должность", :sort => encode_order(:title) %>
+  		<th class='emp <%= order_class(:employer_name) %>'><%= link_to "Компания", :sort => encode_order(:employer_name) %>
+  		<th class='sal <%= order_class(:salary_min) %>'><%= link_to "Зарплата", :sort => encode_order(:salary_min) %>
+		</tr>
+  </thead>
+
+  <tbody>
+  	<% @vacancies.each do |vacancy| %>
+      <tr id='<%= vacancy.id %>' class='header <%= xcycle('', 'alt') %>'>
+        <td class='pos'><a href='<%= url(:vacancy, vacancy) %>'><%= raw vacancy.title %></a>
+  			<td class='emp'><%= raw vacancy.employer_name %>
+  			<td class='sal'><%= vacancy.salary %>
+  		</tr>
+  	<% end %>
+  </tbody>
+
+  <tfoot>
+    <tr>
+      <td colspan='3' class='pagination'>        
+        <%= render "pager" if @vacancies.total_pages > 1 %>
+      </td>
+    </tr>
+  </tfoot>
+</table>
