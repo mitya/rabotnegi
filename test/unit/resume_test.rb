@@ -1,7 +1,7 @@
 require 'test_helper'
 
 unit_test Resume do
-  def setup
+  setup do
     @resume = Resume.new
   end
   

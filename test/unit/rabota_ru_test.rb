@@ -7,7 +7,7 @@ require 'time'
 unit_test RabotaRu::VacancyLoader do
   fixtures :vacancies
   
-  def setup
+  setup do
     @loader = PureDelegator.new(RabotaRu::VacancyLoader.new)
     @loader.work_directory = "#{Rails.root}/tmp/rabotaru_test"
 
@@ -61,7 +61,7 @@ end
 
 
 unit_test RabotaRu::VacancyConverter do
-  def setup
+  setup do
     @hash = ActiveSupport::JSON.decode('{
       "publishDate": "Fri, 19 Sep 2008 20:07:18 +0400",
       "expireDate": "Fri, 26 Sep 2008 20:07:18 +0400",
