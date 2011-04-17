@@ -18,4 +18,5 @@ Rabotnegi::Application.configure do
   
   # config.cache_classes = true
   # config.log_level = :info
+  # config.action_controller.perform_caching = true
 end
