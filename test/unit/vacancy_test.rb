@@ -3,7 +3,7 @@
 require 'test_helper'
 
 unit_test Vacancy do
-  def setup
+  setup do
     @vacancy = Vacancy.new    
   end
   
