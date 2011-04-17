@@ -12,4 +12,5 @@ group :development, :test do
   gem 'capistrano'
   gem 'ruby-prof'
   gem 'test-unit'
+  gem "factory_girl"
 end

@@ -1,35 +1,46 @@
 ENV["RAILS_ENV"] = "test"
+
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'pp'
+require "mocks"
 
-class ActiveSupport::TestCase
-  # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
-  #
-  # Note: You'll currently still have to declare fixtures explicitly in integration tests
-  # -- they do not yet inherit this setting
-  fixtures :all
+Factory.find_definitions
 
-  # Add more helper methods to be used by all tests here...
-  self.use_transactional_fixtures = true
-  self.use_instantiated_fixtures  = false
+module Testing
+  module GlobalHelpers
+    def unit_test(name, &block)
+      test_case = Class.new(ActiveSupport::TestCase)
+      Object.const_set((name.to_s.tr_s(' :', '_') + 'Test').classify, test_case)
+      test_case.class_eval(&block)
+    end    
+  end
   
-  class << self
+  module TestHelpers
+    def make(factory_name, *args, &block)
+      factory_name = factory_name.model_name.singular if Class === factory_name
+      Factory(factory_name, *args, &block)
+    end
+  end
+  
+  module CaseHelpers
     def xtest(*args)
     end
     
     def visual_test(name, &block)
       # test(name, &block)
-    end
-  end  
+    end    
+  end
 end
 
-def unit_test(name, &block)
-  test_case = Class.new(ActiveSupport::TestCase)
-  Object.const_set((name.to_s.tr_s(' :', '_') + 'Test').classify, test_case)
-  test_case.class_eval(&block)
-end
+include Testing::GlobalHelpers
 
-module CurrencyConverter
-	@@rates = { :rub => 1.0, :usd => 25.0, :eur => 35.0	}
+class ActiveSupport::TestCase
+  fixtures :all
+
+  self.use_transactional_fixtures = true  
+  self.use_instantiated_fixtures  = false
+
+  include Testing::TestHelpers
+  extend Testing::CaseHelpers
 end
