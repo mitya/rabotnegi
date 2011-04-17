@@ -3,7 +3,7 @@
 require 'test_helper'
 
 unit_test Salary do
-  def setup
+  setup do
     @between_1000_2000 = Salary.make(:min => 1000, :max => 2000)
     @above_1000 = Salary.make(:min => 1000)
     @below_1000 = Salary.make(:max => 1000)
