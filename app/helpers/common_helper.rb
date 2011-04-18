@@ -20,7 +20,7 @@ module CommonHelper
   def url(route_name, *args)
     case route_name.to_s
     when "vacancy" then "/vacancies/#{args.first.id}"
-    else send(route_name, *args)
+    else send("#{route_name}_path", *args)
     end
   end
   
