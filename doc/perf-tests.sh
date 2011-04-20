@@ -64,13 +64,23 @@ httperf --server 127.0.0.1 --port 3000 --num-conns 50 --rate 25 --uri /vacancies
 httperf --server 127.0.0.1 --port 3000 --num-conns 50 --rate 25 --uri /vacancies/msk 
 # 18.1 // Erb, no url helpers
 
-== Rails perf tests
-* Haml is 20% slower than ERB
-* Using URL helper in the 50 item loop make the rendering 35% slower than simple string concatenation.
-* Cycle eat about 2.5% in 50 items list compapring to manuaal index check. A simple implementation eats less than 1%.
 
-== Resume
-* For the important templates ERB should be used instead of Haml
-* For loops URL helpers should not be used. All the URLs should be generated using a uniform interface: url(:vacancy, @vacancy). 
-  And the centralized piece of code will decide how the route will be implemented.
-  
+MySQL vs Mongo
+SELECT id, title, external_id, salary_min, salary_max, employer_name FROM `vacancies` WHERE `vacancies`.`city` = 'msk' ORDER BY title LIMIT #{N} OFFSET 0
+
+VacancyMongo.db.collection("vacancies").find({city: "msk"}, sort: [[:title, Mongo::ASCENDING]], limit: N, :fields => {description: 0}).to_a
+VacancyMongo.where(city: "msk").asc("title").paginate(page: params[:page], per_page: N)
+Vacancy.connection.select_all("SELECT id, title, external_id, salary_min, salary_max, employer_name FROM `vacancies` WHERE `vacancies`.`city` = 'msk' ORDER BY title LIMIT #{N} OFFSET 0")
+
+10000 records, ix_city_title (all indexed)
+Mongo - MySQL - Mongoid - ActiveRecord
+1000 rows: 40 14 74 21
+100 rows: 5.3 2.2 9 7.5
+50 rows: 3 1.7 5 7 
+20 rows: 2.2 1.3 2.7 5.5
+
+10000 records, ix_city (filter is indexed, sort field is not)
+1000 rows: 68 40 102 49
+100 rows: 22 26 29 30
+50 rows: 19 25 21 29
+20 rows: 17 25 18 29
