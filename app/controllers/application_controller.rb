@@ -14,6 +14,8 @@ class ApplicationController < ActionController::Base
   helper :all
   helper_method :current_employer, :current_employer?
   before_filter :set_locale
+  
+  delegate :benchmark, :to => ActionController::Base
 
   protect_from_forgery
 

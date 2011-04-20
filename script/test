@@ -36,11 +36,23 @@
 #   end  
 # end
 
-ActiveSupport::JSON.backend = "JSONGem"
-dump = File.read(Rails.root.join("tmp/rabotaru_test/msk-finance.json"))
-N = 50
+db = Mongo::Connection.new.db("rabotnegi_demo")
 
-Benchmark.bm(20) do |b|
-  b.report("active support") { N.times { ActiveSupport::JSON.decode(dump) } }
-  b.report("json gem") { N.times { JSON.parse(dump) } }
+def mapper(ar_attributes)
+  ar_attributes.each_pair { |k, v| ar_attributes[k] = v.utc if ActiveSupport::TimeWithZone === v }
 end
+
+# db.collection("vacancies").remove
+# 
+# Vacancy.find_each { |vacancy| db.collection("vacancies").insert(mapper(vacancy.attributes)) }
+
+p db.collection("vacancies").count
+
+# v = db.collection("vacancies").find_one(id: 909)
+# p v
+# v[:description] = nil
+# v[:created_at] = nil
+# v['description'] = nil
+# v['created_at'] = Vacancy.first.created_at.utc
+# db.collection("vacancies").update({"_id" => v["_id"]}, v)
+# p v

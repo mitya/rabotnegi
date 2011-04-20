@@ -51,8 +51,7 @@ class Vacancy < ActiveRecord::Base
     self.salary = Salary.parse(value)
   end
 
-  before_save :cache_employer_data, :if => :employer
-  def cache_employer_data
+  before_save do
     if employer
       self.employer_id = employer.id
       self.employer_name = employer.name
