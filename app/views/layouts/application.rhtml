@@ -46,8 +46,8 @@
     </pre>
   <% end %>
   
-  <%= javascript_include_tag %w(jquery rails), :cache => 'pack/lib' %>
-  <%= javascript_include_tag %w(common application), :cache => 'pack/app' %>
+  <%= javascript_include_tag %w(lib/jquery lib/rails), :cache => 'pack/lib' %>
+  <%= javascript_include_tag %w(gen/common gen/application), :cache => 'pack/app' %>
 
   <%= render "layout/google_analytics" if Rails.env.production? %>
 </body>
