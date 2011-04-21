@@ -3,7 +3,7 @@ Rabotnegi::Application.routes.draw do
   
   get 'vacancies(/:city(/:industry))' => 'vacancies#index', :as => :nice_vacancies, :city => Regexp.new(City.all.map(&:code).join('|'))
   
-  resources :vacancies, :only => [:show, :index]
+  resources :vacancies, :only => [:show, :index, :new, :create]
   resource  :resume, :as => :my_resume
   resources :resumes, :only => [:index, :show]
   
@@ -22,13 +22,13 @@ Rabotnegi::Application.routes.draw do
     get  "logout", :action => 'logout', :as => :logout
   end
 
-  namespace :admin do
-    root :action => 'dashboard', :as => :dashboard
-    resources :vacancies
+  namespace :admin, :module => nil do
+    root :to => 'site#admin_dashboard'
+    resources :vacancies, :module => "admin"
   end
 
-  match '/system/:action', :controller => "system", :as => :system
+  match '/system/:action', :controller => "site", :as => :system
   match '/sitemap' => 'site#map', :as => :sitemap
-  match '/test' => 'system#test'
-  match '/test/lorem/(:count)' => 'system#lorem', :count => 5, :as => :lorem
+  match '/test' => 'site#test'
+  match '/test/lorem/(:count)' => 'site#lorem', :count => 5, :as => :lorem
 end

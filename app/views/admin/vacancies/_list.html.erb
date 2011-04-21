@@ -7,7 +7,7 @@
     </tr>
   </thead>
   <tbody>
-    <%= render :partial => 'show', :collection => @vacancies %>
+    <%= render partial: 'show', collection: @vacancies, :as => :vacancy %>
   </tbody>
   <tfoot>
     <tr>

@@ -67,8 +67,8 @@ module Rabotnegi
 
       Haml::Template::options[:ugly] = true
 
-      ADMIN_LOGIN = 'admin'
-      ADMIN_PASSWORD = '0000'
+      ::ADMIN_LOGIN = 'admin'
+      ::ADMIN_PASSWORD = '0000'
     end
   end
 end

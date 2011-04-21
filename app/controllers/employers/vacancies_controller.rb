@@ -1,28 +1,8 @@
 # coding: utf-8
 
 class Employers::VacanciesController < ApplicationController
-  before_filter :employer_required, :except => %w(new create)
+  before_filter :employer_required
   before_filter :load_vacancy, :only => %w(show edit update destroy)
-
-  def new
-    @vacancy = Vacancy.new
-    render 'employers/vacancy_form'
-  end
-
-  def create
-    @vacancy = if current_employer
-      current_employer.vacancies.build(params[:vacancy])
-    else
-      Vacancy.new(params[:vacancy])
-    end
-    
-    if @vacancy.save
-      flash[:notice] = 'Вакансия опубликована'
-      redirect_to employer_path
-    else
-      render 'employers/vacancy_form', :status => 422
-    end
-  end
 
   def index
     @vacancies = current_employer.vacancies.all(:order => :title)

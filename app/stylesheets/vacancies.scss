@@ -1,0 +1,49 @@
+@import "_helpers"; 
+
+body#vacancies { 
+  #content { margin: 0; }
+  .search-result-message { margin: 5px 0; text-align: center; }
+  table.vacancies-list { width: 100%; margin: 10px 0; border: 1px solid #cccccc; @include rounded(10px); 
+    span.pos { font-weight: bold; }
+    td { padding: 5px; border-top: 1px solid #cccccc; }
+    th { padding: 5px; }
+    td.pos, th.pos { text-align: left; width: 52%; }
+    td.emp, th.emp { text-align: left; width: 30%; }
+    td.sal, th.sal { text-align: right; white-space: nowrap; width: 18%; }
+    thead { 
+      tr th { @include background-gradient(#cccccc, #dddddd); }
+      th.sorted a { color: black; }
+      a { text-decoration: none; color: black; }
+      a:visited { color: black; }
+      a:hover { color: $hovered_link_color; } }
+    tfoot tr td { @include background-gradient(#dddddd, #cccccc); }
+    tbody { 
+      tr.header { 
+        td { background: #f3f3f3; }
+        a { color: black; text-decoration: none; font-weight: bold; }
+        span.spinner { background: green; color: white; padding: 5px; } 
+      }
+      tr.header:hover { cursor: pointer; }
+      tr.loading td.pos { background: #f3f3f3 url("/images/spinner.gif") right center no-repeat; }
+      tr.desc { 
+        td { padding: 0; border: none; color: #666666; }
+        div.content { 
+          div.inner { margin: 5px 5px 10px; }
+          p.links { float: right; }
+          ul { margin: 5px 0; padding: 0 0 0 20px; } 
+        } 
+      } 
+    } 
+  }
+  .vacancy p.links { margin-top: 10px; }
+  #vacancies-search-form { width: 330px; margin: 10px auto; border: 1px solid silver; padding: 10px; @include rounded(10px); 
+    input { width: 200px; }
+    select, input.button { width: 205px; } 
+  } 
+}
+
+body#edit-vacancy #vacancy-edit-form { 
+  input { width: 220px; }
+  select { width: 224px; }
+  textarea { width: 400px; height: 170px; } 
+}
