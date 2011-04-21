@@ -53,6 +53,7 @@ class Employers::VacanciesController < ApplicationController
   end
 
 private
+
   def load_vacancy
     @vacancy ||= current_employer.vacancies.get(params[:id])
   end

@@ -22,7 +22,5 @@ class Admin::VacanciesController < ApplicationController
 		@vacancy.attributes = params[:vacancy]
 		@vacancy.save!
 		render :partial => 'show', :object => @vacancy
-	rescue
-		render :text => 'Hi'
 	end
 end

@@ -1,16 +1,17 @@
-class Employer < ActiveRecord::Base
-  # property :id,         :Serial
-  # property :name,       String, :required => true, :length => 255
-  # property :login,      String, :required => true, :length => 255
-  # property :password,   String, :required => true, :length => 255
-  # property :created_at, DateTime
-  # property :updated_at, DateTime
+class Employer
+  include Mongoid::Document
+  include Mongoid::Timestamps
+
+  field :name
+  field :login
+  field :password
+  field :id, type: Integer   
 
   validates_presence_of :name, :login, :password
   validates_uniqueness_of :login
   validates_confirmation_of :password
 
-  has_many :vacancies, :before_add => :initialize_vacancy
+  has_many :vacancies
 
   attr_accessor :password_confirmation
   
@@ -18,10 +19,10 @@ class Employer < ActiveRecord::Base
     name
   end
   
-private
-  def initialize_vacancy(vacancy)
+  def add_vacancy(vacancy)
     vacancy.employer_id = id
     vacancy.employer_name = name    
+    vacancies << vacancy    
   end
 
   def self.authenticate(login, password)
