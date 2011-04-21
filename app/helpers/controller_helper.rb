@@ -35,6 +35,13 @@ module ControllerHelper
       nil :
       "#{field} #{reverse_to_symbol(reverse)}"
   end
+
+  # "date"  => ["date", Mongo::ASCENDING]
+  # "-date" => ["date", Mongo::DESCENDING]
+  def decode_order_for_mongo(param = params[OrderParam])
+    field, asc = decode_order(param)
+    [[field, asc ? Mongo::ASCENDING : Mongo::DESCENDING]]
+  end
   
   def reverse_to_symbol(reverse)
     reverse ? :desc : :asc

@@ -36,21 +36,22 @@ $("body#edit-resume").loaded ->
   $("#edit-resume").find("#resume_fname, #resume_lname").requiredField()
 
 $("body#vacancies").loaded ->
+  $(".vacancies-list tr.header a").live "click", -> $(this).closest('tr').click
   $(".vacancies-list tr.header").live "click", ->
-    vacancy_id = @id
-    $row = $(this)
+    row = $(this)
+    link = row.find('a')    
 
-    if $row.next().is(".desc")
-      $row.next().find(".content").slideToggle()
+    if row.next().is(".desc")
+      row.next().find(".content").slideToggle()
     else
-      $row.addClass("loading")
-      $.get "/vacancies/#{vacancy_id}.ajax", (html) ->
-        $desc = $(html).insertAfter($row)
-        $row.removeClass("loading").addClass('loaded')
-        $desc.addClass('loaded')
-        $desc.addClass('alt') if $row.hasClass('alt')
-        $row.find(".spinner").remove()
-        $desc.find(".content").slideDown()
+      row.addClass("loading")
+      $.get link.attr('href'), (html) ->
+        desc = $(html).insertAfter(row)
+        row.removeClass("loading").addClass('loaded')
+        desc.addClass('loaded')
+        desc.addClass('alt') if row.hasClass('alt')
+        row.find(".spinner").remove()
+        desc.find(".content").slideDown()
         
     false
 

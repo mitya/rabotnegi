@@ -19,6 +19,7 @@ class Salary
 	def range?; @max && @min && @max != @min end
 
 	def ==(other)
+	  Salary === other &&
 		self.min == other.min && 
 		self.max == other.max && 
 		self.currency == other.currency

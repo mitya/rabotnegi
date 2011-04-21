@@ -156,10 +156,12 @@ module RabotaRu
     end
   end
   
-  class VacancyLoading < ActiveRecord::Base
-    serialize :details
+  class VacancyLoading
+    include Mongoid::Document
+    include Mongoid::Timestamps
+    
+    field :details, type: Hash
   end
-
 
   # Converts RSS items with vacancy XML to vacancy objects.
   class VacancyConverter

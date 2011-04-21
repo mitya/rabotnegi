@@ -1,20 +1,21 @@
 # coding: utf-8
 
-class Resume < ActiveRecord::Base
-  # property :id,           :Serial
-  # property :fname,        String,   :required => true, :length => 30
-  # property :lname,        String,   :length => 30
-  # property :password,     String,   :length => 30
-  # property :city,         String,   :required => true, :length => 255
-  # property :job_title,    String,   :required => true, :length => 100
-  # property :industry,     String,   :required => true, :length => 255
-  # property :min_salary,   Integer,  :required => true
-  # property :view_count,   Integer,  :default => 0
-  # property :job_reqs,     Text, :lazy => [:show]
-  # property :about_me,     Text, :lazy => [:show]
-  # property :contact_info, Text, :required => true, :lazy => [:show]
-  # property :created_at, DateTime
-  # property :updated_at, DateTime
+class Resume
+  include Mongoid::Document
+  include Mongoid::Timestamps
+
+  field :id, type: Integer
+  field :fname
+  field :lname
+  field :password
+  field :city
+  field :job_title
+  field :industry
+  field :min_salary, type: Integer
+  field :view_count, type: Integer, default: 0
+  field :job_reqs
+  field :about_me
+  field :contact_info
 
   validates_presence_of :fname, :lname, :city, :job_title, :industry, :contact_info
   validates_numericality_of :min_salary
@@ -30,18 +31,20 @@ class Resume < ActiveRecord::Base
   def self.search(params)
     params = params.symbolize_keys
     params.assert_valid_keys(:city, :industry, :salary, :keywords)
+    query = Regexp.new(params[:keywords] || "")    
+
+    scope = self
+    scope = scope.where(city: params[:city]) if params[:city].present?
+    scope = scope.where(industry: params[:industry]) if params[:industry].present?
+    scope = scope.where(job_title: query) if params[:keywords].present?
     
-    conditions = []
-    conditions << {city: params[:city]} if params[:city].present?
-    conditions << {industry: params[:industry]} if params[:industry].present?
-    conditions << ["job_title LIKE ?", "%#{params[:keywords]}%"] if params[:keywords].present?
     if params[:salary].present?
       direction, value = params[:salary].match(/(-?)(\d+)/).captures
-      op = direction == '-' ? :<= : :>=
-      conditions << ["min_salary #{op} ?", value]
+      op = direction == '-' ? :lte : :gte
+      scope = scope.where(:min_salary.send(op) => value)
     end
     
-    conditions.inject(self) { |results, condition| results.where(condition) }   
+    scope
   end
 
   def self.authenticate(name, password)
