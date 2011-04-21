@@ -12,9 +12,7 @@ class Admin::VacanciesController < ApplicationController
 	
 	def edit
 		@vacancy = Vacancy.find(params[:id])
-		respond_to do |format|
-			format.html { render partial: 'edit', object: @vacancy } if request.xhr?
-		end
+		render partial: 'edit', object: @vacancy
 	end
 	
 	def update
