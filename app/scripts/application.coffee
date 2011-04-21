@@ -1,9 +1,9 @@
 $("body.public").loaded ->
   $("#tabs").attr("data-selected").query().addClass("selected")
-  # $("#links").attr("data-selected").query().addClass("selected")
 
 $("body#admin-vacancies").loaded ->
   edited_rows = {}
+
   $("#vacancies .pagination a").live 'click', ->
     $("#vacancies").load(@href)
     false

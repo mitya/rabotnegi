@@ -1,3 +1,7 @@
+$.extend Array.prototype,
+  last: -> 
+    this[this.length - 1]
+
 $.extend String.prototype,
   evalJSON: -> 
     eval "(#{this})"
@@ -28,7 +32,7 @@ jQuery.fn.extend
     $.initializers[@selector].push(fn)
     this
   record_id: ->
-    @attr('id').match(/\d+/)[0]
+    @attr('id').split('_').last()
   requiredField: ->
     @each ->
       input = $(this)
@@ -58,4 +62,5 @@ Spinner = ->
 
 $ -> 
   for selector, initializers of $.initializers
-    fn() for fn in initializers
+    if $(selector).length
+      fn() for fn in initializers
