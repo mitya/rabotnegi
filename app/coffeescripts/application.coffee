@@ -1,6 +1,6 @@
 $("body.public").loaded ->
   $("#tabs").attr("data-selected").query().addClass("selected")
-  $("#links").attr("data-selected").query().addClass("selected")
+  # $("#links").attr("data-selected").query().addClass("selected")
 
 $("body#admin-vacancies").loaded ->
   edited_rows = {}

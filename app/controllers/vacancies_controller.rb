@@ -1,3 +1,5 @@
+# coding: utf-8
+
 class VacanciesController < ApplicationController
   caches_page :show, :if => -> c { c.request.xhr? }
 
@@ -13,4 +15,19 @@ class VacanciesController < ApplicationController
     @vacancy = Vacancy.find(params[:id])
     request.xhr?? render(partial: "vacancy", object: @vacancy) : render
   end
+  
+  def new
+    @vacancy = Vacancy.new
+    render :form
+  end
+
+  def create
+    @vacancy = Vacancy.new(params[:vacancy])
+    if @vacancy.save
+      redirect_to '/', notice: 'Вакансия опубликована'
+    else
+      render :form, status: 422
+    end
+  end
+  
 end

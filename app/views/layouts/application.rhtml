@@ -1,71 +1,53 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 
 <head>
-	<title><%= window_title %></title>
-	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-	<% for name, content in meta_properties %>
-	  <%= tag :meta, :name => name, :content => content %>
-	<% end %>
+  <title><%= window_title %></title>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <% for name, content in meta_properties %>
+    <%= tag :meta, :name => name, :content => content %>
+  <% end %>
   <%= csrf_meta_tag %>
-	<%= stylesheet_link_tag %w(gen/common gen/public gen/workers gen/employers gen/resumes gen/vacancies), :cache => 'pack/public' %>
+  <%= stylesheet_link_tag %w(gen/common gen/public gen/workers gen/employers gen/resumes gen/vacancies), :cache => 'pack/public' %>
 </head>
 
 <body id="<%= @page_id %>" class="public">
-	<div id='header'>
+  <div id='header'>
     <div id="logo">
-    	<a href='/'>
-    		<span id='logo-pro'>Р</span><span id='logo-rabotu'>аботнеги.ру</span>
-    	</a>
+      <a href='/'>
+        <span id='logo-pro'>Р</span><span id='logo-rabotu'>аботнеги.ру</span>
+      </a>
     </div>
 
     <ul id='tabs' data-selected='#<%= @current_tab %>'>
       <li id='workers-tab' class="tab">
-        <a href='<%= vacancies_path %>'>Работникам</a>
+        <a href='<%= vacancies_path %>'>Поиск вакансий</a>
       </li>
       <li id='employers-tab' class="tab">
-        <a href='<%= employer_home_path %>'>Работодателям</a>
+        <a href='<%= new_vacancy_path %>'>Публикация вакансии</a>
       </li>
     </ul>
 
-		<div id='links' data-selected='<%= @current_navlink && "##{@current_navlink}" %>'>
-			<% case @current_navbar
-				 when "workers-nav-bar" %>
-				<a id='vacancy-search-link' href='<%= vacancies_path %>' class='ui'>Поиск вакансий</a>
-				<a id='my-resume-link' href='<%= my_resume_path %>' class='ui'>Моё резюме</a>
-			<% when "pro-employers-nav-bar" %>
-				<a id='resume-search-link' href='<%= resumes_path %>' class='ui'>Поиск резюме</a>
-				<a id='vacancies-link' href='<%= employer_vacancies_path %>' class='ui'>Мои вакансии</a>
-			<% when "casual-employers-nav-bar" %>
-				<a id='resume-search-link' href='<%= resumes_path %>' class='ui'>Поиск резюме</a>
-				<a id='vacancies-link' href='<%= new_employer_vacancy_path %>' class='ui'>Публикация вакансий</a>
-			<% end %>
-		  <% if current_employer %>
-		    <span style='float: right;'>
-					<b><%= current_employer %></b>
-					<%= link_to 'Выйти', employer_logout_path %>
-		    </span>
-			<% end %>
-		</div>
-		
-		<%= content_tag :div, flash[:notice], :id => 'flash-notice' if flash[:notice] %>
-		<%= content_tag :div, flash[:error], :id => 'flash-error' if flash[:error] %>
-	</div>
+    <br style='clear: both'/>
 
-	<div id='content'>
-		<%= yield :layout %>
-	</div>
-	
-	<div id='footer'>
-	  © 2011 Работнеги.ру
-	</div>
-	
-	<% if Rails.env.development? %>
-  	<pre id='sandbox'>
-  	</pre>
-	<% end %>
-	
-	<%= javascript_include_tag %w(jquery rails), :cache => 'pack/lib' %>
-	<%= javascript_include_tag %w(common application), :cache => 'pack/app' %>
+    <%= content_tag :div, flash[:notice], :id => 'flash-notice' if flash[:notice] %>
+    <%= content_tag :div, flash[:error], :id => 'flash-error' if flash[:error] %>
+  </div>
 
-	<%= render "layout/google_analytics" if Rails.env.production? %>
+  <div id='content'>
+    <%= yield :layout %>
+  </div>
+  
+  <div id='footer'>
+    © 2011 Работнеги.ру
+  </div>
+  
+  <% if Rails.env.development? %>
+    <pre id='sandbox'>
+    </pre>
+  <% end %>
+  
+  <%= javascript_include_tag %w(jquery rails), :cache => 'pack/lib' %>
+  <%= javascript_include_tag %w(common application), :cache => 'pack/app' %>
+
+  <%= render "layout/google_analytics" if Rails.env.production? %>
 </body>

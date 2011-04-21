@@ -1,0 +1,73 @@
+@import "_helpers"; 
+
+table { border-collapse: collapse; }
+h1 { margin: 1em 0 0.25em; }
+h2 { margin: 1em 0 0.25em; }
+h3 { margin: 1em 0 0; }
+h4 { margin: 1em 0 0; }
+h5, h6, fieldset { margin: 0; padding: 0; border: none; }
+p { margin: 0.25em 0; padding: 0; }
+pre { margin: 0.25em 0; padding: 0; }
+
+a { text-decoration: none; }
+a:link { color: $link_color; }
+a:visited { color: purple; }
+a:hover { color: $hovered_link_color; }
+a.ui:visited { color: $link_color; }
+
+form { 
+  .form-errors { margin: 10px 0 15px; color: #ad0000; 
+    h2 { margin: 5px 0; font-size: 16px; color: #ad0000; }
+    ul { margin: 5px 0; padding-left: 0px; list-style-position: inside; }
+  }
+  table.form-layout { 
+    td { padding-bottom: 5px; }
+    th { text-align: left; vertical-align: top; padding-right: 10px; }
+    th label { font-variant: small-caps; line-height: 1.7; padding: 2px 0; margin: 2px 0; display: block; }
+    input[type=text], input[type=password] { width: 195px; padding: 3px; font-size: 13px; }
+    select { width: 205px; }
+    input.button, input[type=submit] { width: 200px; }
+    textarea { font-size: 13px; }
+    label input { width: auto; }
+    td small { color: gray; font-size: 11px; }
+    td span.required-mark { color: gray; font-size: 11px; }
+    td span.invalid + span.required-mark { color: red; }
+    td span.invalid textarea.inner-tooltip { color: red; }
+  }  
+  input.inner-tooltip, textarea.inner-tooltip { color: gray; font-style: italic; }
+  input.required-field, textarea.required-field { background: #ffff66; }
+  div.submit { margin-top: 3px; 
+    span.cancel { font-size: small; }
+    .action-button { }
+  }
+  span.invalid label { color: red; }
+  tr.high td span.required-mark { vertical-align: top; }
+}
+
+* html form table.form-layout { 
+  td { padding-top: 0; }
+  td input.checkbox { margin-left: -3px; }
+}
+
+form.search table.form-layout { 
+  input[type=text], input[type=password] { width: 185px; padding: 1px; font-size: 11px; }
+}
+
+.pagination { 
+  a, a:visited { padding: 5px 5px; text-decoration: none; color: black; @include rounded(5px); }
+  a:hover, a:visited:hover { color: white; background: #333333; }
+  span.disabled { color: #999999; cursor: default; }
+  em { font-style: normal; padding: 5px 5px; color: white; background: #333333; cursor: default; @include rounded(5px); }
+}
+
+div.message { text-align: center; font-weight: bold; padding: 8px; margin: 8px 0 8px; }
+div.warning { background: gold; }
+
+.centered { margin: 0 auto; }
+
+table.rounded { border-collapse: separate; 
+  tr:first-child th:first-child { -moz-border-radius-topleft: 10px; -webkit-border-top-left-radius: 10px; }
+  tr:first-child th:last-child { -moz-border-radius-topright: 10px; -webkit-border-top-right-radius: 10px; }
+  tr:last-child td:first-child { -moz-border-radius-bottomleft: 10px; -webkit-border-bottom-left-radius: 10px; }
+  tr:last-child td:last-child { -moz-border-radius-bottomright: 10px; -webkit-border-bottom-right-radius: 10px; }
+}
