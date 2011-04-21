@@ -62,7 +62,7 @@ module Rabotnegi
       ActiveSupport::JSON.backend = "JSONGem"
       
       Sass::Plugin.options[:style] = :compact
-      Sass::Plugin.options[:template_location] = "#{config.root}/app/stylesheets"
+      Sass::Plugin.options[:template_location] = "#{config.root}/app/styles"
       Sass::Plugin.options[:css_location] = "#{config.root}/public/stylesheets/gen"
 
       Haml::Template::options[:ugly] = true
