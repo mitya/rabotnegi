@@ -15,7 +15,7 @@ class VacanciesController < ApplicationController
     @vacancy = Vacancy.find(params[:id])
     request.xhr?? render(partial: "vacancy", object: @vacancy) : render
   end
-  
+
   def new
     @vacancy = Vacancy.new
     render :form
