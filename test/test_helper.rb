@@ -24,7 +24,7 @@ module Testing
   end
   
   module CaseHelpers
-    def xtest(*args)
+    def no_test(*args)
     end
     
     def visual_test(name, &block)

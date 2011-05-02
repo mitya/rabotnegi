@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class ApplicationControllerTest < ActionController::TestCase
-  tests SystemController
+  tests SiteController
 
   test "default locale" do
     get :locale

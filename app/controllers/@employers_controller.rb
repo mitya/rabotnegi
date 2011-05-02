@@ -24,7 +24,7 @@ class EmployersController < ApplicationController
 	end
 
 	def welcome
-		redirect_to employer_vacancies_path and return if current_employer?
+		redirect_to employer_vacancies_path and return if current_employer
 		render :index
 	end
 	

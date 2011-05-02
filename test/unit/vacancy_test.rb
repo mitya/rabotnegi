@@ -19,4 +19,12 @@ unit_test Vacancy do
     assert_equal 5000, vacancy.salary_min
     assert_equal nil, vacancy.salary_max
   end
+  
+  # test "search" do
+  #   make :vacancy, :title => "An AutoCAD engineer"
+  #   make :vacancy, :description => "somebody who knows AutoCAD"
+  #   
+  #   results = Vacancy.search(:q => "autocad")
+  #   p results
+  # end
 end
