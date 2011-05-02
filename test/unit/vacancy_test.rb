@@ -20,11 +20,14 @@ unit_test Vacancy do
     assert_equal nil, vacancy.salary_max
   end
   
-  # test "search" do
-  #   make :vacancy, :title => "An AutoCAD engineer"
-  #   make :vacancy, :description => "somebody who knows AutoCAD"
-  #   
-  #   results = Vacancy.search(:q => "autocad")
-  #   p results
-  # end
+  test "search" do
+    v_text_in_title = make Vacancy, title: "An AutoCAD engineer"
+    v_text_in_description = make Vacancy, description: "somebody who knows AutoCAD"
+    v_no_match = make Vacancy
+    
+    results = Vacancy.search(q: "autocad")
+    assert results.include?(v_text_in_title)
+    assert results.include?(v_text_in_description)
+    assert !results.include?(v_no_match)
+  end
 end

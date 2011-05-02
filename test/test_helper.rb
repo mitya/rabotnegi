@@ -43,4 +43,8 @@ class ActiveSupport::TestCase
 
   include Testing::TestHelpers
   extend Testing::CaseHelpers
+  
+  teardown do
+    Vacancy.delete_all
+  end
 end
