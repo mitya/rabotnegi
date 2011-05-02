@@ -27,14 +27,14 @@ test:
   username: root
   
 staging:
-  adapter: mysql
+  adapter: mysql2
   socket: /var/run/mysqld/mysqld.sock
   database: rabotnegi_stg
   username: root
   encoding: utf8
 
 production:
-  adapter: mysql
+  adapter: mysql2
   socket: /var/run/mysqld/mysqld.sock
   database: rabotnegi_prod
   username: root
