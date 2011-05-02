@@ -12,7 +12,6 @@ class ApplicationController < ActionController::Base
     redirect_to '/'
   }
   helper :all
-  helper_method :current_employer, :current_employer?
   before_filter :set_locale
   
   delegate :benchmark, :to => ActionController::Base
@@ -20,10 +19,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
 protected
-  def log_processing
-    super
-    # logger.debug "  Session: #{session.instance_variable_get(:@data).inspect}"
-  end
 
   def ensure_proper_protocol
     Rails.env.development? || Rails.env.test? || super
@@ -33,15 +28,6 @@ protected
     I18n.locale = 'ru'
   end
   
-  def current_employer
-    return @current_employer if defined? @current_employer
-    @current_employer = session[:employer_id] ? Employer.get(session[:employer_id]) : nil
-  end
-  
-  def current_employer?
-    session[:employer_id].present?
-  end
-    
   def employer_required
     current_employer || redirect_to(employer_path)
   end
@@ -55,6 +41,13 @@ protected
   
   def resume_required
     current_resume || redirect_to(worker_login_path)
+  end
+
+  helper_method :current_employer
+
+  def current_employer
+    return @current_employer if defined? @current_employer
+    @current_employer = session[:employer_id] ? Employer.get(session[:employer_id]) : nil
   end
   
   def current_resume

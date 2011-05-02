@@ -74,12 +74,12 @@ class Vacancy
   def self.search(params)
     params = params.symbolize_keys
     params.assert_valid_keys(:city, :industry, :q)
-    query = Regexp.new(params[:q] || "")
+    query = Regexp.new(params[:q] || "", true)
 
     scope = self
     scope = scope.where(city: params[:city]) if params[:city].present?
     scope = scope.where(industry: params[:industry]) if params[:industry].present?
-    scope = scope.any_of({title: query}, {employer_name: query}) if params[:q].present?
+    scope = scope.any_of({title: query}, {employer_name: query}, {description: query}) if params[:q].present?
     scope
   end    
   

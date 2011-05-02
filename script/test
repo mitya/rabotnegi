@@ -36,17 +36,17 @@
 #   end  
 # end
 
-db = Mongo::Connection.new.db("rabotnegi_demo")
-
-def mapper(ar_attributes)
-  ar_attributes.each_pair { |k, v| ar_attributes[k] = v.utc if ActiveSupport::TimeWithZone === v }
-end
+# db = Mongo::Connection.new.db("rabotnegi_demo")
+# 
+# def mapper(ar_attributes)
+#   ar_attributes.each_pair { |k, v| ar_attributes[k] = v.utc if ActiveSupport::TimeWithZone === v }
+# end
 
 # db.collection("vacancies").remove
 # 
 # Vacancy.find_each { |vacancy| db.collection("vacancies").insert(mapper(vacancy.attributes)) }
 
-p db.collection("vacancies").count
+# p db.collection("vacancies").count
 
 # v = db.collection("vacancies").find_one(id: 909)
 # p v
@@ -56,3 +56,16 @@ p db.collection("vacancies").count
 # v['created_at'] = Vacancy.first.created_at.utc
 # db.collection("vacancies").update({"_id" => v["_id"]}, v)
 # p v
+
+
+v = Vacancy.new(
+  :title => 'Менеджер',
+  :city => 'spb',
+  :industry => 'it',
+  :external_id => 27047845,
+  :employer_name => 'Apple',
+  :description => 'blah-blah-blah',
+  :created_at => Time.parse('Fri, 19 Sep 2008 20:07:18 +0400'),
+  :salary => Salary.make(:min => 20000, :max => 30000, :currency => :rub)
+)
+p v

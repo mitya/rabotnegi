@@ -1,64 +1,6 @@
 # coding: utf-8
 
 require 'test_helper'
-require 'fileutils'
-require 'time'
-
-unit_test RabotaRu::VacancyLoader do
-  fixtures :vacancies
-  
-  setup do
-    @loader = PureDelegator.new(RabotaRu::VacancyLoader.new)
-    @loader.work_directory = "#{Rails.root}/tmp/rabotaru_test"
-
-    Dir.mkdir(@loader.work_directory) unless File.exists?(@loader.work_directory)
-    @work_dir = Dir.new(@loader.work_directory)
-  end
-  
-  xtest "directory clearing and remote loading" do
-    %w(1.test 2.test 3.test).each { |file| File.new("#{@work_dir.path}/#{file}", 'a') }
-    assert_equal 3, Dir["#{@work_dir.path}/*.test"].size
-    
-    @loader.load_to_files
-    
-    assert Dir["#{@work_dir.path}/*.test"].empty?
-    assert_equal City.all.size * Industry.all.size, @work_dir['*.json'].size
-  end
-  
-  test "loading" do
-    FileUtils.cp(Dir["#{Rails.root}/test/fixtures/rabotaru/*"], @work_dir.path)
-    @loader.skip_remote_loading = true
-    @loader.call(:load)
-  end
-  
-  test "filtration" do
-    load_vacancies
-    @loader.filter
-    filtered_vacancies = @loader.instance_variable_get(:@loaded_vacancies)
-    assert  filtered_vacancies.any? { |v| v.external_id == 100 }
-    assert  filtered_vacancies.any? { |v| v.external_id == 101 && v.description == 'new' }
-    assert !filtered_vacancies.any? { |v| v.external_id == 102 }
-  end
-  
-  test "saving" do
-    load_vacancies
-    @loader.filter
-    @loader.save
-    assert Vacancy.exists?(:title => 'Manager')
-    assert Vacancy.exists?(:title => 'Designer', :description => 'new')
-  end
-  
-  def load_vacancies
-    loaded_vacancies = [
-      Vacancy.new(:title => 'Developer', :city => 'spb', :created_at => Time.utc(2008, 9, 1), :external_id => 100, :industry => 'it', :description => 'no'),
-      Vacancy.new(:title => 'Designer',  :city => 'msk', :created_at => Time.utc(2008, 9, 2), :external_id => 101, :industry => 'it', :description => 'new'),
-      Vacancy.new(:title => 'Manager',   :city => 'spb', :created_at => Time.utc(2008, 9, 1), :external_id => 102, :industry => 'it', :description => 'no')
-    ]
-    @loader.instance_variable_set(:@loaded_vacancies, loaded_vacancies)
-    @loader.instance_variable_set(:@loading, RabotaRu::VacancyLoading.new(:started_at => Time.current))
-  end
-end
-
 
 unit_test RabotaRu::VacancyConverter do
   setup do
@@ -93,22 +35,23 @@ unit_test RabotaRu::VacancyConverter do
 
     @converter = PureDelegator.new(RabotaRu::VacancyConverter.new)
   end
-  
+
   test "conversion" do
-    assert_equal @expected_vacancy.attributes, @converter.convert(@hash).attributes
+    result = @converter.convert(@hash)
+    assert_equal @expected_vacancy.attributes.except(:_id), result.attributes.except(:_id)
   end
-  
+
   test "extraction of ID from URL" do
     assert_equal 1234567, @converter.extract_id('http://www.rabota.ru/vacancy1234567.html')
   end
-  
+
   test "conversion of salaries" do
     assert_equal Salary.make(:negotiable => true), @converter.convert_salary('agreed' => 'yes')
     assert_equal Salary.make(:max => 25000, :currency => :rub), @converter.convert_salary('max' => '25000', 'currency' => {'value' => 'руб'})
     assert_equal Salary.make(:exact => 25000, :currency => :rub), @converter.convert_salary('min' => '25000', 'max' => '25000', 'currency' => {'value' => 'руб'})
     assert_equal Salary.make(:min => 17000, :max => 34000, :currency => :rub), @converter.convert_salary('min' => '17000', 'max' => '34000', 'currency' => {'value' => 'руб'})
   end
-  
+
   test "conversion of currencies" do
     assert_equal :rub, @converter.convert_currency('value' => 'руб')
     assert_equal :usd, @converter.convert_currency('value' => 'usd')
