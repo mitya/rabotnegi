@@ -33,6 +33,10 @@ class SiteController < ApplicationController
     redirect_to root_path
   end
   
+  def env
+    render :text => Rails.env
+  end
+  
   def error
     raise ArgumentError, "You requested an error!"
   end

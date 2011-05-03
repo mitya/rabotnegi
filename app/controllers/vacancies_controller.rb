@@ -24,10 +24,9 @@ class VacanciesController < ApplicationController
   def create
     @vacancy = Vacancy.new(params[:vacancy])
     if @vacancy.save
-      redirect_to '/', notice: 'Вакансия опубликована'
+      redirect_to vacancy_path(@vacancy), notice: 'Вакансия опубликована'
     else
       render :form, status: 422
     end
-  end
-  
+  end  
 end

@@ -36,18 +36,16 @@ httperf --server rabotnegi.dev --num-conns 750 --rate 250 --uri /test/lorem/30 #
 httperf --server rabotnegi.dev --num-conns 750 --rate 250 --uri /test/lorem/10 # 166 rps
 tests 0.92s
 
+## Passenger 3in Ruby 1.9.2 Rails 3.0 worker memory 58MB
+httperf --server rabotnegi.local --num-conns 400 --rate 120  --uri /vacancies # 112 rps
+httperf --server rabotnegi.local --num-conns 750 --rate 250 --uri /test/lorem/30 # 230 rps
+httperf --server rabotnegi.local --num-conns 750 --rate 350 --uri /test/lorem/10 # 305 rps
+
 ## Pow (2in) Ruby 1.9.2 Rails 3.0, worker memory 72MB
-httperf --server rabotnegi.dev --num-conns 250 --rate 80  --uri /vacancies 
-# 75 rps
-
-httperf --server rabotnegi.dev --num-conns 500 --rate 180 --uri /vacancies/20113.ajax 
-# 150 rps
-
-httperf --server rabotnegi.dev --num-conns 750 --rate 250 --uri /test/lorem/30 
-# 177 rps
-
-httperf --server rabotnegi.dev --num-conns 750 --rate 250 --uri /test/lorem/10 
-# 249 rps
+httperf --server rabotnegi.dev --num-conns 250 --rate 80  --uri /vacancies # 75 rps
+httperf --server rabotnegi.dev --num-conns 500 --rate 180 --uri /vacancies/20113.ajax # 150 rps
+httperf --server rabotnegi.dev --num-conns 750 --rate 250 --uri /test/lorem/30 # 177 rps
+httperf --server rabotnegi.dev --num-conns 750 --rate 250 --uri /test/lorem/10 # 249 rps
 
 httperf --server rabotnegi.dev --num-conns 90 --rate 30 --uri /vacancies/msk 
 # 18kb ~ 16rps // HAML
@@ -63,6 +61,27 @@ httperf --server 127.0.0.1 --port 3000 --num-conns 50 --rate 25 --uri /vacancies
 
 httperf --server 127.0.0.1 --port 3000 --num-conns 50 --rate 25 --uri /vacancies/msk 
 # 18.1 // Erb, no url helpers
+
+
+## pow-2in Metal vs Controller, HTML
+httperf --server rabotnegi.dev --num-conns 1000 --rate 200 --uri /vacancies/4daebd548c2e8655ab001b6b # 184rps 1146b
+httperf --server rabotnegi.dev --num-conns 1000 --rate 200 --uri /metal-vacancies/4daebd548c2e8655ab001b6b # 190rps 1146b
+
+## passenger-2in Metal vs Controller, HTML, 1333B
+httperf --server rabotnegi.local --num-conns 1000 --rate 350 --uri /vacancies/4daebd548c2e8655ab001b6b # 263
+httperf --server rabotnegi.local --num-conns 1000 --rate 400 --uri /metal-vacancies/4daebd548c2e8655ab001b6b # 286
+
+## passenger-3in Metal vs Controller, HTML, 1333B
+httperf --server rabotnegi.local --num-conns 1000 --rate 350 --uri /vacancies/4daebd548c2e8655ab001b6b # 305
+httperf --server rabotnegi.local --num-conns 1000 --rate 400 --uri /metal-vacancies/4daebd548c2e8655ab001b6b # 357
+
+## passenger-3in Metal vs Controller, JSON, 2324B
+httperf --server rabotnegi.local --num-conns 800 --rate 300 --uri /regular-vacancies/4daebd548c2e8655ab001b6b # 221
+httperf --server rabotnegi.local --num-conns 800 --rate 350 --uri /metal-vacancies/4daebd548c2e8655ab001b6b # 306
+
+## passenger-3in Metal vs Controller, JSON, 1368B
+httperf --server rabotnegi.local --num-conns 800 --rate 300 --uri /regular-vacancies/4daebd518c2e8655ab00003c # 292
+httperf --server rabotnegi.local --num-conns 800 --rate 400 --uri /metal-vacancies/4daebd518c2e8655ab00003c # 344 
 
 
 MySQL vs Mongo

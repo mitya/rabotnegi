@@ -30,4 +30,11 @@ unit_test Vacancy do
     assert results.include?(v_text_in_description)
     assert !results.include?(v_no_match)
   end
+  
+  test "==" do
+    assert_not_equal Vacancy.new, nil
+    assert_not_equal Vacancy.new, Vacancy.new
+    assert_not_equal Vacancy.new(title: "Boss"), Vacancy.new(title: "Boss")
+    assert_equal Vacancy.new(title: "Boss", external_id: 100), Vacancy.new(title: "Developer", external_id: 100)
+  end
 end
