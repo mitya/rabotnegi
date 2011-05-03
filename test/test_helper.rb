@@ -31,6 +31,12 @@ module Testing
       # test(name, &block)
     end    
   end
+  
+  module Assertions
+    def assert_size(size, collection)
+      assert_equal size, collection.size
+    end    
+  end
 end
 
 include Testing::GlobalHelpers
@@ -42,6 +48,7 @@ class ActiveSupport::TestCase
   self.use_instantiated_fixtures  = false
 
   include Testing::TestHelpers
+  include Testing::Assertions
   extend Testing::CaseHelpers
   
   teardown do

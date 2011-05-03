@@ -1,20 +1,26 @@
 require 'test_helper'
 
 class VacanciesControllerTest < ActionController::TestCase
-  setup do
-    @vacancy = make Vacancy, city: "spb", industry: "it"
-  end
-  
   test 'show' do
-    xhr :get, :show, :id => @vacancy.to_param
-    assert assigns(:vacancy)
+    @vacancy = make Vacancy, city: "spb", industry: "it"
+        
+    xhr :get, :show, id: @vacancy.to_param
+    
     assert_response :ok
+    assert_equal @vacancy, assigns(:vacancy)
+    assert_template "vacancy"
   end
   
   test 'index' do
-    get :index, :city => 'spb', :industry => 'it'
-    assert assigns(:vacancies)
-    assert assigns(:vacancies).include?(@vacancy)
-    assert_response :ok 
+    make Vacancy, city: "spb", industry: "it"
+    make Vacancy, city: "spb", industry: "it"
+    make Vacancy, city: "msk", industry: "it"
+    make Vacancy, city: "spb", industry: "opt"
+    
+    get :index, city: 'spb', industry: 'it'
+    
+    assert_response :ok
+    assert_size 2, assigns(:vacancies)
+    assert_template "index"
   end
 end

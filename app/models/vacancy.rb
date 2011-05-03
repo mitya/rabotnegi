@@ -19,18 +19,13 @@ class Vacancy
   index [[:city, 1], [:industry, 1]]
   index [[:city, 1], [:title, 1]]
 
-  validates_presence_of :title, :description, :industry, :city
+  validates_presence_of :title, :industry, :city
 
   belongs_to :employer
 
   before_save do
     self.employer_id = employer.id if employer
     self.employer_name = employer.name if employer
-  end
-
-  def initialize(attributes = {})
-    super
-    self.city ||= 'msk'
   end
 
   def ==(other)

@@ -16,22 +16,13 @@ module ApplicationHelper
 
   def errors_for(object, options = {})
     return '' if object.errors.empty?
-    
+        
     header_message = options.delete(:header_message) || translate("activerecord.errors.template.header")
-    error_messages = []
-    object.errors.each_pair do |attr, messages|
-      message = translate("errors.#{object.class.name.tableize}.#{attr}", :default => messages.to_sentence)
-      error_messages << content_tag(:li, message)
-
-      # attr_name = translate("activerecord.attributes.#{object.class.name.underscore}.#{attr}")
-      # error_messages << content_tag(:li, content_tag(:b, attr_name) + ' — ' + msg)
+    error_messages = object.errors.each_pair.map do |attr, messages|
+      translate("errors.#{object.class.model_name.plural}.#{attr}", :default => messages.to_sentence)
     end
-    
-    result = ''
-    result << content_tag(:h2, header_message.html_safe)
-    result << content_tag(:ul, error_messages.join.html_safe)
-   
-    content_tag :div, result.html_safe, :class => 'form-errors'
+
+    render "shared/errors", :header => header_message, :errors => error_messages
   end
   
   def vacancies_page_title
