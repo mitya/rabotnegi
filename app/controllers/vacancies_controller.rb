@@ -12,7 +12,7 @@ class VacanciesController < ApplicationController
   end
 
   def show
-    @vacancy = Vacancy.find(params[:id])
+    @vacancy = Vacancy.get(params[:id])
     request.xhr?? render(partial: "vacancy", object: @vacancy) : render
   end
 

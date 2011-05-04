@@ -37,7 +37,8 @@ class Vacancy
   end
   
   def to_param
-    id.to_s
+    parameterized_title = RussianInflector.parameterize(title)
+    parameterized_title.present?? "#{id}-#{parameterized_title}" : id.to_s
   end
   
   def city_name
@@ -82,7 +83,9 @@ class Vacancy
     where(:updated_at.lt => 2.weeks.ago).destroy
   end
   
-  def self.get(num)
-    where(id: num).first
+  def self.get(id)
+    id ||= ""
+    id = id.gsub(/\-.*/, '') if String === id
+    where(_id: id).first
   end
 end

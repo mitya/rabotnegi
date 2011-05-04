@@ -1,8 +1,10 @@
+# coding: utf-8
+
 require 'test_helper'
 
 class VacanciesControllerTest < ActionController::TestCase
   test 'show' do
-    @vacancy = make Vacancy, city: "spb", industry: "it"
+    @vacancy = make Vacancy, city: "spb", industry: "it", title: "Программист"
         
     xhr :get, :show, id: @vacancy.to_param
     

@@ -37,4 +37,21 @@ unit_test Vacancy do
     assert_not_equal Vacancy.new(title: "Boss"), Vacancy.new(title: "Boss")
     assert_equal Vacancy.new(title: "Boss", external_id: 100), Vacancy.new(title: "Developer", external_id: 100)
   end
+  
+  test "to_param" do
+    v1 = make(Vacancy, title: "Ruby Разработчик")
+    assert_equal "#{v1.id}-ruby-разработчик", v1.to_param
+    
+    v1.title = nil
+    assert_equal v1.id.to_s, v1.to_param
+  end
+  
+  test "self.get" do
+    v1 = make Vacancy
+    assert_equal v1, Vacancy.get(v1.id)
+    assert_equal v1, Vacancy.get(v1.id.to_s)
+    assert_equal v1, Vacancy.get("#{v1.id}-xxxx-1111")
+    assert_equal v1, Vacancy.get("#{v1.id}-1111-xxxx")
+    assert_nil Vacancy.get("4daebd518c2e000000000000")
+  end
 end

@@ -29,6 +29,20 @@ module RussianInflector
 		end
 		word + ending
 	end	
+	
+	def self.parameterize(string, sep = "-")
+    string ||= ""
+
+	  parameterized_string = UnicodeUtils.downcase(string).gsub(/[^a-z0-9\u0430-\u044f\-_]+/i, sep)
+
+	  if sep.present?
+      re_sep = Regexp.escape(sep)
+      parameterized_string.gsub!(/#{re_sep}{2,}/, sep)
+      parameterized_string.gsub!(/^#{re_sep}|#{re_sep}$/i, '')
+    end
+    
+    parameterized_string
+	end
 end
 
 if $0 == __FILE__
