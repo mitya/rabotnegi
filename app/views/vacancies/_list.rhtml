@@ -1,9 +1,9 @@
 <table class='vacancies-list rounded' cellspacing="0">
 	<thead>
     <tr>
-  		<th class='pos <%= order_class(:title) %>'><%= link_to "Должность", :sort => encode_order(:title) %>
-  		<th class='emp <%= order_class(:employer_name) %>'><%= link_to "Компания", :sort => encode_order(:employer_name) %>
-  		<th class='sal <%= order_class(:salary_min) %>'><%= link_to "Зарплата", :sort => encode_order(:salary_min) %>
+  		<th class='pos <%= order_class(:title) %>'><%= link_to "Должность", url(:nice_vacancies, params.merge(sort: encode_order(:title))) %>
+  		<th class='emp <%= order_class(:employer_name) %>'><%= link_to "Компания", url(:nice_vacancies, params.merge(sort: encode_order(:employer_name))) %>
+  		<th class='sal <%= order_class(:salary_min) %>'><%= link_to "Зарплата", url(:nice_vacancies, params.merge(sort: encode_order(:salary_min))) %>
 		</tr>
   </thead>
 
