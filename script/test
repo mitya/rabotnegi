@@ -1,71 +1,69 @@
-# def test_sql
-#   RECORD_COUNT = 1000
-# 
-#   mysql = Mysql2::Client.new(host: "localhost", username: "root", database: "rabotnegi_dev")
-#   query = "SELECT `vacancies`.* FROM `vacancies` LIMIT #{RECORD_COUNT}"
-# 
-#   p_ar = -> do
-#     results = Vacancy.limit(RECORD_COUNT).all[1]
-#   end
-# 
-#   p_select_rows = -> do
-#     Vacancy.connection.select_rows(query)[1]
-#   end
-# 
-#   p_select_all = -> do
-#     Vacancy.connection.select_all(query)[1]
-#   end
-# 
-#   p_mysql_2 = -> do
-#     results = []
-#     mysql.query(query).each { |x| results << x }
-#     results
-#   end
-# 
-#   Vacancy.uncached do
-#     Vacancy.limit(5).all
-# 
-#     Benchmark.bm(20) do |b|
-#       Rails.logger.debug "---------------------------------------"
-# 
-#       b.report("p_ar", &p_ar)
-#       b.report("p_select_rows", &p_select_rows)
-#       b.report("p_select_all", &p_select_all)
-#       b.report("p_mysql_2", &p_mysql_2)
-#     end
-#   end  
-# end
+# coding: utf-8
 
-# db = Mongo::Connection.new.db("rabotnegi_demo")
-# 
-# def mapper(ar_attributes)
-#   ar_attributes.each_pair { |k, v| ar_attributes[k] = v.utc if ActiveSupport::TimeWithZone === v }
-# end
+N = 100
+RECORD_COUNT = 1000
 
-# db.collection("vacancies").remove
-# 
-# Vacancy.find_each { |vacancy| db.collection("vacancies").insert(mapper(vacancy.attributes)) }
+def test_sql
+  mysql = Mysql2::Client.new(host: "localhost", username: "root", database: "rabotnegi_dev")
+  query = "SELECT `vacancies`.* FROM `vacancies` LIMIT #{RECORD_COUNT}"
 
-# p db.collection("vacancies").count
+  p_ar = -> do
+    results = Vacancy.limit(RECORD_COUNT).all[1]
+  end
 
-# v = db.collection("vacancies").find_one(id: 909)
-# p v
-# v[:description] = nil
-# v[:created_at] = nil
-# v['description'] = nil
-# v['created_at'] = Vacancy.first.created_at.utc
-# db.collection("vacancies").update({"_id" => v["_id"]}, v)
-# p v
+  p_select_rows = -> do
+    Vacancy.connection.select_rows(query)[1]
+  end
 
+  p_select_all = -> do
+    Vacancy.connection.select_all(query)[1]
+  end
 
-v = Vacancy.new(
-  :title => 'Менеджер',
-  :city => 'spb',
-  :industry => 'it',
-  :external_id => 27047845,
-  :employer_name => 'Apple',
-  :description => 'blah-blah-blah',
-  :created_at => Time.parse('Fri, 19 Sep 2008 20:07:18 +0400'),
-  :salary => Salary.make(:min => 20000, :max => 30000, :currency => :rub)
-)
-p v
+  p_mysql_2 = -> do
+    results = []
+    mysql.query(query).each { |x| results << x }
+    results
+  end
+
+  Vacancy.uncached do
+    Vacancy.limit(5).all
+
+    Benchmark.bm(20) do |b|
+      Rails.logger.debug "---------------------------------------"
+
+      b.report("p_ar", &p_ar)
+      b.report("p_select_rows", &p_select_rows)
+      b.report("p_select_all", &p_select_all)
+      b.report("p_mysql_2", &p_mysql_2)
+    end
+  end  
+end
+
+def test_json
+  # data = Vacancy.first.attributes
+  data = Vacancy.limit(50).map { |v| v.attributes.slice(:title, :city, :industry, :external_id, :salary_min, :salary_max, :employer_name) }
+  
+  # puts data.as_json
+  # puts JSON.generate(data.as_json)
+  puts JSON.generate(data)  
+  
+  Benchmark.bm(40) do |b|
+    b.report("as_json") do
+      N.times { data.as_json }
+    end
+
+    b.report("to_json (ActiveSupport::JSON.encode)") do
+      N.times { data.to_json }
+    end
+
+    b.report("JSON.generate(x.as_json)") do
+      N.times { JSON.generate(data.as_json) }
+    end
+
+    b.report("JSON.generate") do
+      N.times { JSON.generate(data) }
+    end
+  end
+end
+
+test_json

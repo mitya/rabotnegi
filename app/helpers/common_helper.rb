@@ -29,4 +29,20 @@ module CommonHelper
     @xcycle_counter += 1
     values[@xcycle_counter.modulo(values.length)]
   end
+  
+  def web_id_for_record(record)
+    return nil unless record
+    [web_prefix_for_class(record.class), record.id].join("-")
+  end
+  
+  def web_prefix_for_class(klass)
+    case klass
+      when Vacancy then "v"
+      else ActiveModel::Naming.singular(record)
+    end    
+  end
+  
+  def web_id(*args)
+    args.map { |x| x.respond_to?(:to_key) ? web_id_for_record(x) : x }.join("-")
+  end
 end

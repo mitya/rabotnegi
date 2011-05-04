@@ -36,22 +36,22 @@ $("body#edit-resume").loaded ->
   $("#edit-resume").find("#resume_fname, #resume_lname").requiredField()
 
 $("body#vacancies").loaded ->
-  $(".vacancies-list tr.header a").live "click", -> $(this).closest('tr').click
-  $(".vacancies-list tr.header").live "click", ->
+  $(".vacancies-list tr.entry-header a").live "click", -> $(this).closest('tr').click
+  $(".vacancies-list tr.entry-header").live "click", ->
     row = $(this)
-    link = row.find('a')    
+    link = row.find('a')
 
-    if row.next().is(".desc")
-      row.next().find(".content").slideToggle()
+    if row.next().is(".entry-details")
+      row.next().find(".entry-outer").slideToggle()
     else
-      row.addClass("loading")
+      row.addClass("x-loading")
       $.get link.attr('href'), (html) ->
-        desc = $(html).insertAfter(row)
-        row.removeClass("loading").addClass('loaded')
-        desc.addClass('loaded')
-        desc.addClass('alt') if row.hasClass('alt')
+        details = $(html).insertAfter(row)
+        row.removeClass("x-loading").addClass('x-loaded')
+        details.addClass('x-loaded')
+        details.addClass('alt') if row.hasClass('alt')
         row.find(".spinner").remove()
-        desc.find(".content").slideDown()
+        details.find(".entry-outer").slideDown()
         
     false
 

@@ -9,10 +9,10 @@
 
   <tbody>
   	<% @vacancies.each do |vacancy| %>
-      <tr id='<%= vacancy.id %>' class='header <%= xcycle('', 'alt') %>'>
-        <td class='pos'><a href='<%= url(:vacancy, vacancy) %>'><%= raw vacancy.title %></a>
-  			<td class='emp'><%= raw vacancy.employer_name %>
-  			<td class='sal'><%= vacancy.salary %>
+      <tr id='<%= web_id(vacancy) %>' class='entry-header<%= xcycle('', ' alt') %>'>
+        <td class='pos'><a href='<%= url(:vacancy, vacancy) %>'><%= raw vacancy.title %></a></td>
+  			<td class='emp'><%= raw vacancy.employer_name %></td>
+  			<td class='sal'><%= vacancy.salary %></td>
   		</tr>
   	<% end %>
   </tbody>

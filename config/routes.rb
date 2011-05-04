@@ -31,4 +31,7 @@ Rabotnegi::Application.routes.draw do
   match '/sitemap' => 'site#map', :as => :sitemap
   match '/test' => 'site#test'
   match '/test/lorem/(:count)' => 'site#lorem', :count => 5, :as => :lorem
+
+  match '/metal-vacancies(/:city(/:industry))', :to => MetalController.action(:index_vacancies), :city => Regexp.new(City.all.map(&:code).join('|'))
+  match '/metal-vacancies/:id', :to => MetalController.action(:show_vacancy)
 end
