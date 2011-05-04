@@ -10,6 +10,7 @@ gem 'simple_captcha', :git => 'git://github.com/galetahub/simple-captcha.git'
 gem "barista"
 gem "mongoid"
 gem "bson_ext"
+gem "unicode_utils"
 
 group :development, :test do
   gem 'capistrano'

@@ -3,7 +3,7 @@
 <%= div_for @vacancy do %>
   <h2><%= @vacancy.title %></h2>
   
-  <div class='description'><%= @vacancy.description %></div>
+  <div class='description'><%= raw @vacancy.description %></div>
 
   <p class='links'>
     <%= link_to "» Контактная информация на Работе.ру", "http://www.rabota.ru/vacancy#{@vacancy.external_id}.html" %><br/>
