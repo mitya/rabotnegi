@@ -9,6 +9,13 @@ class VacanciesController < ApplicationController
       without(:description).
       order_by(decode_order_for_mongo(params[:sort].presence || "title")).
       paginate(page: params[:page], per_page: 50) if params[:city]
+
+    respond_to do |wants|
+      wants.html
+      wants.json do
+        render :json => JSON.generate(@vacancies.map { |v| v.attributes.slice(:title, :city, :industry, :external_id, :salary_min, :salary_max, :employer_name) })
+      end
+    end
   end
 
   def show

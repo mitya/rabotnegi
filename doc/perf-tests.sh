@@ -62,29 +62,37 @@ httperf --server 127.0.0.1 --port 3000 --num-conns 50 --rate 25 --uri /vacancies
 httperf --server 127.0.0.1 --port 3000 --num-conns 50 --rate 25 --uri /vacancies/msk 
 # 18.1 // Erb, no url helpers
 
-
-## pow-2in Metal vs Controller, HTML
-httperf --server rabotnegi.dev --num-conns 1000 --rate 200 --uri /vacancies/4daebd548c2e8655ab001b6b # 184rps 1146b
-httperf --server rabotnegi.dev --num-conns 1000 --rate 200 --uri /metal-vacancies/4daebd548c2e8655ab001b6b # 190rps 1146b
-
-## passenger-2in Metal vs Controller, HTML, 1333B
+## passenger-2i Metal vs Controller, HTML, 1333B
 httperf --server rabotnegi.local --num-conns 1000 --rate 350 --uri /vacancies/4daebd548c2e8655ab001b6b # 263
 httperf --server rabotnegi.local --num-conns 1000 --rate 400 --uri /metal-vacancies/4daebd548c2e8655ab001b6b # 286
 
-## passenger-3in Metal vs Controller, HTML, 1333B
+## passenger-3i Metal vs Controller, HTML, 1333B
 httperf --server rabotnegi.local --num-conns 1000 --rate 350 --uri /vacancies/4daebd548c2e8655ab001b6b # 305
 httperf --server rabotnegi.local --num-conns 1000 --rate 400 --uri /metal-vacancies/4daebd548c2e8655ab001b6b # 357
 
-## passenger-3in Metal vs Controller, JSON, 2324B
+## passenger-3i Metal vs Controller, JSON, 2324B
 httperf --server rabotnegi.local --num-conns 800 --rate 300 --uri /regular-vacancies/4daebd548c2e8655ab001b6b # 221
 httperf --server rabotnegi.local --num-conns 800 --rate 350 --uri /metal-vacancies/4daebd548c2e8655ab001b6b # 306
 
-## passenger-3in Metal vs Controller, JSON, 1368B
+## passenger-3i Metal vs Controller, JSON, 1368B
 httperf --server rabotnegi.local --num-conns 800 --rate 300 --uri /regular-vacancies/4daebd518c2e8655ab00003c # 292
 httperf --server rabotnegi.local --num-conns 800 --rate 400 --uri /metal-vacancies/4daebd518c2e8655ab00003c # 344 
 
+## vacancy listing - passenger-3i
+40 = HTML 20.5kb # httperf --server rabotnegi.local --num-conns 200 --rate 50 --uri /vacancies/msk/it.html
+88 = JSON 8.8kb # httperf --server rabotnegi.local --num-conns 400 --rate 100 --uri /vacancies/msk/it.json
+98 = JSON metal 8.7kb # httperf --server rabotnegi.local --num-conns 480 --rate 120 --uri /metal-vacancies/msk/it.json
+52 = JSON lob on the page 13.9kb # httperf --server rabotnegi.local --num-conns 250 --rate 60 --uri /vacancies/msk/it.html 
 
-MySQL vs Mongo
+## vacancy listing with query (empty resultset) - passenger-3i
+39 = HTML controller 5.7kb # httperf --server rabotnegi.local --num-conns 200 --rate 50 --uri /vacancies/msk/it?q=java.html
+52 = JSON metal 0.35kb # httperf --server rabotnegi.local --num-conns 300 --rate 60 --uri /metal-vacancies/msk/it?q=java.json
+
+## vacancy details - passenger-3i
+171 = html controller 1.65kb # httperf --server rabotnegi.local --num-conns 1000 --rate 200 --uri /vacancies/4daebd548c2e8655ab001b6b.html
+475 = json metal 1.24kb # httperf --server rabotnegi.local --num-conns 1500 --rate 500 --uri /metal-vacancies/4daebd548c2e8655ab001b6b.json
+
+## MySQL vs Mongo
 SELECT id, title, external_id, salary_min, salary_max, employer_name FROM `vacancies` WHERE `vacancies`.`city` = 'msk' ORDER BY title LIMIT #{N} OFFSET 0
 
 VacancyMongo.db.collection("vacancies").find({city: "msk"}, sort: [[:title, Mongo::ASCENDING]], limit: N, :fields => {description: 0}).to_a
@@ -103,3 +111,12 @@ Mongo - MySQL - Mongoid - ActiveRecord
 100 rows: 22 26 29 30
 50 rows: 19 25 21 29
 20 rows: 17 25 18 29
+
+
+## JSON serialization
+as_json                                   0.798946
+to_json                                  12.656642
+to_json (with encoding hack)              2.000000
+JSON.generate(x.as_json)                  1.634247 # broken
+JSON.generate                             1.457854
+

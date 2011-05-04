@@ -18,20 +18,24 @@ body#vacancies {
       a:hover { color: $hovered_link_color; } }
     tfoot tr td { @include background-gradient(#dddddd, #cccccc); }
     tbody { 
-      tr.header { 
+      tr.entry-header { 
         td { background: #f3f3f3; }
         a { color: black; text-decoration: none; font-weight: bold; }
         span.spinner { background: green; color: white; padding: 5px; } 
       }
-      tr.header:hover { cursor: pointer; }
-      tr.loading td.pos { background: #f3f3f3 url("/images/spinner.gif") right center no-repeat; }
-      tr.desc { 
+      tr.entry-header:hover { cursor: pointer; }
+      tr.x-loading td.pos { background: #f3f3f3 url("/images/spinner.gif") right center no-repeat; }
+      tr.entry-details { 
         td { padding: 0; border: none; color: #666666; }
-        div.content { 
-          div.inner { margin: 5px 5px 10px; }
-          p.links { float: right; }
-          ul { margin: 5px 0; padding: 0 0 0 20px; } 
-        } 
+        .entry-outer { border-bottom: 2px solid #999; }
+        .entry-inner { margin: 10px; }
+        .entry-content { max-width: 650px; 
+          ul { margin: 5px 0; padding: 0 0 0 20px; }
+        }
+        .entry-actions { float: right; margin: 10px; border-left: #ccc solid 1px; padding-left: 10px; 
+          ul { padding: 0; }
+          li { margin: 3px 0; list-style-type: none; }            
+        }
       } 
     } 
   }
