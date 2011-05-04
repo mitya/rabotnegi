@@ -36,6 +36,11 @@ module Testing
     def assert_size(size, collection)
       assert_equal size, collection.size
     end    
+    
+    def assert_same_elements(a1, a2)
+      assert_equal a1.size, a2.size
+      a1.each { |x| assert a2.include?(x), "#{a2.inspect} is expected to include #{x.inspect}" }
+    end
   end
 end
 
