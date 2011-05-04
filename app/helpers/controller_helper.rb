@@ -39,8 +39,8 @@ module ControllerHelper
   # "date"  => ["date", Mongo::ASCENDING]
   # "-date" => ["date", Mongo::DESCENDING]
   def decode_order_for_mongo(param = params[OrderParam])
-    field, asc = decode_order(param)
-    [[field, asc ? Mongo::ASCENDING : Mongo::DESCENDING]]
+    field, reverse = decode_order(param)
+    [[field, reverse ? Mongo::DESCENDING : Mongo::ASCENDING]]
   end
   
   def reverse_to_symbol(reverse)

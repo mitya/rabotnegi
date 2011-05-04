@@ -48,10 +48,12 @@ unit_test Vacancy do
   
   test "self.get" do
     v1 = make Vacancy
+
     assert_equal v1, Vacancy.get(v1.id)
     assert_equal v1, Vacancy.get(v1.id.to_s)
     assert_equal v1, Vacancy.get("#{v1.id}-xxxx-1111")
     assert_equal v1, Vacancy.get("#{v1.id}-1111-xxxx")
+
     assert_nil Vacancy.get("4daebd518c2e000000000000")
   end
 end
