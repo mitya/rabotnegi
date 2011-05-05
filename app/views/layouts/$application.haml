@@ -1,0 +1,38 @@
+!!! 5
+
+%head
+  %title= window_title
+  %meta{"http-equiv" => "Content-Type", "content" => "text/html;charset=UTF-8"}
+  - for name, content in meta_properties
+    = tag :meta, name: name, content: content
+  = csrf_meta_tag
+  = stylesheet_link_tag %w(gen/common gen/public gen/workers gen/employers gen/resumes gen/vacancies), cache: 'pack/public'
+
+%body.public{id: @page_id}
+  #header
+    #logo
+      %a{href: '/'}
+        <span id='logo-pro'>Р</span><span id='logo-rabotu'>аботнеги.ру</span>
+
+    %ul#tabs{"data-selected" => "##{@current_tab}"}
+      %li#workers-tab.tab
+        %a{href: vacancies_path} Поиск вакансий
+      %li#employers-tab.tab
+        %a{href: new_vacancy_path} Публикация вакансий
+
+    %br{style: 'clear: both'}/
+
+    = content_tag :div, flash[:notice], id: 'flash-notice' if flash[:notice]
+    = content_tag :div, flash[:error], id: 'flash-error' if flash[:error]
+
+  #content= yield :layout
+  
+  #footer © 2011 Работнеги.ру
+  
+  - if Rails.env.development?
+    %pre#sandbox
+  
+  = javascript_include_tag %w(lib/jquery lib/rails), cache: 'pack/lib'
+  = javascript_include_tag %w(gen/common gen/application), cache: 'pack/app'
+
+  = render "layout/google_analytics" if Rails.env.production?

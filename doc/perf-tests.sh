@@ -84,13 +84,33 @@ httperf --server rabotnegi.local --num-conns 800 --rate 400 --uri /metal-vacanci
 98 = JSON metal 8.7kb # httperf --server rabotnegi.local --num-conns 480 --rate 120 --uri /metal-vacancies/msk/it.json
 52 = JSON lob on the page 13.9kb # httperf --server rabotnegi.local --num-conns 250 --rate 60 --uri /vacancies/msk/it.html 
 
-## vacancy listing with query (empty resultset) - passenger-3i
+## html vs json - vacancy listing with query (empty resultset) - passenger-3i
 39 = HTML controller 5.7kb # httperf --server rabotnegi.local --num-conns 200 --rate 50 --uri /vacancies/msk/it?q=java.html
 52 = JSON metal 0.35kb # httperf --server rabotnegi.local --num-conns 300 --rate 60 --uri /metal-vacancies/msk/it?q=java.json
 
-## vacancy details - passenger-3i
+## html vs json - vacancy details - passenger-3i
 171 = html controller 1.65kb # httperf --server rabotnegi.local --num-conns 1000 --rate 200 --uri /vacancies/4daebd548c2e8655ab001b6b.html
 475 = json metal 1.24kb # httperf --server rabotnegi.local --num-conns 1500 --rate 500 --uri /metal-vacancies/4daebd548c2e8655ab001b6b.json
+
+## haml vs erb - front page with the search form - passenger-3i, 5.24kb
+ # httperf --server rabotnegi.local --num-conns 400 --rate 130 --uri /
+105 = slim
+ 69 = haml
+ 99 = erb
+
+## haml vs erb - search form + 1-item vacancy list - passenger-3i, 6.25kb
+ # httperf --server rabotnegi.local --num-conns 400 --rate 130 --uri /vacancies/spb/insurance
+81 = slim
+55 = haml
+78 = erb
+
+## haml vs erb - vacancies list 50 items - passenger-3i, 21.5kb
+ # httperf --server rabotnegi.local --num-conns 240 --rate 60 --uri /vacancies/msk/it
+43 = slim
+29 = haml
+42 = erb
+35 = haml + _vacancy_rows.erb
+
 
 ## MySQL vs Mongo
 SELECT id, title, external_id, salary_min, salary_max, employer_name FROM `vacancies` WHERE `vacancies`.`city` = 'msk' ORDER BY title LIMIT #{N} OFFSET 0

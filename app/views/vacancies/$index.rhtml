@@ -1,0 +1,55 @@
+<% page "vacancies", vacancies_page_title, :path => %w(workers workers vacancy-search) %>
+<% meta :description, site_desc %>
+<% meta :keywords, "работа, вакансии" %>
+
+<%= render "search" %>
+
+<% if @vacancies %>
+  <% if @vacancies.any? %>
+
+    <div class='search-result-message'>
+    	<%= found_objects_info @vacancies, 'ваканс', 'ия', 'ии', 'ий' %>.
+    </div>
+
+    <table class='vacancies-list rounded' cellspacing="0">
+    	<thead>
+        <tr>
+      		<th class='pos <%= order_class(:title) %>'><%= link_to "Должность", url(:nice_vacancies, params.merge(sort: encode_order(:title))) %>
+      		<th class='emp <%= order_class(:employer_name) %>'><%= link_to "Компания", url(:nice_vacancies, params.merge(sort: encode_order(:employer_name))) %>
+      		<th class='sal <%= order_class(:salary_min) %>'><%= link_to "Зарплата", url(:nice_vacancies, params.merge(sort: encode_order(:salary_min))) %>
+    		</tr>
+      </thead>
+
+      <tbody>
+      	<% @vacancies.each do |vacancy| %>
+          <tr id='<%= web_id(vacancy) %>' class='entry-header<%= xcycle('', ' alt') %>'>
+            <td class='pos'><a href='<%= url(:vacancy, vacancy) %>'><%= raw vacancy.title %></a></td>
+      			<td class='emp'><%= raw vacancy.employer_name %></td>
+      			<td class='sal'><%= vacancy.salary %></td>
+      		</tr>
+      	<% end %>
+      </tbody>
+
+      <tfoot>
+        <tr>
+          <td colspan='3' class='pagination'>        
+            <%= render "pager" if @vacancies.total_pages > 1 %>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+
+  <% else %>
+
+    <div class='message warning'>
+    	<% if params[:q] %>
+    		По вашему запросу ничего не найдено<br>
+    		Попробуйте изменить ключевые слова или 
+    		<%=	link_to 'поискать без указания ключевых слов', request.request_parameters.merge(:q => nil), :class => 'ui' %>
+    	<% else %>
+    		Иформации о вакансиях в выбранном городе/отрасли сейчас нет
+    	<% end %>
+    </div>
+
+  <% end %>
+<% end %>

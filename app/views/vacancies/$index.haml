@@ -16,10 +16,10 @@
           %th.sal{:class => order_class(:salary_min)}= link_to "Зарплата", sort: encode_order(:salary_min)
 
       %tbody
-        - @vacancies.each_with_index do |vacancy, i|
-          %tr.header{id: vacancy.id, :class => i.odd?? '' : 'alt'}
+        - @vacancies.each do |vacancy|
+          %tr.entry-header{id: web_id(vacancy), :class => xcycle('', ' alt')}
             %td.pos
-              %a{href: "/vacancies/#{vacancy.id}"}= raw vacancy.title             
+              %a{href: url(:vacancy, vacancy)}= raw vacancy.title
             %td.emp= raw vacancy.employer_name
             %td.sal= vacancy.salary
 
