@@ -65,8 +65,6 @@ module Rabotnegi
       Sass::Plugin.options[:template_location] = "#{config.root}/app/styles"
       Sass::Plugin.options[:css_location] = "#{config.root}/public/stylesheets/gen"
 
-      Haml::Template::options[:ugly] = true
-
       ::ADMIN_LOGIN = 'admin'
       ::ADMIN_PASSWORD = '0000'
     end

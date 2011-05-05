@@ -1,14 +1,14 @@
 - vacancy = edit
 
-%tr.edit{id: "vacancy_#{vacancy.id}", :class => cycle('', 'alt')}
-  %td.title
+tr.edit{id="vacancy_#{vacancy.id}" class=cycle('', 'alt')}
+  td.title
     = text_field :vacancy, :title, :object => vacancy
     = error_message_on :vacancy, :title, :object => vacancy
 
-  %td.employer
+  td.employer
     = text_field :vacancy, :employer_name, :object => vacancy
     = error_message_on :vacancy, :employer_name, :object => vacancy
 
-  %td.actions
-    %button.save Save
-    %button.cancel Cancel
+  td.actions
+    button.save Save
+    button.cancel Cancel

@@ -3,7 +3,7 @@
 
 - page "edit-vacancy", title, path: %w(employers casual-employers vacancies)
 
-%h1= title
+h1= title
 
 = form_for @vacancy, html: { id: 'vacancy-edit-form' }, url: url do |f|
   = errors_for(@vacancy)
