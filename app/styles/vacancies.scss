@@ -42,8 +42,17 @@ body#vacancies {
   .vacancy p.links { margin-top: 10px; }
   #vacancies-search-form { width: 330px; margin: 10px auto; border: 1px solid silver; padding: 10px; @include rounded(10px); 
     input { width: 200px; }
-    select, input.button { width: 205px; } 
+    select, input.button { width: 205px; }
   } 
+  
+  #search-vacancies { margin: 10px 10px; text-align: center;
+    fieldset { border: 1px solid silver; @include rounded(10px); padding: 15px; display: inline;
+      .field { display: inline; padding-right: 10px; }
+      label { padding-right: 5px; }
+      #q { width: 180px; }
+      input.button { width: 120px; }
+    }    
+  }
 }
 
 body#edit-vacancy #vacancy-edit-form { 
