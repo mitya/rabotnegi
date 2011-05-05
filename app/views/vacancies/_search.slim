@@ -1,6 +1,20 @@
-= form_tag vacancies_url, :method => :get, :class => "search", :id => "vacancies-search-form" do
+= form_tag vacancies_url, method: :get, :class => "search", id: "vacancies-search-form" do
   = wrapper do
     = tr :city, 'Город', select_tag(:city, options_for_select(ModelHelper::CityOptions, params[:city]))
     = tr :industry, 'Отрасль', select_tag(:industry, grouped_options_for_select(ModelHelper::IndustryOptions, params[:industry], 'любая'))
     = tr :q, 'Ключевые слова', text_field_tag(:q, params[:q])
     = tr2 submit_tag('Найти', :class => 'button')
+
+= form_tag vacancies_url, method: :get, :class => "search", id: "search-vacancies" do
+  fieldset
+    .field
+      = label_tag :city, 'Город:'
+      = select_tag(:city, options_for_select(ModelHelper::CityOptions, params[:city]))
+    .field
+      = label_tag :city, 'Отрасль:'
+      = select_tag(:industry, grouped_options_for_select(ModelHelper::IndustryOptions, params[:industry], 'любая'))
+    .field
+      = label_tag :q, 'Ключевые слова:'
+      = text_field_tag(:q, params[:q])
+    .field
+      = submit_tag 'Найти', :class => 'button', name: nil

@@ -33,7 +33,5 @@ body.public{id=@page_id}
   - if Rails.env.development?
     pre#sandbox
   
-  = javascript_include_tag %w(lib/jquery lib/rails), cache: 'pack/lib'
-  = javascript_include_tag %w(gen/common gen/application), cache: 'pack/app'
-
+  = javascript_include_tag %w(lib/jquery lib/rails gen/common gen/application), cache: 'pack/public' 
   = render "layout/google_analytics" if Rails.env.production?
