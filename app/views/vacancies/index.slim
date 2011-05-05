@@ -8,35 +8,33 @@
   - if @vacancies.any?
     .search-result-message= found_objects_info(@vacancies, 'ваканс', 'ия', 'ии', 'ий') + "."
 
-    table.vacancies-list.rounded cellspacing=0
+    table.vacancies-list.rounded{cellspacing=0}
       thead
         tr
-          th.pos class=order_class(:title) 
-            = link_to "Должность", sort: encode_order(:title)
-          th.emp class=order_class(:employer_name) 
-            = link_to "Компания", sort: encode_order(:employer_name)
-          th.sal class=order_class(:salary_min)
-            = link_to "Зарплата", sort: encode_order(:salary_min)
+          th.pos{class=order_class(:title)}= link_to "Должность", sort: encode_order(:title)
+          th.emp{class=order_class(:employer_name)}= link_to "Компания", sort: encode_order(:employer_name)
+          th.sal{class=order_class(:salary_min)}= link_to "Зарплата", sort: encode_order(:salary_min)
 
       tbody
         - @vacancies.each do |vacancy|
-          tr.entry-header id=web_id(vacancy) class=xcycle('', ' alt')
+          tr.entry-header{id=web_id(vacancy) class=xcycle('', ' alt')}
             td.pos
-              a href=url(:vacancy, vacancy) = raw vacancy.title
+              a{href=url(:vacancy, vacancy)}= raw vacancy.title
             td.emp= raw vacancy.employer_name
             td.sal= vacancy.salary
 
       tfoot
         tr
-          td.pagination colspan=3
-            = render "pager" if @vacancies.total_pages > 1
+          td.pagination{colspan=3}
+            - if @vacancies.total_pages > 1
+              strong Страницы:
+              = will_paginate @vacancies, :params => params.merge(:use_route => :nice_vacancies), :param_name => :page, :previous_label => "« предыдущая", :next_label => "следующая »", :container => false
 
   - else
 
     .message.warning
       - if params[:q]
-        | По вашему запросу ничего не найдено<br>
-          Попробуйте изменить ключевые слова или 
+        | По вашему запросу ничего не найдено<br>Попробуйте изменить ключевые слова или 
         = link_to 'поискать без указания ключевых слов', request.request_parameters.merge(q: nil), :class => 'ui'
       - else
         | Иформации о вакансиях в выбранном городе/отрасли сейчас нет

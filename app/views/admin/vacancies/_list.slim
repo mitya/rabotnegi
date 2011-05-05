@@ -1,0 +1,10 @@
+table.grid
+  thead
+    tr
+      th Позицияth>
+      th Контора
+      th
+  tbody= render partial: 'show', collection: @vacancies, :as => :vacancy
+  tfoot
+    tr
+      td{colspan=3}= will_paginate @vacancies, :previous_label => "« предыдущая", :next_label => "следующая »"

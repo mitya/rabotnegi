@@ -1,13 +1,12 @@
 - page "workers-login", "Размещение резюме", :path => %w(workers workers my-resume)
 
-%h2
-  %a.ui{href: new_my_resume_path}
-    Опубликовать резюме
-%br
+h2
+  a.ui{href=new_my_resume_path} Опубликовать резюме
 
-или
+br
+| или
 
-%h2 Отредактировать резюме
+h2 Отредактировать резюме
 = form_tag worker_login_path, :method => :post, :id => 'workers-login-form' do
   = wrapper do
     = tr :name, 'Имя, фамилия', text_field_tag(:name, params[:name])

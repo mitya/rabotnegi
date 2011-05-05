@@ -20,7 +20,7 @@ class VacanciesController < ApplicationController
 
   def show
     @vacancy = Vacancy.get(params[:id])
-    request.xhr?? render(partial: "vacancy", object: @vacancy) : render
+    request.xhr?? render(partial: "details") : render
   end
 
   def new

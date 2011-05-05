@@ -1,0 +1,11 @@
+- page "vacancy", "#{@vacancy.title} — #{@vacancy.city_name}", :path => %w(workers workers vacancy-search)
+
+= div_for @vacancy do
+  h2= @vacancy.title
+  
+  .description= raw @vacancy.description
+
+  p.links
+    = link_to "» Контактная информация на Работе.ру", "http://www.rabota.ru/vacancy#{@vacancy.external_id}.html"
+    br
+    = link_to "« Все вакансии раздела #{@vacancy.city_name} — #{@vacancy.industry_name}", back_to_all_vacancies_url_for(@vacancy)
