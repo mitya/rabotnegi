@@ -1,5 +1,5 @@
 Rabotnegi::Application.configure do
-  config.log_level = :debug
+  config.log_level = :info
   config.cache_classes = true
   config.consider_all_requests_local = false
   config.action_controller.perform_caching             = true
