@@ -1,12 +1,23 @@
 @import "_helpers";
 
-body { margin: 10px 0; font: 13px "Lucida Grande", Verdana, sans-serif; min-width: 480px; behavior: url("/stylesheets/lib/csshover2.htc"); }
+$footer_height: 40px;
 
-#footer { clear: left;  width: 100%;  margin-top: 10px;  border-top: thin solid #aaaaaa;  padding-top: 5px;  text-align: center;  color: #aaaaaa; }
+html { height: 100%; }
+body { height: 100%; min-width: 480px; margin: 0; }
+body { font: 13px "Lucida Grande", Verdana, sans-serif; behavior: url("/stylesheets/lib/csshover2.htc"); }
 
 #header { padding-bottom: 5px; border-bottom: 1px solid gray; }
 
-#logo { font-weight: bold;  font-size: x-large;  float: left;  margin: 0 10px;  height: 30px;  line-height: 30px;
+#page { margin-bottom: -$footer_height; min-height: 100%; }
+html.ie6 #page { height: auto !important; height: 100%; }
+
+#footer-push { height: $footer_height; }
+
+#footer { position: relative; height: $footer_height; }
+#footer { text-align: center; color: #aaaaaa; }
+#footer-content { padding-top: 5px; border-top: thin solid #aaaaaa; }
+
+#logo { font-weight: bold;  font-size: x-large;  float: left;  margin: 0 10px;  height: 30px; line-height: 30px;
   a { text-decoration: none; }
   #logo-pro { color: red; }
   #logo-rabotu { font-variant: small-caps;  color: black; } 

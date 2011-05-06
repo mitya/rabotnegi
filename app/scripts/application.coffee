@@ -55,7 +55,7 @@ $("body#vacancies").loaded ->
         
     false
 
-  $("#vacancies-search-form").submit ->
+  $("#search-vacancies").submit ->
     form = this
     url = "/vacancies/#{form.city.value}"
     url += '/' + form.industry.value if form.industry.value.present()
