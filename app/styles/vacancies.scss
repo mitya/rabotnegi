@@ -45,14 +45,17 @@ body#vacancies {
     select, input.button { width: 205px; }
   } 
   
-  #search-vacancies { margin: 10px 10px; text-align: center;
-    fieldset { border: 1px solid silver; @include rounded(10px); padding: 15px; display: inline;
+  #search-vacancies { margin: 10px; text-align: center;
+    fieldset { border: 1px solid silver; @include rounded(10px); padding: 15px; display: inline; line-height: 2;
       .field { display: inline; padding-right: 10px; }
+      select { width: 150px; }
       label { padding-right: 5px; }
-      #q { width: 180px; }
-      input.button { width: 120px; }
+      #q { width: 170px; }
+      input.button { width: 150px; }
     }    
   }
+  #search-vacancies.blank { margin-top: 20%; }
+
 }
 
 body#edit-vacancy #vacancy-edit-form { 

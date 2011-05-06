@@ -15,25 +15,26 @@ a:visited { color: purple; }
 a:hover { color: $hovered_link_color; }
 a.ui:visited { color: $link_color; }
 
+table.form-layout { 
+  td { padding-bottom: 5px; }
+  th { text-align: left; vertical-align: top; padding-right: 10px; }
+  th label { font-variant: small-caps; line-height: 1.7; padding: 2px 0; margin: 2px 0; display: block; }
+  input[type=text], input[type=password] { width: 195px; padding: 3px; font-size: 13px; }
+  select { width: 205px; }
+  input.button, input[type=submit] { width: 200px; }
+  textarea { font-size: 13px; }
+  label input { width: auto; }
+  td small { color: gray; font-size: 11px; }
+  td span.required-mark { color: gray; font-size: 11px; }
+  td span.invalid + span.required-mark { color: red; }
+  td span.invalid textarea.inner-tooltip { color: red; }
+}  
+
 form { 
   .form-errors { margin: 10px 0 15px; color: #ad0000; 
     h2 { margin: 5px 0; font-size: 16px; color: #ad0000; }
     ul { margin: 5px 0; padding-left: 0px; list-style-position: inside; }
   }
-  table.form-layout { 
-    td { padding-bottom: 5px; }
-    th { text-align: left; vertical-align: top; padding-right: 10px; }
-    th label { font-variant: small-caps; line-height: 1.7; padding: 2px 0; margin: 2px 0; display: block; }
-    input[type=text], input[type=password] { width: 195px; padding: 3px; font-size: 13px; }
-    select { width: 205px; }
-    input.button, input[type=submit] { width: 200px; }
-    textarea { font-size: 13px; }
-    label input { width: auto; }
-    td small { color: gray; font-size: 11px; }
-    td span.required-mark { color: gray; font-size: 11px; }
-    td span.invalid + span.required-mark { color: red; }
-    td span.invalid textarea.inner-tooltip { color: red; }
-  }  
   input.inner-tooltip, textarea.inner-tooltip { color: gray; font-style: italic; }
   input.required-field, textarea.required-field { background: #ffff66; }
   div.submit { margin-top: 3px; 

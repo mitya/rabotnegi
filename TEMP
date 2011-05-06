@@ -1,0 +1,64 @@
+  #page
+    #header
+      #logo
+        a{href="/"}
+          span#logo-pro Р
+          span#logo-rabotu аботнеги.ру
+
+      ul#tabs{data-selected="##{@current_tab}"}
+        li#workers-tab.tab
+          a{href=vacancies_path} Поиск вакансий
+        li#employers-tab.tab
+          a{href=new_vacancy_path} Публикация вакансий
+
+      br.clear
+
+      = content_tag :div, flash[:notice], id: 'flash-notice' if flash[:notice]
+      = content_tag :div, flash[:error], id: 'flash-error' if flash[:error]
+
+    #content= yield :layout
+
+    #footer-push
+
+  #footer
+    #footer-content © 2011 Работнеги.ру
+
+  - if Rails.env.development?
+    pre#sandbox
+
+  #plumbing
+    = javascript_include_tag %w(lib/jquery lib/rails gen/common gen/application), cache: 'pack/public' 
+    = render "layout/google_analytics" if Rails.env.production?
+
+
+
+
+
+    table{style="width: 100%; height: 100%;"}
+      tr
+        td{style="vertical-align: top; height: 1%;"}
+          #header
+            #logo
+              a{href="/"}
+                span#logo-pro Р
+                span#logo-rabotu аботнеги.ру
+
+            ul#tabs{data-selected="##{@current_tab}"}
+              li#workers-tab.tab
+                a{href=vacancies_path} Поиск вакансий
+              li#employers-tab.tab
+                a{href=new_vacancy_path} Публикация вакансий
+
+            br.clear
+
+            = content_tag :div, flash[:notice], id: 'flash-notice' if flash[:notice]
+            = content_tag :div, flash[:error], id: 'flash-error' if flash[:error]
+
+        tr
+          td{style="vertical-align: middle;"}
+            #content= yield :layout
+
+        tr
+          td{style="vertical-align: bottom; height: 1%;"}
+            #footer
+              #footer-content © 2011 Работнеги.ру

@@ -10,7 +10,7 @@ class VacanciesControllerTest < ActionController::TestCase
     
     assert_response :ok
     assert_equal @vacancy, assigns(:vacancy)
-    assert_template "vacancy"
+    assert_template "details"
   end
   
   test 'index - filter' do

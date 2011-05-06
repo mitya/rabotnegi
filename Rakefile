@@ -15,3 +15,11 @@ end
 namespace :app do
   task(:load => :environment) { RabotaRu.load }
 end
+
+namespace :dev do
+  task :rm do
+    system "rm -rf #{Rails.root}/public/javascripts/pack"
+    system "rm -rf #{Rails.root}/public/stylesheets/pack"
+    system "rm -rf #{Rails.root}/tmp/cache/*"
+  end
+end
