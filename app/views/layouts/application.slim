@@ -8,19 +8,20 @@ head
   = csrf_meta_tag
   = stylesheet_link_tag %w(gen/common gen/public gen/workers gen/employers gen/resumes gen/vacancies), cache: 'pack/public'
 
-body.public{id=@page_id}
+body.public{id=@page_id class=@page_class}
   #page
-    #header
+    header#header
       #logo
         a{href="/"}
           span#logo-pro Р
           span#logo-rabotu аботнеги.ру
 
-      ul#tabs{data-selected="##{@current_tab}"}
-        li#workers-tab.tab
-          a{href=vacancies_path} Поиск вакансий
-        li#employers-tab.tab
-          a{href=new_vacancy_path} Публикация вакансий
+      nav
+        ul#tabs{data-selected="##{@current_tab}"}
+          li#workers-tab.tab
+            a{href=vacancies_path} Поиск вакансий
+          li#employers-tab.tab
+            a{href=new_vacancy_path} Публикация вакансий
 
       br.clear
 
@@ -31,7 +32,7 @@ body.public{id=@page_id}
 
     #footer-push
 
-  #footer
+  footer#footer
     #footer-content © 2011 Работнеги.ру
 
   - if Rails.env.development?

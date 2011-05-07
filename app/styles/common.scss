@@ -28,31 +28,55 @@ table.form-layout {
   td span.required-mark { color: gray; font-size: 11px; }
   td span.invalid + span.required-mark { color: red; }
   td span.invalid textarea.inner-tooltip { color: red; }
+
+  * html form & { 
+    td { padding-top: 0; }
+    td input.checkbox { margin-left: -3px; }
+  }
+  
+  form.search & { 
+    input[type=text], input[type=password] { width: 185px; padding: 1px; font-size: 11px; }
+  }  
 }  
+
+table.rounded { border-collapse: separate; 
+  tr:first-child th:first-child { -moz-border-radius-topleft: 10px; -webkit-border-top-left-radius: 10px; }
+  tr:first-child th:last-child { -moz-border-radius-topright: 10px; -webkit-border-top-right-radius: 10px; }
+  tr:last-child td:first-child { -moz-border-radius-bottomleft: 10px; -webkit-border-bottom-left-radius: 10px; }
+  tr:last-child td:last-child { -moz-border-radius-bottomright: 10px; -webkit-border-bottom-right-radius: 10px; }
+}
 
 form { 
   .form-errors { margin: 10px 0 15px; color: #ad0000; 
     h2 { margin: 5px 0; font-size: 16px; color: #ad0000; }
     ul { margin: 5px 0; padding-left: 0px; list-style-position: inside; }
   }
-  input.inner-tooltip, textarea.inner-tooltip { color: gray; font-style: italic; }
-  input.required-field, textarea.required-field { background: #ffff66; }
+  .inner-tooltip { color: gray; font-style: italic; }
+  .required-field { background: #ffff66; }
   div.submit { margin-top: 3px; 
     span.cancel { font-size: small; }
-    .action-button { }
   }
   span.invalid label { color: red; }
   tr.high td span.required-mark { vertical-align: top; }
 }
 
-* html form table.form-layout { 
-  td { padding-top: 0; }
-  td input.checkbox { margin-left: -3px; }
+form.inline { margin: 10px; text-align: center;
+  fieldset { border: 1px solid silver; @include rounded(10px); padding: 15px; display: inline; line-height: 2;
+    .field { display: inline; padding-right: 10px; }
+    select { width: 150px; }
+    label { padding-right: 5px; }
+    input.button { width: 150px; }
+  }
 }
 
-form.search table.form-layout { 
-  input[type=text], input[type=password] { width: 185px; padding: 1px; font-size: 11px; }
+form.tableish { border: 1px solid silver; margin: 10px auto; width: 380px; @include rounded(10px); padding: 15px; line-height: 2;
+  label { display: block; float: left; width: 130px; }
+  label { text-align: right; padding-right: 5px; font-variant: small-caps; font-weight: bold; }
+  select { width: 205px; }
+  input.button { width: 205px; }
 }
+
+form.front { margin-top: 50px; }
 
 .pagination { 
   a, a:visited { padding: 5px 5px; text-decoration: none; color: black; @include rounded(5px); }
@@ -66,10 +90,3 @@ div.warning { background: gold; }
 
 br.clear { clear: both; }
 .centered { margin: 0 auto; }
-
-table.rounded { border-collapse: separate; 
-  tr:first-child th:first-child { -moz-border-radius-topleft: 10px; -webkit-border-top-left-radius: 10px; }
-  tr:first-child th:last-child { -moz-border-radius-topright: 10px; -webkit-border-top-right-radius: 10px; }
-  tr:last-child td:first-child { -moz-border-radius-bottomleft: 10px; -webkit-border-bottom-left-radius: 10px; }
-  tr:last-child td:last-child { -moz-border-radius-bottomright: 10px; -webkit-border-bottom-right-radius: 10px; }
-}
