@@ -9,6 +9,7 @@ module LayoutHelper
     @page_id = id
     @page_title = title
     @page_class = options[:class]
+    @page_class = nil if @page_class.blank?
 
     if options[:path]
       options.merge! :tab => options[:path].first, :navbar => options[:path].second, :navlink => options[:path].third

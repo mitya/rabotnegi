@@ -1,11 +1,10 @@
 tr.entry-details{id=web_id(@vacancy, :details)}
   td{colspan=3}
-    .entry-outer{style='display:none'}
-      .entry-inner
-        .entry-actions
-          ul
-            li= link_to "Контактная информация на Работе.ру", "http://www.rabota.ru/vacancy#{@vacancy.external_id}"
-            li= link_to "Открыть на отдельной странице", vacancy_path(@vacancy), target: "_blank"
-        .entry-content
-          = raw @vacancy.description
-        br.clear
+    .entry-box{style='display:none'}
+      .entry-actions
+        ul
+          li= link_to "Контактная информация на Работе.ру", "http://www.rabota.ru/vacancy#{@vacancy.external_id}"
+          li= link_to "Открыть на отдельной странице", vacancy_path(@vacancy), target: "_blank"
+      .entry-content
+        = raw @vacancy.description
+      br.clear

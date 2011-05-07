@@ -1,3 +1,5 @@
+q = $
+
 $.extend Array.prototype,
   last: -> 
     this[this.length - 1]
@@ -56,6 +58,14 @@ jQuery.fn.extend
         input.addClass('inner-tooltip').val(tip) if input.val().blank()
       input.closest('form').submit -> 
         input.val('') if input.val() == tip
+  toggle_slide_css3: ->
+    if this.height() == 0 || this.css("display") == "none"
+      this.css display: "none", height: "auto"
+      height = this.height()
+      this.css display: "block", height: 0
+      this.css height: height
+    else
+      this.css height: 0
 
 Spinner = -> 
   $("<span>").addClass("spinner").text('загрузка...')

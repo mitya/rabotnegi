@@ -42,7 +42,8 @@ $("body#vacancies").loaded ->
     link = row.find('a')
 
     if row.next().is(".entry-details")
-      row.next().find(".entry-outer").slideToggle()
+      row.toggleClass("x-open")
+      row.next().find(".entry-box").toggle()
     else
       row.addClass("x-loading")
       $.get link.attr('href'), (html) ->
@@ -51,11 +52,12 @@ $("body#vacancies").loaded ->
         details.addClass('x-loaded')
         details.addClass('alt') if row.hasClass('alt')
         row.find(".spinner").remove()
-        details.find(".entry-outer").slideDown()
+        row.addClass("x-open")
+        details.find(".entry-box").fadeIn()
         
     false
 
-  $("#search-vacancies").submit ->
+  $("#vacancies-filter").submit ->
     form = this
     url = "/vacancies/#{form.city.value}"
     url += '/' + form.industry.value if form.industry.value.present()

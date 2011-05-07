@@ -18,3 +18,9 @@ $hovered_link_color: #ee0000;
   background: $from -webkit-gradient(linear, left top, left bottom, from($from), to($to));
   background: $from -moz-linear-gradient(top, $from, $to); 
 }
+
+@mixin background-gradient-top($from: #dddddd, $to: #cccccc, $height: 10) {
+  background: $to;
+  background: $to -webkit-gradient(linear, left top, left $height, from($from), to($to));
+  background: $to -moz-linear-gradient(top, $from, $to, $to, $to, $to); 
+}

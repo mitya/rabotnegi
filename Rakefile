@@ -21,5 +21,6 @@ namespace :dev do
     system "rm -rf #{Rails.root}/public/javascripts/pack"
     system "rm -rf #{Rails.root}/public/stylesheets/pack"
     system "rm -rf #{Rails.root}/tmp/cache/*"
+    system "rm -rf #{Rails.root}/public/vacancies"
   end
 end
