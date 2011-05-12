@@ -4,12 +4,18 @@ class VacanciesController < ApplicationController
   caches_page :show, :if => -> c { c.request.xhr? }
 
   def index
-    @vacancies = Vacancy.
-      search(params.slice(:city, :industry, :q)).
-      without(:description).
-      order_by(decode_order_for_mongo(params[:sort].presence || "title")).
-      paginate(page: params[:page], per_page: 50) if params[:city]
-
+    if params[:city]
+      @vacancies = Vacancy.
+        search(params.slice(:city, :industry, :q)).
+        without(:description).
+        order_by(decode_order_for_mongo(params[:sort].presence || "title")).
+        paginate(page: params[:page], per_page: 50)    
+      current_user!.update_attributes(city: params[:city], industry: params[:industry])
+    else
+      params[:city] = current_user!.city      
+      params[:industry] = current_user!.industry
+    end
+    
     respond_to do |wants|
       wants.html
       wants.json do

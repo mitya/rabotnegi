@@ -4,7 +4,7 @@ form#vacancies-filter.search{action=vacancies_url method="get" class=(@vacancies
       = label_tag :city, 'Город:'
       = select_tag(:city, options_for_select(ModelHelper::CityOptions, params[:city]))
     .field
-      = label_tag :city, 'Отрасль:'
+      = label_tag :industry, 'Отрасль:'
       = select_tag(:industry, grouped_options_for_select(ModelHelper::IndustryOptions, params[:industry], 'любая'))
     .field
       = label_tag :q, 'Ключевые слова:'

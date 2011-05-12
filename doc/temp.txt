@@ -10,3 +10,7 @@ fieldset
     = text_field_tag(:q, params[:q])
   .field
     input.button{type="submit" value="Найти"}
+
+search_vacancies
+  user = get_user
+  user.update city, industry, query

@@ -17,6 +17,8 @@ class ApplicationController < ActionController::Base
   delegate :benchmark, :to => ActionController::Base
 
   protect_from_forgery
+  
+  Encryptor = ActiveSupport::MessageEncryptor.new(Rabotnegi::Application.config.secret_token)
 
 protected
 
@@ -61,5 +63,21 @@ protected
       cookies.delete(:resume_id)
     end
     @current_resume
+  end
+
+  def current_user
+    unless defined?(@current_user)
+      @current_user = User.find(Encryptor.decrypt(cookies[:uid])) if cookies[:uid].present?
+    end
+    @current_user
+  end
+
+  def current_user=(user)
+    @current_user = user
+    cookies.permanent[:uid] = Encryptor.encrypt(user.id)
+  end
+
+  def current_user!
+    self.current_user ||= User.create!
   end
 end
