@@ -8,6 +8,9 @@ body#vacancies {
   .search-result-message { margin: 5px 0; text-align: center; }
   table.vacancies-list { width: 100%; margin: 10px 0; border: 1px solid #cccccc; @include rounded(10px); 
     span.pos { font-weight: bold; }
+    span.star { display: block; width: 16px; height: 16px; float: left; padding-right: 5px; background-repeat: no-repeat; cursor: pointer; }
+    span.star-disabled { background-image: url(/images/star-disabled-16.gif); }
+    span.star-enabled { background-image: url(/images/star-enabled-16.png); }
     td { padding: 5px; border-top: 1px solid #cccccc; }
     th { padding: 5px; }
     td.pos, th.pos { text-align: left; width: 52%; }
@@ -30,8 +33,11 @@ body#vacancies {
         background-color: $expanded-entry-color;
       }      
       
-      tr.entry-header:hover { cursor: pointer; }
-      tr.x-loading td.pos { background: $collapsed-entry-color url("/images/spinner.gif") right center no-repeat; }
+      tr.entry-header { cursor: pointer; }
+      tr.entry-header:hover  { 
+        td { background: #ffa; }
+      }
+      tr.x-loading td.pos { background: #ffa url("/images/spinner.gif") right center no-repeat; }
       tr.entry-details { 
         td { padding: 0; border: none; color: #666666; @include background-gradient-top($expanded-entry-color, #fff, 5); }
         .entry-box { padding: 10px; border: 3px solid $expanded-entry-color; }

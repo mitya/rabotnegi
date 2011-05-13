@@ -1,4 +1,4 @@
-q = $
+window.q = $
 
 $.extend Array.prototype,
   last: -> 
@@ -34,7 +34,7 @@ jQuery.fn.extend
     $.initializers[@selector].push(fn)
     this
   record_id: ->
-    @attr('id').split('_').last()
+    @attr('id').split(/_|-/).last()
   requiredField: ->
     @each ->
       input = $(this)
