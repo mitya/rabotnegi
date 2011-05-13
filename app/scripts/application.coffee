@@ -37,6 +37,19 @@ $("body#edit-resume").loaded ->
 
 $("body#vacancies").loaded ->
   $(".vacancies-list tr.entry-header a").live "click", -> $(this).closest('tr').click
+
+  $(".vacancies-list tr.entry-header .star-disabled").live "click", ->
+    tr = q(this).closest("tr")
+    q.post "/worker/vacancies", {id: tr.record_id()}, => 
+      q(this).removeClass("star-disabled").addClass("star-enabled")
+    false
+    
+  $(".vacancies-list tr.entry-header .star-enabled").live "click", ->
+    tr = q(this).closest("tr")
+    q.post "/worker/vacancies/#{tr.record_id()}", {_method: 'delete'}, => 
+      q(this).removeClass("star-enabled").addClass("star-disabled")    
+    false
+  
   $(".vacancies-list tr.entry-header").live "click", ->
     row = $(this)
     link = row.find('a')

@@ -16,10 +16,11 @@ Rabotnegi::Application.routes.draw do
     resources :vacancies, controller: "employer_vacancies"
   end
 
-  namespace :worker, :module => "workers" do
-    get  "login", action: 'login_page', as: :login
-    post "login", action: 'login'
-    get  "logout", action: 'logout', as: :logout
+  namespace :worker, :module => nil do
+    get  "login" => 'workers#login_page', as: :login
+    post "login" => 'workers#login'
+    get  "logout" => 'workers#logout', as: :logout
+    resources :vacancies, :only => [:create, :destroy], controller: "worker_vacancies"
   end
 
   namespace :admin, :module => nil do

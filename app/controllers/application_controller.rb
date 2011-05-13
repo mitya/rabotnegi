@@ -45,7 +45,7 @@ protected
     current_resume || redirect_to(worker_login_path)
   end
 
-  helper_method :current_employer
+  helper_method :current_employer, :current_user!
 
   def current_employer
     return @current_employer if defined? @current_employer
