@@ -1,5 +1,5 @@
 $("body.public").loaded ->
-  $("#tabs").attr("data-selected").query().addClass("selected")
+  # $("#tabs").attr("data-selected").query().addClass("selected")
 
 $("body#admin-vacancies").loaded ->
   edited_rows = {}
@@ -35,7 +35,7 @@ $("body#edit-resume").loaded ->
   $("#edit-resume").find("#resume_about_me, #resume_job_reqs, #resume_contact_info").tooltip()
   $("#edit-resume").find("#resume_fname, #resume_lname").requiredField()
 
-$("body#vacancies").loaded ->
+$("body.public").loaded ->
   $(".vacancies-list tr.entry-header a").live "click", -> $(this).closest('tr').click
 
   $(".vacancies-list tr.entry-header .star-disabled").live "click", ->

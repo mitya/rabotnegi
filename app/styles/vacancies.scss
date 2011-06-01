@@ -3,9 +3,7 @@
 $collapsed-entry-color: #f3f3f3;
 $expanded-entry-color: #f3f3ff;
 
-body#vacancies { 
-  #content { margin: 0; }
-  .search-result-message { margin: 5px 0; text-align: center; }
+body.public {
   table.vacancies-list { width: 100%; margin: 10px 0; border: 1px solid #cccccc; @include rounded(10px); 
     span.pos { font-weight: bold; }
     span.star { display: block; width: 16px; height: 16px; float: left; padding-right: 5px; background-repeat: no-repeat; cursor: pointer; }
@@ -51,6 +49,12 @@ body#vacancies {
       } 
     } 
   }
+}
+
+body#vacancies { 
+  #content { margin: 0; }
+  .search-result-message { margin: 5px 0; text-align: center; }
+
   .vacancy p.links { margin-top: 10px; }
 
   #vacancies-filter.inline {

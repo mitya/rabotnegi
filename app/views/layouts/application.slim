@@ -22,6 +22,9 @@ body.public{id=@page_id class=@page_class}
             a{href=vacancies_path} Поиск вакансий
           li#employers-tab.tab
             a{href=new_vacancy_path} Публикация вакансий
+          - if current_user!.favorite_vacancies.any?
+            li#favorite-vacancies-tab.tab
+              a{href=url(:favorites_worker_vacancies)} Сохраненные вакансии
 
       br.clear
 
