@@ -20,7 +20,9 @@ Rabotnegi::Application.routes.draw do
     get  "login" => 'workers#login_page', as: :login
     post "login" => 'workers#login'
     get  "logout" => 'workers#logout', as: :logout
-    resources :vacancies, :only => [:create, :destroy], controller: "worker_vacancies"
+    resources :vacancies, only: [:create, :destroy], controller: "worker_vacancies" do
+      collection { get :favorites }
+    end
   end
 
   namespace :admin, :module => nil do

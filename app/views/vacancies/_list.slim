@@ -1,0 +1,23 @@
+table.vacancies-list.rounded{cellspacing=0}
+  thead
+    tr
+      th.pos{class=order_class(:title)}= link_to "Должность", sort: encode_order(:title)
+      th.emp{class=order_class(:employer_name)}= link_to "Компания", sort: encode_order(:employer_name)
+      th.sal{class=order_class(:salary_min)}= link_to "Зарплата", sort: encode_order(:salary_min)
+
+  tbody
+    - collection.each do |vacancy|
+      tr.entry-header{id=web_id(vacancy) class=xcycle('', ' alt')}
+        td.pos
+          span{class="star #{current_user!.favorite_vacancies.include?(vacancy.id) ? 'star-enabled' : 'star-disabled'}"}
+          a{href=url(:vacancy, vacancy)}= raw vacancy.title
+        td.emp= raw vacancy.employer_name
+        td.sal= vacancy.salary
+
+  tfoot
+    - if collection.respond_to?(:total_pages)
+      tr
+        td.pagination{colspan=3}
+          - if collection.total_pages > 1
+            strong Страницы:
+            = will_paginate collection, :params => params.merge(:use_route => :nice_vacancies), :param_name => :page, :previous_label => "« предыдущая", :next_label => "следующая »", :container => false

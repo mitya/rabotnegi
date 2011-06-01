@@ -12,4 +12,9 @@ class WorkerVacanciesController < ApplicationController
     current_user!.save!
     head :ok
   end
+  
+  def favorites
+    @vacancies = current_user!.favorite_vacancy_objects
+    render
+  end
 end
