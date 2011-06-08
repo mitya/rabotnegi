@@ -3,7 +3,7 @@ class Admin::VacanciesController < ApplicationController
   layout 'admin'
 
 	def index
-		@vacancies = Vacancy.paginate :per_page => 30, :page => params[:page]
+		@vacancies = Vacancy.where.paginate(:per_page => 30, :page => params[:page])
 		respond_to do |format|
 			format.html unless request.xhr?
 			format.html { render partial: 'list' } if request.xhr?

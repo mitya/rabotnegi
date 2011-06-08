@@ -1,0 +1,14 @@
+h1 Лог
+
+table.resources
+  thead
+    tr
+      th Событие
+      th Процесс
+      th
+      th
+      th
+  tbody
+    = render partial: 'show', collection: @log_items, as: :log_item
+
+= pagination @log_items

@@ -13,7 +13,7 @@ class WorkerVacanciesController < ApplicationController
     head :ok
   end
   
-  def favorites
+  def favorite
     @vacancies = current_user!.favorite_vacancy_objects
     render
   end

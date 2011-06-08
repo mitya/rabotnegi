@@ -1,0 +1,7 @@
+- log_item ||= show
+
+tr{class=cycle('', 'alt')}
+  td= log_item.created_at.to_s(:db)
+  td= log_item.puid
+  td= log_item.full_name
+  td= log_item.params.inspect

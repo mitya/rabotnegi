@@ -1,0 +1,1 @@
+RabotaRu::VacancyLoader.new(city: 'spb', industry: 'it').load

@@ -13,3 +13,5 @@ Vacancy.all(:select => "id, title, external_id, salary_min, salary_max, employer
 == Shell
 ab -n 100 -c 20 http://rabotnegi.ru/vacancies/msk
 ab -n 100 -c 20 http://rabotnegi.ru/vacancies/48288
+
+== Mongo

@@ -40,6 +40,6 @@ private
 
   def decode_order_for_mongo(param = params[OrderParam])
     field, reverse = decode_order(param)
-    [[field, reverse ? Mongo::DESCENDING : Mongo::ASCENDING]]
+    [ [field, reverse ? :desc : :asc] ]
   end
 end

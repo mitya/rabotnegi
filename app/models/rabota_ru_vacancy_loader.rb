@@ -4,18 +4,22 @@ require 'fileutils'
 require 'net/http'
 require 'time'
 
-# Rabota.ru params:
-# w      - ключевые слова
-# ot (1) - только по названию
-# c      - город
-# sf     - salary
-# su     - salary unit (1 usd, 2 rub, 3 eur)
-# os     - график
-# ek     - excluded words
-# pp     - per page
-# p      - day count (1, 7 30)
+# Rabota.ru service URL:
+#   JSON: http://www.rabota.ru/v3_jsonExport.html?wt=f&c=2&r=19&ot=t&cu=2&p=30&d=desc&cs=t&start=0&pp=50&fv=f&rc=992&new=1&t=1&country=1&c_rus=2&c_ukr=41&c_ec=133&sm=103
+#   RSS: http://www.rabota.ru/v3_rssExport.html?wt=f&c=%d&r=%d&cu=2&p=30&d=desc&fv=f&rc=2123&new=1&t=1
 # 
-# Response item sample:
+# Rabota.ru params:
+#   w      - ключевые слова
+#   ot (1) - только по названию
+#   c      - город
+#   sf     - salary
+#   su     - salary unit (1 usd, 2 rub, 3 eur)
+#   os     - график
+#   ek     - excluded words
+#   pp     - per page
+#   p      - day count (1, 7 30)
+# 
+# Response data item sample:
 # {
 #   "publishDate": "Fri, 19 Sep 2008 20:07:18 +0400",
 #   "expireDate": "Fri, 26 Sep 2008 20:07:18 +0400",
@@ -33,135 +37,120 @@ require 'time'
 #   "salary": {"min": "27000", "max": "35000", "currency": {"value": "руб", "id": "2"}}, 
 #   "responsibility": {"value": "<strong>Требования:</strong><br /><br /><strong>Требования:</strong>\r\nМужчина\\Женщина.\r\nВозраст от 22 до 35\r\nОбязательно: опыт работы в подборе персонала от 1 года&sbquo; опыт\r\n поиска специалистов из IT сферы.\r\nЖелательно: знания в других направлений в управлени персоналом\r\n (КДП&sbquo; мотивация&sbquo; обучение).<br /><br /><strong>Обязанности:</strong><br /><br />В компанию по созданию Интернет проектов (штат 30 человек) требуется менеджер по подбору персонала.\r\n<strong>Обязанности:</strong>\r\n * Поиск и подбор персонала ( IT технологии).\r\n * Разработка систем мотивации.\r\n * Планирование обучения.<br /><br /><strong>Условия:</strong><br /><br /><strong>Условия:</strong>\r\n * Молодой коллектив\r\n * Офис - рядом со ст.м. Петроградская.\r\n * Оклад - от 27000 рублей."}
 # }
-
-# Загружает вакансии с Работы.ру. 
+# 
 class RabotaRu::VacancyLoader
-  RssUrlTemplate = '/v3_rssExport.html?wt=f&c=%d&r=%d&cu=2&p=30&d=desc&fv=f&rc=2123&new=1&t=1'
-  JsonUrlTemplate = '/v3_jsonExport.html?wt=f&c=%d&r=%d&cu=1&p=7&d=desc&start=180&pp=20&fv=f&rc=1687&new=1&t=1'
+  JsonUrlTemplate = "/v3_jsonExport.html?wt=f&c={city}&r={industry}&ot=t&cu=2&p=30&d=desc&cs=t&start=0&pp=50&fv=f&rc=992&new=1&t=1&country=1&c_rus=2&c_ukr=41&c_ec=133&sm=103"
   
-  attr_writer :skip_remote_loading
-  def skip_remote_loading?() @skip_remote_loading end
-    
-  attr_accessor :work_directory
-
-  def initialize
-    @loaded_vacancies = []
+  def initialize(options = {})
+    @vacancies = []
     @work_directory = "#{Rails.root}/tmp/rabotaru"
-    @vacancy_converter = RabotaRu::VacancyConverter.new
+    @vacancy_converter = RabotaRu::VacancyConverter.new(self)
+    @cities = options[:city] ? [ City[options[:city]] ] : City.all
+    @industries = options[:industry] ? [ Industry[options[:industry]] ] : Industry.all
+    @console_logging = options[:console_logging]
+    @log = MongoLog::Writer.new('RRL', mai.timestamp_string)
   end
 
-  # attr_renamed :vacancies, :@loaded_vacancies
-  # attr_renamed :info, :@loading    
+  attr_accessor :log
+  attr_accessor :remote
+  attr_accessor :work_directory
+  attr_accessor :vacancies
+  attr_accessor :info
 
-  def vacancies
-    @loaded_vacancies
-  end
-  
-  def vacancies=(vacancies)
-    @loaded_vacancies = vacancies
-  end
-  
-  def info
-    @loading
-  end
-  
-  def info=(info)
-    @loading = info
-  end
+# main proc
 
   # Загружает новые вакансии с Работы.ру в базу. 
-  def load
-    log "Начинается загрузка..."
-    @loading = RabotaRu::VacancyLoading.create! started_at: Time.current, state: "loading"
+  def load    
+    log.info "start"
+    @info = RabotaRu::VacancyLoading.create!(started_at: Time.current, state: "loading")
 
-    load_to_files unless @skip_remote_loading
+    load_to_files unless @remote == false
     convert
     remove_duplicates
     filter
-    save      
-    Rails.logger.flush
+    save
+    
+    log.info "finish"
   end
 
-private
+# steps
 
   # Загружает RSS-ленты в файлы в tmp/rabotaru/:industry.rss.
   # Предварительно очищает рабочий каталог.
   def load_to_files
-    FileUtils.rm_r work_directory if File.exists? work_directory
-    Dir.mkdir work_directory
+    FileUtils.rm_r(work_directory) if File.exists?(work_directory)
+    Dir.mkdir(work_directory)
   
-    City.each do |city|
-      Industry.each do |industry|
-        log "Загрузка #{city.code}/#{industry.code}..."
-        json_text = Net::HTTP.get 'www.rabota.ru',  JsonUrlTemplate % [city.external_id, industry.external_id]
-        File.open("#{work_directory}/#{city.code}-#{industry.code}.json", 'w') { |file| file << json_text }
+    @cities.each do |city|
+      @industries.each do |industry|
+        url = mai.interpolate(JsonUrlTemplate, city: city.external_id, industry: industry.external_id)
+        json_data = mai.http_get('www.rabota.ru', url)
+        log.info "load", city.code, industry.code, json_data.length, url: url
+        mai.write_file("#{work_directory}/#{city.code}-#{industry.code}.json", json_data)
       end
     end    
   end
 
-  # Конвертирует загруженные файлы в объекты и помещает результат в @loaded_vacancies.
+  # Конвертирует загруженные файлы в объекты и помещает результат в @vacancies.
   def convert
-    @loading.update_attributes! state: "converting"
     Dir["#{work_directory}/*.json"].each do |file|
-      file = File.read(file).sub!(/;\s*$/, '')
-      items = ActiveSupport::JSON.decode(file)
-      log "Конверсия #{File.basename(file)} (#{items.size})..."
-      items.each { |item| convert_item(item) }
-    end    
-    log "Загружено #{@loaded_vacancies.size} вакансий."
+      data = File.read(file).sub!(/;\s*$/, '')
+      items = mai.decode_json(data)
+      log.info "convert", items.size, file
+      vacancies = items.map { |item| convert_item(item) }.compact
+      @vacancies.concat(vacancies)
+    end
+
+    @info.counts[:loaded] = @vacancies.size
   end
-  
+
   def convert_item(item)
-    @loaded_vacancies << @vacancy_converter.convert(item)
+    @vacancy_converter.convert(item)
   rescue => e
-    log "Пропущена вакансия '#{item['position']}', так как #{e.class}: #{e.message} [#{e.backtrace.first(4).join(', ')}]."
+    log.warn "convert.skip", item['position'], mai.format_error(e.message), error: e
+    nil
   end
 
   def remove_duplicates
-    @loaded_vacancies.uniq!
-    log "После устранения дубликатов осталось #{@loaded_vacancies.size} вакансий."
+    @vacancies.uniq!
+    @info.counts[:unique] = @vacancies.size
   end
 
-  # Фильтрует список вакансий в @loaded_vacancies, остовляет только новые и обновленные вакансии.
+  # Фильтрует список вакансий в @vacancies, остовляет только новые и обновленные вакансии.
   def filter
-    @loading.update_attributes! state: "filtering"
-    
-    loaded_external_ids = @loaded_vacancies.map(&:external_id)
-    existed_vacancies = Vacancy.any_in(external_id: loaded_external_ids)      
+    log.info "filter"
+
+    loaded_external_ids = @vacancies.map(&:external_id)
+    existed_vacancies = Vacancy.any_in(external_id: loaded_external_ids)
     existed_vacancies_map = existed_vacancies.index_by(&:external_id)
-        
+
     new_vacancies, updated_vacancies = [], []
-    @loaded_vacancies.each do |loaded_vacancy|
+    @vacancies.each do |loaded_vacancy|
       existed_vacancy = existed_vacancies_map[loaded_vacancy.external_id]
-      if not existed_vacancy
+      if !existed_vacancy
         new_vacancies << loaded_vacancy
       elsif existed_vacancy.created_at != loaded_vacancy.created_at
-        existed_vacancy.attributes = loaded_vacancy.attributes.except(:_id)
+        existed_vacancy.attributes = loaded_vacancy.attributes.except('_id')
         updated_vacancies << existed_vacancy
+      else
+        # vacancies are considered to be identical
       end
     end
 
-    @loaded_vacancies = new_vacancies + updated_vacancies
-    @loading.new_count = new_vacancies.size
-    @loading.updated_count = updated_vacancies.size 
-    @loading.details = {}
-    @loaded_vacancies.each { |v|
-      @loading.details[v.city] ||= {}
-      @loading.details[v.city][v.industry] ||= 0
-      @loading.details[v.city][v.industry] += 1
-    }
-    log "После фильтрации осталось #{@loaded_vacancies.size} вакансий."
+    @vacancies = new_vacancies + updated_vacancies
+    
+    @info.counts[:new] = new_vacancies.size
+    @info.counts[:updated] = updated_vacancies.size
+    @info.counts[:filtered] = @vacancies.size
+    @vacancies.each { |v|
+      @info.details["#{v.city}-#{v.industry}"] ||= 0
+      @info.details["#{v.city}-#{v.industry}"] += 1
+    }    
   end
 
   # Сохраняет загруженные вакансии в базе.
   def save
-    @loading.update_attributes! state: "saving"
-    @loaded_vacancies.each { |vacancy| vacancy.save }
-    @loading.update_attributes! state: "completed", finished_at: Time.current
-  end
-
-  def log(message)
-    RabotaRu.logger.info message
-    puts message if $0 =~ /rake|runner/
+    log.info "save"
+    @vacancies.each { |vacancy| vacancy.save! }
   end
 end

@@ -1,10 +1,16 @@
+@import "_helpers";
+
 body {
-  margin: 10px 0; min-width: 600px;
+  margin: 10px 5px; min-width: 600px;
   font: 13px "Lucida Grande", Verdana, sans-serif;  
   behavior: url("/stylesheets/lib/csshover2.htc"); 
 }
 
-#footer { clear: left; width: 100%; margin-top: 10px; padding-top: 3px; border-top: thin solid gray; text-align: center; color: gray; }
+table th { text-align: left; }
+
+h1 { margin: 0.25em 0; }
+
+#footer { clear: left; width: 100%; margin-top: 30px; padding-top: 3px; border-top: thin solid #aaa; text-align: center; color: gray; }
 
 #logo { font-weight: bold; font-size: x-large;
   a { text-decoration: none; }
@@ -19,10 +25,27 @@ body {
   tbody tr.alt { background: #eeeeee; } 
 }
 
-table th { text-align: left; }
-
 body#admin-vacancies #vacancies .grid {
   td.actions { width: 120px; }
   td.title { width: 50%; }
   tr.edit td input { width: 90%; padding: 3px; font-size: 14px; } 
+}
+
+ul.nav { line-height: 18px; padding: 0; margin: 10px 0 10px -3px;
+  li { display: inline; list-item-style: none; }
+  li.right { float: right; }
+  a { padding: 5px; }
+  a:visited { color: $link_color; }
+  a:hover { color: $hovered_link_color; }  
+} 
+
+table.resources { width: 100%; margin: 10px 0; border: 1px solid #cccccc; @include rounded-table(10px);
+  td, th { border-bottom: 1px solid #cccccc; padding: 5px; text-align: left; }
+  thead th { @include background-gradient(#ccc, #ddd); font-weight: bold; border-bottom: 1px solid #cccccc; }
+  thead th h2 { margin: 0 !important; text-align: left; }
+  td.id, th.id, td.num, th.num { text-align: right; }
+  tbody td.actions { text-align: right; }
+  tbody tr.no-data td { text-align: center; font-weight: bold; color: #888888; }
+  th a.active { color: green; }
+  th a:hover { @include background-gradient(#00aa00, #008800); color: white; }    
 }

@@ -1,7 +1,12 @@
 # coding: utf-8
 
-# Converts RSS items with vacancy XML to vacancy objects.
+# Convert json data to vacancy models.
 class RabotaRu::VacancyConverter
+
+  def initialize(loader)
+    @loader = loader
+  end
+
   def convert(hash)
     vacancy = Vacancy.new
     vacancy.title         = hash['position']
@@ -18,22 +23,15 @@ class RabotaRu::VacancyConverter
     vacancy
   end
 
-private
+# steps
 
-  def get(hash, *keys)
-    result = hash
-    keys.each do |key|
-      hash[key.to_s]
-    end
-  end
-  
   # http://www.rabota.ru/vacancy1234567.html' => 1234567
   def extract_id(link)
     %r{http://www.rabota.ru/vacancy(\d+).html} =~ link
     $1.to_i
   end
 
-  # {"min": "27000", "max": "35000", "currency": {"value": "руб", "id": "2"}}
+  # {"min": "27000", "max": "35000", "currency": {"value": "руб", "id": "2"}} => Salary(min: 27000, max: 35000, currency: :rub)
   # {"min": "10000, "max": "10000", "currency": {"value": "руб", "id": "2"}}
   # {"min": "27000", "currency": {"value": "руб", "id": "2"}}
   # {"agreed":"yes"}
@@ -54,20 +52,20 @@ private
           salary.min = hash['min'].to_i
           salary.max = hash['max'].to_i
       end
-      salary.currency = convert_currency(hash['currency'])
+      salary.currency = convert_currency(hash['currency']['value'])
       salary.convert_currency(:rub)
     end
     salary
   end
 
-  # {"value": "руб", "id": "2"}
-  def convert_currency(hash)
-    case hash['value'].downcase
-      when 'руб' then :rub
+  # 'rub' => :rub
+  def convert_currency(currency_name)    
+    case currency_name.downcase
+      when 'руб', 'rub' then :rub
       when 'usd' then :usd
       when 'eur' then :eur
       else
-        Rails.logger.warn('Неизвестная валюта #{currency_string}')
+        @loader.log.warn("convert", "Unknown currency #{currency_name}")
         :rub
     end
   end
