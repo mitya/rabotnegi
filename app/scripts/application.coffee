@@ -1,5 +1,5 @@
 $("body.public").loaded ->
-  # $("#tabs").attr("data-selected").query().addClass("selected")
+  $("#tabs").attr("data-selected").query().addClass("selected") unless $("#tabs").attr("data-selected") == '#'
 
 $("body#admin-vacancies").loaded ->
   edited_rows = {}
@@ -36,21 +36,21 @@ $("body#edit-resume").loaded ->
   $("#edit-resume").find("#resume_fname, #resume_lname").requiredField()
 
 $("body.public").loaded ->
-  $(".vacancies-list tr.entry-header a").live "click", -> $(this).closest('tr').click
+  $(".vacancies-list").delegate "tr.entry-header a", "click", -> $(this).closest('tr').click
 
-  $(".vacancies-list tr.entry-header .star-disabled").live "click", ->
+  $(".vacancies-list").delegate "tr.entry-header .star-disabled", "click", ->
     tr = q(this).closest("tr")
     q.post "/worker/vacancies", {id: tr.record_id()}, => 
       q(this).removeClass("star-disabled").addClass("star-enabled")
     false
     
-  $(".vacancies-list tr.entry-header .star-enabled").live "click", ->
+  $(".vacancies-list").delegate "tr.entry-header .star-enabled", "click", ->
     tr = q(this).closest("tr")
     q.post "/worker/vacancies/#{tr.record_id()}", {_method: 'delete'}, => 
       q(this).removeClass("star-enabled").addClass("star-disabled")    
     false
   
-  $(".vacancies-list tr.entry-header").live "click", ->
+  $(".vacancies-list").delegate "tr.entry-header", "click", ->
     row = $(this)
     link = row.find('a')
 

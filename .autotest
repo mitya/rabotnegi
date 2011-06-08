@@ -1,9 +1,8 @@
 Autotest.add_hook :initialize do |autotest|
-  %w{.git .DS_Store ._* vendor tmp log doc}.each do |exception|
+  %w{.git .DS_Store ._* vendor tmp log/.* doc}.each do |exception|
     autotest.add_exception(exception)
   end
 
-  autotest.add_mapping %r%^test/(helpers)/.*rb$% do |filename, _|
-    filename
-  end
+  autotest.add_mapping(%r%^test/(helpers)/.*_test\.rb$%) { |filename, _| filename }
+  autotest.add_mapping(%r%^test/(libs)/.*_test\.rb$%) { |filename, _| filename }
 end

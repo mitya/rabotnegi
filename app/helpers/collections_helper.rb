@@ -12,4 +12,11 @@ module CollectionsHelper
 		"Найдено <b>#{collection.total_entries}</b> #{object}.
 		 Показаны <b>#{collection.offset + 1}</b> — <b>#{collection.offset + collection.length}</b>".html_safe
 	end
+	
+	def pagination(collection)
+	  content_tag :div, :class => "pager" do
+	    content_tag(:b, "Страницы:") + " " +
+	    will_paginate(collection, :previous_label => "« предыдущая", :next_label => "следующая »")
+    end  	
+	end
 end

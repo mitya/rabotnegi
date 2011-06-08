@@ -6,8 +6,8 @@ require 'time'
 
 unit_test RabotaRu::VacancyLoader do
   setup do
-    make Vacancy, title: "Designer", city: "spb", industry: "it", external_id: 101, created_at: "2008-09-01", description: "no"
-    make Vacancy, title: "Manager", city: "spb", industry: "it", external_id: 102, created_at: "2008-09-01", description: "no"
+    make Vacancy, title: "V-1", city: "spb", industry: "it", external_id: 101, created_at: "2008-09-01", description: "no"
+    make Vacancy, title: "V-2", city: "spb", industry: "it", external_id: 102, created_at: "2008-09-01", description: "no"
     
     @loader = PureDelegator.new(RabotaRu::VacancyLoader.new)
     @loader.work_directory = "#{Rails.root}/tmp/rabotaru_test"
@@ -33,33 +33,34 @@ unit_test RabotaRu::VacancyLoader do
   
   test "load" do
     FileUtils.cp(Dir["#{Rails.root}/test/fixtures/rabotaru/*"], @work_dir.path)
-    @loader.skip_remote_loading = true
-    @loader.call(:load)
+    @loader.remote = false
+    @loader.load
   end
   
   test "filter" do
     load_vacancies
     @loader.filter
-    assert  @loader.vacancies.any? { |v| v.title == "A New One" }
-    assert  @loader.vacancies.any? { |v| v.title == "Designer" && v.description == 'Updated' }
-    assert !@loader.vacancies.any? { |v| v.title == "Manager" }
+    assert  @loader.vacancies.any? { |v| v.title == "V-3" }
+    assert  @loader.vacancies.any? { |v| v.title == "V-1" && v.description == 'updated' }
+    assert !@loader.vacancies.any? { |v| v.title == "V-2" }
   end
   
   test "save" do
     load_vacancies
     @loader.filter
     @loader.save
-    assert Vacancy.where(title: 'Manager').exists?
-    assert Vacancy.where(title: 'A New One').exists?
-    assert Vacancy.where(title: 'Designer', description: 'Updated').exists?
+    
+    assert Vacancy.where(title: 'V-2').exists?
+    assert Vacancy.where(title: 'V-3').exists?
+    assert Vacancy.where(title: 'V-1', description: 'updated').exists?
   end
   
   def load_vacancies
     @loader.info = RabotaRu::VacancyLoading.create!(:started_at => Time.current)
-    @loader.vacancies = [
-      Vacancy.new(:title => 'A New One', :city => 'spb', :created_at => "2008-09-01", :external_id => 100, :industry => 'it', :description => 'no'),
-      Vacancy.new(:title => 'Designer',  :city => 'msk', :created_at => "2008-09-02", :external_id => 101, :industry => 'it', :description => 'Updated'),
-      Vacancy.new(:title => 'Manager',   :city => 'spb', :created_at => "2008-09-01", :external_id => 102, :industry => 'it', :description => 'no')
+    @loader.vacancies = [      
+      Vacancy.new(:title => 'V-1', :city => 'spb', :created_at => "2008-09-02", :external_id => 101, :industry => 'it', :description => 'updated'),
+      Vacancy.new(:title => 'V-2', :city => 'spb', :created_at => "2008-09-01", :external_id => 102, :industry => 'it', :description => 'no'),
+      Vacancy.new(:title => 'V-3', :city => 'spb', :created_at => "2008-09-01", :external_id => 103, :industry => 'it', :description => 'no')      
     ]
   end
 end

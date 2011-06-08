@@ -30,15 +30,15 @@ unit_test RabotaRu::VacancyConverter do
       :employer_name => 'Apple',
       :description => 'blah-blah-blah',
       :created_at => Time.parse('Fri, 19 Sep 2008 20:07:18 +0400'),
-      :salary => Salary.make(:min => 20000, :max => 30000, :currency => :rub)
+      :salary => Salary.make(:min => 20000.0, :max => 30000.0, :currency => :rub)
     )
 
-    @converter = PureDelegator.new(RabotaRu::VacancyConverter.new)
+    @converter = RabotaRu::VacancyConverter.new(RabotaRu::VacancyLoader.new)
   end
 
   test "conversion" do
     result = @converter.convert(@hash)
-    assert_equal @expected_vacancy.attributes.except(:_id), result.attributes.except(:_id)
+    assert_equal @expected_vacancy.attributes.except('_id'), result.attributes.except('_id')
   end
 
   test "extraction of ID from URL" do
@@ -53,9 +53,9 @@ unit_test RabotaRu::VacancyConverter do
   end
 
   test "conversion of currencies" do
-    assert_equal :rub, @converter.convert_currency('value' => 'руб')
-    assert_equal :usd, @converter.convert_currency('value' => 'usd')
-    assert_equal :eur, @converter.convert_currency('value' => 'eur')  
-    assert_equal :rub, @converter.convert_currency('value' => 'gbp')
+    assert_equal :rub, @converter.convert_currency('руб')
+    assert_equal :usd, @converter.convert_currency('usd')
+    assert_equal :eur, @converter.convert_currency('eur')  
+    assert_equal :rub, @converter.convert_currency('gbp')
   end
 end

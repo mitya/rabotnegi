@@ -39,12 +39,7 @@ table.form-layout {
   }  
 }  
 
-table.rounded { border-collapse: separate; 
-  tr:first-child th:first-child { -moz-border-radius-topleft: 10px; -webkit-border-top-left-radius: 10px; }
-  tr:first-child th:last-child { -moz-border-radius-topright: 10px; -webkit-border-top-right-radius: 10px; }
-  tr:last-child td:first-child { -moz-border-radius-bottomleft: 10px; -webkit-border-bottom-left-radius: 10px; }
-  tr:last-child td:last-child { -moz-border-radius-bottomright: 10px; -webkit-border-bottom-right-radius: 10px; }
-}
+table.rounded { @include rounded-table(10px); }
 
 form { 
   .form-errors { margin: 10px 0 15px; color: #ad0000; 
@@ -78,12 +73,22 @@ form.tableish { border: 1px solid silver; margin: 10px auto; width: 380px; @incl
 
 form.front { margin-top: 50px; }
 
+.pager .pagination { display: inline; }
 .pagination { 
-  a, a:visited { padding: 5px 5px; text-decoration: none; color: black; @include rounded(5px); }
-  a:hover, a:visited:hover { color: white; background: #333333; }
+  a, a:visited { padding: 5px 5px; @include rounded(5px); color: $link-color; }
+  a:hover, a:visited:hover { color: white; background: $link-color; }
   span.disabled { color: #999999; cursor: default; }
-  em { font-style: normal; padding: 5px 5px; color: white; background: #333333; cursor: default; @include rounded(5px); }
+  em { font-style: normal; padding: 5px 5px; background: #ccc; cursor: default; @include rounded(5px); }
 }
+
+
+/*.pagination { 
+  a, a:visited { padding: 5px 5px; text-decoration: none; color: $link-color; }
+  a:hover, a:visited:hover { color: $hovered-link-color; }
+  span.disabled { color: #999999; cursor: default; }
+  em { font-style: normal; padding: 5px 5px; background: #ccc; cursor: default; @include rounded(5px); }
+}
+*/
 
 div.message { text-align: center; font-weight: bold; padding: 8px; margin: 8px 0 8px; }
 div.warning { background: gold; }

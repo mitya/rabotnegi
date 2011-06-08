@@ -49,6 +49,10 @@ class SiteController < ApplicationController
     render "site/test", layout: false
   end
   
+  def styles
+    render "test/styles", layout: false
+  end
+  
   def lorem
     @count = params[:count].to_i
     render "test/lorem", layout: false
