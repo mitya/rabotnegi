@@ -15,9 +15,10 @@ module RabotaRu
     field :state
     field :details, type: Hash
     field :counts, type: Hash
-
     field :started_at, type: Time
     field :finished_at, type: Time    
+
+    scope :reverse, order_by([:created_at, :desc])
     
     def initialize(*args)
       super

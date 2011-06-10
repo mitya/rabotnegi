@@ -1,0 +1,18 @@
+- page "admin-employers", "Работодатели"
+
+#vacancies
+  h1 Работодатели
+
+  table.resources
+    thead
+      tr
+        th Название
+        th Логин
+        th
+    tbody
+      - for model in @models
+        tr{class=cycle('', 'alt')}
+          td= model.name
+          td= model.login
+    
+  = pagination @models
