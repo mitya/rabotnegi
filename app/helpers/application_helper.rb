@@ -3,28 +3,6 @@
 module ApplicationHelper
   include FormLayoutHelper
   
-  def submit_section(label)
-    %{<div class='submit'>
-        <input type="submit" class='action-button' value='#{ label }'>
-        <span class='cancel'>или <a href='#{ request.headers['Referer'] }' class='ui'>Отменить</a><span>
-      </div>}
-  end
-  
-  def blank_option(label = '', value = '')
-    content_tag :option, label, :value => value
-  end
-
-  def errors_for(object, options = {})
-    return '' if object.errors.empty?
-        
-    header_message = options.delete(:header_message) || translate("activerecord.errors.template.header")
-    error_messages = object.errors.each_pair.map do |attr, messages|
-      translate("errors.#{object.class.model_name.plural}.#{attr}", :default => messages.to_sentence)
-    end
-
-    render "shared/errors", :header => header_message, :errors => error_messages
-  end
-  
   def vacancies_page_title
     if @vacancies
       city = City.get(params[:city])
@@ -68,10 +46,10 @@ module ApplicationHelper
   end
 end
 
-ActionView::Base.field_error_proc = -> html_tag, instance do
-  if html_tag =~ /<label/
-    "<span class='invalid' title='#{instance.error_message}'>#{html_tag}</span>"
-  else
-    "<span class='invalid'>#{html_tag}</span>"
-  end
-end
+# ActionView::Base.field_error_proc = -> html_tag, instance do
+#   if html_tag =~ /<label/
+#     "<span class='invalid' title='#{instance.error_message}'>#{html_tag}</span>"
+#   else
+#     "<span class='invalid'>#{html_tag}</span>"
+#   end
+# end

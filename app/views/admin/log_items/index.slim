@@ -1,3 +1,20 @@
 - page "admin-log-items", "Лог"
 
-#log-items= render 'list'
+#log-items
+  h1 Лог
+
+  table.resources
+    thead
+      tr
+        th Событие
+        th Процесс
+        th Событие
+        th Параметры
+    - for log_item in @log_items
+      tr{class=cycle('', 'alt')}
+        td= log_item.created_at.to_s(:db)
+        td= log_item.puid
+        td= link_to log_item.full_name, url(:admin_log_item, log_item)
+        td= log_item.params.inspect
+    
+  = pagination @log_items

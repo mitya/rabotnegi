@@ -4,9 +4,10 @@ class Admin::LogItemsController < ApplicationController
 
 	def index
 		@log_items = MongoLog::Item.order_by([[:_id, :desc]]).paginate(per_page: 100, page: params[:page])
-		respond_to do |format|
-			format.html unless request.xhr?
-			format.html { render partial: 'list' } if request.xhr?
-		end
+	  render layout: !request.xhr?
+	end
+
+	def show
+  	@log_item = MongoLog::Item.find(params[:id])
 	end
 end

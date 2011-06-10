@@ -40,6 +40,18 @@ module Kernel
   end
 end
 
+class Hash
+  def append_string(key, text)
+    self[key] ||= ""
+    self[key] = self[key].present?? self[key] + ' ' + text.to_s : text.to_s
+  end
+
+  def prepend_string(key, text)
+    self[key] ||= ""
+    self[key] = self[key].present?? text.to_s + ' ' + self[key] : text.to_s
+  end
+end
+
 class Time
   def to_json(*args)
     as_json.to_json

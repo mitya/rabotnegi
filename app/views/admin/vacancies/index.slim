@@ -1,3 +1,22 @@
 - page "admin-vacancies", "Вакансии"
 
-#vacancies= render 'list'
+#vacancies
+  h1 Вакансии
+
+  table.resources
+    thead
+      tr
+        th Позиция
+        th Контора
+        th
+    tbody
+      - for vacancy in @vacancies
+        tr{id="vacancy_#{vacancy.id}" class=cycle('', 'alt')}
+          td.title= link_to raw(vacancy.title), url(:admin_vacancy, vacancy)
+          td.employer= raw vacancy.employer_name
+          td.actions
+            = link_to "Изменить", url(:edit_admin, vacancy)
+            '
+            = link_to "Удалить", url(:admin, vacancy), method: :delete
+    
+  = pagination @vacancies

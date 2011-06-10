@@ -36,9 +36,9 @@ class Vacancy
     title
   end
   
-  def to_param
+  def slug
     parameterized_title = RussianInflector.parameterize(title)
-    parameterized_title.present?? "#{id}-#{parameterized_title}" : id.to_s
+    parameterized_title.present?? "#{id}-#{parameterized_title}" : id.to_s    
   end
   
   def city_name

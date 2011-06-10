@@ -17,13 +17,6 @@ module CommonHelper
     image_tag 'delete.gif', :title => 'Удалить', :alt => 'Удалить'
   end
   
-  def url(route_name, *args)
-    case route_name.to_s
-    when "vacancy" then "/vacancies/#{args.first.id}"
-    else send("#{route_name}_path", *args)
-    end
-  end
-  
   def xcycle(*values)
     @xcycle_counter ||= -1
     @xcycle_counter += 1
