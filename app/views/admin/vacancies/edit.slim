@@ -1,0 +1,24 @@
+- page "admin-edit-vacancy", @vacancy.title
+
+h1= "Редактирование — #{@vacancy.id}"
+
+= edit_view [:admin, @vacancy] do |v|
+  = v.errors
+
+  = v.text :title, "Должность"
+  = v.select :city_name, "Город", City.all
+  = v.select :industry_name, "Отрасль", Industry.all
+
+  = v.text :external_id, "Внешний ID"
+  = v.text :employer_id, "ID Работодателя"
+  = v.text :employer_name, "Работодатель"
+
+  = v.date_time :created_at, "Создана"
+  = v.date_time :updated_at, "Обновлена"
+
+  = v.text_area :description, "Описание"
+
+  = v.buttons do
+    = v.commit
+    | или 
+    = link_to "Отменить", :back, :class => "action"

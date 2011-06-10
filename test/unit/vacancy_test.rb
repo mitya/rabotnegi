@@ -38,12 +38,12 @@ unit_test Vacancy do
     assert_equal Vacancy.new(title: "Boss", external_id: 100), Vacancy.new(title: "Developer", external_id: 100)
   end
   
-  test "to_param" do
+  test "slug" do
     v1 = make(Vacancy, title: "Ruby Разработчик")
-    assert_equal "#{v1.id}-ruby-разработчик", v1.to_param
+    assert_equal "#{v1.id}-ruby-разработчик", v1.slug
     
     v1.title = nil
-    assert_equal v1.id.to_s, v1.to_param
+    assert_equal v1.id.to_s, v1.slug
   end
   
   test "self.get" do

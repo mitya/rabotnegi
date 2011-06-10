@@ -12,7 +12,7 @@ pre { margin: 0.25em 0; padding: 0; }
 a { text-decoration: none; }
 a:link { color: $link_color; }
 a:visited { color: purple; }
-a:hover { color: $hovered_link_color; }
+a:hover { color: $hovered_link_color; text-decoration: underline; }
 a.ui:visited { color: $link_color; }
 
 table.form-layout { 
@@ -42,7 +42,7 @@ table.form-layout {
 table.rounded { @include rounded-table(10px); }
 
 form { 
-  .form-errors { margin: 10px 0 15px; color: #ad0000; 
+  .errors { margin: 10px 0 15px; color: #ad0000; 
     h2 { margin: 5px 0; font-size: 16px; color: #ad0000; }
     ul { margin: 5px 0; padding-left: 0px; list-style-position: inside; }
   }
@@ -76,19 +76,19 @@ form.front { margin-top: 50px; }
 .pager .pagination { display: inline; }
 .pagination { 
   a, a:visited { padding: 5px 5px; @include rounded(5px); color: $link-color; }
-  a:hover, a:visited:hover { color: white; background: $link-color; }
+  a:hover, a:visited:hover { color: white; background: $link-color; text-decoration: none; }
   span.disabled { color: #999999; cursor: default; }
   em { font-style: normal; padding: 5px 5px; background: #ccc; cursor: default; @include rounded(5px); }
 }
 
 
 /*.pagination { 
-  a, a:visited { padding: 5px 5px; text-decoration: none; color: $link-color; }
+  a, a:visited { padding: 5px 5px; color: $link-color; }
   a:hover, a:visited:hover { color: $hovered-link-color; }
   span.disabled { color: #999999; cursor: default; }
   em { font-style: normal; padding: 5px 5px; background: #ccc; cursor: default; @include rounded(5px); }
-}
-*/
+}*/
+
 
 div.message { text-align: center; font-weight: bold; padding: 8px; margin: 8px 0 8px; }
 div.warning { background: gold; }

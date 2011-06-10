@@ -51,4 +51,15 @@ module ControllerHelper
     current_field, reverse = decode_order
     field.to_s == current_field ? "sorted" : ""
   end  
+
+  RoutePrefixes = Set.new([:edit, :edit_admin, :admin])
+
+  def url(route_name, *args)
+    route_name = "#{route_name}_#{args.first.class.model_name.singular}" if RoutePrefixes.include?(route_name)
+    
+    case route_name.to_s
+    when "vacancy" then "/vacancies/#{args.first.id}"
+    else send("#{route_name}_path", *args)
+    end
+  end
 end
