@@ -1,0 +1,18 @@
+- page "admin-vacancy-loadings", "Загрузки"
+
+#vacancies
+  h1 Загрузки
+
+  table.resources
+    thead
+      tr
+        th Время
+        th Состояние
+        th
+    tbody
+      - for model in @models
+        tr{class=cycle('', 'alt')}
+          td= model.created_at
+          td= model.state
+    
+  = pagination @models

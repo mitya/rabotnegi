@@ -17,6 +17,6 @@ module CollectionsHelper
 	  content_tag :div, :class => "pager" do
 	    content_tag(:b, "Страницы:") + " " +
 	    will_paginate(collection, :previous_label => "« предыдущая", :next_label => "следующая »")
-    end  	
+    end if collection.total_pages > 1
 	end
 end
