@@ -1,5 +1,7 @@
 @import "_helpers";
 
+$label-color: #888888;
+
 body {
   margin: 0; min-width: 600px;
   font: 13px "Lucida Grande", Verdana, sans-serif;  
@@ -77,4 +79,22 @@ form.resource {
     input[type=submit] { @include rounded(4px); @include background-gradient(#f0f0f0, #eeeeee); }
     input[type=submit]:hover { color: white; border-color: #0000ee; @include background-gradient(#3d87d2, #165da4); } 
   }
+}
+
+table.hash {
+  th { text-align: right; color: $label-color; }
+  th, td { padding: 2px 5px; }
+}
+
+span.color {
+  padding: 4px; @include rounded(4px); color: white; font-size: 90%;
+}
+
+#admin-vacancy-loadings {
+  table.resources tr.finished { @include background-gradient(#efe, #e0ffe0); }
+}
+
+#admin-log-items {
+  table.resources tr.start { @include background-gradient(#ffffe0, #ffffdd); }
+  table.resources tr.warning { @include background-gradient(#ffe9e8, #ffdddd); }
 }

@@ -12,9 +12,12 @@ end
 namespace :vacancies do
   # Usage: rake vacancies:load CITY=spb INDUSTRY=telework
   task :load => :environment do
-    options = {console_logging: true}
+    ENV['LOG_TO_CONSOLE'] = 'true'
+
+    options = {}    
     options[:city] = ENV['CITY'] if ENV['CITY'].present?
     options[:industry] = ENV['INDUSTRY'] if ENV['INDUSTRY'].present?
+    options[:remote] = false if ENV['REMOTE'] == "false"
 
     RabotaRu::VacancyLoader.new(options).load
   end
