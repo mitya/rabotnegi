@@ -1,12 +1,18 @@
 - page "admin-dashboard", "Обзор"
 
-table
+table.properties
   tr
     th Вакансий
-    td= Vacancy.count
+    td.num= f Vacancy.count
   tr
     th Резюме
-    td= Resume.count
+    td.num= f Resume.count
   tr
     th Работодателей
-    td= Employer.count
+    td.num= f Employer.count
+  tr
+    th Загрузок
+    td.num= f RabotaRu::VacancyLoading.count
+  tr
+    th Событий в логе
+    td.num= limited_number MongoLog::Item.count, 20_000

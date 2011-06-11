@@ -38,15 +38,24 @@ module FormatHelper
   def format_date_time(time)
     time.localtime.to_s(:rus_zone)
   end
+
+  def number(value)
+    number_with_delimiter(value)
+  end
   
   def format_data(data)
     case data
       when Time then format_date_time(data)
+      when Integer then number(data)
       else data
     end
   end
   
   alias f format_data
+
+  def limited_number(value, threshold)
+    value < threshold ? value : content_tag(:span, value, :class => "extreme-number")
+  end
 
   Colors = %w(000 666 8f4bcf 519618 8f0d0d 387aad ab882e 8f88cf 4a7558 3aa c400b7 00f e10c02 800000 808000 008000 000080 800080 F0F 408099 FF8000 008080)
   def color_code(item)
