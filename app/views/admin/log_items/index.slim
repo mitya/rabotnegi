@@ -6,15 +6,19 @@
   table.resources
     thead
       tr
-        th Событие
+        th Время
+        th Длит.
         th Процесс
         th Событие
-        th Параметры
+        th Бриф
+        th Ключи
     - for log_item in @log_items
-      tr{class=cycle('', 'alt')}
-        td= log_item.created_at.to_s(:db)
-        td= log_item.puid
-        td= link_to log_item.full_name, url(:admin_log_item, log_item)
-        td= log_item.params.inspect
-    
+      tr{class=classes_from(start: log_item.title == 'rrl.start', warning: log_item.warning?)}
+        td= link_to f(log_item.created_at), url(:admin_log_item, log_item)
+        td= sec_usec(log_item.duration)
+        td= color_code(log_item.puid)
+        td= log_item.title
+        td= inspect_array_inline(log_item.brief)
+        td= log_item.data.keys.join(', ')
+
   = pagination @log_items

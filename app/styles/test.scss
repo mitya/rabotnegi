@@ -22,10 +22,10 @@ section { margin: 20px 0; }
 
 #msb-colors {
   .color-box { width: 300px; margin: 5px auto; padding: 5px; }
-  .color1 { @include background-gradient(#ffe9e8, #ffdddd); }
-  .color2 { @include background-gradient(#eeffee, #e0ffe0); }
-  .color3 { @include background-gradient(#eeeeff, #e0e0ff); }
-  .color4 { @include background-gradient(#ffffe0, #ffffdd); }
-  .color5 { @include background-gradient(#f0f0f0, #eeeeee); }
-  .color6 { @include background-gradient(#3d87d2, #165da4); }
+  .color-red { @include background-gradient(#ffe9e8, #ffdddd); }
+  .color-green { @include background-gradient(#eeffee, #e0ffe0); }
+  .color-violin { @include background-gradient(#eeeeff, #e0e0ff); }
+  .color-yellow { @include background-gradient(#ffffe0, #ffffdd); }
+  .color-gray { @include background-gradient(#f0f0f0, #eeeeee); }
+  .color-blue { @include background-gradient(#3d87d2, #165da4); }
 }

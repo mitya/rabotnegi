@@ -12,6 +12,6 @@ class Admin::VacancyLoadingsController < ApplicationController
 	end
 	
 	def show
-  	@model = Model.get(params[:id])
+  	@model = Model.find(params[:id])
 	end
 end

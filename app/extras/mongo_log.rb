@@ -1,25 +1,26 @@
 module MongoLog
+  def self.write(puid, severity, title, brief = [], data = {})
+    item = Item.create!(title: title, puid: puid, severity: severity.to_s, brief: brief, data: data, duration: data.delete(:duration))
+    puts item.as_string if ENV['LOG_TO_CONSOLE']
+  end
+  
   class Writer
-    attr_accessor :pkey
-    attr_accessor :pid
+    attr_accessor :puid
     
-    def initialize(pkey, pid)
-      @pkey = pkey.to_s
-      @pid = pid.to_s
+    def initialize(puid)
+      @puid = pkey.to_s
     end
 
-    def write(severity, name, params = [], data = {})
-      Item.create!(name: name, pkey: @pkey, pid: @pid, severity: severity.to_s, params: params, data: data)
+    def write(severity, title, brief = [], data = {})
+      MongoLog.write(@puid, severity, title, brief, data)
     end
     
-    def info(name, *params)
-      data = params.extract_options!
-      write(:info, name, params, data)
+    def info(title, *params)
+      write(:info, title, params, params.extract_options!)
     end
 
-    def warn(name, *params)
-      data = params.extract_options!
-      write(:warn, name, params, data)
+    def warn(title, *params)
+      write(:warn, title, params, params.extract_options!)
     end
   end
   
@@ -28,23 +29,23 @@ module MongoLog
     
     store_in :log
     
-    field :name
+    field :puid
+    field :title
     field :severity
-    field :pkey
-    field :pid
-    field :params, type: Array
+    field :duration, type: Float
+    field :brief, type: Array
     field :data, type: Hash
 
-    def full_name
-      "#{pkey.downcase}:#{name}"
-    end
-    
-    def puid
-      "#{pkey}-#{pid.presence || 'all'}"
-    end
-    
     def created_at
       id.generation_time
+    end
+    
+    def as_string
+      "#{title} #{brief.inspect}"
+    end
+    
+    def warning?
+      severity == 'warn'
     end
   end
 end

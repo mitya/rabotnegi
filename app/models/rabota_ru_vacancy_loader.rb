@@ -47,8 +47,8 @@ class RabotaRu::VacancyLoader
     @vacancy_converter = RabotaRu::VacancyConverter.new(self)
     @cities = options[:city] ? [ City[options[:city]] ] : City.all
     @industries = options[:industry] ? [ Industry[options[:industry]] ] : Industry.all
-    @console_logging = options[:console_logging]
-    @log = MongoLog::Writer.new('RRL', mai.timestamp_string)
+    @remote = options[:remote]
+    @log = Mai::EventWriter.new(:rrl, mai.timestamp_string)
   end
 
   attr_accessor :log
@@ -61,8 +61,7 @@ class RabotaRu::VacancyLoader
 
   # Загружает новые вакансии с Работы.ру в базу. 
   def load    
-    log.info "start"
-    @info = RabotaRu::VacancyLoading.create!(started_at: Time.current, state: "loading")
+    log.info :start
 
     load_to_files unless @remote == false
     convert
@@ -70,7 +69,7 @@ class RabotaRu::VacancyLoader
     filter
     save
     
-    log.info "finish"
+    log.info :finish
   end
 
 # steps
@@ -84,9 +83,11 @@ class RabotaRu::VacancyLoader
     @cities.each do |city|
       @industries.each do |industry|
         url = mai.interpolate(JsonUrlTemplate, city: city.external_id, industry: industry.external_id)
-        json_data = mai.http_get('www.rabota.ru', url)
-        log.info "load", city.code, industry.code, json_data.length, url: url
-        mai.write_file("#{work_directory}/#{city.code}-#{industry.code}.json", json_data)
+        log.info 'load', city.code, industry.code, url: url do
+          json_data = mai.http_get('www.rabota.ru', url)        
+          mai.write_file("#{work_directory}/#{city.code}-#{industry.code}.json", json_data)
+          log.results json_data.size
+        end
       end
     end    
   end
@@ -94,63 +95,59 @@ class RabotaRu::VacancyLoader
   # Конвертирует загруженные файлы в объекты и помещает результат в @vacancies.
   def convert
     Dir["#{work_directory}/*.json"].each do |file|
-      data = File.read(file).sub!(/;\s*$/, '')
-      items = mai.decode_json(data)
-      log.info "convert", items.size, file
-      vacancies = items.map { |item| convert_item(item) }.compact
-      @vacancies.concat(vacancies)
+      log.info 'convert', file do
+        data = File.read(file).sub!(/;\s*$/, '')
+        items = mai.decode_json(data)
+        vacancies = items.map { |item| convert_item(item) }.compact
+        @vacancies.concat(vacancies)
+        log.results items.size
+      end      
     end
 
-    @info.counts[:loaded] = @vacancies.size
+    log.info 'convert.done', @vacancies.size
   end
 
   def convert_item(item)
     @vacancy_converter.convert(item)
-  rescue => e
-    log.warn "convert.skip", item['position'], mai.format_error(e.message), error: e
+  rescue => e    
+    log.warn 'convert.skip', item['position'], mai.format_error(e.message), error: e
     nil
   end
 
   def remove_duplicates
     @vacancies.uniq!
-    @info.counts[:unique] = @vacancies.size
+    log.info 'remove_dups.done', @vacancies.size
   end
 
   # Фильтрует список вакансий в @vacancies, остовляет только новые и обновленные вакансии.
   def filter
-    log.info "filter"
-
-    loaded_external_ids = @vacancies.map(&:external_id)
-    existed_vacancies = Vacancy.any_in(external_id: loaded_external_ids)
-    existed_vacancies_map = existed_vacancies.index_by(&:external_id)
-
     new_vacancies, updated_vacancies = [], []
-    @vacancies.each do |loaded_vacancy|
-      existed_vacancy = existed_vacancies_map[loaded_vacancy.external_id]
-      if !existed_vacancy
-        new_vacancies << loaded_vacancy
-      elsif existed_vacancy.created_at != loaded_vacancy.created_at
-        existed_vacancy.attributes = loaded_vacancy.attributes.except('_id')
-        updated_vacancies << existed_vacancy
-      else
-        # vacancies are considered to be identical
+    log.info :filter do
+      loaded_external_ids = @vacancies.map(&:external_id)
+      existed_vacancies = Vacancy.any_in(external_id: loaded_external_ids)
+      existed_vacancies_map = existed_vacancies.index_by(&:external_id)
+      
+      @vacancies.each do |loaded_vacancy|
+        existed_vacancy = existed_vacancies_map[loaded_vacancy.external_id]
+        if !existed_vacancy
+          new_vacancies << loaded_vacancy
+        elsif existed_vacancy.created_at != loaded_vacancy.created_at
+          existed_vacancy.attributes = loaded_vacancy.attributes.except('_id')
+          updated_vacancies << existed_vacancy
+        else
+          # vacancies are considered to be identical
+        end
       end
-    end
 
-    @vacancies = new_vacancies + updated_vacancies
-    
-    @info.counts[:new] = new_vacancies.size
-    @info.counts[:updated] = updated_vacancies.size
-    @info.counts[:filtered] = @vacancies.size
-    @vacancies.each { |v|
-      @info.details["#{v.city}-#{v.industry}"] ||= 0
-      @info.details["#{v.city}-#{v.industry}"] += 1
-    }    
+      @vacancies = new_vacancies + updated_vacancies
+      log.results new: new_vacancies, updated: updated_vacancies, all: @vacancies
+    end    
   end
 
   # Сохраняет загруженные вакансии в базе.
   def save
-    log.info "save"
-    @vacancies.each { |vacancy| vacancy.save! }
+    log.info :save do
+      @vacancies.each { |vacancy| vacancy.save! }
+    end    
   end
 end

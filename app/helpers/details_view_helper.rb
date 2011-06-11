@@ -20,6 +20,7 @@ module DetailsViewHelper
   
     def item(label, data = nil, &block)
       content = block_given?? @template.capture(&block) : data
+      content = @template.format_data(content)
       @template.details_item(label, content)
     end
     

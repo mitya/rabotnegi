@@ -1,8 +1,6 @@
 # coding: utf-8
 
 module ApplicationHelper
-  include FormLayoutHelper
-  
   def vacancies_page_title
     if @vacancies
       city = City.get(params[:city])
@@ -43,13 +41,16 @@ module ApplicationHelper
   
   def back_to_all_vacancies_url_for(vacancy)
     request.referer =~ /vacancies/ ? :back : vacancies_path(vacancy.city, vacancy.industry)
-  end
+  end  
+  
+  def classes_from(*args)
+    conditions = args.extract_options!
+    static_classes = args.first
+    classes = []
+    classes << static_classes if static_classes.present?
+    for klass, condition in conditions
+      classes << klass if condition
+    end
+    classes.join(" ")
+  end  
 end
-
-# ActionView::Base.field_error_proc = -> html_tag, instance do
-#   if html_tag =~ /<label/
-#     "<span class='invalid' title='#{instance.error_message}'>#{html_tag}</span>"
-#   else
-#     "<span class='invalid'>#{html_tag}</span>"
-#   end
-# end

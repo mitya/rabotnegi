@@ -8,11 +8,10 @@
       tr
         th Время
         th Состояние
-        th
     tbody
       - for model in @models
-        tr{class=cycle('', 'alt')}
-          td= model.created_at
+        tr{class=classes_from(finished: model.finished?)}
+          td= link_to f(model.created_at), url(:admin_vacancy_loading, model)
           td= model.state
     
   = pagination @models

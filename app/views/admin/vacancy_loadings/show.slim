@@ -1,0 +1,11 @@
+- page "admin-vacancy-loading", "Загрузка от #{f(@model.created_at)}"
+
+h1= @page_title
+
+= details_view do |d|
+  = d.item "Начато", @model.started_at
+  = d.item "Завершено", @model.finished_at
+  = d.item "Длительность", time(@model.duration)
+  = d.item "Состояние", @model.state
+  = d.item "Счетчики", inspect_hash(@model.counts)
+  = d.item "Детали", inspect_hash(@model.details)
