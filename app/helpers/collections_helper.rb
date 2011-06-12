@@ -14,9 +14,82 @@ module CollectionsHelper
 	end
 	
 	def pagination(collection)
-	  content_tag :div, :class => "pager" do
-	    content_tag(:b, "Страницы:") + " " +
-	    will_paginate(collection, :previous_label => "« предыдущая", :next_label => "следующая »")
+    content_tag :div, :class => "pager" do
+      content_tag(:b, "Страницы:") + " " +
+      will_paginate(collection, :previous_label => "« предыдущая", :next_label => "следующая »")
     end if collection.total_pages > 1
+	end
+
+	def my_pagination(collection)
+    content_tag :div, :class => "pager" do
+      content_tag(:b, "Страницы:") + " " +
+      page_links(collection)
+    end if collection.total_pages > 1
+	end
+	
+	def page_links_model(collection)
+	  links = []
+	  
+    total_pages = collection.total_pages
+    current_page = collection.current_page
+    inner_window = 3
+    outer_window = 3
+
+    window_from = current_page - inner_window
+    window_to = current_page + inner_window
+    
+    if window_to > total_pages
+      window_from -= window_to - total_pages
+      window_to = total_pages
+    end
+    
+    if window_from < 1
+      window_to += 1 - window_from
+      window_from = 1
+      window_to = total_pages if window_to > total_pages
+    end
+    
+    middle = window_from..window_to
+
+    # left window
+    if outer_window + 3 < middle.first # there's a gap
+      left = (1..(outer_window + 1)).to_a
+      left << :gap
+    else # runs into visible pages
+      left = 1...middle.first
+    end
+
+    # right window
+    if total_pages - outer_window - 2 > middle.last # again, gap
+      right = ((total_pages - outer_window)..total_pages).to_a
+      right.unshift :gap
+    else # runs into visible pages
+      right = (middle.last + 1)..total_pages
+    end
+    
+    links = left.to_a + middle.to_a + right.to_a
+	end
+	
+	def page_links(collection)
+    links_model = page_links_model(collection)
+    Rails.logger.debug links_model
+    
+    links = links_model.map do |key|
+      case
+      when key == collection.current_page
+        teg :em, key
+      when key.is_a?(Numeric)
+        link_to key, params.merge(page: key)
+      when key == :gap
+        teg :span, '&hellip;'.html_safe, :class => 'gap'
+      end
+    end.join(' ').html_safe
+
+    links.insert 0, link_to("« предыдущая", params.merge(page: collection.previous_page))
+    links << link_to("« следующая", params.merge(page: collection.next_page))
+    
+    teg :div, :class => "pagination" do
+      links
+    end
 	end
 end

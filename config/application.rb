@@ -50,6 +50,7 @@ module Rabotnegi
 
     require "ext/core"
     require 'ext/rails'
+    require 'ext/mongoid'
     require 'ext/libs'
     require 'utilities'
 

@@ -53,4 +53,8 @@ module ApplicationHelper
     end
     classes.join(" ")
   end  
+  
+  def teg(*args, &block)
+    content_tag(*args, &block)
+  end
 end
