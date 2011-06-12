@@ -5,7 +5,7 @@ class Admin::VacanciesController < ApplicationController
   layout 'admin'
 
 	def index
-		@vacancies = Vacancy.where.paginate(per_page: 30, page: params[:page])
+		@vacancies = Vacancy.paginate(params[:page], 30)
 	  render layout: !request.xhr?
 	end
 	

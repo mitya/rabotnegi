@@ -1,7 +1,6 @@
 # coding: utf-8
 
-class Vacancy
-  include Mongoid::Document
+class Vacancy < MongoModel
   include Mongoid::Timestamps
     
   field :title

@@ -60,7 +60,6 @@ module FormatHelper
   Colors = %w(000 666 8f4bcf 519618 8f0d0d 387aad ab882e 8f88cf 4a7558 3aa c400b7 00f e10c02 800000 808000 008000 000080 800080 F0F 408099 FF8000 008080)
   def color_code(item)
     @color_codes ||= {}
-    Rails.logger.debug @color_codes.size.remainder(Colors.length)
     @color_codes[item] ||= Colors[@color_codes.size.remainder(Colors.length)]
     color = @color_codes[item]
     content_tag :span, item, :class => "color", style: "background-color: ##{color}"
