@@ -77,7 +77,7 @@ form.front { margin-top: 50px; }
 .pagination { 
   a, a:visited { padding: 5px 5px; @include rounded(5px); color: $link-color; }
   a:hover, a:visited:hover { color: white; background: $link-color; text-decoration: none; }
-  span.disabled { color: #999999; cursor: default; }
+  span.link-stub { color: #999999; cursor: default; padding: 5px 5px; }
   em { font-style: normal; padding: 5px 5px; background: #ccc; cursor: default; @include rounded(5px); }
 }
 

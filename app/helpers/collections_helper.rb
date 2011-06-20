@@ -6,24 +6,16 @@ module CollectionsHelper
 			count = collection.size
 			object = RussianInflector.inflect(collection.size, word, e1, e2, e5)
 		else
-			object = RussianInflector.inflect(collection.total_entries, word, e1, e2, e5)
+			object = RussianInflector.inflect(collection.total_count, word, e1, e2, e5)
 		end
 
-		"Найдено <b>#{collection.total_entries}</b> #{object}.
+		"Найдено <b>#{collection.total_count}</b> #{object}.
 		 Показаны <b>#{collection.offset + 1}</b> — <b>#{collection.offset + collection.length}</b>".html_safe
 	end
 	
-	def pagination(collection)
-    content_tag :div, :class => "pager" do
-      content_tag(:b, "Страницы:") + " " +
-      will_paginate(collection, :previous_label => "« предыдущая", :next_label => "следующая »")
-    end if collection.total_pages > 1
-	end
-
-	def my_pagination(collection)
-    content_tag :div, :class => "pager" do
-      content_tag(:b, "Страницы:") + " " +
-      page_links(collection)
+	def pagination(collection, options = {})
+    teg :div, klass: "pager" do
+      page_links(collection, options)
     end if collection.total_pages > 1
 	end
 	
@@ -32,8 +24,8 @@ module CollectionsHelper
 	  
     total_pages = collection.total_pages
     current_page = collection.current_page
-    inner_window = 3
-    outer_window = 3
+    inner_window = 2
+    outer_window = 0
 
     window_from = current_page - inner_window
     window_to = current_page + inner_window
@@ -70,9 +62,10 @@ module CollectionsHelper
     links = left.to_a + middle.to_a + right.to_a
 	end
 	
-	def page_links(collection)
+	def page_links(collection, options = {})
     links_model = page_links_model(collection)
-    Rails.logger.debug links_model
+    
+    params.merge!(options[:params]) if options[:params]
     
     links = links_model.map do |key|
       case
@@ -85,8 +78,17 @@ module CollectionsHelper
       end
     end.join(' ').html_safe
 
-    links.insert 0, link_to("« предыдущая", params.merge(page: collection.previous_page))
-    links << link_to("« следующая", params.merge(page: collection.next_page))
+    if collection.first_page?
+      links.insert 0, teg(:span, "&larr; предыдущая станица".html_safe, klass: "link-stub")
+    else
+      links.insert 0, link_to("&larr; предыдущая станица".html_safe, params.merge(page: collection.previous_page))
+    end
+
+    if collection.last_page?
+      links << teg(:span, "следующая страница &rarr;".html_safe, klass: "link-stub")
+    else
+      links << link_to("следующая страница &rarr;".html_safe, params.merge(page: collection.next_page))
+    end    
     
     teg :div, :class => "pagination" do
       links

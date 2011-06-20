@@ -55,6 +55,9 @@ module ApplicationHelper
   end  
   
   def teg(*args, &block)
+    options = args.extract_options!
+    options[:class] = options[:klass] if options.include?(:klass)
+    args << options
     content_tag(*args, &block)
   end
 end

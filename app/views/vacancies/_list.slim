@@ -19,5 +19,4 @@ table.vacancies-list.rounded{cellspacing=0}
       tr
         td.pagination{colspan=3}
           - if collection.total_pages > 1
-            strong Страницы:
-            = will_paginate collection, :params => params.merge(:use_route => :nice_vacancies), :param_name => :page, :previous_label => "« предыдущая", :next_label => "следующая »", :container => false
+            = pagination collection, :params => params.merge(:use_route => :nice_vacancies)
