@@ -7,7 +7,7 @@ class Admin::EmployersController < ApplicationController
   Model = Employer
 
 	def index
-		@models = Model.where.paginate(per_page: 30, page: params[:page])
+		@models = Model.where.paginate(params[:page], 30)
 	  render layout: !request.xhr?
 	end
 	

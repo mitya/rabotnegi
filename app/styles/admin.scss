@@ -59,8 +59,10 @@ table.resources { width: 100%; margin: 10px 0; border: 1px solid #cccccc; @inclu
 ul.resource { padding: 0;
   li.item { list-style: none; margin-left: 160px; position: relative; min-height: 1.5em; margin-bottom: 0.25em; }
   b.heading { position: absolute; display: block; left: -160px; top: -1px; width: 150px; padding-right: 10px; text-align: right; font-weight: bold; color: $label-color; }
-  .actions { margin: 20px 10px 10px 10px; padding-top: 10px; padding-left: 150px; border-top: 1px solid #ccc;  }
+  .actions { margin: 20px 10px 10px 10px; padding-top: 10px; padding-left: 150px; border-top: 1px solid #ccc; list-style-type: none; }
   .actions a:visited { color: $link_color; }
+  .actions a { padding-right: 10px; }
+  .actions a:visited { color: $visited_link_color; }
 }
  
 form.resource {

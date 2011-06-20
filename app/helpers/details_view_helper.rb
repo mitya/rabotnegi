@@ -2,14 +2,14 @@
 
 module DetailsViewHelper
   def details_view(options = {}, &block)
-    content_tag :ul, :class => 'resource' do
+    teg :ul, klass: 'resource' do
       capture(DetailsViewBuilder.new(self), &block)
     end
   end
 
   def details_item(label, data)
-    content_tag :li, :class => "item" do
-      content_tag(:b, label, :class => 'heading') + " " + data.to_s
+    teg :li, klass: "item" do
+      teg(:b, label, klass: 'heading') + " " + data.to_s
     end
   end  
 
@@ -25,7 +25,7 @@ module DetailsViewHelper
     end
     
     def actions(&block)
-      @template.content_tag(:div, :class => "actions", &block)
+      @template.teg(:li, klass: "actions", &block)
     end
   end
 end

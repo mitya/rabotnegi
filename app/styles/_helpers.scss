@@ -1,5 +1,6 @@
 $link_color: #0000cd;
 $hovered_link_color: #ee0000;
+$visited_link_color: purple;
 
 @mixin rounded($radius: 5px) {
   border-radius: $radius;

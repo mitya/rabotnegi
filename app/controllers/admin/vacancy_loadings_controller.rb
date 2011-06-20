@@ -7,7 +7,7 @@ class Admin::VacancyLoadingsController < ApplicationController
   Model = RabotaRu::VacancyLoading
 
 	def index
-		@models = Model.reverse.paginate(per_page: 30, page: params[:page])
+		@models = Model.reverse.paginate(params[:page], 30)
 	  render layout: !request.xhr?
 	end
 	
