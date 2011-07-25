@@ -13,7 +13,7 @@ html.ie6 #page { height: auto !important; height: 100%; }
 
 #footer-push { height: $footer_height; }
 
-#footer { position: relative; height: $footer_height; }
+#footer { position: relative; height: $footer_height; margin-top: 10px; }
 #footer { text-align: center; color: #aaaaaa; }
 #footer-content { padding-top: 5px; border-top: thin solid #aaaaaa; }
 

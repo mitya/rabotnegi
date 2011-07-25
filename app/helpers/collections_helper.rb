@@ -16,7 +16,7 @@ module CollectionsHelper
 	def pagination(collection, options = {})
     teg :div, klass: "pager" do
       page_links(collection, options)
-    end if collection.total_pages > 1
+    end if collection.respond_to?(:total_pages) && collection.total_pages > 1
 	end
 	
 	def page_links_model(collection)
@@ -72,7 +72,7 @@ module CollectionsHelper
       when key == collection.current_page
         teg :em, key
       when key.is_a?(Numeric)
-        link_to key, params.merge(page: key)
+        link_to key, params.merge(page: key), :class => "num"
       when key == :gap
         teg :span, '&hellip;'.html_safe, :class => 'gap'
       end

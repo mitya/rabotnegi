@@ -14,9 +14,4 @@ table.vacancies-list.rounded{cellspacing=0}
         td.emp= raw vacancy.employer_name
         td.sal= vacancy.salary
 
-  tfoot
-    - if collection.respond_to?(:total_pages)
-      tr
-        td.pagination{colspan=3}
-          - if collection.total_pages > 1
-            = pagination collection, :params => params.merge(:use_route => :nice_vacancies)
+= pagination collection, params: params.merge(:use_route => :nice_vacancies)

@@ -73,21 +73,17 @@ form.tableish { border: 1px solid silver; margin: 10px auto; width: 380px; @incl
 
 form.front { margin-top: 50px; }
 
+.pager { margin: 1em 0; }
 .pager .pagination { display: inline; }
-.pagination { 
-  a, a:visited { padding: 5px 5px; @include rounded(5px); color: $link-color; }
-  a:hover, a:visited:hover { color: white; background: $link-color; text-decoration: none; }
-  span.link-stub { color: #999999; cursor: default; padding: 5px 5px; }
-  em { font-style: normal; padding: 5px 5px; background: #ccc; cursor: default; @include rounded(5px); }
-}
 
-
-/*.pagination { 
-  a, a:visited { padding: 5px 5px; color: $link-color; }
+.pagination {
+  a, a:visited { padding: 5px; color: $link-color; }
   a:hover, a:visited:hover { color: $hovered-link-color; }
-  span.disabled { color: #999999; cursor: default; }
-  em { font-style: normal; padding: 5px 5px; background: #ccc; cursor: default; @include rounded(5px); }
-}*/
+  a.num:hover, a.num:visited:hover { @include rounded(5px); padding: 4px; text-decoration: none; border: solid 1px $hovered-link-color; }
+  
+  span.link-stub { color: #999999; cursor: default; padding: 5px 5px; }
+  em { font-style: normal; padding: 5px 5px; background: #ddd; cursor: default; @include rounded(5px); }
+}
 
 
 div.message { text-align: center; font-weight: bold; padding: 8px; margin: 8px 0 8px; }
