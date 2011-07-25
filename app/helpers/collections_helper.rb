@@ -14,9 +14,9 @@ module CollectionsHelper
 	end
 	
 	def pagination(collection, options = {})
-    teg :div, klass: "pager" do
+    tg :div, "pager" do
       page_links(collection, options)
-    end if collection.total_pages > 1
+    end if collection.respond_to?(:total_pages) && collection.total_pages > 1
 	end
 	
 	def page_links_model(collection)
@@ -70,27 +70,28 @@ module CollectionsHelper
     links = links_model.map do |key|
       case
       when key == collection.current_page
-        teg :em, key
+        tg :em, key
       when key.is_a?(Numeric)
-        link_to key, params.merge(page: key)
+        link_to key, params.merge(page: key), :class => "num"
       when key == :gap
-        teg :span, '&hellip;'.html_safe, :class => 'gap'
+        tg :span, '&hellip;'.html_safe, "gap"
       end
     end.join(' ').html_safe
 
     if collection.first_page?
-      links.insert 0, teg(:span, "&larr; предыдущая станица".html_safe, klass: "link-stub")
+      links.insert 0, tg(:span, "&larr; предыдущая станица".html_safe, "stub")
     else
-      links.insert 0, link_to("&larr; предыдущая станица".html_safe, params.merge(page: collection.previous_page))
+      links.insert 0, tg(:span, "&larr;".html_safe, "dir") + link_to("предыдущая станица".html_safe, params.merge(page: collection.previous_page))
     end
 
     if collection.last_page?
-      links << teg(:span, "следующая страница &rarr;".html_safe, klass: "link-stub")
+      links << tg(:span, "следующая страница &rarr;".html_safe, "stub")
     else
-      links << link_to("следующая страница &rarr;".html_safe, params.merge(page: collection.next_page))
+      links << link_to("следующая страница".html_safe, params.merge(page: collection.next_page))
+      links << tg(:span, "&rarr;".html_safe, "dir")
     end    
     
-    teg :div, :class => "pagination" do
+    tg :div, "pagination" do
       links
     end
 	end

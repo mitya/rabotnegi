@@ -63,7 +63,7 @@ httperf --server 127.0.0.1 --port 3000 --num-conns 50 --rate 25 --uri /vacancies
 # 18.1 // Erb, no url helpers
 
 ## passenger-2i Metal vs Controller, HTML, 1333B
-httperf --server rabotnegi.local --num-conns 1000 --rate 350 --uri /vacancies/4daebd548c2e8655ab001b6b # 263
+httperf --server rabotnegi.local --num-conns 1000 --rate 400 --uri /vacancies/4daebd548c2e8655ab001b6b # 263
 httperf --server rabotnegi.local --num-conns 1000 --rate 400 --uri /metal-vacancies/4daebd548c2e8655ab001b6b # 286
 
 ## passenger-3i Metal vs Controller, HTML, 1333B
@@ -79,7 +79,7 @@ httperf --server rabotnegi.local --num-conns 800 --rate 300 --uri /regular-vacan
 httperf --server rabotnegi.local --num-conns 800 --rate 400 --uri /metal-vacancies/4daebd518c2e8655ab00003c # 344 
 
 ## vacancy listing - passenger-3i
-40 = HTML 20.5kb # httperf --server rabotnegi.local --num-conns 200 --rate 50 --uri /vacancies/msk/it.html
+40 = HTML 20.5kb # httperf --server rabotnegi.local --num-conns 300 --rate 70 --uri /vacancies/msk/it.html
 88 = JSON 8.8kb # httperf --server rabotnegi.local --num-conns 400 --rate 100 --uri /vacancies/msk/it.json
 98 = JSON metal 8.7kb # httperf --server rabotnegi.local --num-conns 480 --rate 120 --uri /metal-vacancies/msk/it.json
 52 = JSON lob on the page 13.9kb # httperf --server rabotnegi.local --num-conns 250 --rate 60 --uri /vacancies/msk/it.html 

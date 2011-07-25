@@ -54,9 +54,12 @@ module ApplicationHelper
     classes.join(" ")
   end  
   
-  def teg(*args, &block)
+  def tg(*args, &block)
     options = args.extract_options!
-    options[:class] = options[:klass] if options.include?(:klass)
+
+    options[:class] = options.delete(:klass) if options.include?(:klass)
+    options[:class] = args.pop if args.last.is_a?(String) && (args.length == 3 || args.length == 2 && block)
+    
     args << options
     content_tag(*args, &block)
   end
