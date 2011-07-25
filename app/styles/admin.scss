@@ -94,6 +94,8 @@ table.properties {
   td.num { text-align: right; }
 }
 
+input.search { width: 70%; }
+
 span.extreme-number {
   padding: 4px; color: white; font-size: 90%; @include rounded(5px); @include background-gradient(#f00, #f33);
 }

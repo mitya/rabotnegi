@@ -95,4 +95,16 @@ module CollectionsHelper
       links
     end
 	end
+	
+  def search_tag
+    text_field = text_field_tag(:q, params[:q], type: "search", id: 'q', :class => "search", autofocus: true)
+    text_field + " " + submit_tag("Поиск", name: nil)
+  end
+
+  def search_form(url)
+    form_tag url(:admin_vacancies), method: "get", :class => "search" do
+      search_tag
+    end
+  end
+	
 end
