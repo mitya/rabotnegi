@@ -71,7 +71,7 @@ module Mai
     
     def initialize(namespace, pid, options = {})
       @namespace = namespace
-      @puid = "#{namespace}-#{pid}"
+      @puid = "#{namespace}_#{pid}"
       @options = options
     end
     

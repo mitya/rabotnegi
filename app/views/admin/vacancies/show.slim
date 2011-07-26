@@ -1,6 +1,4 @@
-- page "admin-vacancy", @vacancy.title
-
-h1= "#{@vacancy.id} — #{@vacancy.title}"
+- page "admin-vacancy", "#{@vacancy.title} - #{@vacancy.id}"
 
 = details_view do |d|
   = d.item "Город", @vacancy.city_name

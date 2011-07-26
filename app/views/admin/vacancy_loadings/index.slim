@@ -1,17 +1,11 @@
 - page "admin-vacancy-loadings", "Загрузки"
 
-#vacancies
-  h1 Загрузки
-
-  table.resources
-    thead
-      tr
-        th Время
-        th Состояние
-    tbody
-      - for model in @models
-        tr{class=classes_from(finished: model.finished?)}
-          td= link_to f(model.created_at), url(:admin_vacancy_loading, model)
-          td= model.state
-    
-  = pagination @models
+= tlist @models do
+  thead
+    tr
+      th Время
+      th Состояние
+  - for model in @models
+    tr{class=classes_from(finished: model.finished?)}
+      td= link_to f(model.created_at), url(:admin_vacancy_loading, model)
+      td= model.state

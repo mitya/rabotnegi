@@ -48,7 +48,7 @@ class RabotaRu::VacancyLoader
     @cities = options[:city] ? [ City[options[:city]] ] : City.all
     @industries = options[:industry] ? [ Industry[options[:industry]] ] : Industry.all
     @remote = options[:remote]
-    @log = Mai::EventWriter.new(:rrl, mai.timestamp_string)
+    @log = Mai::EventWriter.new(:RRL, mai.timestamp_string)
   end
 
   attr_accessor :log

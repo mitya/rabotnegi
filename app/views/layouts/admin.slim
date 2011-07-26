@@ -20,6 +20,7 @@ body.admin{id=@page_id}
   #content
     = content_tag :div, flash[:notice], :id => 'flash-notice' if flash[:notice]
     = content_tag :div, flash[:error], :id => 'flash-error' if flash[:error]
+    = content_tag :h1, @page_title if @page_title
     = yield :layout
   
   #footer © 2011 Работнеги.ру
