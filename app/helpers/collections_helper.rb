@@ -102,9 +102,19 @@ module CollectionsHelper
   end
 
   def search_form(url)
-    form_tag url, method: "get", :class => "search" do
-      search_tag
+    tg :div, "search" do
+      form_tag url, method: "get" do
+        search_tag
+      end
     end
   end
-	
+  
+  def tlist(collection, &block)
+    html = if collection.any?
+      tg(:table, "resources", &block) + pagination(collection)
+    else
+      tg :div, "Ничего не найдено.", "no-data-message"
+    end
+    html
+  end
 end

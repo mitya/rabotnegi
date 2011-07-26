@@ -1,7 +1,5 @@
 - page "admin-log-item", "#{@log_item.title} @ #{@log_item.puid}"
 
-h1= @page_title
-
 = details_view do |d|
   = d.item "Время", @log_item.created_at
   = d.item "Процесс", @log_item.puid

@@ -1,6 +1,4 @@
-- page "admin-edit-vacancy", @vacancy.title
-
-h1= "Редактирование — #{@vacancy.id}"
+- page "admin-edit-vacancy", "Редактирование — #{@vacancy.id}"
 
 = edit_view [:admin, @vacancy] do |v|
   = v.errors

@@ -1,23 +1,19 @@
 - page "admin-log-items", "Лог"
 
-#log-items
-  h1 Лог
-  = search_form url(:admin_log_items)
-
-  table.resources
-    thead
-      tr
-        th Время
-        th Длит.
-        th Процесс
-        th Событие
-        th Бриф
-        th Ключи
-    - for r in @log_items
-      tr{class=classes_from(start: r.title == 'rrl.start', warning: r.warning?)}
-        td= link_to f(r.created_at), url(:admin_log_item, r)
-        td= sec_usec(r.duration)
-        td= color_code(r.puid)
-        td= r.title
-        td= inspect_array_inline(r.brief)
-        td= r.data.keys.join(', ')
+= search_form url(:admin_log_items)
+= tlist @log_items do
+  thead
+    tr
+      th Время
+      th Длит.
+      th Процесс
+      th Событие
+      th Бриф
+      th Ключи
+  - for r in @log_items
+    tr{class=classes_from(start: r.title == 'rrl.start', warning: r.warning?)}
+      td= link_to f(r.created_at), url(:admin_log_item, r)
+      td= sec_usec(r.duration)
+      td= color_code(r.puid)
+      td= r.title
+      td= inspect_array_inline(r.brief)
