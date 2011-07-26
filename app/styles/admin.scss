@@ -45,7 +45,7 @@ ul.nav { line-height: 18px; padding: 0; margin: 10px 0 10px -3px;
   a:hover { color: $hovered_link_color; }  
 } 
 
-table.resources { width: 100%; margin: 10px 0; border: 1px solid #cccccc; @include rounded-table(10px);
+.listing { width: 100%; margin: 10px 0; border: 1px solid #cccccc; @include rounded-table(10px);
   td, th { border-bottom: 1px solid #cccccc; padding: 5px; text-align: left; }
   thead th { @include background-gradient(#ccc, #ddd); font-weight: bold; border-bottom: 1px solid #cccccc; }
   thead th h2 { margin: 0 !important; text-align: left; }
@@ -107,10 +107,10 @@ span.color {
 }
 
 #admin-vacancy-loadings {
-  table.resources tr.finished { @include background-gradient(#efe, #e0ffe0); }
+  .listing tr.finished { @include background-gradient(#efe, #e0ffe0); }
 }
 
 #admin-log-items {
-  table.resources tr.start { @include background-gradient(#ffffe0, #ffffdd); }
-  table.resources tr.warning { @include background-gradient(#ffe9e8, #ffdddd); }
+  .listing tr.start { @include background-gradient(#ffffe0, #ffffdd); }
+  .listing tr.warning { @include background-gradient(#ffe9e8, #ffdddd); }
 }

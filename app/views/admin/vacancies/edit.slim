@@ -1,6 +1,6 @@
-- page "admin-edit-vacancy", "Редактирование — #{@vacancy.id}"
+- page "admin-edit-vacancy", "Редактирование — #{@model.id}"
 
-= edit_view [:admin, @vacancy] do |v|
+= edit_view [:admin, @model] do |v|
   = v.errors
 
   = v.text :title, "Должность"

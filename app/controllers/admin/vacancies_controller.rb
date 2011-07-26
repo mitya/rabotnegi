@@ -4,26 +4,22 @@ class Admin::VacanciesController < ApplicationController
   before_filter :admin_required
   layout 'admin'
 
+  model Vacancy
+
 	def index
-		@vacancies = Vacancy.search(q: params[:q]).paginate(params[:page], 30)
-	  render layout: !request.xhr?
+		@vacancies = Model.search(q: params[:q]).paginate(params[:page], 30)
 	end
 	
 	def show
-  	@vacancy = Vacancy.get(params[:id])
+  	find_model
 	end
 	
 	def edit
-		@vacancy = Vacancy.get(params[:id])
+		find_model
 	end
 	
 	def update
-		@vacancy = Vacancy.get(params[:id])
-		@vacancy.attributes = params[:vacancy]
-		if @vacancy.save
-		  redirect_to url(:admin, @vacancy), notice: "Изменения сохранены"
-	  else
-	    render :edit
-    end
+		find_model
+		update_model @model, params[:vacancy], url(:admin, @model)
 	end
 end

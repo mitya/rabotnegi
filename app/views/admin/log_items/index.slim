@@ -1,7 +1,7 @@
 - page "admin-log-items", "Лог"
 
 = search_form url(:admin_log_items)
-= tlist @log_items do
+= listing @models do
   thead
     tr
       th Время
@@ -10,7 +10,7 @@
       th Событие
       th Бриф
       th Ключи
-  - for r in @log_items
+  - for r in @models
     tr{class=classes_from(start: r.title == 'rrl.start', warning: r.warning?)}
       td= link_to f(r.created_at), url(:admin_log_item, r)
       td= sec_usec(r.duration)

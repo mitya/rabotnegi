@@ -1,9 +1,9 @@
-- page "admin-log-item", "#{@log_item.title} @ #{@log_item.puid}"
+- page "admin-log-item", "#{@model.title} @ #{@model.puid}"
 
 = details_view do |d|
-  = d.item "Время", @log_item.created_at
-  = d.item "Процесс", @log_item.puid
-  = d.item "Событие", @log_item.title
-  = d.item "Тип", @log_item.severity
-  = d.item "Бриф", inspect_array(@log_item.brief)
-  = d.item "Детали", inspect_hash(@log_item.data)
+  = d.item "Время", @model.created_at
+  = d.item "Процесс", @model.puid
+  = d.item "Событие", @model.title
+  = d.item "Тип", @model.severity
+  = d.item "Бриф", inspect_array(@model.brief)
+  = d.item "Детали", inspect_hash(@model.data)

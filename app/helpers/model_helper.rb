@@ -20,4 +20,42 @@ module ModelHelper
   ]
 
   CityOptions = City.all.map { |city| [city.name, city.code.to_s] }
+  
+  def vacancies_page_title
+    if @vacancies
+      city = City.get(params[:city])
+      industry = Industry.get(params[:industry]) if params[:industry].present?
+      query = params[:q]
+      page = params[:page]
+  
+      content = "Вакансии — #{city.name}"
+      content << " — #{industry.name}" if industry
+      content << " — #{query}" if query
+      content << ", стр. №#{page}" if page
+      content
+    else
+      "Поиск вакансий"
+    end
+  end
+  
+  def back_to_all_vacancies_url_for(vacancy)
+    request.referer =~ /vacancies/ ? :back : vacancies_path(vacancy.city, vacancy.industry)
+  end  
+    
+  def resumes_page_title
+    if @resumes
+      city = City[params[:city]] if params[:city].present?
+      industry = Industry[params[:industry]] if params[:industry].present?
+      query = params[:q]
+      page = params[:page]
+    
+      content = "Резюме — #{city.name}"
+      content << " — #{industry.name}" if industry
+      content << " — #{query}" if query
+      content << ", стр. №#{page}" if page
+      content
+    else
+      "Поиск резюме"
+    end
+  end  
 end
