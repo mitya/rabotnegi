@@ -2,6 +2,7 @@
 
 #log-items
   h1 Лог
+  = search_form url(:admin_log_items)
 
   table.resources
     thead
@@ -12,13 +13,11 @@
         th Событие
         th Бриф
         th Ключи
-    - for log_item in @log_items
-      tr{class=classes_from(start: log_item.title == 'rrl.start', warning: log_item.warning?)}
-        td= link_to f(log_item.created_at), url(:admin_log_item, log_item)
-        td= sec_usec(log_item.duration)
-        td= color_code(log_item.puid)
-        td= log_item.title
-        td= inspect_array_inline(log_item.brief)
-        td= log_item.data.keys.join(', ')
-
-  = pagination @log_items
+    - for r in @log_items
+      tr{class=classes_from(start: r.title == 'rrl.start', warning: r.warning?)}
+        td= link_to f(r.created_at), url(:admin_log_item, r)
+        td= sec_usec(r.duration)
+        td= color_code(r.puid)
+        td= r.title
+        td= inspect_array_inline(r.brief)
+        td= r.data.keys.join(', ')

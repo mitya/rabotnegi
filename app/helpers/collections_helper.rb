@@ -102,7 +102,7 @@ module CollectionsHelper
   end
 
   def search_form(url)
-    form_tag url(:admin_vacancies), method: "get", :class => "search" do
+    form_tag url, method: "get", :class => "search" do
       search_tag
     end
   end

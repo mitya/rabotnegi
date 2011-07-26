@@ -3,7 +3,7 @@ class Admin::LogItemsController < ApplicationController
   layout 'admin'
 
 	def index
-		@log_items = MongoLog::Item.order_by([[:_id, :desc]]).paginate(params[:page], 100)
+		@log_items = MongoLog::Item.search(params[:q]).order_by([[:_id, :desc]]).paginate(params[:page], 100)
 	  render layout: !request.xhr?
 	end
 

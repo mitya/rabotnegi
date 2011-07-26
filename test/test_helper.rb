@@ -5,7 +5,7 @@ require 'rails/test_help'
 require 'pp'
 require "mocks"
 
-Factory.find_definitions
+FactoryGirl.find_definitions
 
 module Testing
   module GlobalHelpers
