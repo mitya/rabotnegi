@@ -26,6 +26,10 @@ module Mai
     "#{e.class} - #{e.message}"
   end  
   
+  def id(array)
+    array.map(&:id) if array
+  end
+  
   def subscribe(event_pattern)
     ActiveSupport::Notifications.subscribe(event_pattern) do |event_name, started, ended, event_id, payload|
       yield Event.new(event_name, started, ended, event_id, payload)

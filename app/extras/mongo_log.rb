@@ -8,7 +8,7 @@ module MongoLog
     attr_accessor :puid
     
     def initialize(puid)
-      @puid = pkey.to_s
+      @puid = puid.to_s
     end
 
     def write(severity, title, brief = [], data = {})
@@ -46,6 +46,13 @@ module MongoLog
     
     def warning?
       severity == 'warn'
+    end
+    
+    def self.search(query)
+      return self unless query.present?
+      
+      query = Regexp.new("^" + query, true)
+      any_of({title: query}, {puid: query})
     end
   end
 end

@@ -140,7 +140,7 @@ class RabotaRu::VacancyLoader
       end
 
       @vacancies = new_vacancies + updated_vacancies
-      log.results new: new_vacancies, updated: updated_vacancies, all: @vacancies
+      log.results new: mai.id(new_vacancies), updated: mai.id(updated_vacancies), all: mai.id(@vacancies)
     end    
   end
 
