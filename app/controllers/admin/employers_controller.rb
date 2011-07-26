@@ -4,28 +4,22 @@ class Admin::EmployersController < ApplicationController
   before_filter :admin_required
   layout 'admin'
 
-  Model = Employer
+  model Employer
 
 	def index
-		@models = Model.where.paginate(params[:page], 30)
-	  render layout: !request.xhr?
+		@models = Model.paginate(params[:page], 30)
 	end
 	
 	def show
-  	@model = Model.get(params[:id])
+  	find_model
 	end
 	
 	def edit
-		@model = Model.get(params[:id])
+		find_model
 	end
 	
 	def update
-		@model = Model.get(params[:id])
-		@model.attributes = params[:employer]
-		if @model.save
-		  redirect_to url(:admin, @model), notice: "Изменения сохранены"
-	  else
-	    render :edit
-    end
+		find_model
+		update_model @model, params[:employer], url(:admin, @model)
 	end
 end

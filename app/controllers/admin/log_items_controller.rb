@@ -2,12 +2,13 @@ class Admin::LogItemsController < ApplicationController
   before_filter :admin_required
   layout 'admin'
 
+  model MongoLog::Item
+
 	def index
-		@log_items = MongoLog::Item.search(params[:q]).order_by([[:_id, :desc]]).paginate(params[:page], 100)
-	  render layout: !request.xhr?
+		@models = Model.search(params[:q]).order_by([[:_id, :desc]]).paginate(params[:page], 100)
 	end
 
 	def show
-  	@log_item = MongoLog::Item.find(params[:id])
+	  find_model
 	end
 end

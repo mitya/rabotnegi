@@ -38,4 +38,25 @@ module CommonHelper
   def web_id(*args)
     args.map { |x| x.respond_to?(:to_key) ? web_id_for_record(x) : x }.join("-")
   end
+
+  def classes_from(*args)
+    conditions = args.extract_options!
+    static_classes = args.first
+    classes = []
+    classes << static_classes if static_classes.present?
+    for klass, condition in conditions
+      classes << klass if condition
+    end
+    classes.join(" ")
+  end  
+  
+  def tg(*args, &block)
+    options = args.extract_options!
+
+    options[:class] = options.delete(:klass) if options.include?(:klass)
+    options[:class] = args.pop if args.last.is_a?(String) && (args.length == 3 || args.length == 2 && block)
+    
+    args << options
+    content_tag(*args, &block)
+  end
 end

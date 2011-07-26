@@ -35,10 +35,10 @@ protected
   end
 
   def admin_required
-    # self.admin = Admin.log_in('root', '0000') and return if Rails.env.test?
-    # authenticate_or_request_with_http_basic do |login, password|
-    #   login == ADMIN_LOGIN && password == ADMIN_PASSWORD
-    # end
+    self.admin = Admin.log_in('root', '0000') and return if Rails.env.test?
+    authenticate_or_request_with_http_basic do |login, password|
+      login == ADMIN_LOGIN && password == ADMIN_PASSWORD
+    end
   end  
   
   def resume_required
@@ -79,5 +79,26 @@ protected
 
   def current_user!
     self.current_user ||= User.create!
+  end
+  
+  def find_model
+    selector = model_class.singleton_methods(false).include?(:get) ? :get : :find
+    @model = model_class.send(selector, params[:id])
+  end
+  
+  def update_model(model, attributes, url)
+		model.attributes = attributes
+		if model.save
+		  redirect_to url, notice: "Изменения сохранены"
+	  else
+	    render :edit
+    end    
+  end
+  
+  def self.model(model_class)
+    const_set :Model, model_class
+    define_method(:model_class) { model_class }
+    define_method(:model_name) { model_class.model_name.element }
+    define_method(:model_plural) { model_class.model_name.plural }    
   end
 end
