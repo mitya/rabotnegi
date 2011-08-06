@@ -8,7 +8,7 @@ set :repository,  "git@sokurenko.unfuddle.com:sokurenko/rabotnegi.git"
 set :deploy_via, :remote_cache
 set :scm, :git
 set :user, "apprunner"
-set :password, credentials["password"]
+set :password, secrets["password"]
 set :git_enable_submodules, true
 set :keep_releases, 3
 set :use_sudo, false

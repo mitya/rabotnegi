@@ -31,6 +31,7 @@ staging:
   socket: /var/run/mysqld/mysqld.sock
   database: rabotnegi_stg
   username: root
+  password: 0000
   encoding: utf8
 
 production:
@@ -38,4 +39,5 @@ production:
   socket: /var/run/mysqld/mysqld.sock
   database: rabotnegi_prod
   username: root
+  password: 0000
   encoding: utf8
