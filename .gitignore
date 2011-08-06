@@ -1,7 +1,6 @@
 .DS_Store
 .powenv
 jobs.tmproj
-Gemfile.lock
 log/*
 tmp/*
 db/data/*
@@ -9,3 +8,4 @@ public/stylesheets/gen
 public/stylesheets/pack
 public/javascripts/gen
 public/javascripts/pack
+config/secrets.yml
