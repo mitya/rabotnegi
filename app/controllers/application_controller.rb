@@ -70,6 +70,8 @@ protected
       @current_user = User.find(Encryptor.decrypt(cookies[:uid])) if cookies[:uid].present?
     end
     @current_user
+  rescue Mongoid::Errors::DocumentNotFound
+    cookies.delete :uid
   end
 
   def current_user=(user)
