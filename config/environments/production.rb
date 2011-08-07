@@ -1,11 +1,18 @@
 Rabotnegi::Application.configure do
-  config.log_level = :info
   config.cache_classes = true
   config.consider_all_requests_local = false
-  config.action_controller.perform_caching             = true
+  config.action_controller.perform_caching = true
+  config.action_mailer.raise_delivery_errors = true
 
-  GOOGLE_ANALYTICS_ID = "UA-1612812-2"
+  # Print deprecation notices to the Rails logger
+  config.active_support.deprecation = :log
+  config.log_level = :info
+
+  # Only use best-standards-support built into browsers
+  config.action_dispatch.best_standards_support = :builtin
   
+  GOOGLE_ANALYTICS_ID = "UA-1612812-2"
+
   # Specifies the header that your server uses for sending files
   config.action_dispatch.x_sendfile_header = "X-Sendfile"
 
@@ -34,7 +41,4 @@ Rabotnegi::Application.configure do
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation can not be found)
   config.i18n.fallbacks = true
-
-  # Send deprecation notices to registered listeners
-  config.active_support.deprecation = :notify  
 end
