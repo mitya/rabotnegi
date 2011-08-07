@@ -43,4 +43,4 @@ body.public{id=@page_id class=@page_class}
 
   #plumbing
     = javascript_include_tag %w(lib/jquery lib/rails gen/common gen/application), cache: 'pack/public' 
-    = render "layout/google_analytics" if Rails.env.production?
+    = render "layouts/google_analytics" if Rails.env.production?
