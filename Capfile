@@ -12,44 +12,28 @@ set :password, secrets["password"]
 set :git_enable_submodules, true
 set :keep_releases, 3
 set :use_sudo, false
+set :rails_env, ENV['E'] == 'prod' ? :production : :staging
+set :sudo_prompt, "xxxx-xxxx"
+# set :shared_children, fetch(:shared_children) + %w(sphinx config)
+# set :ssh_options, {:keys => ["/users/dima/.ssh/id_rsa"]}
 
-set :server_env, :staging # ENV['E'] == 'stg' ? :staging : :production
-
-# case server_env when :production
-#   set :rails_env, :production
-#   set :host, '178.79.171.92'
-#   set :application, "rabotnegi_prod"
-#   set :deploy_to, "/u/rabotnegi_prod"
-# when :staging
-	set :rails_env, :staging
+case rails_env when :production
   set :host, '178.79.171.92'
-  # set :ssh_options, {:keys => ["/users/dima/.ssh/id_rsa"]}
+  set :application, "rabotnegi_prod"
+when :staging
+  set :host, '178.79.171.92'
 	set :application, "rabotnegi_stg"
-  set :deploy_to, "/apps/rabotnegi_stg"
-# when :demo
-#   set :rails_env, :staging
-#   set :host, "174.143.148.66"
-#   # set :ssh_options, {:keys => ["/users/dima/.ssh/id_rsa"]}
-#   set :application, "rabotnegi_stg"
-#   set :deploy_to, "/u/rabotnegi_stg"
-# end
+end
 
+set :deploy_to, "/apps/#{application}"
 server host, :web, :app, :db, :primary => true
 
-# set :shared_children, fetch(:shared_children) + %w(sphinx config)
-set :sudo_prompt, "xxxx-xxxx"
+after "deploy:update", "compile_javascripts"
 
-# set :logrotate_config, <<-end
-#   #{current_path}/log/*.log {
-#     daily
-#     missingok
-#     rotate 9
-#     size 1M
-#     compress
-#     copytruncate
-#     notifempty  
-#   }
-# end
-# 
-
-# task(:copy_crontab) { run "cp #{current_path}/config/crontab /etc/cron.d/#{application}" }
+# deploy
+#   update
+#     update_code
+#       strategy.deploy!
+#       finalize_update (symlink shared log/pid/system dirs)
+#     symlink
+#   restart

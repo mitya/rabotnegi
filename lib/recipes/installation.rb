@@ -5,38 +5,46 @@ def run_rake(task, params = "", options = {})
   run "cd #{current_path} && #{sudo_modifier} RAILS_ENV=#{rails_env} rake #{task} #{params}"
 end
 
-# 
-# task(:rake) { run_rake ENV['T'], ENV['P'] }
-# task(:rake_as_runner) { run_rake ENV['T'], ENV['P'], :sudo => runner }
-# task(:fix_permissions) { run "chown -R #{runner}:#{runner} #{current_path}/ #{shared_path}/log #{shared_path}/pids" }
+# def append_text(text, file)
+#   # text = text.gsub("'", "'\\\\''").gsub("\n", '\n')
+#   # run "echo -e '#{text}' | tee -a #{file}"
+#   # run "tee -a #{file}", :data => text
+#   # run "cat >> #{file}", :data => text
+#   ("\n" + text + "\n").each_line { |line| run %(echo "#{line}" >> #{file}) }
+# end
 
-# after 'deploy:migrate', 'fix_permissions'
-# after 'deploy:update', 'fix_permissions'
+def print_log(path)
+  puts capture("tail -n #{ENV['N'] || 200} #{path}")
+end
+
+task(:r) { run_rake ENV['T'], ENV['P'] }
+
+# task(:fix_permissions) { run "chown -R #{runner}:#{runner} #{current_path}/ #{shared_path}/log #{shared_path}/pids" }
+# task(:copy_crontab) { run "cp #{current_path}/config/crontab /etc/cron.d/#{application}" }
+task(:compile_javascripts) { run_rake "barista:brew" }
 
 namespace :deploy do
   task(:restart) { run "touch #{current_path}/tmp/restart.txt" }
 end
 
 namespace :log do
+  task(:default) { app }
   task(:app) { print_log "#{current_path}/log/#{rails_env}.log" }
   task(:access) { print_log "#{current_path}/log/access.log" }
   task(:error) { print_log "#{current_path}/log/error.log" }
-
-  def print_log(path)
-    puts capture("tail -n #{ENV['N'] || 200} #{path}")
-  end
 end
 
 namespace :install do
   task :default do
-    setup
+    deploy.setup
     git
     gems
-    # update
+
+    deploy.update
     mysql
-    migrate
+    deploy.migrate
     passenger
-    # logrotate
+    logrotate
   end
 
   task :git do
@@ -74,7 +82,8 @@ namespace :install do
   end
   
   task :passenger do
-    passenger_config = <<-end
+    path = "/etc/apache2/sites-available/#{application}"
+    config = <<-end
       <VirtualHost *:80>
         ServerName #{host}
         DocumentRoot #{current_path}/public
@@ -83,24 +92,30 @@ namespace :install do
         CustomLog #{current_path}/log/access.log common
       </VirtualHost>
     end
-    passenger_config_path = "/etc/apache2/sites-available/#{application}"
 
-    sudo "touch #{passenger_config_path}"
-    sudo "chown #{user}:#{user} #{passenger_config_path}"
-    put passenger_config, passenger_config_path
+    sudo "touch #{path}"
+    sudo "chown #{user}:#{user} #{path}"
+    put config, path
     sudo "a2ensite #{application}"
     sudo "/etc/init.d/apache2 reload"
   end
 
-  # task :logrotate do
-  #   put logrotate_config, "/etc/logrotate.d/#{application}" 
-  # end
-  
-  # def append_text(text, file)
-  #   # text = text.gsub("'", "'\\\\''").gsub("\n", '\n')
-  #   # run "echo -e '#{text}' | tee -a #{file}"
-  #   # run "tee -a #{file}", :data => text
-  #   # run "cat >> #{file}", :data => text
-  #   ("\n" + text + "\n").each_line { |line| run %(echo "#{line}" >> #{file}) }
-  # end
+  task :logrotate do
+    path = "/etc/logrotate.d/#{application}"
+    config = <<-end
+      #{current_path}/log/*.log {
+        daily
+        missingok
+        rotate 9
+        size 1M
+        compress
+        copytruncate
+        notifempty  
+      }
+    end
+
+    sudo "touch #{path}"
+    sudo "chown #{user}:#{user} #{path}"
+    put config, path
+  end  
 end
