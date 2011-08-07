@@ -72,6 +72,7 @@ protected
     @current_user
   rescue Mongoid::Errors::DocumentNotFound
     cookies.delete :uid
+    nil
   end
 
   def current_user=(user)
