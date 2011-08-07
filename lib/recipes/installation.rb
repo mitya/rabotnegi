@@ -34,6 +34,28 @@ namespace :log do
   task(:error) { print_log "#{current_path}/log/error.log" }
 end
 
+namespace :data do
+  task :dump do
+    database = "rabotnegi_prod"
+    run "mongodump -d #{database} -o #{current_path}/tmp/dataset"
+    run "cd #{current_path}/tmp && tar cj dataset/* > dataset.tbz"
+    get "#{current_path}/tmp/dataset.tbz", "tmp/dataset.tbz"
+    system "rm -rf tmp/dataset"
+    system "tar xjf tmp/dataset.tbz -C tmp"
+    system "rm tmp/dataset.tbz"
+  end
+  
+  task :restore do
+    workdir = Dir.pwd
+    system "cd tmp/dump/rabotnegi_demo && tar cj * > #{workdir}/tmp/localdump.tbz"
+    upload "tmp/localdump.tbz", "#{current_path}/tmp/localdump.tbz"
+    run "rm -rf #{current_path}/tmp/localdump"
+    run "mkdir -p #{current_path}/tmp/localdump"
+    run "cd #{current_path}/tmp/localdump && tar xjf #{current_path}/tmp/localdump.tbz"
+    run "cd #{current_path}/tmp && mongorestore -d rabotnegi_prod localdump"
+  end
+end
+
 namespace :install do
   task :default do
     deploy.setup
@@ -85,6 +107,7 @@ namespace :install do
     config = <<-end
       <VirtualHost *:80>
         ServerName #{host}
+        ServerAlias #{server_aliases}
         DocumentRoot #{current_path}/public
         RailsEnv #{rails_env}
         ErrorLog  #{current_path}/log/error.log
