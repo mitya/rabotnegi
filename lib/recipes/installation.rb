@@ -38,9 +38,9 @@ namespace :install do
   task :default do
     deploy.setup
     git
-    gems
 
     deploy.update
+    gems
     mysql
     deploy.migrate
     passenger
@@ -82,7 +82,6 @@ namespace :install do
   end
   
   task :passenger do
-    path = "/etc/apache2/sites-available/#{application}"
     config = <<-end
       <VirtualHost *:80>
         ServerName #{host}
@@ -93,15 +92,14 @@ namespace :install do
       </VirtualHost>
     end
 
-    sudo "touch #{path}"
-    sudo "chown #{user}:#{user} #{path}"
-    put config, path
+    sudo "touch #{passenger_config_path}"
+    sudo "chown #{user}:#{user} #{passenger_config_path}"
+    put config, passenger_config_path
     sudo "a2ensite #{application}"
     sudo "/etc/init.d/apache2 reload"
   end
 
   task :logrotate do
-    path = "/etc/logrotate.d/#{application}"
     config = <<-end
       #{current_path}/log/*.log {
         daily
@@ -114,8 +112,19 @@ namespace :install do
       }
     end
 
-    sudo "touch #{path}"
+    sudo "touch #{logrotate_config_path}"
     sudo "chown #{user}:#{user} #{path}"
-    put config, path
+    put config, logrotate_config_path
   end  
+  
+  task :undo do
+    run_rake "db:drop"
+    sudo "rm -rf #{deploy_to}"
+
+    sudo "a2dissite #{application}"
+    sudo "/etc/init.d/apache2 reload"
+    sudo "rm -rf #{passenger_config_path}"
+
+    sudo "rm -rf #{logrotate_config_path}"
+  end
 end

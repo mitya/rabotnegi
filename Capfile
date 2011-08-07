@@ -12,7 +12,7 @@ set :password, secrets["password"]
 set :git_enable_submodules, true
 set :keep_releases, 3
 set :use_sudo, false
-set :rails_env, ENV['E'] == 'prod' ? :production : :staging
+set :rails_env, ENV['E'] == 'stg' ? :staging : :production
 set :sudo_prompt, "xxxx-xxxx"
 # set :shared_children, fetch(:shared_children) + %w(sphinx config)
 # set :ssh_options, {:keys => ["/users/dima/.ssh/id_rsa"]}
@@ -27,6 +27,9 @@ end
 
 set :deploy_to, "/apps/#{application}"
 server host, :web, :app, :db, :primary => true
+
+set :passenger_config_path, "/etc/apache2/sites-available/#{application}"
+set :logrotate_config_path, "/etc/logrotate.d/#{application}"
 
 after "deploy:update", "compile_javascripts"
 
