@@ -18,6 +18,10 @@ test:
   <<: *defaults
   database: rabotnegi_test
 
+staging:
+  host: localhost
+  database: rabotnegi_stg
+
 # set these environment variables on your prod server
 production:
   host: <%= ENV['MONGOID_HOST'] %>

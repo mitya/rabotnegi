@@ -37,7 +37,7 @@ set :server_env, :staging # ENV['E'] == 'stg' ? :staging : :production
 server host, :web, :app, :db, :primary => true
 
 # set :shared_children, fetch(:shared_children) + %w(sphinx config)
-set :sudo_prompt, "sudooo"
+set :sudo_prompt, "xxxx-xxxx"
 
 # set :logrotate_config, <<-end
 #   #{current_path}/log/*.log {
@@ -51,14 +51,5 @@ set :sudo_prompt, "sudooo"
 #   }
 # end
 # 
-# set :passenger_config, <<-end
-#   <VirtualHost *:80>
-#     ServerName #{host}
-#     DocumentRoot #{current_path}/public
-#     RailsEnv #{rails_env}
-#     ErrorLog  #{current_path}/log/error.log
-#     CustomLog #{current_path}/log/access.log common
-#   </VirtualHost>
-# end
-# 
+
 # task(:copy_crontab) { run "cp #{current_path}/config/crontab /etc/cron.d/#{application}" }
