@@ -58,7 +58,7 @@ module ControllerHelper
     route_name = "#{route_name}_#{args.first.class.model_name.singular}" if RoutePrefixes.include?(route_name)
     
     case route_name.to_s
-    when "vacancy" then "/vacancies/#{args.first.id}"
+    when "vacancy" then "/vacancies/#{args.first.slug}"
     else send("#{route_name}_path", *args)
     end
   end
