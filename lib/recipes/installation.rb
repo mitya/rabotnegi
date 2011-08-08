@@ -27,7 +27,8 @@ namespace :deploy do
   end
 
   task(:crontab) do
-    sudo "erb #{current_path}/config/crontab.erb > /etc/cron.d/#{application}"
+    run "erb #{current_path}/config/crontab.erb > #{current_path}/config/crontab"
+    sudo "cp #{current_path}/config/crontab /etc/cron.d/#{application}"
   end
 
   task(:javascripts) do
@@ -119,7 +120,7 @@ namespace :install do
         DocumentRoot #{current_path}/public
         RailsEnv #{rails_env}
         ErrorLog  #{current_path}/log/error.log
-        CustomLog #{current_path}/log/access.log common
+        CustomLog #{current_path}/log/access.log combined
       </VirtualHost>
     end
 
