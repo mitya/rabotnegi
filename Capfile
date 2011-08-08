@@ -27,7 +27,7 @@ server host, :web, :app, :db, :primary => true
 set :passenger_config_path, "/etc/apache2/sites-available/#{application}"
 set :logrotate_config_path, "/etc/logrotate.d/#{application}"
 
-after "deploy:update", "compile_javascripts"
+after "deploy", "compile_javascripts"
 
 # deploy
 #   update
