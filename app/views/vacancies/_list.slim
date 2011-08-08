@@ -1,9 +1,14 @@
 table.vacancies-list.rounded{cellspacing=0}
   thead
     tr
-      th.pos{class=order_class(:title)}= link_to "Должность", url(:nice_vacancies, params.merge(sort: encode_order(:title))), rel: 'nofollow'
-      th.emp{class=order_class(:employer_name)}= link_to "Компания", url(:nice_vacancies, params.merge(sort: encode_order(:employer_name))), rel: 'nofollow'
-      th.sal{class=order_class(:salary_min)}= link_to "Зарплата", url(:nice_vacancies, params.merge(sort: encode_order(:salary_min))), rel: 'nofollow'
+      - if local_assigns[:sorting] == false
+        th.pos{class=order_class(:title)} Должность
+        th.emp{class=order_class(:employer_name)} Компания
+        th.sal{class=order_class(:salary_min)} Зарплата
+      - else
+        th.pos{class=order_class(:title)}= link_to "Должность", url(:nice_vacancies, params.merge(sort: encode_order(:title))), rel: 'nofollow'
+        th.emp{class=order_class(:employer_name)}= link_to "Компания", url(:nice_vacancies, params.merge(sort: encode_order(:employer_name))), rel: 'nofollow'
+        th.sal{class=order_class(:salary_min)}= link_to "Зарплата", url(:nice_vacancies, params.merge(sort: encode_order(:salary_min))), rel: 'nofollow'
 
   tbody
     - collection.each do |vacancy|
