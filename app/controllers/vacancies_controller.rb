@@ -26,7 +26,11 @@ class VacanciesController < ApplicationController
 
   def show
     @vacancy = Vacancy.get(params[:id])
-    request.xhr?? render(partial: "details") : render
+    if @vacancy
+      request.xhr?? render(partial: "details") : render
+    else
+      render "shared/404", status: 404
+    end    
   end
 
   def new
