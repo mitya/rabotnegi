@@ -20,11 +20,19 @@ end
 task(:r) { run_rake ENV['T'], ENV['P'] }
 
 # task(:fix_permissions) { run "chown -R #{runner}:#{runner} #{current_path}/ #{shared_path}/log #{shared_path}/pids" }
-# task(:copy_crontab) { run "cp #{current_path}/config/crontab /etc/cron.d/#{application}" }
-task(:compile_javascripts) { run_rake "barista:brew" }
 
 namespace :deploy do
-  task(:restart) { run "touch #{current_path}/tmp/restart.txt" }
+  task(:restart) do
+    run "touch #{current_path}/tmp/restart.txt"
+  end
+
+  task(:crontab) do
+    sudo "erb #{current_path}/config/crontab.erb > /etc/cron.d/#{application}"
+  end
+
+  task(:javascripts) do
+    run_rake "barista:brew"
+  end
 end
 
 namespace :log do

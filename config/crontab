@@ -1,6 +1,0 @@
-# copy (not symlink) to /etc/cron.d/rabotnegi
-# job_type :command, ":task :output"
-# job_type :rake,    "cd :path && RAILS_ENV=:environment rake :task :output"
-# job_type :runner,  "cd :path && script/rails runner -e :environment ':task' :output"
-0	3	*	*	1,4	root cd /u/rabotnegi_prod/current && script/rails runner -e production "RabotaRu.load" &> /u/rabotnegi_prod/current/log/cron-loading.log
-0	4	*	*	*	root cd /u/rabotnegi_prod/current && script/rails runner -e production "Vacancy.cleanup" &> /u/rabotnegi_prod/current/log/cron-cleanup.log
