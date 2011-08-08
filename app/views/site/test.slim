@@ -17,6 +17,7 @@ css:
 #plumbing
   = javascript_include_tag %w(lib/jquery lib/rails gen/common gen/application), cache: 'pack/public' 
 
+
 javascript:
   $("#box").live("webkitTransitionEnd", function(e,x,y) {
     console.debug(e,x,y)

@@ -15,7 +15,7 @@ table.vacancies-list.rounded{cellspacing=0}
       tr.entry-header{id=web_id(vacancy) class=xcycle('', ' alt')}
         td.pos
           span{class="star #{current_user!.favorite_vacancies.include?(vacancy.id) ? 'star-enabled' : 'star-disabled'}"}
-          a{href=url(:vacancy, vacancy)}= raw vacancy.title
+          = link_to raw(vacancy.title), url(:vacancy, vacancy)
         td.emp= raw vacancy.employer_name
         td.sal= vacancy.salary
 

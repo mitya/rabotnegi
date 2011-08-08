@@ -13,6 +13,7 @@ Rabotnegi::Application.configure do
   config.action_dispatch.best_standards_support = :builtin
 
   config.after_initialize do
+    Slim::Engine.set_default_options pretty: true
   end
   
   # config.cache_classes = true

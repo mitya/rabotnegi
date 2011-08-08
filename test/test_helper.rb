@@ -1,4 +1,5 @@
 ENV["RAILS_ENV"] = "test"
+ENV["RAILS_ENV"] = "testreal"
 
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
@@ -58,5 +59,8 @@ class ActiveSupport::TestCase
   
   teardown do
     Vacancy.delete_all
-  end
+    User.delete_all
+  end unless Rails.env.testreal?
 end
+
+raise "No vacancies in the database" if Rails.env.testreal? && Vacancy.count < 100

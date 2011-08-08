@@ -140,3 +140,7 @@ to_json (with encoding hack)              2.000000
 JSON.generate(x.as_json)                  1.634247 # broken
 JSON.generate                             1.457854
 
+
+### 
+
+httperf --server 127.0.0.1 --port 3000 --num-conns 200 --rate 75 --uri /vacancies/ekb

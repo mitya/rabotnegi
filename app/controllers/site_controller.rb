@@ -49,6 +49,10 @@ class SiteController < ApplicationController
     render "site/test", layout: false
   end
   
+  def dev
+    render "test/#{params[:template]}", layout: false
+  end
+  
   def styles
     render "test/styles", layout: false
   end
