@@ -104,7 +104,7 @@ GEM
     rmagick (2.13.1)
     ruby-prof (0.10.8)
     sass (3.1.7)
-    slim (1.0.0)
+    slim (1.0.1)
       temple (~> 0.3.0)
       tilt (~> 1.2)
     temple (0.3.2)
