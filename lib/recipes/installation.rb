@@ -41,6 +41,10 @@ namespace :log do
   task(:app) { print_log "#{current_path}/log/#{rails_env}.log" }
   task(:access) { print_log "#{current_path}/log/access.log" }
   task(:error) { print_log "#{current_path}/log/error.log" }
+  
+  task :f, :roles => :app do
+    run("tail -f #{shared_path}/log/#{rails_env}.log") { |channel, stream, data| puts data; break if stream == :err }
+  end
 end
 
 namespace :data do
