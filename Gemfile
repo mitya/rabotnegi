@@ -12,7 +12,7 @@ gem "barista"
 gem "bson_ext"
 gem "unicode_utils"
 
-group :development, :test do
+group :development, :test, :testreal do
   gem 'capistrano'
   gem 'ruby-prof'
   gem 'test-unit'

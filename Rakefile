@@ -14,6 +14,15 @@ namespace :data do
   task :dump do
     sh "mongodump -d rabotnegi_demo -o tmp/dump-#{Time.now.strftime("%Y%m%d-%H%M%S")}"
   end 
+  
+  task :clone do
+    source = "rabotnegi_demo"
+    target = "rabotnegi_testreal"
+    sh "rm -rf tmp/dbclone/#{source}"
+    sh "mongodump -d #{source} -o tmp/dbclone"
+    sh "mongorestore -d #{target} --drop tmp/dbclone/#{source}"
+    sh "rm -rf tmp/dbclone/#{source}"
+  end
 end
 
 namespace :app do

@@ -11,12 +11,16 @@ development:
   database: rabotnegi_demo
 
 devcache:
-  <<: *local_settings
+  <<: *defaults
   database: rabotnegi_demo
 
 test:
   <<: *defaults
   database: rabotnegi_test
+
+testreal:
+  <<: *defaults
+  database: rabotnegi_testreal
 
 staging:
   host: localhost

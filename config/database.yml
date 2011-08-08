@@ -25,6 +25,11 @@ test:
   <<: *local_settings  
   database: rabotnegi_test
   username: root
+
+testreal:
+  <<: *local_settings  
+  database: rabotnegi_test
+  username: root
   
 staging:
   adapter: mysql2
