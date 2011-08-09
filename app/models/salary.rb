@@ -30,10 +30,10 @@ class Salary
 	def to_s
 	  case
       when negotiable? then "договорная"
-      when exact? then "#{exact} р."
-      when min? then "от #{min} р."
-      when max? then "до #{max} р."
-      when range? then "#{min}—#{max} р."
+      when exact? then "#{exact.to_i} р."
+      when min? then "от #{min.to_i} р."
+      when max? then "до #{max.to_i} р."
+      when range? then "#{min.to_i}—#{max.to_i} р."
     end
 	end
 

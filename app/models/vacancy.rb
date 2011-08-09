@@ -9,8 +9,8 @@ class Vacancy < MongoModel
   field :industry
   field :city
   field :salary_min, type: Integer
-  field :salary_max, type: Integer   
-  field :employer_id, type:Integer   
+  field :salary_max, type: Integer
+  field :employer_id, type: Integer
   field :employer_name
   
   index :city
