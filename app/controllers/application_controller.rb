@@ -20,12 +20,6 @@ class ApplicationController < ActionController::Base
   
   Encryptor = ActiveSupport::MessageEncryptor.new(Rabotnegi::Application.config.secret_token)
 
-  before_filter do
-    for header, value in request.headers.select { |k,v| k =~ /^HTTP_/ }
-      logger.info "HEADER #{header}: #{value}"
-    end if request.remote_ip == "66.249.72.120"    
-  end
-
 protected
 
   def ensure_proper_protocol
