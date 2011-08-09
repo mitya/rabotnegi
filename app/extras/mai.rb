@@ -80,7 +80,7 @@ module Mai
     
     def write(severity, event, brief = [], data = {}, &block)
       @last_payload = data.merge(brief: brief, severity: severity, puid: puid, writer: self).merge(options)
-      ActiveSupport::Notifications.instrument("#{@prefix}.#{event}", @last_payload, &block)
+      ActiveSupport::Notifications.instrument("#{@namespace.to_s.downcase}.#{event}", @last_payload, &block)
     end
     
     def info(event, *params, &block)

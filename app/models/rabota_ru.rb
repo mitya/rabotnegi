@@ -36,7 +36,7 @@ module RabotaRu
   end
   
   def self.prepare
-    mai.subscribe_all :rrl, %w(start load convert convert.fail filter filter save finish) do |e|
+    mai.subscribe(/^rrl/) do |e|
       MongoLog.write(e.puid, e.severity, e.title, e.brief, e.data.merge(duration: e.duration))
     end
 
