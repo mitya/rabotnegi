@@ -5,8 +5,10 @@
     tr
       th Создан
       th Браузер
+      th IP
       th
   - for model in @models
     tr{class=cycle('', 'alt')}
       td= f model.created_at
-      td= f model.browser
+      td= model.browser
+      td= model.ip_address

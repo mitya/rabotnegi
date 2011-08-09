@@ -80,7 +80,7 @@ protected
   end
 
   def current_user!
-    self.current_user ||= bot? ? User.new : User.create!(:browser => request.user_agent)
+    self.current_user ||= bot? ? User.new : User.create!(browser: request.user_agent, ip_address: request.remote_ip)
   end
   
   def find_model
