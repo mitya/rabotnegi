@@ -19,8 +19,13 @@ def __pl(*args)
 end
 
 def __l(*args)
+  text = args.length == 1 && String === args.first ? args.first : args.map(&:inspect).join(", ")
+  Rails.logger.debug "/// #{text}"
+end
+
+def __ll(*args)
   location = DebugHelper.reformat_caller(caller.first)
-  Rails.logger.debug "DEBUG #{location} -- #{args.map(&:inspect).join(", ")}"
+  Rails.logger.debug "/// #{location} -- #{args.map(&:inspect).join(", ")}"
 end
 
 def __a(*args)

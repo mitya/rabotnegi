@@ -10,7 +10,7 @@ module CollectionsHelper
 		end
 
 		"Найдено <b>#{collection.total_count}</b> #{object}.
-		 Показаны <b>#{collection.offset + 1}</b> — <b>#{collection.offset + collection.limit_value}</b>".html_safe
+		 Показаны <b>#{collection.offset_value + 1}</b> — <b>#{collection.offset_value + collection.limit_value}</b>".html_safe
 	end
 	
   def search_tag
