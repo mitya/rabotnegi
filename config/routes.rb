@@ -31,6 +31,7 @@ Rabotnegi::Application.routes.draw do
     resources :employers, :module => "admin", only: %w(index)
     resources :vacancy_loadings, :module => "admin", only: %w(index show)
     resources :log_items, :module => "admin", path: "log", only: %w(index show)
+    resources :users, :module => "admin", only: %w(index)
   end
 
   match '/system/:action', :controller => "site", :as => :system

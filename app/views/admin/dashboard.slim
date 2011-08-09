@@ -16,3 +16,6 @@ table.properties
   tr
     th Событий в логе
     td.num= limited_number MongoLog::Item.count, 20_000
+  tr
+    th Пользователей
+    td.num= User.count

@@ -19,7 +19,6 @@ set :sudo_prompt, "xxxx-xxxx"
 
 set :application, "rabotnegi_prod"
 set :host, "www.rabotnegi.ru" # '178.79.171.92'
-set :server_aliases, "rabotnegi.ru *.rabotnegi.ru"
 
 set :deploy_to, "/apps/#{application}"
 server host, :web, :app, :db, :primary => true

@@ -1,0 +1,12 @@
+- page "admin-users", "Пользователи"
+
+= listing @models do
+  thead
+    tr
+      th Создан
+      th Браузер
+      th
+  - for model in @models
+    tr{class=cycle('', 'alt')}
+      td= f model.created_at
+      td= f model.browser

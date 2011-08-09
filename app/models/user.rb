@@ -4,6 +4,7 @@ class User
   
   field :industry
   field :city  
+  field :browser
   field :queries, type: Array
   field :favorite_vacancies, type: Array, default: []
   

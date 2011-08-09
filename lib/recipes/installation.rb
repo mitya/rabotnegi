@@ -122,20 +122,28 @@ namespace :install do
   end
   
   task :passenger do
+    domain = host.sub('www.', '')
     config = <<-end
       <VirtualHost *:80>
         ServerName #{host}
-        ServerAlias #{server_aliases}
         DocumentRoot #{current_path}/public
         RailsEnv #{rails_env}
         ErrorLog  #{current_path}/log/error.log
         CustomLog #{current_path}/log/access.log combined
-      </VirtualHost>
+      </VirtualHost>      
+
+      <VirtualHost *:80>
+        ServerName #{domain}
+        ServerAlias *.#{domain}
+        RewriteEngine On
+        RewriteRule ^/(.*)$ http://#{host}/$1 [R=301,L]
+      </VirtualHost>      
     end
 
     sudo "touch #{passenger_config_path}"
     sudo "chown #{user}:#{user} #{passenger_config_path}"
     put config, passenger_config_path
+    sudo "a2enmod rewrite"
     sudo "a2ensite #{application}"
     sudo "/etc/init.d/apache2 reload"
   end

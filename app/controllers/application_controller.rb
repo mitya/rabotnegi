@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   include SslRequirement
   include SimpleCaptcha::ControllerHelpers
   include ControllerHelper
-  
+
   rescue_from(ActiveRecord::RecordInvalid) { render :form, :status => 422 }
   rescue_from(ActiveRecord::RecordNotFound) { |e|
     Rails.logger.debug(e)
@@ -66,9 +66,8 @@ protected
   end
 
   def current_user
-    unless defined?(@current_user)
-      @current_user = User.find(Encryptor.decrypt(cookies[:uid])) if cookies[:uid].present?
-    end
+    return @current_user if defined? @current_user
+    @current_user = User.find(Encryptor.decrypt(cookies[:uid])) if cookies[:uid].present?
     @current_user
   rescue Mongoid::Errors::DocumentNotFound
     cookies.delete :uid
@@ -81,7 +80,7 @@ protected
   end
 
   def current_user!
-    self.current_user ||= User.create!
+    self.current_user ||= bot? ? User.new : User.create!(:browser => request.user_agent)
   end
   
   def find_model
@@ -90,12 +89,16 @@ protected
   end
   
   def update_model(model, attributes, url)
-		model.attributes = attributes
-		if model.save
-		  redirect_to url, notice: "Изменения сохранены"
-	  else
-	    render :edit
+    model.attributes = attributes
+    if model.save
+      redirect_to url, notice: "Изменения сохранены"
+    else
+      render :edit
     end    
+  end
+  
+  def bot?
+    request.user_agent =~ /Googlebot/
   end
   
   def self.model(model_class)
