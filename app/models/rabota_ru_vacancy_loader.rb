@@ -101,7 +101,7 @@ class RabotaRu::VacancyLoader
         vacancies = items.map { |item| convert_item(item) }.compact
         @vacancies.concat(vacancies)
         log.results items.size
-      end      
+      end
     end
 
     log.info 'convert.done', @vacancies.size
@@ -116,7 +116,7 @@ class RabotaRu::VacancyLoader
 
   def remove_duplicates
     @vacancies.uniq!
-    log.info 'remove_dups.done', @vacancies.size
+    log.info 'remove_dups', @vacancies.size
   end
 
   # Фильтрует список вакансий в @vacancies, остовляет только новые и обновленные вакансии.
