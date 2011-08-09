@@ -37,3 +37,5 @@ after "deploy", "deploy:crontab"
 #       finalize_update (symlink shared log/pid/system dirs)
 #     symlink
 #   restart
+
+# cap r T=vacancies:load P="REMOTE=false"
