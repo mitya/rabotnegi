@@ -1,15 +1,23 @@
 module MongoidExt
   module PagedCollection
+    def criteria
+      @criteria || self
+    end
+    
+    def criteria=(object)
+      @criteria = object
+    end
+    
     def limit_value #:nodoc:
-      options[:limit]
+      criteria.options[:limit]
     end
 
     def offset_value #:nodoc:
-      options[:skip]
+      criteria.options[:skip]
     end
 
     def total_count #:nodoc:
-      count
+      criteria.count
     end
 
     # Specify the <tt>per_page</tt> value for the preceding <tt>page</tt> scope
@@ -57,21 +65,19 @@ module MongoidExt
     
   end
 
-  module Criteria
-    extend ActiveSupport::Concern
-
-    included do
-      def paginate(*args)
-        self.klass.paginate(*args).criteria.merge(self)
-      end
-    end
-  end
-
   module Document
     extend ActiveSupport::Concern
 
     included do
-      scope :paginate, proc { |page_num, page_size = 10| limit(page_size).offset(page_size * ([page_num.to_i, 1].max - 1)) } do
+      def self.paginate(page_num, page_size = 10)
+        criteria = page(page_num, page_size)
+        results = criteria.to_a
+        results.extend(MongoidExt::PagedCollection)
+        results.criteria = criteria
+        results
+      end
+      
+      scope :page, proc { |page_num, page_size = 10| limit(page_size).offset(page_size * ([page_num.to_i, 1].max - 1)) } do
         include MongoidExt::PagedCollection
       end    
     end

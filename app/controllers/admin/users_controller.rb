@@ -7,6 +7,6 @@ class Admin::UsersController < ApplicationController
   model User
 
 	def index
-		@models = Model.paginate(params[:page], 30)
+		@models = Model.order_by(:created_at, :asc).paginate(params[:page], 30)
 	end
 end
