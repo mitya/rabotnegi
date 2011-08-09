@@ -34,13 +34,10 @@ Rabotnegi::Application.routes.draw do
     resources :users, :module => "admin", only: %w(index)
   end
 
-  match '/system/:action', :controller => "site", :as => :system
   match '/sitemap' => 'site#map', :as => :sitemap
-  match '/test' => 'site#test'
-  match '/test/styles' => 'site#styles'
-  match '/test/lorem/(:count)' => 'site#lorem', :count => 5, :as => :lorem
-  match '/dev/:template', :controller => "site", :action => "dev"
 
+  match '/site/:action', :controller => "site"
+  match '/test/:action', :controller => "test"
   match '/metal-vacancies(/:city(/:industry))', :to => MetalController.action(:index_vacancies), :city => Regexp.new(City.all.map(&:code).join('|'))
   match '/metal-vacancies/:id', :to => MetalController.action(:show_vacancy)
 end
