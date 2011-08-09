@@ -54,12 +54,13 @@ end
 namespace :data do
   task :dump do
     database = "rabotnegi_prod"
-    run "mongodump -d #{database} -o #{current_path}/tmp/dataset"
-    run "cd #{current_path}/tmp && tar cj dataset/* > dataset.tbz"
-    get "#{current_path}/tmp/dataset.tbz", "tmp/dataset.tbz"
-    system "rm -rf tmp/dataset"
-    system "tar xjf tmp/dataset.tbz -C tmp"
-    system "rm tmp/dataset.tbz"
+    timestamp = Time.now.strftime("%y%m%d_%H%M")
+    run "mongodump -d #{database} -o #{current_path}/tmp/db_#{timestamp}"
+    run "cd #{current_path}/tmp/db_#{timestamp}/#{database} && tar cj * > #{current_path}/tmp/db.tbz"
+    get "#{current_path}/tmp/db.tbz", "tmp/db_#{timestamp}.tbz"
+    # system "mkdir tmp/db_#{database}_#{timestamp}"
+    # system "cd tmp/db_#{database}_#{timestamp}"
+    # system "tar xjf tmp/db_#{timestamp}.tbz -C tmp/db_#{database}_#{timestamp}"
   end
   
   task :restore do
