@@ -37,28 +37,7 @@ class SiteController < ApplicationController
     render :text => Rails.env
   end
   
-  def error
-    raise ArgumentError, "You requested an error!"
-  end
-  
   def starter
     render text: $0
-  end
-  
-  def test
-    render "site/test", layout: false
-  end
-  
-  def dev
-    render "test/#{params[:template]}", layout: false
-  end
-  
-  def styles
-    render "test/styles", layout: false
-  end
-  
-  def lorem
-    @count = params[:count].to_i
-    render "test/lorem", layout: false
-  end
+  end  
 end
