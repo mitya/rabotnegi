@@ -27,7 +27,9 @@ module Mai
   end  
   
   def id(array)
-    array.map(&:id) if array
+    results = array ? array.map(&:id) : []
+    results = results.map(&:to_s) if results.first.is_a?(BSON::ObjectId)
+    results
   end
   
   def subscribe(event_pattern)
@@ -71,13 +73,14 @@ module Mai
     
     def initialize(namespace, pid, options = {})
       @namespace = namespace
+      @prefix = @namespace.to_s.downcase
       @puid = "#{namespace}_#{pid}"
       @options = options
     end
     
     def write(severity, event, brief = [], data = {}, &block)
       @last_payload = data.merge(brief: brief, severity: severity, puid: puid, writer: self).merge(options)
-      ActiveSupport::Notifications.instrument("#{namespace}.#{event}", @last_payload, &block)
+      ActiveSupport::Notifications.instrument("#{@prefix}.#{event}", @last_payload, &block)
     end
     
     def info(event, *params, &block)

@@ -140,13 +140,13 @@ class RabotaRu::VacancyLoader
       end
 
       @vacancies = new_vacancies + updated_vacancies
-      log.results new: mai.id(new_vacancies), updated: mai.id(updated_vacancies), all: mai.id(@vacancies)
-    end    
+      log.results @vacancies.size, new: mai.id(new_vacancies), updated: mai.id(updated_vacancies), all: mai.id(@vacancies)
+    end
   end
 
   # Сохраняет загруженные вакансии в базе.
   def save
-    log.info :save do
+    log.info :save, @vacancies.count do
       @vacancies.each { |vacancy| vacancy.save! }
     end    
   end
