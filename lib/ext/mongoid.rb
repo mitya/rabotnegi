@@ -85,4 +85,3 @@ module MongoidExt
 end
 
 Mongoid::Document.send :include, MongoidExt::Document
-Mongoid::Criteria.send :include, MongoidExt::Criteria
