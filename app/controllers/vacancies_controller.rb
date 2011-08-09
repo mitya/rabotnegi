@@ -29,7 +29,7 @@ class VacanciesController < ApplicationController
     if @vacancy
       request.xhr?? render(partial: "details") : render
     else
-      render "shared/404", status: 404
+      render "shared/404", status: params[:id] =~ /^\d{6}$/ ? 410 : 404
     end    
   end
 

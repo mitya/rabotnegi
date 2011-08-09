@@ -10,6 +10,10 @@ def __pi(data, label = nil)
 end
 
 def __p(*args)
+  puts "/// #{args.map(&:inspect).join(", ")}"
+end
+
+def __pl(*args)
   location = DebugHelper.reformat_caller(caller.first)
   puts "/// #{location} -- #{args.map(&:inspect).join(", ")}"
 end
