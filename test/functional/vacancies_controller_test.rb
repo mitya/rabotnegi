@@ -13,7 +13,17 @@ class VacanciesControllerTest < ActionController::TestCase
     assert_template "details"
   end
   
-  test 'index - filter' do
+  test "show non existent record" do
+    get :show, id: "4e415504e999fb2522000003"
+    assert_response 404
+  end
+
+  test "show a record from the old site" do
+    get :show, id: "123456"
+    assert_response 410
+  end
+  
+  test 'index with filter' do
     v1 = make Vacancy, city: "spb", industry: "it"
     v2 = make Vacancy, city: "spb", industry: "it"
     make Vacancy, city: "msk", industry: "it"
@@ -26,7 +36,7 @@ class VacanciesControllerTest < ActionController::TestCase
     assert_template "index"
   end
   
-  test "index - sorting" do
+  test "index with sorting" do
     v1 = make Vacancy, city: "spb", industry: "it", employer_name: "AAA"
     v2 = make Vacancy, city: "spb", industry: "it", employer_name: "BBB"
   
@@ -43,7 +53,7 @@ class VacanciesControllerTest < ActionController::TestCase
     assert_template "form"
   end
   
-  test "create - valid" do
+  test "create valid record" do
     post :create, vacancy: { title: "Developer", city: "msk", industry: "it", salary_text: "55000" }
 
     new_vacancy = Vacancy.last
@@ -56,7 +66,7 @@ class VacanciesControllerTest < ActionController::TestCase
     assert_redirected_to vacancy_path(new_vacancy)
   end
 
-  test "create - invalid" do
+  test "create invalid record" do
     post :create, vacancy: { title: nil }
 
     assert !Vacancy.last    
