@@ -10,7 +10,7 @@ class VacanciesController < ApplicationController
         without(:description).
         order_by(decode_order_for_mongo(params[:sort].presence || "title")).
         paginate(params[:page], 50)
-      current_user!.update_attributes(city: params[:city], industry: params[:industry])
+      current_user!.update_attributes(city: params[:city], industry: params[:industry]) unless bot?
     else
       params[:city] = current_user!.city      
       params[:industry] = current_user!.industry
