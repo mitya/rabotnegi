@@ -1,7 +1,7 @@
 class SiteController < ApplicationController
   def map
     respond_to do |format|
-      format.xml
+      format.xml { render layout: false }
     end
   end
 
