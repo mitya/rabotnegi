@@ -21,6 +21,10 @@ task(:r) { run_rake ENV['T'], ENV['P'] }
 
 # task(:fix_permissions) { run "chown -R #{runner}:#{runner} #{current_path}/ #{shared_path}/log #{shared_path}/pids" }
 
+task :script do
+  run "#{current_path}/script/rails runner -e #{rails_env} #{current_path}/script/#{ENV["S"]}.rb"
+end
+
 namespace :deploy do
   task(:restart) do
     run "touch #{current_path}/tmp/restart.txt"
@@ -41,6 +45,7 @@ namespace :log do
   task(:app) { print_log "#{current_path}/log/#{rails_env}.log" }
   task(:web) { print_log "#{current_path}/log/access.log" }
   task(:error) { print_log "#{current_path}/log/error.log" }
+  task(:dump) { print_log "#{current_path}/log/#{ENV['T']}.log" }
   
   task :f, :roles => :app do
     run("tail -f #{shared_path}/log/#{rails_env}.log") { |channel, stream, data| puts data; break if stream == :err }
@@ -70,7 +75,7 @@ namespace :data do
     run "rm -rf #{current_path}/tmp/localdump"
     run "mkdir -p #{current_path}/tmp/localdump"
     run "cd #{current_path}/tmp/localdump && tar xjf #{current_path}/tmp/localdump.tbz"
-    run "cd #{current_path}/tmp && mongorestore -d rabotnegi_prod localdump"
+    run "cd #{current_path}/tmp && mongorestore -d rabotnegi_prod --drop localdump"
   end
 end
 
