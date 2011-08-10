@@ -63,11 +63,11 @@ class RabotaRu::VacancyLoader
   def load    
     log.info :start
 
-    load_to_files unless @remote == false
-    convert
-    remove_duplicates
-    filter
-    save
+    log.run self, :load_to_files unless @remote == false
+    # log.run self, :convert
+    # log.run self, :remove_duplicates
+    # log.run self, :filter
+    # log.run self, :save
     
     log.info :finish
   end
@@ -83,71 +83,69 @@ class RabotaRu::VacancyLoader
     @cities.each do |city|
       @industries.each do |industry|
         url = mai.interpolate(JsonUrlTemplate, city: city.external_id, industry: industry.external_id)
-        log.info 'load', city.code, industry.code, url: url do
-          json_data = mai.http_get('www.rabota.ru', url)        
-          mai.write_file("#{work_directory}/#{city.code}-#{industry.code}.json", json_data)
-          log.results json_data.size
-        end
-      end
-    end    
-  end
-
-  # Конвертирует загруженные файлы в объекты и помещает результат в @vacancies.
-  def convert
-    Dir["#{work_directory}/*.json"].each do |file|
-      log.info 'convert', file do
-        data = File.read(file).sub!(/;\s*$/, '')
-        items = mai.decode_json(data)
-        vacancies = items.map { |item| convert_item(item) }.compact
-        @vacancies.concat(vacancies)
-        log.results items.size
+        json_data = mai.http_get('www.rabota.ru', url)
+        mai.write_file("#{work_directory}/#{city.code}-#{industry.code}.json", json_data)
+        log.add city.code, industry.code, response_size: json_data.size, env: {url: url}
       end
     end
+  end
 
-    log.info 'convert.done', @vacancies.size
+  def convert
+    log.add dir: work_directory, files_count: Dir["#{work_directory}/*.json"].count
+    
+    Dir["#{work_directory}/*.json"].each do |file|
+      data = File.read(file).sub!(/;\s*$/, '')
+      items = mai.decode_json(data)
+      vacancies = items.map { |item| convert_item(item) }.compact
+      @vacancies.concat(vacancies)
+    end
+
+    log.end total: @vacancies.size
   end
 
   def convert_item(item)
     @vacancy_converter.convert(item)
   rescue => e    
-    log.warn 'convert.skip', item['position'], mai.format_error(e.message), error: e
+    log.warn :convert, "skip item", title: item['position'], reason: mai.format_error(e.message), env: {error: e}
     nil
   end
 
   def remove_duplicates
     @vacancies.uniq_by! { |v| v.external_id }
-    log.info 'remove_dups', @vacancies.size
+    log.end left: @vacancies.size
   end
-
-  # Фильтрует список вакансий в @vacancies, остовляет только новые и обновленные вакансии.
+  
   def filter
     new_vacancies, updated_vacancies = [], []
-    log.info :filter do
-      loaded_external_ids = @vacancies.map(&:external_id)
-      existed_vacancies = Vacancy.any_in(external_id: loaded_external_ids)
-      existed_vacancies_map = existed_vacancies.index_by(&:external_id)
-      
-      @vacancies.each do |loaded_vacancy|
-        existed_vacancy = existed_vacancies_map[loaded_vacancy.external_id]
-        if !existed_vacancy
-          new_vacancies << loaded_vacancy
-        elsif existed_vacancy.created_at != loaded_vacancy.created_at
-          existed_vacancy.attributes = loaded_vacancy.attributes.except('_id')
-          updated_vacancies << existed_vacancy
-        else
-          # vacancies are considered to be identical
-        end
+    loaded_external_ids = @vacancies.map(&:external_id)
+    existed_vacancies = Vacancy.any_in(external_id: loaded_external_ids)
+    existed_vacancies_map = existed_vacancies.index_by(&:external_id)
+    
+    @vacancies.each do |loaded_vacancy|
+      existed_vacancy = existed_vacancies_map[loaded_vacancy.external_id]
+      if !existed_vacancy
+        new_vacancies << loaded_vacancy
+      elsif existed_vacancy.created_at != loaded_vacancy.created_at
+        existed_vacancy.attributes = loaded_vacancy.attributes.except('_id')
+        updated_vacancies << existed_vacancy
+      else
+        # vacancies are considered to be identical
       end
-
-      @vacancies = new_vacancies + updated_vacancies
-      log.results @vacancies.size, new: mai.id(new_vacancies), updated: mai.id(updated_vacancies), all: mai.id(@vacancies)
     end
+
+    @vacancies = new_vacancies + updated_vacancies
+
+    detalization = {}
+    @vacancies.each { |v|
+      detalization["#{v.city}-#{v.industry}"] ||= 0
+      detalization["#{v.city}-#{v.industry}"] += 1
+    }
+
+    log.end new: new_vacancies.count, updated: updated_vacancies.count, total: @vacancies.count, env: detalization
   end
 
-  # Сохраняет загруженные вакансии в базе.
   def save
-    log.info :save, @vacancies.count do
-      @vacancies.each { |vacancy| vacancy.save! }
-    end    
+    @vacancies.each { |vacancy| vacancy.save! }
+    log.end count: @vacancies.count
   end
 end

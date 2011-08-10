@@ -78,22 +78,31 @@ module Mai
       @options = options
     end
     
-    def write(severity, event, brief = [], data = {}, &block)
-      @last_payload = data.merge(brief: brief, severity: severity, puid: puid, writer: self).merge(options)
-      ActiveSupport::Notifications.instrument("#{@namespace.to_s.downcase}.#{event}", @last_payload, &block)
+    def write(severity, event, data = nil, &block)
+      MongoLog.write(puid, severity, "#{@namespace.to_s.downcase}.#{event}", data)
     end
     
     def info(event, *params, &block)
-      write(:info, event, params, params.extract_options!, &block)
+      write(:info, event, params, &block)
     end
 
     def warn(event, *params, &block)
-      write(:warn, event, params, params.extract_options!, &block)
+      write(:warn, event, params, &block)
     end
     
-    def results(*params)
-      @last_payload.merge!(params.extract_options!)
-      @last_payload[:brief].concat(params)
+    def run(target, method, *args)
+      @context_event = method
+      ms = Benchmark.ms { target.send(method, *args) }
+      info @context_event, time: ms
+    end
+
+    def add(*params)
+      info @context_event, *params
+    end
+    
+    def end(*params)
+      info @context_event, *params
+      @method = nil
     end
   end
 end
