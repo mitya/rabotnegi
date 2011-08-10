@@ -8,7 +8,7 @@ unit_test MongoLog do
   end
   
   test "write" do
-    @writer.write('info', 'start', [1,2,3], {url: "someurl", count: 100})
+    @writer.write 'info', 'start', 1, 2, 3, env: {url: "someurl", count: 100}
     
     item = MongoLog::Item.last
     assert_equal 'RRL_1234', item.puid
@@ -20,7 +20,7 @@ unit_test MongoLog do
   end
   
   test "info" do
-    @writer.info('start', 1, 2, 3, url: "someurl", count: 100)
+    @writer.info('start', 1, 2, 3, env: {url: "someurl", count: 100})
 
     item = MongoLog::Item.last
     assert_equal 'info', item.severity

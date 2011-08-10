@@ -65,7 +65,7 @@ class RabotaRu::VacancyConverter
       when 'usd' then :usd
       when 'eur' then :eur
       else
-        @loader.log.warn("convert", "Unknown currency #{currency_name}")
+        @loader.log.warn :convert, "Unknown currency #{currency_name}"
         :rub
     end
   end

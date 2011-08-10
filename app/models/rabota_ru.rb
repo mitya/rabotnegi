@@ -34,30 +34,4 @@ module RabotaRu
       state == 'finished'
     end
   end
-  
-  def self.prepare
-    mai.subscribe(/^rrl/) do |e|
-      MongoLog.write(e.puid, e.severity, e.title, e.brief, e.data.merge(duration: e.duration))
-    end
-
-    mai.subscribe 'rrl.start' do |e|
-      e.writer.memo = RabotaRu::VacancyLoading.create!(started_at: Time.current, state: "started")
-    end
-
-    mai.subscribe 'rrl.finish' do |e|
-      e.memo.update_attributes!(state: "finished", finished_at: Time.current)
-    end
-
-    # mai.subscribe 'rrl.filter.done' do |e|
-    #   e.memo.counts[:new] = e.data.new.size
-    #   e.memo.counts[:updated] = e.data.updated.size
-    #   e.memo.counts[:filtered] = e.data.all.size
-    #   e.data.all.each { |v|
-    #     e.memo.details["#{v.city}-#{v.industry}"] ||= 0
-    #     e.memo.details["#{v.city}-#{v.industry}"] += 1
-    #   }
-    # end
-  end
-  
-  prepare
 end

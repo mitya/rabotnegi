@@ -11,16 +11,18 @@ module MongoLog
       @puid = puid.to_s
     end
 
-    def write(severity, title, brief = [], data = {})
-      MongoLog.write(@puid, severity, title, brief, data)
+    def write(severity, title, *params)
+      params = Array(params)
+      data = Hash === params.last && params.last.delete(:env)
+      MongoLog.write(@puid, severity, title, params, data)
     end
     
     def info(title, *params)
-      write(:info, title, params, params.extract_options!)
+      write(:info, title, params)
     end
 
     def warn(title, *params)
-      write(:warn, title, params, params.extract_options!)
+      write(:warn, title, params)
     end
   end
   
