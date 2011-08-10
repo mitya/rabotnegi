@@ -115,7 +115,7 @@ class RabotaRu::VacancyLoader
   end
 
   def remove_duplicates
-    @vacancies.uniq!
+    @vacancies.uniq_by! { |v| v.external_id }
     log.info 'remove_dups', @vacancies.size
   end
 
