@@ -2,6 +2,7 @@
 
 module ControllerHelper
   OrderParam = :sort
+  RoutePrefixes = Set.new([:edit, :edit_admin, :admin])
   
   def employer_home_path
     current_employer ? employer_vacancies_path : employer_root_path
@@ -51,8 +52,6 @@ module ControllerHelper
     current_field, reverse = decode_order
     field.to_s == current_field ? "sorted" : ""
   end  
-
-  RoutePrefixes = Set.new([:edit, :edit_admin, :admin])
 
   def url(route_name, *args)
     route_name = "#{route_name}_#{args.first.class.model_name.singular}" if RoutePrefixes.include?(route_name)

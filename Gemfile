@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.9'
-gem 'mysql2', '0.2.7'
+gem 'rails', '3.1.0'
+gem 'mysql2'
 gem "mongoid"
 gem "haml"
 gem "sass"
@@ -18,3 +18,10 @@ group :development, :test, :testreal do
   gem 'test-unit'
   gem "factory_girl"
 end
+
+# group :assets do
+#   gem 'sass-rails', "~> 3.1.0"
+#   gem 'coffee-rails', "~> 3.1.0"
+#   # gem 'jquery-rails'
+#   gem 'uglifier'
+# end

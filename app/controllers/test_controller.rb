@@ -1,9 +1,6 @@
 class TestController < ApplicationController
   layout false
   
-  def foo
-  end
-  
   def error
     raise ArgumentError, "You requested an error!"
   end
