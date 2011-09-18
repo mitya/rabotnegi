@@ -5,14 +5,14 @@ class SiteController < ApplicationController
     end
   end
 
-# admin
+  # Admin
 
   before_filter :admin_required, :only => :admin_dashboard
   def admin_dashboard
     render "admin/dashboard", layout: 'admin'
   end
 
-# helpers
+  # Helpers
 
   def load_data_from_rabota_ru
     loader = RabotaRu::VacancyLoader.new
@@ -32,12 +32,12 @@ class SiteController < ApplicationController
     reset_session
     redirect_to root_path
   end
-  
-  def env
+
+  def environment
     render :text => Rails.env
   end
   
   def starter
     render text: $0
-  end  
+  end
 end
