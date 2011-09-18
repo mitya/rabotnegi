@@ -6,7 +6,7 @@ head
   - for name, content in meta_properties
     = tag :meta, name: name, content: content
   = csrf_meta_tag
-  = stylesheet_link_tag %w(gen/common gen/public gen/workers gen/employers gen/resumes gen/vacancies), cache: 'pack/public'
+  = stylesheet_link_tag "application"
 
 body.public{id=@page_id class=@page_class}
   #page
@@ -42,5 +42,6 @@ body.public{id=@page_id class=@page_class}
     pre#sandbox
 
   #plumbing
-    = javascript_include_tag %w(lib/jquery lib/rails gen/common gen/application), cache: 'pack/public' 
+    = javascript_include_tag "vendor"
+    = javascript_include_tag "application"
     = render "layouts/google_analytics" if Rails.env.production?

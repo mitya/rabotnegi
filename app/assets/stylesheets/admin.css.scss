@@ -1,3 +1,8 @@
+/*
+*= require common
+*= require_self
+*/
+
 @import "_helpers";
 
 $label-color: #888888;
@@ -5,7 +10,7 @@ $label-color: #888888;
 body {
   margin: 0; min-width: 600px;
   font: 13px "Lucida Grande", Verdana, sans-serif;  
-  behavior: url("/stylesheets/lib/csshover2.htc"); 
+  behavior: javascript-url("csshover2.htc"); 
 }
 
 table th { text-align: left; }
