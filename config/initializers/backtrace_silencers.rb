@@ -8,4 +8,4 @@ Rails.backtrace_cleaner.add_silencer { |line| line =~ /actionpack/ }
 Rails.backtrace_cleaner.add_silencer { |line| line =~ /script\/rails/ }
 Rails.backtrace_cleaner.add_silencer { |line| line =~ /rvm\/rubies/ }
 
-Rails.backtrace_cleaner.remove_silencers!
+# Rails.backtrace_cleaner.remove_silencers!

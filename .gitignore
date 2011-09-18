@@ -4,8 +4,5 @@ jobs.tmproj
 log/*
 tmp/*
 db/data/*
-public/stylesheets/gen
-public/stylesheets/pack
-public/javascripts/gen
-public/javascripts/pack
+public/assets
 config/secrets.yml

@@ -46,13 +46,12 @@ module Rabotnegi
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]   
 
-    # Enable the asset pipeline
-    config.assets.enabled = false
-
-    # Version of your assets, change this if you want to expire all your assets
+    config.assets.enabled = true
+    config.assets.compile = true
+    config.assets.precompile += %w(vendor.js admin.css)
     config.assets.version = '1.0'
 
-    # config.sass.style = :compact
+    config.sass.style = :compact
 
     require "ext/core"
     require 'ext/rails'
@@ -65,12 +64,8 @@ module Rabotnegi
 
     config.after_initialize do  
       ActionView::Base.default_form_builder = CustomFormBuilder
-      
+            
       ActiveSupport::JSON.engine = :json_gem
-      
-      Sass::Plugin.options[:style] = :compact
-      Sass::Plugin.options[:template_location] = "#{config.root}/app/styles"
-      Sass::Plugin.options[:css_location] = "#{config.root}/public/stylesheets/gen"
 
       ::ADMIN_LOGIN = 'admin'
       ::ADMIN_PASSWORD = '0000'
