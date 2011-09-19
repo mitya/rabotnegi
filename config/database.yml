@@ -1,48 +1,32 @@
 common: &local_settings
-  adapter: mysql2
-  encoding: utf8
-  reconnect: false
+  adapter: sqlite3
   pool: 5
-  host: localhost
-  encoding: utf8
+  timeout: 5000
 
 development:
   <<: *local_settings  
-  database: rabotnegi_dev
-  username: root
+  database: db/development.sqlite3
 
 devcache:
   <<: *local_settings
-  database: rabotnegi_dev
-  username: root
+  database: db/development.sqlite3
 
 local:
   <<: *local_settings  
-  database: rabotnegi_dev
-  username: root
+  database: db/development.sqlite3
 
 test:
   <<: *local_settings  
-  database: rabotnegi_test
-  username: root
+  database: db/test.sqlite3
 
 testreal:
   <<: *local_settings  
-  database: rabotnegi_test
-  username: root
+  database: db/test.sqlite3
   
 staging:
-  adapter: mysql2
-  socket: /var/run/mysqld/mysqld.sock
-  database: rabotnegi_stg
-  username: root
-  password: "0000"
-  encoding: utf8
+  <<: *local_settings  
+  database: db/staging.sqlite3
 
 production:
-  adapter: mysql2
-  socket: /var/run/mysqld/mysqld.sock
-  database: rabotnegi_prod
-  username: root
-  password: "0000"
-  encoding: utf8
+  <<: *local_settings  
+  database: db/production.sqlite3

@@ -6,3 +6,4 @@ tmp/*
 db/data/*
 public/assets
 config/secrets.yml
+db/*.sqlite3
