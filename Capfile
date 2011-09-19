@@ -1,5 +1,7 @@
 load 'deploy' if respond_to?(:namespace)
 load 'deploy/assets'
+require 'bundler/capistrano'
+
 Dir['vendor/plugins/*/recipes/*.rb'].each { |plugin| load(plugin) }
 Dir['lib/recipes/*.rb'].each { |recipe| load(recipe) }
 
@@ -27,8 +29,8 @@ server host, :web, :app, :db, :primary => true
 set :passenger_config_path, "/etc/apache2/sites-available/#{application}"
 set :logrotate_config_path, "/etc/logrotate.d/#{application}"
 
-after "deploy", "deploy:javascripts"
 after "deploy", "deploy:crontab"
+before "deploy:assets:precompile", "bundle:install"
 
 # deploy
 #   update
