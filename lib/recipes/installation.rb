@@ -19,8 +19,6 @@ end
 
 task(:r) { run_rake ENV['T'], ENV['P'] }
 
-# task(:fix_permissions) { run "chown -R #{runner}:#{runner} #{current_path}/ #{shared_path}/log #{shared_path}/pids" }
-
 task :script do
   run "#{current_path}/script/rails runner -e #{rails_env} #{current_path}/script/#{ENV["S"]}.rb"
 end
@@ -33,10 +31,6 @@ namespace :deploy do
   task(:crontab) do
     run "erb #{current_path}/config/crontab.erb > #{current_path}/config/crontab"
     sudo "cp #{current_path}/config/crontab /etc/cron.d/#{application}"
-  end
-
-  task(:javascripts) do
-    run "cd #{release_path}; RAILS_ENV=#{rails_env} bundle exec rake assets:precompile"
   end
 end
 
