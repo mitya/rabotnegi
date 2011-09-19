@@ -7,5 +7,5 @@
       th Состояние
   - for model in @models
     tr{class=classes_from(finished: model.finished?)}
-      td= link_to f(model.created_at), url(:admin_vacancy_loading, model)
+      td= link_to f(model.created_at), url(:admin, model)
       td= model.state

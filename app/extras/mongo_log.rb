@@ -56,5 +56,9 @@ module MongoLog
       query = Regexp.new("^" + query, true)
       any_of({title: query}, {puid: query})
     end
+    
+    def self.model_name
+      @model_name ||= ActiveModel::Name.new(self, MongoLog)
+    end    
   end
 end

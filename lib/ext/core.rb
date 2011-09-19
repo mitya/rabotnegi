@@ -50,7 +50,9 @@ module Kernel
 end
 
 class Object
-  alias is? is_a?
+  def is?(*types)
+    types.any? { |type| self.is_a?(type) }
+  end
 end
 
 class Hash

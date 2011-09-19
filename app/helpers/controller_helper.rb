@@ -2,7 +2,6 @@
 
 module ControllerHelper
   OrderParam = :sort
-  RoutePrefixes = Set.new([:edit, :edit_admin, :admin])
   
   def employer_home_path
     current_employer ? employer_vacancies_path : employer_root_path
@@ -65,6 +64,8 @@ module ControllerHelper
   end
 
   def url(*args)
-    quick_route(*args) || (args.first.is?(Symbol) ? send("#{args.shift}_path", *args) : polymorphic_path(args))
+    __l args, args.first.is?(Symbol, MongoModel), args.second.is?(MongoModel)
+    quick_route(*args) || 
+      (args.first.is?(Symbol, Mongoid::Document) && args.second.is?(Mongoid::Document) ? polymorphic_path(args) : send("#{args.shift}_path", *args))
   end
 end
