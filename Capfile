@@ -28,6 +28,7 @@ server host, :web, :app, :db, :primary => true
 
 set :passenger_config_path, "/etc/apache2/sites-available/#{application}"
 set :logrotate_config_path, "/etc/logrotate.d/#{application}"
+set :nginx_config_path, "/opt/nginx/conf/sites/#{application}"
 
 after "deploy", "deploy:crontab"
 before "deploy:assets:precompile", "bundle:install"

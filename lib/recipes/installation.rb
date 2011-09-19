@@ -82,7 +82,7 @@ namespace :install do
     gems
     mysql
     deploy.migrate
-    passenger
+    apache
     logrotate
   end
 
@@ -119,8 +119,49 @@ namespace :install do
   task :mysql do
     run_rake "db:create"
   end
+
+  task :nginx do
+    domain = host.sub('www.', '')
+    config = <<-end
+      server {
+        listen 80;
+        server_name #{domain};
+        root #{current_path}/public;
+        passenger_enabled on;
+        passenger_min_instances 1;
+        rails_env #{rails_env};
+
+        error_log  #{current_path}/log/error.log notice;
+        access_log #{current_path}/log/access.log combined;
+        
+        gzip             on;
+        gzip_types       text/plain text/css text/javascript application/xml application/javascript application/x-javascript;
+        gzip_min_length  512;
+        gzip_disable     "msie6";
+        
+        location ~ ^/(assets)/ {
+          gzip_static on;
+          expires 1y;
+          add_header Cache-Control public;
+          access_log #{current_path}/log/assets.log combined;
+        }
+      }
+      
+      server {
+        server_name www.#{domain};
+        rewrite ^ $scheme://#{domain}$uri permanent;
+      }
+      
+      passenger_pre_start http://#{host}/;
+    end
+
+    sudo "touch #{nginx_config_path}"
+    sudo "chown #{user}:#{user} #{nginx_config_path}"
+    put config, nginx_config_path
+    sudo "/opt/nginx/sbin/nginx -s reload"
+  end
   
-  task :passenger do
+  task :apache do
     domain = host.sub('www.', '')
     config = <<-end
       <VirtualHost *:80>
@@ -129,6 +170,19 @@ namespace :install do
         RailsEnv #{rails_env}
         ErrorLog  #{current_path}/log/error.log
         CustomLog #{current_path}/log/access.log combined
+        
+        <Location /assets/>
+          Header unset Last-Modified
+          Header unset ETag
+          FileETag None
+          ExpiresActive On
+          ExpiresDefault "access plus 1 year"
+        
+          # precompress gz files
+          # 2 lines to serve pre-gzipped version
+          RewriteCond %{REQUEST_FILENAME}.gz -s
+          RewriteRule ^(.+) $1.gz [L]
+        </Location>
       </VirtualHost>      
 
       <VirtualHost *:80>
@@ -142,7 +196,7 @@ namespace :install do
     sudo "touch #{passenger_config_path}"
     sudo "chown #{user}:#{user} #{passenger_config_path}"
     put config, passenger_config_path
-    sudo "a2enmod rewrite"
+    sudo "a2enmod rewrite headers expires"
     sudo "a2ensite #{application}"
     sudo "/etc/init.d/apache2 reload"
   end
