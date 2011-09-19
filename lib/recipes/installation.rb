@@ -36,7 +36,7 @@ namespace :deploy do
   end
 
   task(:javascripts) do
-    run_rake "barista:brew"
+    run "cd #{release_path}; RAILS_ENV=#{rails_env} bundle exec rake assets:precompile"
   end
 end
 
