@@ -33,5 +33,9 @@ module RabotaRu
     def finished?
       state == 'finished'
     end
+    
+    def self.model_name
+      @model_name ||= ActiveModel::Name.new(self, RabotaRu)
+    end
   end
 end

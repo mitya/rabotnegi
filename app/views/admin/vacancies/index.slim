@@ -10,7 +10,7 @@
       th
   - for vacancy in @vacancies
     tr{id="vacancy_#{vacancy.id}" class=cycle('', 'alt')}
-      td.title= link_to raw(vacancy.title), url(:admin_vacancy, vacancy)
+      td.title= link_to raw(vacancy.title), url(:admin, vacancy)
       td.employer= raw vacancy.employer_name
       td= f vacancy.updated_at
       td.actions
