@@ -49,6 +49,10 @@ module Kernel
   end
 end
 
+class Object
+  alias is? is_a?
+end
+
 class Hash
   def append_string(key, text)
     self[key] ||= ""

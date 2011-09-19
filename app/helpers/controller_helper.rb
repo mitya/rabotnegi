@@ -53,12 +53,18 @@ module ControllerHelper
     field.to_s == current_field ? "sorted" : ""
   end  
 
-  def url(route_name, *args)
-    route_name = "#{route_name}_#{args.first.class.model_name.singular}" if RoutePrefixes.include?(route_name)
-    
-    case route_name.to_s
-    when "vacancy" then "/vacancies/#{args.first.slug}"
-    else send("#{route_name}_path", *args)
+  def quick_route(*args)
+    case when args.first == :vacancy then "/vacancies/#{args.second.slug}"
+      when args.first.is?(Vacancy) then "/vacancies/#{args.first.slug}"
+      else nil
     end
+  end
+
+  def absolute_url(*args)
+    "#{request.scheme}://#{request.host_with_port}#{url(*args)}"
+  end
+
+  def url(*args)
+    quick_route(*args) || (args.first.is?(Symbol) ? send("#{args.shift}_path", *args) : polymorphic_path(args))
   end
 end
