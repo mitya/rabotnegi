@@ -82,7 +82,7 @@ namespace :install do
     gems
     mysql
     deploy.migrate
-    apache
+    nginx
     logrotate
   end
 
@@ -152,7 +152,7 @@ namespace :install do
         rewrite ^ $scheme://#{domain}$uri permanent;
       }
       
-      passenger_pre_start http://#{host}/;
+      passenger_pre_start http://#{domain};
     end
 
     sudo "touch #{nginx_config_path}"
