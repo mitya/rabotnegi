@@ -1,7 +1,7 @@
 module Mai
   module_function
   
-  def write_file(path, data)
+  def write_file(path, data = nil)
     File.open(path, 'w') { |file| file << data }
   end
   

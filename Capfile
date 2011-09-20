@@ -31,6 +31,7 @@ set :logrotate_config_path, "/etc/logrotate.d/#{application}"
 set :nginx_config_path, "/opt/nginx/conf/sites/#{application}"
 
 after "deploy", "deploy:crontab"
+after "deploy:update_code", "deploy:update_custom_symlinks"
 before "deploy:assets:precompile", "bundle:install"
 
 # deploy

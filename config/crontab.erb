@@ -6,5 +6,5 @@
 # job_type :runner,  "cd :path && script/rails runner -e :environment ':task' :output"
 # m h dom mon dow user command
 
-30	3	*	*	*	<%= @user %> cd <%= @path %> && script/rails runner -e production "RabotaRu.load" &> <%= @path %>/log/cron-loading.log
-30	4	*	*	*	<%= @user %> cd <%= @path %> && script/rails runner -e production "Vacancy.cleanup" &> <%= @path %>/log/cron-cleanup.log
+30 3 * * *	<%= @user %> cd <%= @path %> && script/rails runner -e production "RabotaRu.load" &> <%= @path %>/log/cron-loading.log
+30 * * * *	<%= @user %> cd <%= @path %> && script/rails runner -e production "Vacancy.cleanup" &> <%= @path %>/log/cron-cleanup.log

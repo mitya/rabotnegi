@@ -30,6 +30,13 @@ namespace :deploy do
     run "erb #{current_path}/config/crontab.erb > #{current_path}/config/crontab"
     sudo "cp #{current_path}/config/crontab /etc/cron.d/#{application}"
   end
+  
+  task(:update_custom_symlinks) do
+    run <<-CMD
+      rm -rf #{latest_release}/data
+      ln -s #{shared_path}/data #{latest_release}/data
+    CMD
+  end
 end
 
 namespace :log do
