@@ -64,10 +64,10 @@ class RabotaRu::VacancyLoader
     log.info :start
 
     log.run self, :load_to_files unless @remote == false
-    # log.run self, :convert
-    # log.run self, :remove_duplicates
-    # log.run self, :filter
-    # log.run self, :save
+    log.run self, :convert
+    log.run self, :remove_duplicates
+    log.run self, :filter
+    log.run self, :save
     
     log.info :finish
   end
@@ -86,6 +86,7 @@ class RabotaRu::VacancyLoader
         json_data = mai.http_get('www.rabota.ru', url)
         mai.write_file("#{work_directory}/#{city.code}-#{industry.code}.json", json_data)
         log.add city.code, industry.code, response_size: json_data.size, env: {url: url}
+        # log.info :load_to_files, city.code, industry.code, response_size: json_data.size, env: {url: url}
       end
     end
   end
