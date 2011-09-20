@@ -79,9 +79,7 @@ class Vacancy < MongoModel
   end    
   
   def self.cleanup
-    MongoLog.write("cleaner", :info, "Test at #{Time.now}")
-    mai.write_file(Rails.root.join("data/cleanup-#{Time.now.to_s(:number)}.txt"))
-    # where(:updated_at.lt => 2.weeks.ago).destroy
+    where(:updated_at.lt => 2.months.ago).destroy
   end
   
   def self.get(id)
