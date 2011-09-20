@@ -33,7 +33,7 @@ namespace :deploy do
   
   task(:update_custom_symlinks) do
     run <<-CMD
-      rm -rf #{latest_release}/data
+      rm -rf #{latest_release}/data &&
       ln -s #{shared_path}/data #{latest_release}/data
     CMD
   end
