@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.0'
+gem 'rack' , '1.3.3'
+gem 'rails', '3.1.1'
 gem 'sqlite3'
 gem "bson_ext" # for mongoid
 gem "mongoid"
@@ -15,6 +16,9 @@ group :development, :test, :testreal do
   gem 'ruby-prof'
   gem 'test-unit'
   gem "factory_girl"
+  gem 'capybara'
+  gem 'capybara-webkit'
+  gem 'launchy'
 end
 
 group :assets do

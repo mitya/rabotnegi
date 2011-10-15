@@ -15,6 +15,12 @@ module Testing
       Object.const_set((name.to_s.tr_s(' :', '_') + 'Test').classify, test_case)
       test_case.class_eval(&block)
     end    
+
+    def web_test(name, &block)
+      test_case = Class.new(WebTest)
+      Object.const_set((name.to_s.tr_s(' :', '_') + 'WebTest').classify, test_case)
+      test_case.class_eval(&block)
+    end
   end
   
   module TestHelpers
@@ -64,3 +70,17 @@ class ActiveSupport::TestCase
 end
 
 raise "No vacancies in the database" if Rails.env.testreal? && Vacancy.count < 100
+
+require 'capybara/rails'
+Capybara.javascript_driver = :webkit
+
+class WebTest < ActionDispatch::IntegrationTest
+  include Capybara::DSL
+
+  def method_missing(method, *args, &block)
+    return super unless method.to_s.starts_with?("assert_")
+    predicate = method.to_s.sub(/^assert_/, '') + '?'
+    return super unless page.respond_to?(predicate)
+    assert page.send(predicate, *args, &block), "Failure: page.#{predicate}#{args.inspect}"
+  end
+end
