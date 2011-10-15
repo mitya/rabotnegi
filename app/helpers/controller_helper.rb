@@ -64,7 +64,6 @@ module ControllerHelper
   end
 
   def url(*args)
-    __l args, args.first.is?(Symbol, MongoModel), args.second.is?(MongoModel)
     quick_route(*args) || 
       (args.first.is?(Symbol, Mongoid::Document) && args.second.is?(Mongoid::Document) ? polymorphic_path(args) : send("#{args.shift}_path", *args))
   end

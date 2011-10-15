@@ -37,3 +37,12 @@ namespace :dev do
     system "rm -rf #{Rails.root}/public/vacancies"
   end
 end
+
+namespace :test do
+  Rake::TestTask.new(:web) do |t|
+    t.libs << "test"
+    t.pattern = 'test/web/**/*_test.rb'
+    t.verbose = true
+    t.options = "--verbose=verbose"
+  end
+end
