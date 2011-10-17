@@ -6,7 +6,7 @@
 
 - if @vacancies
   - if @vacancies.any?
-    .search-result-message= found_objects_info(@vacancies, 'ваканс', 'ия', 'ии', 'ий') + "."
+    p.search-result-message= found_objects_info(@vacancies, 'ваканс', 'ия', 'ии', 'ий') + "."
 
     = render "list", collection: @vacancies
 

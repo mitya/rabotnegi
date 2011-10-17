@@ -69,7 +69,7 @@ namespace :data do
   
   task :restore do
     workdir = Dir.pwd
-    system "cd tmp/dump/rabotnegi_demo && tar cj * > #{workdir}/tmp/localdump.tbz"
+    system "cd tmp/dump/rabotnegi_dev && tar cj * > #{workdir}/tmp/localdump.tbz"
     upload "tmp/localdump.tbz", "#{current_path}/tmp/localdump.tbz"
     run "rm -rf #{current_path}/tmp/localdump"
     run "mkdir -p #{current_path}/tmp/localdump"

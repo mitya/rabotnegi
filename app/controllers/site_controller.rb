@@ -37,6 +37,18 @@ class SiteController < ApplicationController
     render :text => Rails.env
   end
   
+  def info
+    render json: {
+      env: Rails.env,
+      db: Vacancy.db.name,
+      counts: {
+        vacancies: Vacancy.count,
+        events: MongoLog::Item.count,
+        users: User.count
+      } 
+    }
+  end
+  
   def starter
     render text: $0
   end

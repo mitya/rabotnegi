@@ -1,5 +1,4 @@
-ENV["RAILS_ENV"] = "test"
-# ENV["RAILS_ENV"] = "testreal"
+ENV["RAILS_ENV"] = ENV["X_RAILS_ENV"] || "test"
 
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
@@ -66,10 +65,11 @@ class ActiveSupport::TestCase
   teardown do
     Vacancy.delete_all
     User.delete_all
-  end unless Rails.env.testreal?
+  end unless Rails.env.test_real? || Rails.env.test_web?
 end
 
-raise "No vacancies in the database" if Rails.env.testreal? && Vacancy.count < 100
+raise "No vacancies in the database" if Rails.env.test_real? && Vacancy.count < 100
+
 
 require 'capybara/rails'
 Capybara.javascript_driver = :webkit
@@ -83,4 +83,14 @@ class WebTest < ActionDispatch::IntegrationTest
     return super unless page.respond_to?(predicate)
     assert page.send(predicate, *args, &block), "Failure: page.#{predicate}#{args.inspect}"
   end
+  
+  def assert_has_contents(*strings)
+    strings.each { |string| assert_has_content(string) }
+  end
+
+  def assert_has_no_contents(*strings)
+    strings.each { |string| assert_has_no_content(string) }
+  end
+  
+  alias sop save_and_open_page
 end

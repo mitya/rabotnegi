@@ -19,9 +19,13 @@ test:
   <<: *local_settings  
   database: db/test.sqlite3
 
-testreal:
+test_web:
+  <<: *local_settings
+  database: db/test_web.sqlite3
+
+test_real:
   <<: *local_settings  
-  database: db/test.sqlite3
+  database: db/test_real.sqlite3
   
 staging:
   <<: *local_settings  
