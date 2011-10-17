@@ -11,7 +11,7 @@ gem 'rmagick' # for captcha
 gem 'simple_captcha', :git => 'git://github.com/galetahub/simple-captcha.git'
 gem "unicode_utils" # for cyrillic parameterization
 
-group :development, :test, :testreal do
+group :development, :test, :test_real, :test_web do
   gem 'capistrano'
   gem 'ruby-prof'
   gem 'test-unit'

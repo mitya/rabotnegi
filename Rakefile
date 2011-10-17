@@ -12,16 +12,31 @@ namespace :data do
   end
   
   task :dump do
-    sh "mongodump -d rabotnegi_demo -o tmp/dump-#{Time.now.strftime("%Y%m%d-%H%M%S")}"
+    sh "mongodump -d rabotnegi_dev -o tmp/dump-#{Time.now.strftime("%Y%m%d-%H%M%S")}"
   end 
   
   task :clone do
-    source = "rabotnegi_demo"
-    target = "rabotnegi_testreal"
+    source = "rabotnegi_dev"
+    target = "rabotnegi_test_real"
     sh "rm -rf tmp/dbclone/#{source}"
     sh "mongodump -d #{source} -o tmp/dbclone"
     sh "mongorestore -d #{target} --drop tmp/dbclone/#{source}"
     sh "rm -rf tmp/dbclone/#{source}"
+  end
+  
+  # rake data:seed[web]
+  # rails runner -e test_web test/fixtures/data.rb
+  task :seed, [:dataset_name] => [:environment] do |t, args|
+    file = case args.dataset_name
+      when 'web' then "test/fixtures/data.rb"
+    end
+    [Vacancy, User, MongoLog::Item].each(&:delete_all)
+    load(file)
+    puts "Seeded #{Rails.env} - #{{vacancies: Vacancy.count, users: User.count}.inspect}"
+  end
+  
+  task :restore_dev do
+    sh "mongorestore -d rabotnegi_dev --drop #{ENV['src']}"
   end
 end
 
@@ -39,10 +54,18 @@ namespace :dev do
 end
 
 namespace :test do
-  Rake::TestTask.new(:web) do |t|
+  task :web do
+    sh "rake test:web_internal X_RAILS_ENV=test_web"
+  end
+
+  Rake::TestTask.new(:web_internal) do |t|
     t.libs << "test"
     t.pattern = 'test/web/**/*_test.rb'
     t.verbose = true
     t.options = "--verbose=verbose"
+  end
+  
+  task :web_seed do
+    sh "rake data:seed[web] RAILS_ENV=test_web"
   end
 end

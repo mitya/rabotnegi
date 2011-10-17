@@ -8,19 +8,23 @@ defaults: &defaults
 
 development:
   <<: *defaults
-  database: rabotnegi_demo
+  database: rabotnegi_dev
 
 devcache:
   <<: *defaults
-  database: rabotnegi_demo
+  database: rabotnegi_dev
 
 test:
   <<: *defaults
   database: rabotnegi_test
 
-testreal:
+test_web:
   <<: *defaults
-  database: rabotnegi_testreal
+  database: rabotnegi_test_web
+
+test_real:
+  <<: *defaults
+  database: rabotnegi_test_real
 
 staging:
   host: localhost
