@@ -46,6 +46,16 @@ class WebTest < ActionDispatch::IntegrationTest
     assert_match string, find("title").text
   end
   
+  def assert_has_class(target, klass)
+    target = find(target) unless target.is?(Capybara::Node::Element)
+    assert_match /\b#{klass}\b/, target[:class]
+  end
+  
+  def assert_has_no_class(target, klass)
+    target = find(target) unless target.is?(Capybara::Node::Element)
+    assert_no_match(/\b#{klass}\b/, target[:class])
+  end
+  
   def visit_link(locator)
     link = find_link(locator)
     assert_not_nil link, "Link [#{locator}] is not found"

@@ -90,9 +90,9 @@ web_test "Vacancies" do
     fill "Описание", "ла-ла-ла-ла надо нам е-щёёё бабла"
     
     click_button "Опубликовать"
-
+  
     assert_has_content "Вакансия опубликована"
-
+  
     vacancy = Vacancy.last
     assert_equal title, vacancy.title
     assert_equal "msk", vacancy.city
@@ -100,12 +100,12 @@ web_test "Vacancies" do
     assert_equal "СтройНам", vacancy.employer_name
     assert_equal "ла-ла-ла-ла надо нам е-щёёё бабла", vacancy.description
     assert_equal Salary.make(exact: 30_000), vacancy.salary
-
+  
     assert_title_like title
     assert_has_content title
     assert_has_content "ла-ла-ла-ла надо нам е-щёёё бабла"
   end
-
+  
   test "post invalid data" do
     title = "Негр ##{mai.timestamp_string}"
     
@@ -114,5 +114,31 @@ web_test "Vacancies" do
     
     assert_has_content "Вы что-то неправильно заполнили"
     within(".errors") { assert_has_content "Должность" }
+  end
+  
+  test "favorites" do
+    record = Vacancy.where(title: "JavaScript Developer", city: 'spb').first
+    row = "#v-#{record.id}"
+    User.last.update_attributes(favorite_vacancies: [])
+    
+    visit "/vacancies"
+  
+    pick 'Город', 'Санкт-Петербург'
+    pick 'Отрасль', 'Информационные технологии'
+    click_button "Найти"
+    
+    assert_equal [], User.last.favorite_vacancies
+    
+    assert_has_no_class find(row + " .star")  , "star-enabled"
+    find(row + " .star").click
+    assert_has_class find(row + " .star")  , "star-enabled"
+    
+    assert_equal [record.id], User.last.favorite_vacancies
+    
+    visit favorite_worker_vacancies_path
+    in_content do
+      assert_has_selector "tr.entry-header", count: 1
+      assert_has_content "JavaScript Developer"
+    end
   end
 end
