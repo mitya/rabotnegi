@@ -3,7 +3,9 @@ module LogFilter
      "SHOW FIELDS",
      "SET NAMES",
      "SET SQL_AUTO_IS_NULL",
-   ]
+     "Served asset",
+     'Started GET "/assets/'
+  ]
 
   class ::ActiveSupport::BufferedLogger
     alias add_without_filter add
