@@ -2,7 +2,7 @@ Rabotnegi::Application.configure do
   config.cache_classes = false
   config.whiny_nils = true
   config.consider_all_requests_local = true
-  config.action_controller.perform_caching             = false
+  config.action_controller.perform_caching = false
   config.action_mailer.raise_delivery_errors = false
 
   # Print deprecation notices to the Rails logger
@@ -10,6 +10,7 @@ Rabotnegi::Application.configure do
   config.log_level = :debug
 
   # Only use best-standards-support built into browsers
+  config.action_dispatch.show_exceptions = true
   config.action_dispatch.best_standards_support = :builtin
 
   config.assets.compress = false

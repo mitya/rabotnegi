@@ -39,7 +39,7 @@ module ModelHelper
   end
   
   def back_to_all_vacancies_url_for(vacancy)
-    request.referer =~ /vacancies/ ? :back : vacancies_path(vacancy.city, vacancy.industry)
+    request.referer =~ /vacancies/ ? :back : url(:nice_vacancies, vacancy.city, vacancy.industry)
   end  
     
   def resumes_page_title

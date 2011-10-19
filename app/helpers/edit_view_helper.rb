@@ -16,8 +16,8 @@ module EditViewHelper
     return '' if object.errors.empty?
         
     header_message = options.delete(:header_message) || translate("activerecord.errors.template.header")
-    error_messages = object.errors.each_pair.map do |attr, messages|
-      translate("errors.#{object.class.model_name.plural}.#{attr}", :default => messages.to_sentence)
+    error_messages = object.errors.map do |attr, message|
+      translate("errors.#{object.class.model_name.plural}.#{attr}", :default => message)
     end
 
     render "shared/errors", :header => header_message, :errors => error_messages

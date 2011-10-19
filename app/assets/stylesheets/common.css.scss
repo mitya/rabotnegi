@@ -87,8 +87,8 @@ form.front { margin-top: 50px; }
 }
 
 
-div.message { text-align: center; font-weight: bold; padding: 8px; margin: 8px 0 8px; }
-div.warning { background: gold; }
+div.message, p.message { text-align: center; font-weight: bold; padding: 8px; margin: 8px 0 8px; }
+div.warning, p.warning { background: gold; }
 
 .clear { clear: both; }
 .centered { margin: 0 auto; }

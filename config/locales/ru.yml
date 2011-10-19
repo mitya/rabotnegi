@@ -1,5 +1,5 @@
 ru:
-  activerecord:
+  active_record:
     attributes:
       resume:
         fname: Имя
