@@ -11,13 +11,13 @@ namespace :data do
     sh "mysqldump jobs_prod -h rabotnegi.ru -u admin -p123 | bzip2 -c > db#{Time.now.strftime('%Y%m%d-%H%M')}.sql.bz"
   end
   
-  # rake data:dump DEST=/Users/Dima/Desktop/ DB=rabotnegi_stg
+  # rake data:dump dest=/Users/Dima/Desktop/ db=rabotnegi_dev
   task :dump do
-    db = ENV['DB'] || 'rabotnegi_dev'
-    dest = ENV['DEST'] || "."
+    db = ENV['db']
+    dest = ENV['dest']
     num = Time.now.strftime("%Y%m%d-%H%M%S")
     
-    sh "mongodump -d rabotnegi_dev -o tmp/dump-#{num}"
+    sh "mongodump -d #{db} -o tmp/dump-#{num}"
     sh "tar -C tmp -cj dump-#{num} > #{dest}/dump-#{num}.tbz"
     sh "rm -rf tmp/dump-#{num}"
   end 
