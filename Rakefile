@@ -11,7 +11,9 @@ namespace :data do
     sh "mysqldump jobs_prod -h rabotnegi.ru -u admin -p123 | bzip2 -c > db#{Time.now.strftime('%Y%m%d-%H%M')}.sql.bz"
   end
   
-  # rake data:dump dest=/Users/Dima/Desktop/ db=rabotnegi_dev
+  # cap rrake X="data:dump dest=/apps/data db=rabotnegi_prod"
+  # rake data:dump dest=/apps/data db=rabotnegi_prod
+  # scp rba:/apps/data/dump-latest.tbz ~/desktop
   task :dump do
     db = ENV['db']
     dest = ENV['dest']
@@ -19,7 +21,8 @@ namespace :data do
     
     sh "mongodump -d #{db} -o tmp/dump-#{num}"
     sh "tar -C tmp -cj dump-#{num} > #{dest}/dump-#{num}.tbz"
-    sh "rm -rf tmp/dump-#{num}"
+    sh "rm -rf tmp/dump-#{num} #{dest}/dump-latest.tbz"
+    sh "ln -s #{dest}/dump-#{num}.tbz #{dest}/dump-latest.tbz"
   end 
   
   task :clone do
