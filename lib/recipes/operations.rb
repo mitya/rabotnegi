@@ -1,4 +1,4 @@
-def rake(command)
+def drake(command)
   # sudo_modifier = "#{sudo :as => options[:sudo]}" if options[:sudo]
   sudo_modifier = nil
   run "cd #{current_path} && #{sudo_modifier} RAILS_ENV=#{rails_env} rake #{command}"
@@ -16,7 +16,7 @@ def print_log(path)
   puts capture("tail -n #{ENV['N'] || 200} #{path}")
 end
 
-task(:rrake) { rake ENV["X"] }
+task(:crake) { drake ENV["TASK"] }
 
 task :script do
   run "#{current_path}/script/rails runner -e #{rails_env} #{current_path}/script/#{ENV["S"]}.rb"
@@ -58,7 +58,13 @@ end
 
 namespace :data do
   task :backup do
-    rake "data:dump dest=/apps/data db=rabotnegi_prod"
+    drake "data:dump dest=/apps/data db=rabotnegi_prod"
+  end
+  
+  task :backup_cleanup do
+    backups = capture("ls -x /apps/data/dump-*-*.tbz").split.sort
+    olds = (backups - backups.last(1)).join(" ")
+    run "rm -rf #{olds}"
   end
   
   task :dump do

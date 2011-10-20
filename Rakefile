@@ -11,7 +11,7 @@ namespace :data do
     sh "mysqldump jobs_prod -h rabotnegi.ru -u admin -p123 | bzip2 -c > db#{Time.now.strftime('%Y%m%d-%H%M')}.sql.bz"
   end
   
-  # cap rrake X="data:dump dest=/apps/data db=rabotnegi_prod"
+  # cap crake TASK="data:dump dest=/apps/data db=rabotnegi_prod"
   # rake data:dump dest=/apps/data db=rabotnegi_prod
   # scp rba:/apps/data/dump-latest.tbz ~/desktop
   task :dump do

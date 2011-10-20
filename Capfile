@@ -17,7 +17,7 @@ set :keep_releases, 3
 set :use_sudo, false
 set :rails_env, ENV['E'] == 'stg' ? :staging : :production
 set :sudo_prompt, "xxxx-xxxx"
-set :bundle_without, [:development, :test, :test_real, :test_web]
+set :bundle_without, [:development, :test]
 # set :shared_children, fetch(:shared_children) + %w(sphinx config)
 # set :ssh_options, {:keys => ["/users/dima/.ssh/id_rsa"]}
 
@@ -44,3 +44,10 @@ before "deploy:assets:precompile", "bundle:install"
 #   restart
 
 # cap r T=vacancies:load P="REMOTE=false"
+# cap crake TASK="vacancies:load REMOTE=false"
+
+
+task :foo do
+  puts capture("ls -x #{releases_path}")
+  p capture("ls -x /apps/data").split.sort
+end
