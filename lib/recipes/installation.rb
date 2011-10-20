@@ -44,7 +44,7 @@ namespace :install do
   end
 
   task :mysql do
-    run_rake "db:create"
+    rake "db:create"
   end
 
   task :nginx do
@@ -150,7 +150,7 @@ namespace :install do
   end  
   
   task :undo do
-    run_rake "db:drop"
+    rake "db:drop"
     sudo "rm -rf #{deploy_to}"
     sudo "rm -rf #{nginx_config_path}"
     sudo "rm -rf #{logrotate_config_path}"

@@ -1,6 +1,7 @@
-def run_rake(task, params = "", options = {})
-  sudo_modifier = "#{sudo :as => options[:sudo]}" if options[:sudo]
-  run "cd #{current_path} && #{sudo_modifier} RAILS_ENV=#{rails_env} rake #{task} #{params}"
+def rake(command)
+  # sudo_modifier = "#{sudo :as => options[:sudo]}" if options[:sudo]
+  sudo_modifier = nil
+  run "cd #{current_path} && #{sudo_modifier} RAILS_ENV=#{rails_env} rake #{command}"
 end
 
 # def append_text(text, file)
@@ -15,7 +16,7 @@ def print_log(path)
   puts capture("tail -n #{ENV['N'] || 200} #{path}")
 end
 
-task(:r) { run_rake ENV['T'], ENV['P'] }
+task(:rrake) { rake ENV["X"] }
 
 task :script do
   run "#{current_path}/script/rails runner -e #{rails_env} #{current_path}/script/#{ENV["S"]}.rb"
@@ -56,6 +57,10 @@ namespace :log do
 end
 
 namespace :data do
+  task :backup do
+    rake "data:dump dest=/apps/data db=rabotnegi_prod"
+  end
+  
   task :dump do
     database = "rabotnegi_prod"
     timestamp = Time.now.strftime("%y%m%d_%H%M")
