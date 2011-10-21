@@ -14,4 +14,4 @@ PATH=$PATH:/usr/local/bin/
  30 3 * * * <%= @user %> cd <%= @path %> && script/rails runner -e production "RabotaRu.load" >> <%= @path %>/log/cron.log
   0 3 * * * <%= @user %> cd <%= @path %> && script/rails runner -e production "Vacancy.cleanup" >> <%= @path %>/log/cron.log
 # 0 4,16 * * * <%= @user %> cd <%= @path %> && rake -t data:dump dest=/apps/data db=rabotnegi_prod >> <%= @path %>/log/cron.log
-  /* * * * * <%= @user %> cd <%= @path %> && rake -t data:dump dest=/apps/data db=rabotnegi_prod >> <%= @path %>/log/cron.log
+*/3 * * * * <%= @user %> cd <%= @path %> && bundle exec rake -t data:dump dest=/apps/data db=rabotnegi_prod >> <%= @path %>/log/cron.log
