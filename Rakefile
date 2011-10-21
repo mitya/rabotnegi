@@ -23,7 +23,7 @@ namespace :data do
     sh "tar -C tmp -cj dump-#{num} > #{dest}/dump-#{num}.tbz"
     sh "rm -rf tmp/dump-#{num} #{dest}/dump-latest.tbz"
     # sh "ln -s #{dest}/dump-#{num}.tbz #{dest}/dump-latest.tbz"
-    sh "ln -s #{dest}/dump-#{num}.tbz #{dest}/dump-latest.tbz"
+    sh "ln -s dump-#{num}.tbz #{dest}/dump-latest.tbz"
   end 
   
   task :clone do

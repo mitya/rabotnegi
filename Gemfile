@@ -10,6 +10,7 @@ gem 'sass-rails'
 gem 'rmagick' # for captcha
 gem 'simple_captcha', :git => 'git://github.com/galetahub/simple-captcha.git'
 gem "unicode_utils" # for cyrillic parameterization
+gem "therubyracer" # weird bugs otherwise
 
 group :development, :test do
   gem 'capistrano'
