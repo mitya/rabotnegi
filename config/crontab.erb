@@ -9,9 +9,8 @@
 # */d
 
 MAILTO=dmitry.sokurenko@gmail.com
-PATH=$PATH:/usr/local/bin/
+PATH=$PATH:/usr/local/bin/:/usr/bin:/bin
 
  30 3 * * * <%= @user %> cd <%= @path %> && script/rails runner -e production "RabotaRu.load" >> <%= @path %>/log/cron.log
   0 3 * * * <%= @user %> cd <%= @path %> && script/rails runner -e production "Vacancy.cleanup" >> <%= @path %>/log/cron.log
-# 0 4,16 * * * <%= @user %> cd <%= @path %> && rake -t data:dump dest=/apps/data db=rabotnegi_prod >> <%= @path %>/log/cron.log
-*/3 * * * * <%= @user %> cd <%= @path %> && bundle exec rake -t data:dump dest=/apps/data db=rabotnegi_prod >> <%= @path %>/log/cron.log
+  0 4,16 * * * <%= @user %> cd <%= @path %> && rake -t data:dump dest=/apps/data db=rabotnegi_prod >> <%= @path %>/log/cron.log
