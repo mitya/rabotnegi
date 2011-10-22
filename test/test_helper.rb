@@ -18,6 +18,7 @@ class ActiveSupport::TestCase
   self.use_transactional_fixtures = true  
   self.use_instantiated_fixtures  = false
 
+  include ActionMailer::TestHelper
   include Testing::TestHelpers
   include Testing::Assertions
   extend Testing::CaseHelpers
