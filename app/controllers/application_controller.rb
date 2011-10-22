@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
     flash[:error] = "К сожалению, то что вы искали, мы уже куда-то похерили. Если оно вообще здесь было."
     redirect_to '/'
   }
-  rescue_from Exception, :with => :handle_unexpected_exception # unless Rails.env.development?
+  rescue_from Exception, :with => :handle_unexpected_exception
   
   helper :all
   before_filter :set_locale
@@ -111,6 +111,9 @@ protected
   end
   
   def handle_unexpected_exception(exception)
+    return if Rails.env.development?
+    return if Rails.env.test?
+    
     logger.error "UNEXPECTED ERROR: #{exception}"
     logger.error exception.backtrace.last(5).join("\n")
   

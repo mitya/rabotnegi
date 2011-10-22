@@ -17,6 +17,8 @@ class Err
   field :backtrace
   
   index :created_at
+  
+  validates_presence_of :exception_class
 
   def notify
     # send email to the admin about itself
@@ -29,24 +31,12 @@ class Err
 
   def self.register(data)
     # log error to the database
-    err = create!(
-      controller: controller_name, 
-      action: action_name, 
-      url: request.url, 
-      verb: request.method,
-      host: Socket.gethostname, 
-      session: session, 
-      params: params.except(:controller, :action), 
-      exception_class: exception.class.name,
-      exception_message: exception.message,
-      cookies: cookies.to_a.map(&:first),
-      backtrace: exception.backtrace.join("\n"),
-      request_headers: request.env.slice(*request.class::ENV_METHODS),
-      response_headers: response.headers
-    )
+    err = create!(data)
     
     # send a notifications if there were less than X emails already sent this hour
     err.notify if where(:created_at.gte => 1.hour.ago).count < MAX_ERR_NOTIFICATIONS_PER_HOUR
+
+    err
 
   rescue => e
     logger.error "ERROR IN ERROR LOGGING: #{e}"
