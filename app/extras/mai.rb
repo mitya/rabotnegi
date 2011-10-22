@@ -42,6 +42,14 @@ module Mai
     subscribe(/#{namespace}\.(#{events.join('|')})/, &block)
   end
   
+# random things
+
+  def unescape_action_mailer_stuff(string)
+    string.gsub("&#47;", '/').gsub("&amp;", '&')    
+  end  
+  
+# classes
+  
   class Event
     attr_accessor :title, :started, :ended, :id, :data, :severity, :puid, :brief, :writer
     delegate :memo, :memo=, :to => :writer, :allow_nil => true
