@@ -11,8 +11,6 @@ Rabotnegi::Application.configure do
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
   
-  GOOGLE_ANALYTICS_ID = "UA-1612812-2"
-
   # Specifies the header that your server uses for sending files
   config.action_dispatch.x_sendfile_header = "X-Sendfile"
 
@@ -45,4 +43,6 @@ Rabotnegi::Application.configure do
   config.assets.compile = true
   config.assets.digest = true
   # config.assets.manifest = YOUR_PATH
+
+  GOOGLE_ANALYTICS_ID = "UA-1612812-2"
 end

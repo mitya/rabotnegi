@@ -11,6 +11,8 @@ class ApplicationController < ActionController::Base
     flash[:error] = "К сожалению, то что вы искали, мы уже куда-то похерили. Если оно вообще здесь было."
     redirect_to '/'
   }
+  rescue_from Exception, :with => :handle_unexpected_exception # unless Rails.env.development?
+  
   helper :all
   before_filter :set_locale
   
@@ -107,4 +109,29 @@ protected
     define_method(:model_name) { model_class.model_name.element }
     define_method(:model_plural) { model_class.model_name.plural }    
   end
+  
+  def handle_unexpected_exception(exception)
+    logger.error "UNEXPECTED ERROR: #{exception}"
+    logger.error exception.backtrace.last(5).join("\n")
+  
+    Err.register(
+      controller: controller_name, 
+      action: action_name, 
+      url: request.url, 
+      verb: request.method,
+      host: Socket.gethostname, 
+      time: Time.current,
+      session: session, 
+      params: params.except(:controller, :action), 
+      exception_class: exception.class.name,
+      exception_message: exception.message,
+      cookies: cookies.to_a.map(&:first),
+      backtrace: exception.backtrace.join("\n"),
+      request_headers: request.env.slice(*request.class::ENV_METHODS),
+      response_headers: response.headers
+    )
+
+    raise exception  
+  end
+  
 end
