@@ -52,4 +52,8 @@ class SiteController < ApplicationController
   def starter
     render text: $0
   end
+  
+  def error
+    raise ArgumentError, "You requested an error!"
+  end  
 end

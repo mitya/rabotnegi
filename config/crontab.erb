@@ -1,16 +1,28 @@
-<% @user = "apprunner" %>
-<% @path = "/apps/rabotnegi_prod/current" %>
+<% 
+  @user = "apprunner"
+  @path = "/apps/rabotnegi_prod/current"
+  @env = 'production'
 
-# copy (not symlink) to /etc/cron.d/rabotnegi
-# job_type :command, ":task :output"
-# job_type :rake,    "cd :path && RAILS_ENV=:environment rake :task :output"
-# job_type :runner,  "cd :path && script/rails runner -e :environment ':task' :output"
-# m h dom mon dow user command
-# */d
+  def rake(task)
+    "#{@user} cd #{@path} && RAILS_ENV=#{@env} bundle exec rake --trace --silent #{task} >> #{@path}/log/cron.log 2>> #{@path}/log/cron-errors.log"
+  end
+
+  def runner(task)
+    "#{@user} cd #{@path} && script/rails runner -e #{@env} #{task} >> #{@path}/log/cron.log 2>> #{@path}/log/cron-errors.log"
+  end
+
+  # copy (not symlink) to /etc/cron.d/rabotnegi
+  # m h dom mon dow user command
+  # */d
+%>
 
 MAILTO=dmitry.sokurenko@gmail.com
 PATH=$PATH:/usr/local/bin/:/usr/bin:/bin
 
- 30 3 * * * <%= @user %> cd <%= @path %> && script/rails runner -e production "RabotaRu.load" >> <%= @path %>/log/cron.log
-  0 3 * * * <%= @user %> cd <%= @path %> && script/rails runner -e production "Vacancy.cleanup" >> <%= @path %>/log/cron.log
-  0 4,16 * * * <%= @user %> cd <%= @path %> && rake -t data:dump dest=/apps/data db=rabotnegi_prod >> <%= @path %>/log/cron.log 2>> <%= @path %>/log/cron-errors.log
+# 30 3 * * * <%= @user %> cd <%= @path %> && script/rails runner -e production "RabotaRu.load" >> <%= @path %>/log/cron.log
+#  0 3 * * * <%= @user %> cd <%= @path %> && script/rails runner -e production "Vacancy.cleanup" >> <%= @path %>/log/cron.log
+#  0 4,16 * * * <%= @user %> cd <%= @path %> && RAILS_ENV=production bundle exec rake --trace --silent data:dump dest=/apps/data db=rabotnegi_prod >> <%= @path %>/log/cron.log 2>> <%= @path %>/log/cron-errors.log
+
+ 30 3 * * * <%= runner "RabotaRu.load" %>
+  0 3 * * * <%= runner "Vacancy.cleanup" %>
+  0 4,16 * * * <%= rake "data:dump dest=/apps/data db=rabotnegi_prod" %>

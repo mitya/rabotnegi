@@ -111,20 +111,22 @@ protected
   end
   
   def handle_unexpected_exception(exception)
-    return if Rails.env.development?
-    return if Rails.env.test?
-    
+    return if Rails.env.test? unless $test_error_reporting_enabled
+  
     logger.error "UNEXPECTED ERROR: #{exception}"
     logger.error exception.backtrace.last(5).join("\n")
-  
+
+    render text: "#{exception}<br>#{exception.backtrace.last(5).join("<br>")}" and return if Rails.env.development?
+
     Err.register(
       controller: controller_name, 
       action: action_name, 
       url: request.url, 
       verb: request.method,
       host: Socket.gethostname, 
-      time: Time.current,
-      session: session, 
+      time: Time.now,
+      session: session.to_hash.except('flash'),
+      flash: flash.to_hash,
       params: params.except(:controller, :action), 
       exception_class: exception.class.name,
       exception_message: exception.message,
