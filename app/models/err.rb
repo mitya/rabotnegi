@@ -1,8 +1,8 @@
 class Err
   include Mongoid::Document
   include Mongoid::Timestamps
-  
-  field :controller 
+
+  field :controller
   field :action
   field :url
   field :verb
@@ -15,9 +15,9 @@ class Err
   field :request_headers, type: Hash
   field :response_headers, type: Hash
   field :backtrace
-  
+
   index :created_at
-  
+
   validates_presence_of :exception_class
 
   def notify
