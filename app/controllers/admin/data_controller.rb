@@ -5,7 +5,9 @@ class  Admin::DataController < ApplicationController
   # collection, ...
   def index
     @metadata = MongoReflector.reflect(params[:collection])
-    @models = @metadata.klass.search(q: params[:q]).paginate(params[:page], 30)
-  end
-  
+    @klass = @metadata.klass
+    @scope = @klass.respond_to?(:query) ? @klass.query(q: params[:q]) : @klass
+    @models = @scope.paginate(params[:page], 30)
+    render :index
+  end  
 end
