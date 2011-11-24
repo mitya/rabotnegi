@@ -114,9 +114,9 @@ protected
     return if Rails.env.test? unless $test_error_reporting_enabled
   
     logger.error "UNEXPECTED ERROR: #{exception}"
-    logger.error exception.backtrace.last(5).join("\n")
+    logger.error exception.backtrace.join("\n")
 
-    render text: "#{exception}<br>#{exception.backtrace.last(5).join("<br>")}" and return if Rails.env.development?
+    render text: "<h2>#{CGI.escape_html(exception.to_s)}</h2><pre>#{exception.backtrace.join("\n")}</pre>" and return if Rails.env.development?
 
     Err.register(
       controller: controller_name, 

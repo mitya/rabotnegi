@@ -1,59 +1,103 @@
 module MongoReflector
   def self.reflect(collection_key)
-    Metadata.new(collection_key)
+    @@klasses.detect { |klass| klass.key.to_s == collection_key.to_s } || Klass.new(collection_key.classify.constantize)
   end
+
+  mattr_accessor :klasses
+  @@klasses = []
+  @@current_class = nil
   
-  class Metadata
-    attr_reader :symbol
-    
-    def initialize(symbol)
-      @symbol = symbol
-    end
-    
-    def klass
-      @klass ||= symbol.to_s.classify.constantize
+  class Klass
+    attr_accessor :reference, :list_fields, :details_fields
+
+    def initialize(reference)
+      @reference = reference
     end
     
     def searchable?
-      klass.respond_to?(:query)
+      reference.respond_to?(:query)
     end
     
-    def fields
-      @fields ||= custom_fields || all_fields
+    def key
+      @reference.name.tableize
     end
     
-    def all_fields
-      klass.fields.map{ |key, fld| fld }.map{ |fld| Field.new(fld.name, fld.options[:type]) }
+    def reference_fields
+      @reference_fields ||= reference.fields.
+        reject { |key, mongo_field| key == '_type' }.
+        map { |key, mongo_field| Field.new(key) }
     end
     
-    def custom_fields
-      selected_fields = DATA.detect{ |k, fields| k == klass }.try(:second)      
-      return nil unless selected_fields
-            
-      selected_fields.map do |fld_name|
-        mongo_field = klass.fields[fld_name.to_s]
-        mongo_field ? Field.new(mongo_field.name, mongo_field.options[:type]) : Field.new(fld_name)
-      end
+    def list_fields
+      @list_fields || reference_fields
+    end 
+    
+    def details_fields
+      @details_fields || reference_fields
     end
   end
   
   class Field
-    attr_reader :name, :kind
-    
-    def initialize(name, kind = nil)
+    attr_accessor :name, :format, :klass
+
+    def initialize(name, options = {})
       @name = name.to_s
-      @kind = kind
+      assign_attributes(options)
+    end
+
+    def title
+      name
     end
     
-    def title
-      name.titleize
+    def inspect
+      "<#{name}, format=#{format}>"
     end
   end
   
+  class << self
+    def desc(klass)
+      @@current_klass = Klass.new(klass)
+      @@klasses << @@current_klass
+      yield
+    end
+
+    def list(*field_specs)          
+      @@current_klass.list_fields = field_specs.map(&method(:convert_field_spec_to_object))
+    end
+
+    def details(*field_specs)
+      @@current_klass.details_fields = field_specs.map(&method(:convert_field_spec_to_object))
+    end
+
+    def convert_field_spec_to_object(spec)
+      if Array === spec
+        format = spec.second
+        spec = spec.first
+      end
+
+      field = Field.new(spec, format: format)
+      field.klass = @@current_klass
+      field
+    end
+  end
   
-  DATA = [
-    [Vacancy, [:id, :industry, :city, :title, :employer_name, :created_at]],
-    [User, [:id, :industry, :city, :ip_address, :browser, :created_at]],
-    [Err, [:created_at, :id, :controller, :action, :url, :exception_class, :exception_message]]
-  ]  
+  desc Vacancy do
+    list :id, :industry, :city, [:title, :link], :employer_name, :created_at
+    details :id, :title, :city_name, :industry, :external_id, :employer_name, :created_at, :updated_at, :salary, :description
+  end    
+
+  desc User do
+    list :id, :industry, :city, :ip_address, :browser, :created_at
+  end
+
+  desc Err do
+    list :created_at, [:id, :link], :controller, :action, :url, :exception_class, :exception_message
+
+    details :id,
+      :created_at, :updated_at, 
+      :controller, :action, :url, :host, :verb, 
+      :exception_class, :exception_message,
+      [:params, :hash], [:session, :hash], [:request_headers, :hash], [:response_headers, :hash], 
+      [:backtrace, :pre]
+  end  
 end

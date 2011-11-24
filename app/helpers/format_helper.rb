@@ -53,14 +53,28 @@ module FormatHelper
   
   alias f format_data
 
-  def reflect_data(data)
-    case data
-      when Time then data.localtime.to_s(:short_date)
-      when Integer then number(data)
-      when BSON::ObjectId then "#{data.to_s.first(8)}...#{data.to_s.last(4)}"
-      when String then raw(truncate(data, length: 60, separator: ' '))
-      else data
-    end    
+  def reflect_data(model, field, options = {})
+    value = model.send(field.name)
+
+    content = case value
+      when Time then value.localtime.to_s(:short_date)
+      when Integer then number(value)
+      when BSON::ObjectId
+        options[:truncate] == false ? value : "#{value.to_s.first(8)}...#{value.to_s.last(4)}"
+      when String
+        value = truncate(value, length: 60, separator: ' ') unless options[:truncate] == false
+        raw(value)
+      else value
+    end
+    
+    case field.format
+      when :link then link_to(content, url(:admin_item, field.klass.key, model))
+      when :city then City[content]
+      when :industry then Industry[content]
+      when :hash then inspect_hash(content)
+      when :pre then content_tag(:pre, content)
+      else content
+    end
   end
 
   def limited_number(value, threshold)

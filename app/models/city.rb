@@ -18,6 +18,10 @@ class City < Struct.new(:code, :external_id, :name)
     city.code
   end
 
+  def to_s
+    name
+  end
+
   @@all = [
   	City.new(:msk, 1, "Москва"),
   	City.new(:spb, 2, "Санкт-Петербург"),
