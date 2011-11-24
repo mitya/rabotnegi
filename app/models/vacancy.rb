@@ -77,7 +77,9 @@ class Vacancy
     scope = scope.where(industry: params[:industry]) if params[:industry].present?
     scope = scope.any_of({title: query}, {employer_name: query}, {description: query}) if params[:q].present?
     scope
-  end    
+  end
+
+  instance_eval { alias query search }
   
   def self.cleanup
     where(:updated_at.lt => 2.months.ago).destroy

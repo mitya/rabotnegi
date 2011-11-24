@@ -57,6 +57,8 @@ module MongoLog
       any_of({title: query}, {puid: query})
     end
     
+    instance_eval { alias query search }
+    
     def self.model_name
       @model_name ||= ActiveModel::Name.new(self, MongoLog)
     end    

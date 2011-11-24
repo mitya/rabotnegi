@@ -43,6 +43,7 @@
 
 formats = {
   :num => "%y%m%d_%H%M%S",
+  :short_date => "%d.%m.%y %H:%M:%S",
   :rus_zone => "%d.%m.%Y %H:%M:%S %Z",
   :rus_usec => proc { |val| val.strftime("%d.%m.%Y %H:%M:%S.#{'%06d' % val.usec} %Z") }
 }

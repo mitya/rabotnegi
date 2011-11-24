@@ -53,6 +53,16 @@ module FormatHelper
   
   alias f format_data
 
+  def reflect_data(data)
+    case data
+      when Time then data.localtime.to_s(:short_date)
+      when Integer then number(data)
+      when BSON::ObjectId then "#{data.to_s.first(8)}...#{data.to_s.last(4)}"
+      when String then raw(truncate(data, length: 60, separator: ' '))
+      else data
+    end    
+  end
+
   def limited_number(value, threshold)
     value < threshold ? value : content_tag(:span, value, :class => "extreme-number")
   end

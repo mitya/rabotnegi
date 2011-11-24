@@ -32,6 +32,8 @@ Rabotnegi::Application.routes.draw do
     resources :vacancy_loadings, :module => "admin", only: %w(index show)
     resources :log_items, :module => "admin", path: "log", only: %w(index show)
     resources :users, :module => "admin", only: %w(index)
+    
+    get "data/:collection" => 'admin/data#index', as: "data"
   end
 
   match '/sitemap' => 'site#map', :as => :sitemap

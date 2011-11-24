@@ -46,6 +46,8 @@ class Resume
     
     scope
   end
+  
+  instance_eval { alias query search }
 
   def self.authenticate(name, password)
     name =~ /(\w+)\s+(\w+)/ || raise(ArgumentError, "Имя имеет неправильный формат")

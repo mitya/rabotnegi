@@ -119,3 +119,18 @@ span.color {
   .listing tr.start { @include background-gradient(#ffffe0, #ffffdd); }
   .listing tr.warning { @include background-gradient(#ffe9e8, #ffdddd); }
 }
+
+/* ▾ */
+
+.menu { position: relative;
+  .menu-trigger { display: inline; color: $link-color; border-bottom: 1px dotted; margin: 0 5px; padding-top: 5px; }
+  .menu-trigger:hover { color: $hovered-link-color; cursor: pointer; }
+  .menu-box { display: none; position: absolute; z-index: 1000; }
+  .menu-box { background: white; border: 1px #aaa dotted; padding: 5px 10px 10px; left: -10px; @include rounded(10px); }
+  .menu-box a { display: block; float: left; clear: both; }  
+}
+
+.menu.active {
+  .menu-box { display: block; }
+  .menu-trigger { border-bottom: none; }  
+}

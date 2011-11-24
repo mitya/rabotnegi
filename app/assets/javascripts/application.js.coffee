@@ -3,6 +3,10 @@
 $("body.public").loaded ->
   $("#tabs").attr("data-selected").query().addClass("selected") unless $("#tabs").attr("data-selected") == '#'
 
+$("body.admin").loaded ->
+  $(".menu .menu-trigger").click ->
+    $(this).closest(".menu").toggleClass("active")
+
 $("body#admin-vacancies").loaded ->
   edited_rows = {}
 
