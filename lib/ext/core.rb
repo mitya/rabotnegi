@@ -53,6 +53,10 @@ class Object
   def is?(*types)
     types.any? { |type| self.is_a?(type) }
   end
+  
+  def assign_attributes(attributes)
+    attributes.each_pair { |k,v| send("#{k}=", v) if respond_to?("#{k}=") } if attributes
+  end  
 end
 
 class Hash

@@ -19,9 +19,9 @@ body.admin{id=@page_id}
       li.menu
         .menu-trigger Таблицы
         .menu-box
-          = link_to "Вакансии", url(:admin_data, :vacancies)
-          = link_to "Пользователи", url(:admin_data, :users)
-          = link_to "Ошибки", url(:admin_data, :errs)
+          = link_to "Вакансии", url(:admin_items, :vacancies)
+          = link_to "Пользователи", url(:admin_items, :users)
+          = link_to "Ошибки", url(:admin_items, :errs)
       li.right= link_to "Работнеги.ру", "/"
   
   #content

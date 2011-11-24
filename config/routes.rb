@@ -33,7 +33,8 @@ Rabotnegi::Application.routes.draw do
     resources :log_items, :module => "admin", path: "log", only: %w(index show)
     resources :users, :module => "admin", only: %w(index)
     
-    get "data/:collection" => 'admin/data#index', as: "data"
+    get "data/:collection" => 'admin/data#index', as: "items"
+    get "data/:collection/:id" => 'admin/data#show', as: "item"
   end
 
   match '/sitemap' => 'site#map', :as => :sitemap
