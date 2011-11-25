@@ -46,18 +46,19 @@ module MongoLog
       "#{title} #{brief.inspect}"
     end
     
+    def to_s
+      "#{title} - #{puid} - #{created_at.localtime.to_s(:number)}"
+    end
+    
     def warning?
       severity == 'warn'
     end
     
-    def self.search(query)
-      return self unless query.present?
-      
-      query = Regexp.new("^" + query, true)
+    def self.query(options)
+      return self unless options[:q].present?
+      query = Regexp.new("^" + options[:q], true)
       any_of({title: query}, {puid: query})
     end
-    
-    instance_eval { alias query search }
     
     def self.model_name
       @model_name ||= ActiveModel::Name.new(self, MongoLog)

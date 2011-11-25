@@ -40,6 +40,8 @@ module CommonHelper
   end
 
   def classes_from(*args)
+    return if args.first.nil?
+    
     conditions = args.extract_options!
     static_classes = args.first
     classes = []

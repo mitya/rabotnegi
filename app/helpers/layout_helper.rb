@@ -8,7 +8,7 @@ module LayoutHelper
   def page(id, title = nil, options = {})
     @page_id = id
     @page_title = title
-    @page_class = options[:class]
+    @page_class = options[:class] || options[:klass]
     @page_class = nil if @page_class.blank?
 
     if options[:path]

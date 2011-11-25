@@ -13,7 +13,7 @@ class Admin::VacanciesController < ApplicationController
 	def show
   	find_model
 	end
-	
+
 	def edit
 		find_model
 	end

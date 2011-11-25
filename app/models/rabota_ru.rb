@@ -37,5 +37,9 @@ module RabotaRu
     def self.model_name
       @model_name ||= ActiveModel::Name.new(self, RabotaRu)
     end
+    
+    def to_s
+      "Загрузка от #{started_at.localtime.to_s(:number)}"
+    end
   end
 end
