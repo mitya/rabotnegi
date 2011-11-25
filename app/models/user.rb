@@ -1,7 +1,4 @@
-class User
-  include Mongoid::Document
-  include Mongoid::Timestamps
-  
+class User < ApplicationModel
   field :industry
   field :city  
   field :browser

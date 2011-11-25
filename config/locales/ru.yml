@@ -10,9 +10,10 @@ ru:
         about_me: Обо мне
         contact_info: Контакты
       vacancy:
-        title: Дожность
+        title: Должность
         description: Описание
-        external_id: Внешний номер
+        external_id: Внешний ID
+        employer_id: ID Работодателя        
         salary_min: Зарплата от
         salary_max: Зарплата до
         employer_name: Работодатель

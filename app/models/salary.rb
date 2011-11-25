@@ -1,5 +1,3 @@
-# coding: utf-8
-
 class Salary
 	attr_accessor :min, :max, :currency
 

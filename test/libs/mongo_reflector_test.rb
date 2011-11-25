@@ -43,4 +43,9 @@ unit_test MongoReflector do
     assert_equal true, log_item.searchable?
     assert_equal MongoLog::Item, log_item.reference
   end
+  
+  test "edit_fields" do
+    fields = @klass.edit_fields
+    pp fields
+  end
 end

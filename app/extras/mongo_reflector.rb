@@ -9,7 +9,7 @@ module MongoReflector
   @@current_class = nil
   
   class Klass
-    attr_accessor :reference, :key, :list_fields, :details_fields, :list_order, :list_page_size
+    attr_accessor :reference, :key, :list_fields, :details_fields, :list_order, :list_page_size, :edit_fields
 
     def initialize(reference, options = {})
       @reference = reference
@@ -61,14 +61,18 @@ module MongoReflector
     def list_order
       @list_order || [:id, :asc]
     end
+    
+    def edit_fields
+      @edit_fields
+    end
   end
   
   class Field
-    attr_accessor :name, :format, :klass
+    attr_accessor :name, :format, :klass, :args
 
     def initialize(name, options = {})
       @name = name.to_s
-      assign_attributes(options)
+      assign_attributes!(options)
     end
 
     def title
@@ -95,10 +99,6 @@ module MongoReflector
       @@current_klass.list_fields = field_specs.map(&method(:convert_field_spec_to_object))
     end
 
-    def details(*field_specs)
-      @@current_klass.details_fields = field_specs.map(&method(:convert_field_spec_to_object))
-    end
-    
     def list_css_classes(&block)
       @@current_klass.list_css_classes = block
     end
@@ -109,6 +109,23 @@ module MongoReflector
 
     def list_page_size(value)
       @@current_klass.list_page_size = value
+    end
+
+    def details(*field_specs)
+      @@current_klass.details_fields = field_specs.map { |s| convert_field_spec_to_object(s) }
+    end
+
+    def edit(field_specs)
+      @@current_klass.edit_fields = field_specs.map do |key, spec|
+        if Array === spec
+          helper = spec.shift
+          args = spec
+        else
+          helper = spec
+          args = []
+        end
+        Field.new(key, format: helper, args: args, klass: @@current_klass)
+      end
     end
     
   private
@@ -126,6 +143,18 @@ module MongoReflector
   desc Vacancy do
     list :id, :industry, :city, [:title, :link], :employer_name, :created_at
     details :id, :title, :city, :industry, :external_id, :employer_name, :created_at, :updated_at, :salary, :description
+    
+    edit(
+      title: 'text', 
+      city_name: ['combo', City.all],
+      industry_name: ['combo', Industry.all],
+      external_id: 'text',
+      employer_id: 'text',
+      employer_name: 'text',
+      created_at: 'date_time',
+      updated_at: 'date_time',
+      description: 'text_area'      
+    )
   end    
 
   desc User do

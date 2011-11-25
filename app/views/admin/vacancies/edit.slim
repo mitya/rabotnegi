@@ -4,8 +4,8 @@
   = v.errors
 
   = v.text :title, "Должность"
-  = v.select :city_name, "Город", City.all
-  = v.select :industry_name, "Отрасль", Industry.all
+  = v.combo :city_name, "Город", City.all
+  = v.combo :industry_name, "Отрасль", Industry.all
 
   = v.text :external_id, "Внешний ID"
   = v.text :employer_id, "ID Работодателя"

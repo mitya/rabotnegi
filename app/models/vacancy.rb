@@ -1,9 +1,4 @@
-# coding: utf-8
-
-class Vacancy
-  include Mongoid::Document
-  include Mongoid::Timestamps
-    
+class Vacancy < ApplicationModel
   field :title
   field :description
   field :external_id, type: Integer   

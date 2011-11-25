@@ -28,13 +28,7 @@ Rabotnegi::Application.routes.draw do
   namespace :admin, :module => nil do
     root :to => 'site#admin_dashboard'
     resources :vacancies, :module => "admin"
-    resources :employers, :module => "admin", only: %w(index)
-    resources :vacancy_loadings, :module => "admin", only: %w(index show)
-    resources :log_items, :module => "admin", path: "log", only: %w(index show)
-    resources :users, :module => "admin", only: %w(index)
-    
-    get "data/:collection" => 'admin/data#index', as: "items"
-    get "data/:collection/:id" => 'admin/data#show', as: "item"
+    resources :items, controller: "admin/data", path: "data/:collection"
   end
 
   match '/sitemap' => 'site#map', :as => :sitemap

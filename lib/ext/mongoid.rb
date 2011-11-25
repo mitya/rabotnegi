@@ -79,7 +79,7 @@ module MongoidExt
       
       scope :page, proc { |page_num, page_size = 10| limit(page_size).offset(page_size * ([page_num.to_i, 1].max - 1)) } do
         include MongoidExt::PagedCollection
-      end    
+      end      
     end
   end
 end

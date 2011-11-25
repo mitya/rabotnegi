@@ -1,5 +1,3 @@
-# coding: utf-8
-
 class Currency
   @@map = {
   	:usd => "$",
