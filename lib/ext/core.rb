@@ -57,6 +57,10 @@ class Object
   def assign_attributes(attributes)
     attributes.each_pair { |k,v| send("#{k}=", v) if respond_to?("#{k}=") } if attributes
   end  
+
+  def assign_attributes!(attributes)
+    attributes.each_pair { |k,v| send("#{k}=", v) } if attributes
+  end  
 end
 
 class Hash

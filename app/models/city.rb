@@ -1,5 +1,3 @@
-# coding: utf-8
-
 class City < Struct.new(:code, :external_id, :name)
   cattr_reader :all
 
@@ -20,6 +18,10 @@ class City < Struct.new(:code, :external_id, :name)
 
   def to_s
     name
+  end
+
+  def inspect
+    "<City #{code}/#{external_id} #{name}>"
   end
 
   @@all = [

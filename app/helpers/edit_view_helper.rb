@@ -48,7 +48,9 @@ module EditViewHelper
       text_area(attr, options)
     end
 
-    def ui_select(attr, collection, options = {})
+    def ui_combo(attr, collection, options = {})
+      Rails.logger.debug [attr, collection, options]
+      
       if City === collection.first || Industry === collection.first
         collection = collection.map { |struct| [struct.name, struct.code] }
       end
@@ -101,6 +103,13 @@ module EditViewHelper
     
     def errors
       template.errors_for(form.object)
+    end
+    
+    def item(field)
+      case field.format
+      when String
+        send(field.format, field.name, field.i18n_title, *field.args)
+      end
     end
   end  
 end

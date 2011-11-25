@@ -1,9 +1,4 @@
-# coding: utf-8
-
-class Resume
-  include Mongoid::Document
-  include Mongoid::Timestamps
-
+class Resume < ApplicationModel
   field :id, type: Integer
   field :fname
   field :lname

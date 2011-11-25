@@ -1,6 +1,4 @@
-# class Event
-#   include Mongoid::Document
-#   
+# class Event < ApplicationModel
 #   field :puid
 #   field :title
 #   field :severity

@@ -1,5 +1,3 @@
-# coding: utf-8
-
 # Convert json data to vacancy models.
 class RabotaRu::VacancyConverter
 

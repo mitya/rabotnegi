@@ -1,7 +1,4 @@
-class Err
-  include Mongoid::Document
-  include Mongoid::Timestamps
-
+class Err < ApplicationModel
   field :controller
   field :action
   field :url

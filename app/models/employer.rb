@@ -1,7 +1,4 @@
-class Employer
-  include Mongoid::Document
-  include Mongoid::Timestamps
-
+class Employer < ApplicationModel
   field :name
   field :login
   field :password
