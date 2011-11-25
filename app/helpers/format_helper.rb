@@ -56,6 +56,8 @@ module FormatHelper
   def reflect_data(model, field, options = {})
     value = model.send(field.name)
 
+    return "—" if value.blank?
+
     content = case value
       when Time then value.localtime.to_s(:short_date)
       when Integer then number(value)
@@ -71,8 +73,8 @@ module FormatHelper
       when :link then link_to(content, url(:admin_item, field.klass.key, model))
       when :city then City[content]
       when :industry then Industry[content]
-      when :hash then inspect_hash(content)
       when :pre then content_tag(:pre, content)
+      when String then send(field.format, content)
       else content
     end
   end

@@ -3,16 +3,14 @@ class  Admin::DataController < ApplicationController
   layout 'admin'
 
   def index
-    @metadata = MongoReflector.reflect(params[:collection])
-    @klass = @metadata.reference
-    @scope = @klass.respond_to?(:query) ? @klass.query(q: params[:q]) : @klass
-    @models = @scope.paginate(params[:page], 30)
+    @klass = MongoReflector.reflect(params[:collection])
+    @scope = @klass.reference.respond_to?(:query) ? @klass.reference.query(q: params[:q]) : @klass.reference
+    @models = @scope.order_by(@klass.list_order).paginate(params[:page], @klass.list_page_size)
   end  
   
 	def show
-    @metadata = MongoReflector.reflect(params[:collection])
-    @klass = @metadata.reference
-  	selector = @klass.singleton_methods(false).include?(:get) ? :get : :find
-    @model = @klass.send(selector, params[:id])
+    @klass = MongoReflector.reflect(params[:collection])
+  	selector = @klass.reference.singleton_methods(false).include?(:get) ? :get : :find
+    @model = @klass.reference.send(selector, params[:id])
 	end
 end

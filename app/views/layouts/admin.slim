@@ -7,27 +7,23 @@ head
   = javascript_include_tag "vendor"
   = javascript_include_tag "application"
 
-body.admin{id=@page_id}
+body.admin{id=@page_id class=@page_class}
   #header
     ul.nav
       li= link_to "Статистика", url(:admin_root)
       li= link_to "Вакансии", url(:admin_vacancies)
-      li= link_to "Работодатели", url(:admin_employers)
-      li= link_to "Загрузки", url(:admin_vacancy_loadings)
-      li= link_to "Лог", url(:admin_log_items)
-      li= link_to "Пользователи", url(:admin_users)
-      li.menu
-        .menu-trigger Таблицы
-        .menu-box
-          = link_to "Вакансии", url(:admin_items, :vacancies)
-          = link_to "Пользователи", url(:admin_items, :users)
-          = link_to "Ошибки", url(:admin_items, :errs)
+      li= link_to "Вакансии", url(:admin_items, :vacancies)
+      li= link_to "Работодатели", url(:admin_items, :employers)
+      li= link_to "Пользователи", url(:admin_items, :users)
+      li= link_to "Исключения", url(:admin_items, :errs)
+      li= link_to "События", url(:admin_items, :log_items)
+      li= link_to "Загрузки", url(:admin_items, :vacancy_loadings)
       li.right= link_to "Работнеги.ру", "/"
-  
+
   #content
     = content_tag :div, flash[:notice], :id => 'flash-notice' if flash[:notice]
     = content_tag :div, flash[:error], :id => 'flash-error' if flash[:error]
     = content_tag :h1, @page_title if @page_title
     = yield :layout
-  
+
   #footer © 2011 Работнеги.ру
