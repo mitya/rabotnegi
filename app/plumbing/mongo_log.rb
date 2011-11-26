@@ -28,9 +28,7 @@ module MongoLog
     end
   end
   
-  class Item
-    include Mongoid::Document
-    
+  class Item < ApplicationModel
     store_in :log
     
     field :puid
