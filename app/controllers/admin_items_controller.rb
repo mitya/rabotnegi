@@ -1,4 +1,4 @@
-class  Admin::DataController < ApplicationController
+class  AdminItemsController < ApplicationController
   before_filter :admin_required
   before_filter :load_metadata
   layout 'admin'
@@ -16,10 +16,10 @@ class  Admin::DataController < ApplicationController
     @model = @klass.reference.get(params[:id])
   end 
   
-  # def update
-  #   @model = @klass.reference.get(params[:id])
-  #   update_model @model, params[:vacancy], url(:admin, @model)
-  # end
+  def update
+    @model = @klass.reference.get(params[:id])
+    update_model @model, params[@klass.singular], url(:admin_data_item, @klass.key, @model)
+  end
 	
 private
   
