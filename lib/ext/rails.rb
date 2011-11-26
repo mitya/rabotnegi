@@ -1,30 +1,3 @@
-class ActiveRecord::Base
-  def self.property(*args)
-  end
-  
-  def self.get(*args)
-    find(*args)
-  rescue ActiveRecord::RecordNotFound
-    nil
-  end
-  
-  def self.get!(*args)
-    find(*args)
-  end  
-end
-
-class ActionController::Base
-  def render_partial(partial, locals = {})
-    render :partial => partial, :locals => locals
-  end  
-end
-
-class ActionView::Base
-  def bench(title, &block)
-    benchmark("Outputted #{title}", :level => :debug, &block)
-  end
-end
-
 module ActionView::Helpers::FormOptionsHelper
   def grouped_select(object, method, grouped_choices, options = {}, html_options = {})
     ActionView::Helpers::InstanceTag.new(object, method, self, options.delete(:object)).to_grouped_select_tag(grouped_choices, options, html_options)

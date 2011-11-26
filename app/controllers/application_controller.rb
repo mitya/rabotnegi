@@ -5,12 +5,12 @@ class ApplicationController < ActionController::Base
   include SimpleCaptcha::ControllerHelpers
   include ControllerHelper
 
-  rescue_from(ActiveRecord::RecordInvalid) { render :form, :status => 422 }
-  rescue_from(ActiveRecord::RecordNotFound) { |e|
-    Rails.logger.debug(e)
-    flash[:error] = "К сожалению, то что вы искали, мы уже куда-то похерили. Если оно вообще здесь было."
-    redirect_to '/'
-  }
+  # rescue_from(ActiveRecord::RecordInvalid) { render :form, :status => 422 }
+  # rescue_from(ActiveRecord::RecordNotFound) { |e|
+  #   Rails.logger.debug(e)
+  #   flash[:error] = "К сожалению, то что вы искали, мы уже куда-то похерили. Если оно вообще здесь было."
+  #   redirect_to '/'
+  # }
   rescue_from Exception, :with => :handle_unexpected_exception
   
   helper :all

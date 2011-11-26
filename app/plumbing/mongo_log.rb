@@ -1,6 +1,7 @@
 module MongoLog
   def self.write(puid, severity, title, brief = [], data = {})
-    item = Item.create!(title: title, puid: puid, severity: severity.to_s, brief: brief, data: data, duration: data.delete(:duration))
+    duration = Hash === data && data.delete(:duration)
+    item = Item.create!(title: title, puid: puid, severity: severity.to_s, brief: brief, data: data, duration: duration)
     puts item.as_string if ENV['LOG_TO_CONSOLE']
   end
   
@@ -13,16 +14,17 @@ module MongoLog
 
     def write(severity, title, *params)
       params = Array(params)
-      data = Hash === params.last && params.last.delete(:env)
+      data = params.last.is_a?(Hash) && params.last.delete(:env) || {}
+      params.pop if params.last == {}
       MongoLog.write(@puid, severity, title, params, data)
     end
     
     def info(title, *params)
-      write(:info, title, params)
+      write(:info, title, *params)
     end
 
     def warn(title, *params)
-      write(:warn, title, params)
+      write(:warn, title, *params)
     end
   end
   
