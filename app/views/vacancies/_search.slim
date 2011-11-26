@@ -2,10 +2,10 @@ form#vacancies-filter.search{action=vacancies_url method="get" class=(@vacancies
   fieldset
     .field
       = label_tag :city, 'Город:'
-      = select_tag(:city, options_for_select(ModelHelper::CityOptions, params[:city]))
+      = select_tag(:city, options_for_select(DomainHelper::CityOptions, params[:city]))
     .field
       = label_tag :industry, 'Отрасль:'
-      = select_tag(:industry, grouped_options_for_select(ModelHelper::IndustryOptions, params[:industry], 'любая'))
+      = select_tag(:industry, grouped_options_for_select(DomainHelper::IndustryOptions, params[:industry], 'любая'))
     .field
       = label_tag :q, 'Ключевые слова:'
       = text_field_tag(:q, params[:q])

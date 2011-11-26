@@ -26,6 +26,7 @@ namespace :test do
       'test/plumbing/**/*_test.rb', 
       'test/functionals/**/*_test.rb',
       'test/integration/**/*_test.rb',
+      'test/helpers/**/*_test.rb',
     ]
   end
 end

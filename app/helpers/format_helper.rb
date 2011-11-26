@@ -1,6 +1,16 @@
-# coding: utf-8
-
 module FormatHelper
+  def format_hash_as_lines(hash)
+    hash.map { |key, val| "#{key}: #{val}" }.join("\n")
+  end
+  
+  def format_hash_as_dl(hash)
+    return content_tag(:p, "—") if hash.blank?
+    
+    content_tag :dl do
+      hash.map { |key, val| content_tag(:dt, key) + content_tag(:dd, val) }.join.html_safe
+    end
+  end
+
   def inspect_hash(hash)
     content_tag :table, :class => "hash" do
       hash.map do |key, value|
