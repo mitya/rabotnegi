@@ -43,15 +43,7 @@ namespace :data do
     [Vacancy, User, MongoLog::Item].each(&:delete_all)
     load(file)
     puts "Seeded #{Rails.env} - #{{vacancies: Vacancy.count, users: User.count}.inspect}"
-  end
-  
-  task :restore_dev do
-    sh "mongorestore -d rabotnegi_dev --drop #{ENV['src']}"
-  end
-end
-
-namespace :app do
-  task(:load => :environment) { RabotaRu.load }
+  end  
 end
 
 namespace :dev do
@@ -61,21 +53,8 @@ namespace :dev do
     system "rm -rf #{Rails.root}/tmp/cache/*"
     system "rm -rf #{Rails.root}/public/vacancies"
   end
-end
-
-namespace :test do
-  task :web do
-    sh "rake test:web_internal X_RAILS_ENV=test_web"
-  end
-
-  Rake::TestTask.new(:web_internal) do |t|
-    t.libs << "test"
-    t.pattern = 'test/web/**/*_test.rb'
-    t.verbose = true
-    t.options = "--verbose=verbose"
-  end
   
-  task :web_seed do
-    sh "rake data:seed[web] RAILS_ENV=test_web"
-  end
+  task :restore do
+    sh "mongorestore -d rabotnegi_dev --drop #{ENV['src']}"
+  end  
 end

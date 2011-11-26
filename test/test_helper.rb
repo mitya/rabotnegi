@@ -3,14 +3,12 @@ ENV["RAILS_ENV"] = ENV["X_RAILS_ENV"] || "test"
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'pp'
-require "mocks"
-
-raise "No vacancies in the database" if Rails.env.test_real? && Vacancy.count < 100
-
+require "support/mocks"
+require "support/factories"
 require "support/helpers"
 require "support/capybara"
 
-FactoryGirl.find_definitions
+raise "No vacancies in the database" if Rails.env.test_real? && Vacancy.count < 100
 
 class ActiveSupport::TestCase
   fixtures :all

@@ -46,6 +46,5 @@ unit_test MongoReflector do
   
   test "edit_fields" do
     fields = @klass.edit_fields
-    pp fields
   end
 end
