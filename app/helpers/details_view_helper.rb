@@ -1,16 +1,14 @@
-# coding: utf-8
-
 module DetailsViewHelper
   def details_view(options = {}, &block)
-    tg :ul, klass: 'resource' do
+    teg :ul, klass: 'resource' do
       capture(DetailsViewBuilder.new(self), &block)
     end
   end
 
   def details_item(label, data, options = {})
-    tg :li, klass: "item #{options[:klass]}".strip do
+    teg :li, klass: "item #{options[:klass]}".strip do
       content = data.to_s
-      content = tg(:b, label, klass: 'heading') + " " + content unless options[:header] == false
+      content = teg(:b, label, klass: 'heading') + " " + content unless options[:header] == false
       content
     end
   end  
@@ -27,7 +25,7 @@ module DetailsViewHelper
     end
     
     def actions(&block)
-      @template.tg(:li, klass: "actions", &block)
+      @template.teg(:li, klass: "actions", &block)
     end
   end
 end

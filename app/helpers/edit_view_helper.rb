@@ -1,5 +1,3 @@
-# coding: utf-8
-
 module EditViewHelper
   def submit_section(label)
     %{<div class='submit'>

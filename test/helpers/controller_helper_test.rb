@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class ControllerHelperTest < ActionView::TestCase
-  include CommonHelper
+  include ApplicationHelper
   
   test "decode_order_for_mongo" do
     assert_equal [["date", Mongo::ASCENDING]], decode_order_for_mongo("date")

@@ -1,5 +1,3 @@
-# coding: utf-8
-
 module CollectionsHelper
 	def found_objects_info(collection, word, e1, e2, e5)
 		if collection.total_pages <= 1
@@ -19,7 +17,7 @@ module CollectionsHelper
   end
 
   def search_form(url)
-    tg :div, "search" do
+    teg :div, "search" do
       form_tag url, method: "get" do
         search_tag
       end
@@ -28,9 +26,9 @@ module CollectionsHelper
   
   def listing(collection, &block)
     html = if collection.any?
-      tg(:table, "listing", &block) + pagination(collection)
+      teg(:table, "listing", &block) + pagination(collection)
     else
-      tg :div, "Ничего не найдено.", "no-data-message"
+      teg :div, "Ничего не найдено.", "no-data-message"
     end
     html
   end

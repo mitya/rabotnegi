@@ -1,12 +1,6 @@
-# coding: utf-8
-
 module ControllerHelper
   OrderParam = :sort
   
-  def employer_home_path
-    current_employer ? employer_vacancies_path : employer_root_path
-  end
-
   # generates a sort parameter like "date" or "-date"
   # reverses (adds a "-") when the pararmeter is already used for sorting
   def encode_order(field, reverse_by_default = false, param = params[OrderParam])
