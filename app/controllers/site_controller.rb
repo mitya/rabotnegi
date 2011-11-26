@@ -5,13 +5,6 @@ class SiteController < ApplicationController
     end
   end
 
-  # Admin
-
-  before_filter :admin_required, :only => :admin_dashboard
-  def admin_dashboard
-    render "admin/dashboard", layout: 'admin'
-  end
-
   # Helpers
 
   def load_data_from_rabota_ru

@@ -26,9 +26,8 @@ Rabotnegi::Application.routes.draw do
   end
 
   namespace :admin, :module => nil do
-    root :to => 'site#admin_dashboard'
-    resources :vacancies, :module => "admin"
-    resources :items, controller: "admin/data", path: "data/:collection"
+    root :to => 'admin#dashboard'
+    resources :items, controller: "admin_items", path: "items/:collection"
   end
 
   match '/sitemap' => 'site#map', :as => :sitemap

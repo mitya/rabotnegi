@@ -1,0 +1,9 @@
+- page "admin-item", @model.to_s
+
+= details_view do |d|
+  - @klass.details_fields.each do |fld|
+    = d.item fld.i18n_title, reflect_data(@model, fld, truncate: false), klass: classes_from(wide: fld.format.in?([:hash, :pre]))
+
+  = d.actions do
+    = link_to "Изменить", url(:edit_admin_item, params[:collection], @model)
+    = link_to "Назад к списку", :back 

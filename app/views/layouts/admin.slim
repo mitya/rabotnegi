@@ -11,7 +11,6 @@ body.admin{id=@page_id class=@page_class}
   #header
     ul.nav
       li= link_to "Статистика", url(:admin_root)
-      li= link_to "Вакансии", url(:admin_vacancies)
       li= link_to "Вакансии", url(:admin_items, :vacancies)
       li= link_to "Работодатели", url(:admin_items, :employers)
       li= link_to "Пользователи", url(:admin_items, :users)
