@@ -39,4 +39,14 @@ class Err < ApplicationModel
     logger.error "ERROR IN ERROR LOGGING: #{e}"
     logger.error e.backtrace.join("\n")
   end
+
+  def self.query(params)
+    params = params.symbolize_keys
+    params.assert_valid_keys(:q)
+    query = Regexp.new(params[:q] || "", true)
+
+    scope = self
+    scope = scope.any_of({exception_class: query}, {exception_message: query}, {url: query}) if params[:q].present?
+    scope
+  end
 end
