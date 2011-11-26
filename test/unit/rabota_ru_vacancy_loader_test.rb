@@ -9,7 +9,7 @@ unit_test RabotaRu::VacancyLoader do
     make Vacancy, title: "V-1", city: "spb", industry: "it", external_id: 101, created_at: "2008-09-01", description: "no"
     make Vacancy, title: "V-2", city: "spb", industry: "it", external_id: 102, created_at: "2008-09-01", description: "no"
     
-    @loader = PureDelegator.new(RabotaRu::VacancyLoader.new)
+    @loader = Util::PureDelegator.new(RabotaRu::VacancyLoader.new)
     @loader.work_directory = "#{Rails.root}/tmp/rabotaru_test"
 
     Dir.mkdir(@loader.work_directory) unless File.exists?(@loader.work_directory)

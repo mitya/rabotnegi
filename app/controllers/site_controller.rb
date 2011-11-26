@@ -5,8 +5,6 @@ class SiteController < ApplicationController
     end
   end
 
-  # Helpers
-
   def load_data_from_rabota_ru
     loader = RabotaRu::VacancyLoader.new
     loader.load

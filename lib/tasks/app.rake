@@ -6,6 +6,8 @@ namespace :app do
     puts "Loading 100 vacancies into the `#{Rails.env}` database" 
     100.times { Vacancy.create title: "Test", description: "Hello", industry: "it", city: "msk" }
   end
+
+  task(:load => :environment) { RabotaRu.load }
 end
 
 
