@@ -1,5 +1,3 @@
-# coding: utf-8
-
 module RussianInflector
 	def self.inflect(number, word, end1, end2, end5, strategy = :normal)
 		number_by_100 = number % 100

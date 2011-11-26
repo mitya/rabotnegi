@@ -11,7 +11,7 @@ end
 
 module Rabotnegi
   class Application < Rails::Application
-    config.autoload_paths += %W(#{config.root}/app/extras)
+    config.autoload_paths += %W(#{config.root}/app/plumbing #{config.root}/app/other)
     config.time_zone = 'Moscow'
     config.encoding = "utf-8"
     config.filter_parameters += [:password]   
@@ -32,9 +32,7 @@ module Rabotnegi
 
     require "ext/core"
     require 'ext/rails'
-    require 'ext/mongoid'
-    require 'ext/libs'
-    require 'utilities'
+    require "#{config.root}/app/plumbing/global"
 
     ::ADMIN_LOGIN = 'admin'
     ::ADMIN_PASSWORD = '0000'
@@ -43,7 +41,7 @@ module Rabotnegi
     ::ERR_RECIPIENTS = "dmitry.sokurenko@gmail.com"
 
     config.after_initialize do  
-      ActionView::Base.default_form_builder = CustomFormBuilder            
+      ActionView::Base.default_form_builder = CustomFormBuilder
       ActiveSupport::JSON.engine = :json_gem
     end
   end

@@ -1,5 +1,3 @@
-# coding: utf-8
-
 require 'test_helper'
 
 unit_test MongoLog do
@@ -20,12 +18,12 @@ unit_test MongoLog do
   end
   
   test "info" do
-    @writer.info('start', 1, 2, 3, env: {url: "someurl", count: 100})
+    @writer.info('start', 1, 2, 3, env: {url: "someurl", count: 100}, xxx: 123)
 
     item = MongoLog::Item.last
     assert_equal 'info', item.severity
     assert_equal 'start', item.title
-    assert_equal [1,2,3], item.brief
+    assert_equal [1,2,3, {'xxx' => 123}], item.brief
     assert_equal Hash['url' => "someurl", 'count' => 100], item.data
   end
 
