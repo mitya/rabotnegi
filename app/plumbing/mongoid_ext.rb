@@ -67,7 +67,7 @@ module MongoidExt
 
   module Pagination
     extend ActiveSupport::Concern
-  
+
     included do
       def self.paginate(page_num, page_size = 10)
         criteria = page(page_num, page_size)
@@ -77,7 +77,7 @@ module MongoidExt
         results.total_count = criteria.count
         results
       end
-      
+
       scope :page, proc { |page_num, page_size = 10| limit(page_size).offset(page_size * ([page_num.to_i, 1].max - 1)) } do
         include MongoidExt::PagedCollection
       end
