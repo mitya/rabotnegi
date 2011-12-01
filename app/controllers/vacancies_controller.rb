@@ -1,5 +1,3 @@
-# coding: utf-8
-
 class VacanciesController < ApplicationController
   # caches_page :show, :if => -> c { c.request.xhr? }
 

@@ -40,7 +40,7 @@ module CollectionsHelper
   end
   
   def sorting_state_class_for(field)
-    current_field, reverse = decode_order_to_array(param[:sort])
+    current_field, reverse = SortExpressions.decode_order_to_array(params[:sort])
     field.to_s == current_field ? "sorted" : ""
   end    
 end
