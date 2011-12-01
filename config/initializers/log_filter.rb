@@ -4,7 +4,8 @@ module LogFilter
      "SET NAMES",
      "SET SQL_AUTO_IS_NULL",
      "Served asset",
-     'Started GET "/assets/'
+     'Started GET "/assets/',
+     "['system.namespaces'].find({})",
   ]
 
   class ::ActiveSupport::BufferedLogger

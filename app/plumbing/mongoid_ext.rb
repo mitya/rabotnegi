@@ -8,16 +8,20 @@ module MongoidExt
       @criteria = object
     end
 
-    def limit_value #:nodoc:
+    def limit_value
       criteria.options[:limit]
     end
 
-    def offset_value #:nodoc:
+    def offset_value
       criteria.options[:skip]
     end
 
-    def total_count #:nodoc:
-      criteria.count
+    def total_count
+      @total_count ||= criteria.count
+    end
+    
+    def total_count=(value)
+      @total_count = value
     end
 
     def per(num)
@@ -50,7 +54,6 @@ module MongoidExt
       current_page >= num_pages
     end    
 
-
     # current_page - 1 or nil if there is no previous page
     def previous_page
       current_page > 1 ? (current_page - 1) : nil
@@ -71,6 +74,7 @@ module MongoidExt
         results = criteria.to_a
         results.extend(MongoidExt::PagedCollection)
         results.criteria = criteria
+        results.total_count = criteria.count
         results
       end
       
