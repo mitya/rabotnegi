@@ -4,7 +4,7 @@ tr.entry-details{id=web_id(@vacancy, :details)}
       .entry-actions
         ul
           li= link_to "Контактная информация на Работе.ру", "http://www.rabota.ru/vacancy#{@vacancy.external_id}", rel: "nofollow"
-          li= link_to "Открыть на отдельной странице", url(:vacancy, @vacancy), target: "_blank"
+          li= link_to "Открыть на отдельной странице", url(@vacancy), target: "_blank"
       .entry-content
         = raw @vacancy.description
       .clear

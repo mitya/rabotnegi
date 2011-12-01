@@ -30,7 +30,7 @@ end
 
 def __a(*args)
   if args.one? && Hash === args.first
-    puts Reflector.inspect_hash(args.first) 
+    puts Reflector.hash_view(args.first) 
   else
     puts '[' + args.map { |a| a.respond_to?(:pid) ? a.pid : a.inspect }.join(", ") + ']'
   end
@@ -39,7 +39,7 @@ end
 def assert(*conditions)
   options = conditions.extract_options!
   message = options[:message] || "Assertion Failed"
-  message = "Assertion Failed: #{Reflector.inspect_hash(message)}" if Hash === message
+  message = "Assertion Failed: #{Reflector.hash_view(message)}" if Hash === message
   conditions.each { |condition| raise message unless condition }
 end
 

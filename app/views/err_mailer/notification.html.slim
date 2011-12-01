@@ -10,16 +10,16 @@ h3 Host
 p= @err.host
 
 h3 Parameters
-= format_hash_as_dl(@err.params)
+= hash_as_dl(@err.params)
 
 h3 Session
-= format_hash_as_dl(@err.session)
+= hash_as_dl(@err.session)
 
 h3 Cookie Names
 p= @err.cookies.join(', ')
 
 h3 Request Headers
-= format_hash_as_dl(@err.request_headers)
+= hash_as_dl(@err.request_headers)
 
 h3 Stack Trace
 pre= @err.backtrace

@@ -11,25 +11,36 @@ module CollectionsHelper
 		 Показаны <b>#{collection.offset_value + 1}</b> — <b>#{collection.offset_value + collection.limit_value}</b>".html_safe
 	end
 	
+  # <input type=search id=q> <input type=submit value=Поиск>
   def search_tag
     text_field = text_field_tag(:q, params[:q], type: "search", id: 'q', :class => "search", autofocus: true)
     text_field + " " + submit_tag("Поиск", name: nil)
   end
 
+  # #search
+  #   form
+  #     input#q(type=search) 
+  #     input(type=submit value=Поиск)
   def search_form(url)
-    teg :div, "search" do
+    element :div, "search" do
       form_tag url, method: "get" do
         search_tag
       end
     end
   end
   
+  # Render either a list of items with pager, either "no data" message.
   def listing(collection, &block)
     html = if collection.any?
-      teg(:table, "listing", &block) + pagination(collection)
+      element(:table, "listing", &block) + pagination(collection)
     else
-      teg :div, "Ничего не найдено.", "no-data-message"
+      element :div, "Ничего не найдено.", "no-data-message"
     end
     html
   end
+  
+  def sorting_state_class_for(field)
+    current_field, reverse = decode_order_to_array(param[:sort])
+    field.to_s == current_field ? "sorted" : ""
+  end    
 end

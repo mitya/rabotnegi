@@ -18,7 +18,7 @@ class MetalController < ActionController::Metal
     @vacancies = Vacancy.
       search(params.slice(:city, :industry, :q)).
       without(:description).
-      order_by(decode_order_for_mongo(params[:sort].presence || "title")).
+      order_by(decode_order_to_mongo(params[:sort].presence || "title")).
       paginate(page: params[:page], per_page: 50) if params[:city]
 
     Rails.logger.debug request.format
@@ -30,7 +30,7 @@ class MetalController < ActionController::Metal
 
 private
 
-  def decode_order(param = params[OrderParam])
+  def decode_order_to_array(param = params[OrderParam])
     param.present??
       param.starts_with?('-') ? 
         [param.from(1), true] : 
@@ -38,8 +38,8 @@ private
       [nil, false]
   end  
 
-  def decode_order_for_mongo(param = params[OrderParam])
-    field, reverse = decode_order(param)
+  def decode_order_to_mongo(param = params[OrderParam])
+    field, reverse = decode_order_to_array(param)
     [ [field, reverse ? :desc : :asc] ]
   end
 end

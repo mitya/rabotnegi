@@ -74,13 +74,9 @@ module MongoReflector
       @name = name.to_s
       assign_attributes!(options)
     end
-
-    def title
-      name
-    end
     
-    def i18n_title
-      I18n.t("active_record.attributes.#{klass.singular}.#{name}", default: [:"active_record.attributes.common.#{name}", title])
+    def title
+      I18n.t("active_record.attributes.#{klass.singular}.#{name}", default: [:"active_record.attributes.common.#{name}", name.to_s.humanize])
     end
     
     def inspect
@@ -167,22 +163,22 @@ module MongoReflector
       :created_at, :updated_at, 
       :controller, :action, :url, :host, :verb, 
       :exception_class, :exception_message,
-      [:params, 'inspect_hash'], [:session, 'inspect_hash'], [:request_headers, 'inspect_hash'], [:response_headers, 'inspect_hash'], 
+      [:params, 'hash_view'], [:session, 'hash_view'], [:request_headers, 'hash_view'], [:response_headers, 'hash_view'], 
       [:backtrace, :pre]
   end  
 
   desc MongoLog::Item, key: 'log_items' do
-    list [:id, :link], :created_at, [:puid, 'color_code'], :title, [:duration, 'sec_usec'], [:brief, 'inspect_array_inline']
+    list [:id, :link], :created_at, [:puid, 'color_code'], :title, [:duration, 'sec_usec'], [:brief, 'array_inline']
     list_css_classes { |x| {start: x.title == 'rrl.start', warning: x.warning?} }
     list_order [:_id, :desc]
     list_page_size 100
-    details :id, :created_at, :puid, :title, :duration, [:brief, 'inspect_array'], [:data, 'inspect_hash']
+    details :id, :created_at, :puid, :title, :duration, [:brief, 'array_view'], [:data, 'hash_view']
   end
   
   desc RabotaRu::VacancyLoading, key: 'vacancy_loadings' do
     list [:id, :link], :created_at, :updated_at, :state, :details, :counts, :started_at, :finished_at
     list_css_classes { |x| {finished: x.finished?} }
     details :id, :created_at, :updated_at, :state, 
-      [:duration, 'time'], [:details, 'inspect_hash'], [:counts, 'inspect_hash'], :started_at, :finished_at    
+      [:duration, 'time'], [:details, 'hash_view'], [:counts, 'hash_view'], :started_at, :finished_at    
   end
 end
