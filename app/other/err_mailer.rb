@@ -1,6 +1,6 @@
 class ErrMailer < ActionMailer::Base
   default from: ERR_SENDER
-  helper :application  
+  helper :application, :format
 
   def notification(err)
     @err = err

@@ -1,4 +1,4 @@
-module EditViewHelper
+module EditHelper
   def submit_section(label)
     %{<div class='submit'>
         <input type="submit" class='action-button' value='#{ label }'>
@@ -31,9 +31,10 @@ module EditViewHelper
   
   def edit_field(label, control, options = {})
     options.prepend_string(:class, "editor")
-    content_tag :div, options do
-      content_tag(:div, label, :class => 'editor-label') + 
-      content_tag(:div, control, :class => 'editor-content') 
+
+    element :div, options do
+      element(:div, label, 'editor-label') + 
+      element(:div, control, 'editor-content') 
     end    
   end
   
@@ -70,7 +71,6 @@ module EditViewHelper
     # select(attr, collection)
     # check_boxes(attr, collection)
     # radio_group(attr, collection)
-
   end
   
   class EditViewBuilder
@@ -106,7 +106,7 @@ module EditViewHelper
     def item(field)
       case field.format
       when String
-        send(field.format, field.name, field.i18n_title, *field.args)
+        send(field.format, field.name, field.title, *field.args)
       end
     end
   end  

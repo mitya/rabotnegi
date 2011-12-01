@@ -4,13 +4,13 @@
 = listing @models do
   thead
     tr
-      - @klass.list_fields.each do |fld|
-        th= fld.i18n_title
+      - @klass.list_fields.each do |field|
+        th= field.title
       th
   - for model in @models
     tr{class="#{classes_from(@klass.list_css_classes(model))}"}
-      - @klass.list_fields.each do |fld|
-        td= reflect_data model, fld
+      - @klass.list_fields.each do |field|
+        td= inspect_field(model, field, truncate: true)
       td.actions
         = link_to "Изменить", url(:edit_admin_item, @klass.key, model)
         '

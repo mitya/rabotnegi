@@ -1,16 +1,2 @@
-fieldset
-  .field
-    = label_tag :city, 'Город:'
-    = select_tag(:city, options_for_select(DomainHelper::CityOptions, params[:city]))
-  .field
-    = label_tag :city, 'Отрасль:'
-    = select_tag(:industry, grouped_options_for_select(DomainHelper::IndustryOptions, params[:industry], 'любая'))
-  .field
-    = label_tag :q, 'Ключевые слова:'
-    = text_field_tag(:q, params[:q])
-  .field
-    input.button{type="submit" value="Найти"}
-
-search_vacancies
-  user = get_user
-  user.update city, industry, query
+Application
+Collections

@@ -1,6 +1,6 @@
 module PaginationHelper
   def pagination(collection, options = {})
-    teg :div, "pager" do
+    element :div, "pager" do
       page_links(collection, options)
     end if collection.respond_to?(:total_pages) && collection.total_pages > 1
   end
@@ -56,28 +56,28 @@ module PaginationHelper
     links = links_model.map do |key|
       case
       when key == collection.current_page
-        teg :em, key
+        element :em, key
       when key.is_a?(Numeric)
         link_to key, params.merge(page: key), :class => "num"
       when key == :gap
-        teg :span, '&hellip;'.html_safe, "gap"
+        element :span, '&hellip;'.html_safe, "gap"
       end
     end.join(' ').html_safe
 
     if collection.first_page?
-      links.insert 0, teg(:span, "&larr; предыдущая станица".html_safe, "stub")
+      links.insert 0, element(:span, "&larr; предыдущая станица".html_safe, "stub")
     else
-      links.insert 0, teg(:span, "&larr;".html_safe, "dir") + link_to("предыдущая станица".html_safe, params.merge(page: collection.previous_page))
+      links.insert 0, element(:span, "&larr;".html_safe, "dir") + link_to("предыдущая станица".html_safe, params.merge(page: collection.previous_page))
     end
 
     if collection.last_page?
-      links << teg(:span, "следующая страница &rarr;".html_safe, "stub")
+      links << element(:span, "следующая страница &rarr;".html_safe, "stub")
     else
       links << link_to("следующая страница".html_safe, params.merge(page: collection.next_page))
-      links << teg(:span, "&rarr;".html_safe, "dir")
+      links << element(:span, "&rarr;".html_safe, "dir")
     end    
   
-    teg :div, "pagination" do
+    element :div, "pagination" do
       links
     end
   end

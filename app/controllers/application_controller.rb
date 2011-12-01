@@ -137,7 +137,17 @@ protected
       response_headers: response.headers
     )
 
-    raise exception  
+    raise exception
   end
+  
+  helper_method :encode_order
+  
+  def encode_order(field, reverse_by_default = false, param = params[:sort])
+    SortExpressions.encode_order(field, params, reverse_by_default)
+  end
+  
+  def decode_order_to_mongo(param = params[:sort])
+    SortExpressions.decode_order_to_mongo(param)
+  end  
   
 end

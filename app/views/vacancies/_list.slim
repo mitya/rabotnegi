@@ -2,20 +2,20 @@ table.vacancies-list.rounded{cellspacing=0}
   thead
     tr
       - if local_assigns[:sorting] == false
-        th.pos{class=order_class(:title)} Должность
-        th.emp{class=order_class(:employer_name)} Компания
-        th.sal{class=order_class(:salary_min)} Зарплата
+        th.pos{class=sorting_state_class_for(:title)} Должность
+        th.emp{class=sorting_state_class_for(:employer_name)} Компания
+        th.sal{class=sorting_state_class_for(:salary_min)} Зарплата
       - else
-        th.pos{class=order_class(:title)}= link_to "Должность", url(:nice_vacancies, params.merge(sort: encode_order(:title))), rel: 'nofollow'
-        th.emp{class=order_class(:employer_name)}= link_to "Компания", url(:nice_vacancies, params.merge(sort: encode_order(:employer_name))), rel: 'nofollow'
-        th.sal{class=order_class(:salary_min)}= link_to "Зарплата", url(:nice_vacancies, params.merge(sort: encode_order(:salary_min))), rel: 'nofollow'
+        th.pos{class=sorting_state_class_for(:title)}= link_to "Должность", url(:nice_vacancies, params.merge(sort: encode_order(:title))), rel: 'nofollow'
+        th.emp{class=sorting_state_class_for(:employer_name)}= link_to "Компания", url(:nice_vacancies, params.merge(sort: encode_order(:employer_name))), rel: 'nofollow'
+        th.sal{class=sorting_state_class_for(:salary_min)}= link_to "Зарплата", url(:nice_vacancies, params.merge(sort: encode_order(:salary_min))), rel: 'nofollow'
 
   tbody
     - collection.each do |vacancy|
       tr.entry-header{id=web_id(vacancy) class=xcycle('', ' alt')}
         td.pos
           span{class="star #{current_user!.favorite_vacancies.include?(vacancy.id) ? 'star-enabled' : 'star-disabled'}"}
-          = link_to raw(vacancy.title), url(:vacancy, vacancy)
+          = link_to raw(vacancy.title), url(vacancy)
         td.emp= raw vacancy.employer_name
         td.sal= vacancy.salary
 

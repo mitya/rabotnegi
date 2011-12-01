@@ -8,7 +8,7 @@ class VacanciesController < ApplicationController
       @vacancies = Vacancy.
         search(params.slice(:city, :industry, :q)).
         without(:description).
-        order_by(decode_order_for_mongo(params[:sort].presence || "title")).
+        order_by(decode_order_to_mongo(params[:sort].presence || "title")).
         paginate(params[:page], 50)
       current_user!.update_attributes(city: params[:city], industry: params[:industry]) unless bot?
     else
