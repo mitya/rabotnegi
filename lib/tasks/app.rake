@@ -8,23 +8,22 @@ namespace :app do
   end
 
   task(:load => :environment) { RabotaRu.load }
-end
 
+  namespace :v do
+    # Usage: rake vacancies:load CITY=spb INDUSTRY=telework
+    task :load => :environment do
+      ENV['LOG_TO_CONSOLE'] = 'true'
 
-namespace :vacancies do
-  # Usage: rake vacancies:load CITY=spb INDUSTRY=telework
-  task :load => :environment do
-    ENV['LOG_TO_CONSOLE'] = 'true'
+      options = {}    
+      options[:city] = ENV['CITY'] if ENV['CITY'].present?
+      options[:industry] = ENV['INDUSTRY'] if ENV['INDUSTRY'].present?
+      options[:remote] = false if ENV['REMOTE'] == "false"
 
-    options = {}    
-    options[:city] = ENV['CITY'] if ENV['CITY'].present?
-    options[:industry] = ENV['INDUSTRY'] if ENV['INDUSTRY'].present?
-    options[:remote] = false if ENV['REMOTE'] == "false"
+      RabotaRu::VacancyLoader.new(options).load
+    end
 
-    RabotaRu::VacancyLoader.new(options).load
+    task :count => :environment do
+      puts Vacancy.count
+    end  
   end
-  
-  task :count => :environment do
-    puts Vacancy.count
-  end  
 end

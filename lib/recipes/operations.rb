@@ -16,6 +16,13 @@ def print_log(path)
   puts capture("tail -n #{ENV['N'] || 200} #{path}")
 end
 
+def print_output(command)
+  output = capture(command)
+  puts
+  puts output
+  puts
+end
+
 task(:crake) { drake ENV["TASK"] }
 
 task :script do
@@ -56,28 +63,42 @@ namespace :log do
   end
 end
 
-namespace :data do
-  task :backup do
+namespace :backups do
+  task :make do
     drake "data:dump dest=/apps/data db=rabotnegi_prod"
   end
-  
-  task :backup_cleanup do
-    backups = capture("ls -x /apps/data/dump-*-*.tbz").split.sort
-    olds = (backups - backups.last(1)).join(" ")
-    run "rm -rf #{olds}"
+
+  task :list do
+    print_output "ls -l /apps/data/dump-*-*.tbz"
+    print_output "df -h"
   end
   
+  task :download do
+    last_backup_name = capture("ls -x /apps/data/dump-*-*.tbz").split.sort.last
+    get last_backup_name, "dump/#{File.basename(last_backup_name)}"
+  end
+
+  task :cleanup do
+    backups = capture("ls -x /apps/data/dump-*-*.tbz").split.sort
+    olds = (backups - backups.last(3)).join(" ")
+    run "rm -rf #{olds}"
+  end    
+end
+
+namespace :data do
+  # Dumps and downloads a current copy of the server database
   task :dump do
     database = "rabotnegi_prod"
     timestamp = Time.now.strftime("%y%m%d_%H%M")
     run "mongodump -d #{database} -o #{current_path}/tmp/db_#{timestamp}"
     run "cd #{current_path}/tmp/db_#{timestamp}/#{database} && tar cj * > #{current_path}/tmp/db.tbz"
-    get "#{current_path}/tmp/db.tbz", "tmp/db_#{timestamp}.tbz"
+    get "#{current_path}/tmp/db.tbz", "dump/db_#{timestamp}.tbz"
     # system "mkdir tmp/db_#{database}_#{timestamp}"
     # system "cd tmp/db_#{database}_#{timestamp}"
     # system "tar xjf tmp/db_#{timestamp}.tbz -C tmp/db_#{database}_#{timestamp}"
   end
   
+  # Uploads a db dump from "tmp/dump/rabotnegi_dev" to the server
   task :restore do
     workdir = Dir.pwd
     system "cd tmp/dump/rabotnegi_dev && tar cj * > #{workdir}/tmp/localdump.tbz"

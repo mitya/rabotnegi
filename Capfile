@@ -31,6 +31,10 @@ set :passenger_config_path, "/etc/apache2/sites-available/#{application}"
 set :logrotate_config_path, "/etc/logrotate.d/#{application}"
 set :nginx_config_path, "/opt/nginx/conf/sites/#{application}"
 
+set :default_environment, {
+  :RUBYOPT => "-Ku"
+}
+
 after "deploy", "deploy:crontab"
 after "deploy:update_code", "deploy:update_custom_symlinks"
 before "deploy:assets:precompile", "bundle:install"
@@ -46,8 +50,6 @@ before "deploy:assets:precompile", "bundle:install"
 # cap r T=vacancies:load P="REMOTE=false"
 # cap crake TASK="vacancies:load REMOTE=false"
 
-
-task :foo do
-  puts capture("ls -x #{releases_path}")
-  p capture("ls -x /apps/data").split.sort
-end
+# /etc/profile — rubyopt
+# /etc/apache2/httpd.conf
+# /apps/bin/ruby — rubyopt
