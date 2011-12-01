@@ -15,8 +15,10 @@ module ControllerHelper
   # (:user, user) => polymorphic
   # (:edit, :user, user) => helper
   def url(*args)
-    quick_route(*args) and return
-    if Symbol === args.first && Mongoid::Document === args.second || Mongoid::Document === args.first
+    result = quick_route(*args)
+    return result if result
+
+    if ApplicationModel === args.first || Symbol === args.first && ApplicationModel === args.second
       polymorphic_path(args)
     else
       send("#{args.shift}_path", *args)
