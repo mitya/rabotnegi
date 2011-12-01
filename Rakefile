@@ -6,23 +6,18 @@ require 'pp'
 Rabotnegi::Application.load_tasks
 
 namespace :data do
-  desc "Backups production database on rabotnegi.ru"
-  task :sql_backup do
-    sh "mysqldump jobs_prod -h rabotnegi.ru -u admin -p123 | bzip2 -c > db#{Time.now.strftime('%Y%m%d-%H%M')}.sql.bz"
-  end
-  
   # cap crake TASK="data:dump dest=/apps/data db=rabotnegi_prod"
   # rake data:dump dest=/apps/data db=rabotnegi_prod
   # scp rba:/apps/data/dump-latest.tbz ~/desktop
   task :dump do
     db = ENV['db']
     dest = ENV['dest']
-    num = Time.now.strftime("%Y%m%d-%H%M%S")
+    id = Time.now.strftime("%Y%m%d-%H%M%S")
     
-    sh "mongodump -d #{db} -o tmp/dump-#{num}"
-    sh "tar -C tmp -cj dump-#{num} > #{dest}/dump-#{num}.tbz"
-    sh "rm -rf tmp/dump-#{num} #{dest}/dump-latest.tbz"
-    sh "ln -s dump-#{num}.tbz #{dest}/dump-latest.tbz"
+    sh "mongodump -d #{db} -o tmp/dump-#{id}"
+    sh "tar -C tmp -cj dump-#{num} > #{dest}/dump-#{id}.tbz"
+    sh "rm -rf tmp/dump-#{id} #{dest}/dump-latest.tbz"
+    sh "ln -s dump-#{id}.tbz #{dest}/dump-latest.tbz"
   end 
   
   task :clone do
@@ -33,6 +28,10 @@ namespace :data do
     sh "mongorestore -d #{target} --drop tmp/dbclone/#{source}"
     sh "rm -rf tmp/dbclone/#{source}"
   end
+  
+  task :restore do
+    sh "mongorestore -d rabotnegi_dev --drop #{ENV['src']}"
+  end  
   
   # rake data:seed[web]
   # rails runner -e test_web test/fixtures/data.rb
@@ -52,9 +51,5 @@ namespace :dev do
     system "rm -rf #{Rails.root}/public/stylesheets/pack"
     system "rm -rf #{Rails.root}/tmp/cache/*"
     system "rm -rf #{Rails.root}/public/vacancies"
-  end
-  
-  task :restore do
-    sh "mongorestore -d rabotnegi_dev --drop #{ENV['src']}"
   end  
 end
