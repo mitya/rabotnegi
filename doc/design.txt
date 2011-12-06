@@ -10,3 +10,6 @@ get_user
 
 user.update
   
+  
+db:pull TARGET
+db:push TARGET
