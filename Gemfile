@@ -5,6 +5,7 @@ gem 'sqlite3'
 gem "bson_ext" # for mongoid
 gem "mongoid"
 gem 'slim'
+gem 'sass-rails'
 gem 'rmagick' # for captcha
 gem "galetahub-simple_captcha", :require => "simple_captcha"
 gem "unicode_utils" # for cyrillic parameterization
@@ -24,6 +25,5 @@ end
 
 group :assets do
   gem 'coffee-rails'
-  gem 'sass-rails'
   gem 'uglifier'
 end
