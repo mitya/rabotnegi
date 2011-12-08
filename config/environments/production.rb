@@ -7,7 +7,7 @@ Rabotnegi::Application.configure do
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
 
-  config.logger = SyslogLogger.new
+  config.logger = SyslogLogger.new("rbg-web")
   config.log_level = :info
 
   # Only use best-standards-support built into browsers

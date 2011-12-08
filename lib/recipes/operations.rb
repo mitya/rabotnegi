@@ -29,6 +29,11 @@ task :script do
   run "#{current_path}/script/rails runner -e #{rails_env} #{current_path}/script/#{ENV["S"]}.rb"
 end
 
+task :go do
+  system "git push"
+  deploy.default
+end
+
 namespace :deploy do
   task(:restart) do
     run "touch #{current_path}/tmp/restart.txt"
