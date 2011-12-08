@@ -9,6 +9,7 @@ gem 'rmagick' # for captcha
 gem "galetahub-simple_captcha", :require => "simple_captcha"
 gem "unicode_utils" # for cyrillic parameterization
 gem "therubyracer" # weird bugs otherwise
+gem "syslog-logger", :require => 'syslog_logger'
 
 group :development, :test do
   gem 'capistrano'

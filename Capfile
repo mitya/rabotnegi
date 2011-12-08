@@ -39,6 +39,10 @@ after "deploy", "deploy:crontab"
 after "deploy:update_code", "deploy:update_custom_symlinks"
 before "deploy:assets:precompile", "bundle:install"
 
+# External hooks
+#   assets
+#   gems
+
 # deploy
 #   update
 #     update_code
