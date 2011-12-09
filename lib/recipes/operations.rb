@@ -53,14 +53,17 @@ namespace :deploy do
 end
 
 namespace :log do
+  set :app_log_path, "/var/log/app-rabotnegi-web.log"
+  
   task(:default) { app }
-  task(:app) { print_log "#{current_path}/log/#{rails_env}.log" }
+  task(:local) { print_log "#{current_path}/log/#{rails_env}.log" }
+  task(:app) { print_log(app_log_path) }
   task(:web) { print_log "#{current_path}/log/access.log" }
   task(:error) { print_log "#{current_path}/log/error.log" }
   task(:dump) { print_log "#{current_path}/log/#{ENV['T']}.log" }
   
   task :f, :roles => :app do
-    run("tail -f #{shared_path}/log/#{rails_env}.log") { |channel, stream, data| puts data; break if stream == :err }
+    run("tail -f #{app_log_path}") { |channel, stream, data| puts data; break if stream == :err }
   end
   
   task :pull do

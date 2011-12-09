@@ -24,6 +24,7 @@ test_real:
 production:
   host: localhost
   database: rabotnegi_prod
+  logger: false
   # slaves:
   #   - host: slave1.local
   #     port: 27018
