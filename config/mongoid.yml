@@ -21,10 +21,6 @@ test_real:
   <<: *defaults
   database: rabotnegi_test_real
 
-staging:
-  host: localhost
-  database: rabotnegi_stg
-
 production:
   host: localhost
   database: rabotnegi_prod

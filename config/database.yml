@@ -27,10 +27,6 @@ test_real:
   <<: *local_settings  
   database: db/test_real.sqlite3
   
-staging:
-  <<: *local_settings  
-  database: /apps/rabotnegi_stg/shared/staging.sqlite3
-
 production:
   <<: *local_settings  
   database: /apps/rabotnegi_prod/shared/production.sqlite3
