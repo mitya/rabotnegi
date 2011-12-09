@@ -28,7 +28,7 @@ module Rabotnegi
     config.sass.style = :compact
 
     # config.mongoid.logger = Logger.new($stdout, :warn)
-    # config.mongoid.autocreate_indexes = true
+    config.mongoid.autocreate_indexes = true
 
     require "ext/core"
     require 'ext/rails'
