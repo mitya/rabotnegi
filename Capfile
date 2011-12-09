@@ -15,7 +15,7 @@ set :password, secrets["password"]
 set :git_enable_submodules, true
 set :keep_releases, 3
 set :use_sudo, false
-set :rails_env, ENV['E'] == 'stg' ? :staging : :production
+set :rails_env, :production
 set :sudo_prompt, "xxxx-xxxx"
 set :bundle_without, [:development, :test]
 # set :shared_children, fetch(:shared_children) + %w(sphinx config)
@@ -57,3 +57,13 @@ before "deploy:assets:precompile", "bundle:install"
 # /etc/profile — rubyopt
 # /etc/apache2/httpd.conf
 # /apps/bin/ruby — rubyopt
+
+# if $programname == 'rbg-web' then @logs.papertrailapp.com:40120
+# if $programname == 'popa3d' and $syslogseverity <= '6' then /var/log/popa3d.log
+# if $msg contains 'error' then /var/log/errlog # the expression-based way
+# if $syslogfacility-text == 'local0' and $msg startswith '...' and ($msg contains '...' or $msg contains '...') then ...
+
+# if $programname == 'rbg-web' then @logs.papertrailapp.com:40120
+# & ~
+# if $programname == 'rbg-web' then ~
+# & ~
