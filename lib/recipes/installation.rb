@@ -83,11 +83,78 @@ namespace :install do
       passenger_pre_start http://#{domain};
     end
 
-    sudo "touch #{nginx_config_path}"
-    sudo "chown #{user}:#{user} #{nginx_config_path}"
-    put config, nginx_config_path
+    put_as_user nginx_config_path, config
     sudo "/opt/nginx/sbin/nginx -s reload"
   end
+  
+  task :resque_web do
+    app_path = "#{shared_path}/bundle/ruby/1.9.1/gems/resque-1.19.0/lib/resque/server/public"
+    config_path = "/opt/nginx/conf/sites/#{application}_resque"
+
+    config = <<-end
+      upstream resque_web {
+        server 127.0.0.1:8282;
+      }
+    
+      server {
+        listen 80;
+        server_name resque.admin.#{domain};
+
+        location / {
+          proxy_set_header  Host             $http_host;
+          proxy_set_header  X-Real-IP        $remote_addr;
+          proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
+          proxy_redirect    off;
+          proxy_pass        http://resque_web;
+          
+          auth_basic            "Restricted";
+          auth_basic_user_file  htpasswd;
+        }
+
+        error_log  #{current_path}/log/resque-error.log notice;
+        access_log #{current_path}/log/resque-access.log combined;
+      }
+    end
+
+    put_as_user config_path, config
+    sudo "/opt/nginx/sbin/nginx -s reload"
+  end
+
+  task :redis_web do
+    app = "redis_web"
+    app_path = "/app/#{app}"
+    config_path = "/opt/nginx/conf/sites/#{app}_resque"
+    port = 7010
+    subdomain = "redis"
+  
+    config = <<-end
+      upstream #{app} {
+        server 127.0.0.1:#{port};
+      }
+    
+      server {
+        listen 80;
+        server_name #{subdomain}.admin.#{domain};
+  
+        location / {
+          proxy_set_header  Host             $http_host;
+          proxy_set_header  X-Real-IP        $remote_addr;
+          proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
+          proxy_redirect    off;
+          proxy_pass        http://#{app};
+  
+          auth_basic            "Restricted";
+          auth_basic_user_file  htpasswd;          
+        }
+  
+        error_log  #{app_path}/log/error.log notice;
+        access_log #{app_path}/log/access.log combined;
+      }
+    end
+  
+    put_as_user config_path, config
+    sudo "/opt/nginx/sbin/nginx -s reload"
+  end  
   
   task :apache do
     domain = host.sub('www.', '')
@@ -145,9 +212,7 @@ namespace :install do
       }
     end
 
-    sudo "touch #{logrotate_config_path}"
-    sudo "chown #{user}:#{user} #{path}"
-    put config, logrotate_config_path
+    put_as_user logrotate_config_path, config
   end  
   
   task :undo do
@@ -161,19 +226,30 @@ namespace :install do
   namespace :monit do
     task :resque do
       name = "resque_main"
-      env = "HOME=/home/#{runner} RACK_ENV=#{rails_env} PATH=/usr/local/bin:/usr/local/ruby/bin:/usr/bin:/bin:$PATH"
-      rake_env = "RAILS_ENV=#{rails_env} QUEUE=#{queue} VERBOSE=1 PIDFILE=tmp/pids/#{name}.pid"
+      env = "HOME=/home/#{user} RACK_ENV=#{rails_env} PATH=/usr/local/bin:/usr/local/ruby/bin:/usr/bin:/bin:$PATH"
+      rake_env = "RAILS_ENV=#{rails_env} VERBOSE=1 PIDFILE=tmp/pids/#{name}.pid"
       queue = "main"
+
+      # start program = "/usr/bin/env #{env} /bin/sh -l -c 'cd #{current_path}; nohup bundle exec rake resque:work #{rake_env} & >> log/#{name}.log 2>&1' as uid #{runner} and gid #{runner}"
+      # start program = "/bin/sh -c 'cd #{current_path}; nohup bundle exec rake resque:work #{rake_env} &'"
+
       config = <<-end
-        check process name
+        check process #{name}
         with pidfile #{current_path}/tmp/pids/name.pid
-        start program = "/usr/bin/env #{env} /bin/sh -l -c 'cd #{current_path}; nohup bundle exec rake resque:work #{rake_env} & >> log/#{name}.log 2>&1'" as uid #{runner} and gid #{runner}
+        start program = "/bin/sh -c 'cd #{current_path}; bundle exec rake resque:work #{rake_env}'"
         stop program = "/bin/sh -c 'cd #{current_path} && kill -9 %(cat tmp/pids/#{name}.pid) && rm -f tmp/pids/#{name}.pid; exit 0;'"
         if totalmem is greater than 200 MB for 10 cycles then restart
         group resque
       end
       
-      put config, "/etc/monit.d/#{name}"
+      put_as_user "/etc/monit/conf.d/#{name}", config
+      sudo "monit reload"      
     end
   end
+end
+
+def put_as_user(path, config)
+  sudo "touch #{path}"
+  sudo "chown #{user}:#{user} #{path}"
+  put config, path  
 end
