@@ -18,7 +18,7 @@ set :use_sudo, false
 set :rails_env, :production
 set :sudo_prompt, "xxxx-xxxx"
 set :bundle_without, [:development, :test]
-# set :shared_children, fetch(:shared_children) + %w(sphinx config)
+set :shared_children, fetch(:shared_children) + %w(data)
 # set :ssh_options, {:keys => ["/users/dima/.ssh/id_rsa"]}
 
 set :application, "rabotnegi_prod"
@@ -36,13 +36,17 @@ set :default_environment, {
   :RUBYOPT => "-Ku"
 }
 
-after "deploy", "deploy:crontab"
-after "deploy:update_code", "deploy:update_custom_symlinks"
-before "deploy:assets:precompile", "bundle:install"
+set :public_children, []
 
-# External hooks
-#   assets
-#   gems
+# before "deploy:assets:precompile", "bundle:install"
+
+after "deploy:finalize_update", "deploy:update_custom_symlinks"
+# external after "deploy:finalize_update", "bundle:install"
+# external after "deploy:update_code", "deploy:assets:precompile"
+after "deploy:symlink", "deploy:crontab"
+
+task :demo do
+end
 
 # deploy
 #   update
@@ -51,6 +55,7 @@ before "deploy:assets:precompile", "bundle:install"
 #       finalize_update (symlink shared log/pid/system dirs)
 #     symlink
 #   restart
+
 
 # cap r T=vacancies:load P="REMOTE=false"
 # cap crake TASK="vacancies:load REMOTE=false"

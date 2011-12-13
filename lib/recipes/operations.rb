@@ -1,7 +1,7 @@
 def drake(command)
   # sudo_modifier = "#{sudo :as => options[:sudo]}" if options[:sudo]
   sudo_modifier = nil
-  run "cd #{current_path} && #{sudo_modifier} RAILS_ENV=#{rails_env} rake #{command}"
+  run "cd #{current_path} && #{sudo_modifier} bundle exec rake RAILS_ENV=#{rails_env} #{command}"
 end
 
 # def append_text(text, file)
