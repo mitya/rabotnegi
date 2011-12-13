@@ -85,6 +85,8 @@ module FormatHelper
       else value
     end    
   end
+  
+  alias f inspect_value
 
   def inspect_field(model, field, options = {})
     value = model.send(field.name)

@@ -58,7 +58,7 @@ namespace :log do
   task(:default) { app }
   task(:local) { print_log "#{current_path}/log/#{rails_env}.log" }
   task(:app) { print_log(app_log_path) }
-  task(:web) { print_log "#{current_path}/log/access.log" }
+  task(:access) { print_log "#{current_path}/log/access.log" }
   task(:error) { print_log "#{current_path}/log/error.log" }
   task(:dump) { print_log "#{current_path}/log/#{ENV['T']}.log" }
   
@@ -67,7 +67,7 @@ namespace :log do
   end
   
   task :pull do
-    get "#{current_path}/log/production.log", "log/production.log"
+    get app_log_path, "log/production.log"
   end
 end
 

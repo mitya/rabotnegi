@@ -48,7 +48,6 @@ namespace :install do
   end
 
   task :nginx do
-    domain = host.sub('www.', '')
     config = <<-end
       server {
         listen 80;
@@ -57,6 +56,8 @@ namespace :install do
         passenger_enabled on;
         passenger_min_instances 1;
         rails_env #{rails_env};
+
+        log_format asset '$remote_addr [$time_local] "$request" $status $body_bytes_sent';
 
         error_log  #{current_path}/log/error.log notice;
         access_log #{current_path}/log/access.log combined;
@@ -70,7 +71,7 @@ namespace :install do
           gzip_static on;
           expires 1y;
           add_header Cache-Control public;
-          access_log #{current_path}/log/assets.log combined;
+          access_log #{current_path}/log/asset.log asset;
         }
       }
       
@@ -155,5 +156,24 @@ namespace :install do
     sudo "rm -rf #{nginx_config_path}"
     sudo "rm -rf #{logrotate_config_path}"
     sudo "/opt/nginx/sbin/nginx -s reload"
+  end
+  
+  namespace :monit do
+    task :resque do
+      name = "resque_main"
+      env = "HOME=/home/#{runner} RACK_ENV=#{rails_env} PATH=/usr/local/bin:/usr/local/ruby/bin:/usr/bin:/bin:$PATH"
+      rake_env = "RAILS_ENV=#{rails_env} QUEUE=#{queue} VERBOSE=1 PIDFILE=tmp/pids/#{name}.pid"
+      queue = "main"
+      config = <<-end
+        check process name
+        with pidfile #{current_path}/tmp/pids/name.pid
+        start program = "/usr/bin/env #{env} /bin/sh -l -c 'cd #{current_path}; nohup bundle exec rake resque:work #{rake_env} & >> log/#{name}.log 2>&1'" as uid #{runner} and gid #{runner}
+        stop program = "/bin/sh -c 'cd #{current_path} && kill -9 %(cat tmp/pids/#{name}.pid) && rm -f tmp/pids/#{name}.pid; exit 0;'"
+        if totalmem is greater than 200 MB for 10 cycles then restart
+        group resque
+      end
+      
+      put config, "/etc/monit.d/#{name}"
+    end
   end
 end

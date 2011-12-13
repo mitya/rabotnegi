@@ -2,6 +2,7 @@ require File.expand_path('../config/application', __FILE__)
 
 require 'rake'
 require 'pp'
+require 'resque/tasks'
 
 Rabotnegi::Application.load_tasks
 
@@ -53,3 +54,9 @@ namespace :dev do
     system "rm -rf #{Rails.root}/public/vacancies"
   end  
 end
+
+task "resque:setup" => :environment do
+  ENV['QUEUE'] = 'main'
+end
+
+task "jobs:work" => "resque:work"

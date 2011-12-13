@@ -9,4 +9,9 @@ class User < ApplicationModel
   def favorite_vacancy_objects
     Vacancy.find(favorite_vacancies)
   end
+  
+  def self.demo
+    Rails.logger.debug "User.demo() at #{Time.now}"
+    MongoLog.write(nil, :info, 'user.demo')
+  end
 end

@@ -6,7 +6,7 @@ Rabotnegi::Application.configure do
 
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
-  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.delivery_method = :test
   config.action_mailer.smtp_settings = YAML.load_file("/volumes/code/config/smtp.yml").to_options
 
   # Print deprecation notices to the Rails logger
@@ -22,6 +22,7 @@ Rabotnegi::Application.configure do
 
   config.after_initialize do
     Slim::Engine.set_default_options pretty: true
+    # Resque.inline = false
   end
   
   # config.cache_classes = true

@@ -37,4 +37,20 @@ module Mai
   def unescape_action_mailer_stuff(string)
     string.gsub("&#47;", '/').gsub("&amp;", '&')    
   end  
+  
+# queues
+  
+  def enqueue(klass, method, *args)
+    # Resque.enqueue_to(:main, ProxyWorker, args)
+    Rails.logger.info "Job #{klass}.#{method}#{args.inspect} scheduled"
+    Resque::Job.create('main', 'Mai::ProxyWorker', klass.to_s, method.to_s, args)
+  end
+  
+  class ProxyWorker
+    def self.perform(klass, method, args)
+      Rails.logger.info "Job #{klass}.#{method}#{args.inspect} started"
+      klass.constantize.send(method, *args)
+      Rails.logger.info "Job #{klass}.#{method}#{args.inspect} finished"
+    end
+  end
 end

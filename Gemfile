@@ -6,6 +6,7 @@ gem "bson_ext" # for mongoid
 gem "mongoid"
 gem 'slim'
 gem 'sass-rails'
+gem 'resque'
 gem 'rmagick' # for captcha
 gem "galetahub-simple_captcha", :require => "simple_captcha"
 gem "unicode_utils" # for cyrillic parameterization

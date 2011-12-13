@@ -28,7 +28,7 @@ module Rabotnegi
     config.sass.style = :compact
 
     # config.mongoid.logger = Logger.new($stdout, :warn)
-    config.mongoid.autocreate_indexes = true
+    # config.mongoid.autocreate_indexes = true
 
     require "ext/core"
     require 'ext/rails'
@@ -43,6 +43,9 @@ module Rabotnegi
     config.after_initialize do  
       ActionView::Base.default_form_builder = CustomFormBuilder
       ActiveSupport::JSON.engine = :json_gem
+
+      # Resque.redis = "localhost:6379"
+      Resque.redis.namespace = "rabotnegi:jobs"      
     end
   end
 end
