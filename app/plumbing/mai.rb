@@ -42,15 +42,15 @@ module Mai
   
   def enqueue(klass, method, *args)
     # Resque.enqueue_to(:main, ProxyWorker, args)
-    Rails.logger.info "Job #{klass}.#{method}#{args.inspect} scheduled"
+    Rails.logger.info "Scheduled job #{klass}.#{method}#{args.inspect}"
     Resque::Job.create('main', 'Mai::ProxyWorker', klass.to_s, method.to_s, args)
   end
   
   class ProxyWorker
     def self.perform(klass, method, args)
-      Rails.logger.info "Job #{klass}.#{method}#{args.inspect} started"
+      Rails.logger.info "Started job #{klass}.#{method}#{args.inspect}"
       klass.constantize.send(method, *args)
-      Rails.logger.info "Job #{klass}.#{method}#{args.inspect} finished"
+      Rails.logger.info "Completed job #{klass}.#{method}#{args.inspect}"
     end
   end
 end
