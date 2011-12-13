@@ -32,9 +32,9 @@ set :passenger_config_path, "/etc/apache2/sites-available/#{application}"
 set :logrotate_config_path, "/etc/logrotate.d/#{application}"
 set :nginx_config_path, "/opt/nginx/conf/sites/#{application}"
 
-# set :default_environment, {
-#   :RUBYOPT => "-Ku"
-# }
+set :default_environment, {
+  :RUBYOPT => "-Ku"
+}
 
 set :public_children, []
 

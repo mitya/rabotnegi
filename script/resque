@@ -19,7 +19,7 @@ def main
   # 
   # args = parser.parse!(args)
 
-  Daemons.run_proc("resque.#{id}", dir: Rails.root.join("tmp/pids"), dir_mode: :normal) do
+  Daemons.run_proc("resque.#{id}", dir: Rails.root.join("tmp/pids"), dir_mode: :normal, log_output: true, log_dir: Rails.root.join("log")) do
     Dir.chdir(Rails.root)
     worker = Resque::Worker.new("*")
     worker.verbose = true

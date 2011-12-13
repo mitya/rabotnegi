@@ -129,13 +129,6 @@ namespace :resque_web do
 end
 
 namespace :resque do
-  task(:start) { 
-    name = "worker"
-    # run "cd #{current_path} && nohup bundle exec RAILS_ENV=#{rails_env} QUEUE=* VERBOSE=1 PIDFILE=tmp/pids/#{name}.pid BACKGROUND=yes rake resque:work >> #{current_path}/log/out.log 2>&1" 
-    # run "cd #{current_path}; nohup bundle exec rake resque:work RAILS_ENV=#{rails_env} VERBOSE=1 PIDFILE=tmp/pids/#{name}.pid 2>&1 >/dev/null </dev/null &" 
-    run "cd #{current_path}; nohup bundle exec rake resque:work RAILS_ENV=#{rails_env} VERBOSE=1 PIDFILE=tmp/pids/#{name}.pid &" 
-  }
-  # nohup bundle exec rake resque:work RAILS_ENV=production QUEUE=* VERBOSE=1 PIDFILE=tmp/pids/worker.pid BACKGROUND=yes
-
-  task(:stop) { }
+  task(:start) { run "RAILS_ENV=#{rails_env} #{current_path}/script/resque 1 start" }
+  task(:stop) { run "RAILS_ENV=#{rails_env} #{current_path}/script/resque 1 stop" }
 end

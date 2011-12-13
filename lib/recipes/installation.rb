@@ -225,24 +225,20 @@ namespace :install do
   
   namespace :monit do
     task :resque do
-      name = "resque_main"
-      env = "HOME=/home/#{user} RACK_ENV=#{rails_env} PATH=/usr/local/bin:/usr/local/ruby/bin:/usr/bin:/bin:$PATH"
-      rake_env = "RAILS_ENV=#{rails_env} VERBOSE=1 PIDFILE=tmp/pids/#{name}.pid"
-      queue = "main"
+      number = 1
 
-      # start program = "/usr/bin/env #{env} /bin/sh -l -c 'cd #{current_path}; nohup bundle exec rake resque:work #{rake_env} & >> log/#{name}.log 2>&1' as uid #{runner} and gid #{runner}"
-      # start program = "/bin/sh -c 'cd #{current_path}; nohup bundle exec rake resque:work #{rake_env} &'"
+      env = "RAILS_ENV=#{rails_env} PATH=/usr/local/bin:/usr/local/ruby/bin:/usr/bin:/bin:$PATH"
 
       config = <<-end
-        check process #{name}
-        with pidfile #{current_path}/tmp/pids/name.pid
-        start program = "/bin/sh -c 'cd #{current_path}; bundle exec rake resque:work #{rake_env}'"
-        stop program = "/bin/sh -c 'cd #{current_path} && kill -9 %(cat tmp/pids/#{name}.pid) && rm -f tmp/pids/#{name}.pid; exit 0;'"
-        if totalmem is greater than 200 MB for 10 cycles then restart
+        check process resque.#{number}
+        with pidfile #{current_path}/tmp/pids/resque.#{number}.pid
+        start program = "/usr/bin/env #{env} /bin/sh -l -c '#{current_path}/script/resque #{number} start >> #{shared_path}/log/resque.#{number}.output 2>&1'" as uid #{user} and gid #{user}
+        stop program = "/usr/bin/env #{env} /bin/sh -l -c '#{current_path}/script/resque #{number} stop >> #{shared_path}/log/resque.#{number}.output 2>&1'" as uid #{user} and gid #{user}
+        if totalmem is greater than 100 MB for 10 cycles then restart
         group resque
       end
       
-      put_as_user "/etc/monit/conf.d/#{name}", config
+      put_as_user "/etc/monit/conf.d/resque", config
       sudo "monit reload"      
     end
   end
