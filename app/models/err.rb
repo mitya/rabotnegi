@@ -28,7 +28,7 @@ class Err < ApplicationModel
 
   def self.register(data)
     # log error to the database
-    err = create!(data)
+    err = Rails.logger.silence { create!(data) }
     
     # send a notifications if there were less than X emails already sent this hour
     err.notify if where(:created_at.gte => 1.hour.ago).count < MAX_ERR_NOTIFICATIONS_PER_HOUR

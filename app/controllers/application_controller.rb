@@ -39,6 +39,7 @@ protected
   def admin_required
     self.admin = Admin.log_in('root', '0000') and return if Rails.env.test?
     authenticate_or_request_with_http_basic do |login, password|
+      return true if Rails.env.development?
       login == ADMIN_LOGIN && password == ADMIN_PASSWORD
     end
   end  
@@ -113,11 +114,11 @@ protected
   def handle_unexpected_exception(exception)
     return if Rails.env.test? unless $test_error_reporting_enabled
   
-    logger.error "UNEXPECTED ERROR: #{exception}"
-    logger.error Rails.backtrace_cleaner.clean(exception.backtrace).join("\n")
+    logger.error "ERROR #{exception.class}: #{exception.message}"
+    # logger.error Rails.backtrace_cleaner.clean(exception.backtrace).join("\n")
 
-    render text: "<h2>#{CGI.escape_html(exception.to_s)}</h2><pre>#{Rails.backtrace_cleaner.clean(exception.backtrace).join("\n")}</pre>" and return if Rails.env.development?
-    # render text: "<h2>#{CGI.escape_html(exception.to_s)}</h2><pre>#{exception.backtrace.join("\n")}</pre>" and return if Rails.env.development?
+    # render text: "<h2>#{CGI.escape_html(exception.to_s)}</h2><pre>#{Rails.backtrace_cleaner.clean(exception.backtrace).join("\n")}</pre>"
+    # render text: "<h2>#{CGI.escape_html(exception.to_s)}</h2><pre>#{exception.backtrace.join("\n")}</pre>" 
 
     Err.register(
       controller: controller_name, 

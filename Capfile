@@ -22,6 +22,7 @@ set :bundle_without, [:development, :test]
 # set :ssh_options, {:keys => ["/users/dima/.ssh/id_rsa"]}
 
 set :application, "rabotnegi_prod"
+set :domain, "rabotnegi.ru"
 set :host, "www.rabotnegi.ru" # '178.79.171.92'
 
 set :deploy_to, "/apps/#{application}"
@@ -57,6 +58,12 @@ before "deploy:assets:precompile", "bundle:install"
 # /etc/profile — rubyopt
 # /etc/apache2/httpd.conf
 # /apps/bin/ruby — rubyopt
+# /opt/nginx/conf/nginx.conf
+# /opt/nginx/conf/sites/
+# /var/lib/mongodb
+# /var/log/mongodb/mongodb.log
+# /etc/mongodb.conf
+
 
 # if $programname == 'rbg-web' then @logs.papertrailapp.com:40120
 # if $programname == 'popa3d' and $syslogseverity <= '6' then /var/log/popa3d.log

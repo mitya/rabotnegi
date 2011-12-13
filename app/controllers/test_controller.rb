@@ -17,4 +17,14 @@ class TestController < ApplicationController
     @count = params[:count].to_i
     render "test/lorem", layout: false
   end  
+  
+  def foo    
+  end
+  
+  def add_tasks
+    mai.enqueue DemoWorker, :perform, "a passed value"
+    mai.enqueue User, :demo
+    Resque.enqueue DemoWorker, "direct call"
+    render text: "Ok"
+  end
 end
