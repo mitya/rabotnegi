@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'environment'))
+require 'daemons'
+require 'optparse'
+
+def main
+  id = ARGV.shift
+  raise("Numeric ID should be given as the first argument") unless id.to_i > 0
+
+  # args = ARGV.drop_while { |e| e != '--' }
+  # args.shift if args.first == '--'
+  # options = {}
+  # 
+  # parser = OptionParser.new do |p|
+  #   p.banner "Usage resque [start|stop|restart] -- -i NUMBER"
+  #   p.on("-i", "--id N", String) { |v| options[:id] = v }
+  # end
+  # 
+  # args = parser.parse!(args)
+
+  Daemons.run_proc("resque.#{id}", dir: Rails.root.join("tmp/pids"), dir_mode: :normal) do
+    Dir.chdir(Rails.root)
+    worker = Resque::Worker.new("*")
+    worker.verbose = true
+    worker.work(5)
+  end
+end
+
+main

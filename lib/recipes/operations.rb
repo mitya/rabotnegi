@@ -29,7 +29,7 @@ task :script do
   run "#{current_path}/script/rails runner -e #{rails_env} #{current_path}/script/#{ENV["S"]}.rb"
 end
 
-task :go do
+task :push do
   system "git push"
   deploy.default
 end
@@ -116,4 +116,26 @@ namespace :data do
     run "cd #{current_path}/tmp/localdump && tar xjf #{current_path}/tmp/localdump.tbz"
     run "cd #{current_path}/tmp && mongorestore -d rabotnegi_prod --drop localdump -c vacancies"
   end
+end
+
+namespace :redis_web do
+  task(:start) { run "cd /app/redis_web && bundle exec thin -p 7010 -d start"  }
+  task(:stop) { run "cd /app/redis_web && bundle exec thin -p 7010 stop"  }
+end
+
+namespace :resque_web do
+  task(:start) { run "cd #{current_path} && bundle exec resque-web -p 8282 -N rabotnegi:jobs -e production"  }
+  task(:stop) { run "cd #{current_path} && bundle exec resque-web -p 8282 -K"  }  
+end
+
+namespace :resque do
+  task(:start) { 
+    name = "worker"
+    # run "cd #{current_path} && nohup bundle exec RAILS_ENV=#{rails_env} QUEUE=* VERBOSE=1 PIDFILE=tmp/pids/#{name}.pid BACKGROUND=yes rake resque:work >> #{current_path}/log/out.log 2>&1" 
+    # run "cd #{current_path}; nohup bundle exec rake resque:work RAILS_ENV=#{rails_env} VERBOSE=1 PIDFILE=tmp/pids/#{name}.pid 2>&1 >/dev/null </dev/null &" 
+    run "cd #{current_path}; nohup bundle exec rake resque:work RAILS_ENV=#{rails_env} VERBOSE=1 PIDFILE=tmp/pids/#{name}.pid &" 
+  }
+  # nohup bundle exec rake resque:work RAILS_ENV=production QUEUE=* VERBOSE=1 PIDFILE=tmp/pids/worker.pid BACKGROUND=yes
+
+  task(:stop) { }
 end

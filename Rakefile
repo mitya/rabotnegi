@@ -56,7 +56,7 @@ namespace :dev do
 end
 
 task "resque:setup" => :environment do
-  ENV['QUEUE'] = 'main'
+  ENV['QUEUE'] = '*'
 end
 
 task "jobs:work" => "resque:work"
