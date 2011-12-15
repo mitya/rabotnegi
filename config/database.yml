@@ -29,4 +29,5 @@ test_real:
   
 production:
   <<: *local_settings  
-  database: /apps/rabotnegi_prod/shared/production.sqlite3
+  database: ../../shared/production.sqlite3
+  

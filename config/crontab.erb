@@ -1,6 +1,6 @@
 <% 
   @user = "apprunner"
-  @path = "/apps/rabotnegi_prod/current"
+  @path = "/app/rabotnegi/current"
   @env = 'production'
 
   def rake(task)
@@ -12,18 +12,13 @@
   end
 
   # copy (not symlink) to /etc/cron.d/rabotnegi
-  # m h dom mon dow user command
-  # */d
+  # m h dom mon dow user command (*/d)
 %>
 
 MAILTO=dmitry.sokurenko@gmail.com
 PATH=$PATH:/usr/local/bin/:/usr/bin:/bin
 RUBYOPT="-Ku"
 RAILS_PROC='cron'
-
-# 30 3 * * * <%= @user %> cd <%= @path %> && script/rails runner -e production "RabotaRu.load" >> <%= @path %>/log/cron.out
-#  0 3 * * * <%= @user %> cd <%= @path %> && script/rails runner -e production "Vacancy.cleanup" >> <%= @path %>/log/cron.out
-#  0 4,16 * * * <%= @user %> cd <%= @path %> && RAILS_ENV=production bundle exec rake --trace --silent data:dump dest=/apps/data db=rabotnegi_prod >> <%= @path %>/log/cron.out 2>> <%= @path %>/log/cron.err
 
  30 3 * * * <%= runner "RabotaRu.load" %>
   0 3 * * * <%= runner "Vacancy.cleanup" %>

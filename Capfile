@@ -54,7 +54,6 @@ resque
 cron
 monit
 
-
 deploy
   update
     update_code
