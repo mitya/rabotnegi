@@ -1,5 +1,3 @@
-default_run_options[:pty] = true # required for the first time repo access to answer "yes"
-
 namespace :install do
   task :default do
     deploy.setup
@@ -201,18 +199,18 @@ namespace :install do
 
   task :logrotate do
     config = <<-end
-#{current_path}/log/*.{log,err,out,output} {
-  daily
-  missingok
-  rotate 7
-  size 1M
-  compress
-  copytruncate
-  notifempty  
-}
+      #{current_path}/log/*.{log,err,out,output} {
+        daily
+        missingok
+        rotate 7
+        size 1M
+        compress
+        copytruncate
+        notifempty  
+      }
     end
 
-    put_as_user logrotate_config_path, config
+    put logrotate_config_path, config
   end  
   
   task :undo do
@@ -242,10 +240,4 @@ group resque
       sudo "monit reload"      
     end
   end
-end
-
-def put_as_user(path, config)
-  sudo "touch #{path}"
-  sudo "chown #{user}:#{user} #{path}"
-  put config, path  
 end

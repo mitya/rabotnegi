@@ -1,37 +1,3 @@
-def drake(command)
-  # sudo_modifier = "#{sudo :as => options[:sudo]}" if options[:sudo]
-  sudo_modifier = nil
-  run "cd #{current_path} && #{sudo_modifier} bundle exec rake RAILS_ENV=#{rails_env} #{command}"
-end
-
-# def append_text(text, file)
-#   # text = text.gsub("'", "'\\\\''").gsub("\n", '\n')
-#   # run "echo -e '#{text}' | tee -a #{file}"
-#   # run "tee -a #{file}", :data => text
-#   # run "cat >> #{file}", :data => text
-#   ("\n" + text + "\n").each_line { |line| run %(echo "#{line}" >> #{file}) }
-# end
-
-def print_log(path)
-  lines = ENV['N'] || 200
-  query = ENV['Q']
-
-  if query
-    command = "cat #{path} | grep #{query} | tail -n #{lines}"
-  else
-    command = "tail -n #{lines} #{path}"
-  end
-
-  puts capture(command, via: :sudo)
-end
-
-def print_output(command)
-  output = capture(command)
-  puts
-  puts output
-  puts
-end
-
 task(:crake) { drake ENV["TASK"] }
 
 task :script do
@@ -58,20 +24,20 @@ namespace :deploy do
     end    
     
     config = <<-end
-MAILTO=dsokurenko@gmail.com
-PATH=$PATH:/usr/local/bin/:/usr/bin:/bin
-RUBYOPT="-Ku"
-RAILS_PROC='cron'
-RAILS_ROOT="#{current_path}"
-RAILS_ENV=#{rails_env}
+      MAILTO=dsokurenko@gmail.com
+      PATH=$PATH:/usr/local/bin/:/usr/bin:/bin
+      RUBYOPT="-Ku"
+      RAILS_PROC='cron'
+      RAILS_ROOT="#{current_path}"
+      RAILS_ENV=#{rails_env}
   
-30 3 * * * #{ runner "RabotaRu.load" }
-0 3 * * * #{ runner "Vacancy.cleanup" }
-0 4,16 * * * #{ rake "data:dump dest=/data/backup db=rabotnegi_prod" }
-*/10 * * * * #{ rake "cron:ping" }
+      30 3 * * * #{ runner "RabotaRu.load" }
+      0 3 * * * #{ runner "Vacancy.cleanup" }
+      0 4,16 * * * #{ rake "data:dump dest=/data/backup db=rabotnegi_prod" }
+      */10 * * * * #{ rake "cron:ping" }
     end
     
-    put_as_user cron_config_path, config
+    put_as_root cron_config_path, config
     # run "erb #{current_path}/config/crontab.erb > #{current_path}/config/crontab"
     # sudo "cp #{current_path}/config/crontab #{cron_config_path}"  
   end
