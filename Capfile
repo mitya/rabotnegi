@@ -35,6 +35,8 @@ set :cron_config_path, "/etc/cron.d/#{application}"
 
 set :default_environment, { RUBYOPT: "-Ku" }
 
+default_run_options[:pty] = true # required for the first time repo access to answer "yes"
+
 after "deploy:finalize_update", "deploy:update_custom_symlinks"
 # external after "deploy:finalize_update", "bundle:install"
 # external after "deploy:update_code", "deploy:assets:precompile"
