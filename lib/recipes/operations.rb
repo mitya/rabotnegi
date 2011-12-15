@@ -13,7 +13,7 @@ end
 # end
 
 def print_log(path)
-  puts capture("tail -n #{ENV['N'] || 200} #{path}")
+  puts capture("sudo -p 'xxxx-xxxx' tail -n #{ENV['N'] || 200} #{path}")
 end
 
 def print_output(command)
@@ -53,11 +53,11 @@ namespace :deploy do
 end
 
 namespace :log do
-  set :app_log_path, "/var/log/app-rabotnegi-web.log"
+  set(:app_log_path) { "/data/log/#{project}.log" }
   
   task(:default) { app }
   task(:local) { print_log "#{current_path}/log/#{rails_env}.log" }
-  task(:app) { print_log(app_log_path) }
+  task(:app) { print_log app_log_path }
   task(:access) { print_log "#{current_path}/log/access.log" }
   task(:error) { print_log "#{current_path}/log/error.log" }
   task(:dump) { print_log "#{current_path}/log/#{ENV['T']}.log" }
