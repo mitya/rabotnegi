@@ -55,6 +55,12 @@ namespace :dev do
   end  
 end
 
+namespace :cron do
+  task :ping => :environment  do
+    Rails.logger.info "Cron is still alive. Event.count=#{MongoLog::Item.count}"
+  end
+end
+
 task "resque:setup" => :environment do
   ENV['QUEUE'] = '*'
 end
