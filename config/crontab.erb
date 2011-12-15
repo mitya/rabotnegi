@@ -27,3 +27,4 @@ RAILS_PROC = 'cron'
  30 3 * * * <%= runner "RabotaRu.load" %>
   0 3 * * * <%= runner "Vacancy.cleanup" %>
   0 4,16 * * * <%= rake "data:dump dest=/apps/data db=rabotnegi_prod" %>
+  */10 * * * * <%= rake "cron:ping" %>
