@@ -39,6 +39,7 @@ module Rabotnegi
     ::MAX_ERR_NOTIFICATIONS_PER_HOUR = 3
     ::ERR_SENDER = "errors@rabotnegi.ru"
     ::ERR_RECIPIENTS = "dmitry.sokurenko@gmail.com"
+    ::DEFAULT_QUEUE = :main
 
     config.after_initialize do  
       ActionView::Base.default_form_builder = CustomFormBuilder

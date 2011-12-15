@@ -53,4 +53,14 @@ module Mai
       Rails.logger.info "Completed job #{klass}.#{method}#{args.inspect}"
     end
   end
+  
+# server
+
+  def disk_usage(mount_point = '/')
+    output = `df -n #{mount_point}`
+    lines = output.split("\n")
+    used = lines.second.split.at(-2).to_i rescue nil
+    used
+  end
+  
 end

@@ -16,7 +16,7 @@ set :git_enable_submodules, true
 set :keep_releases, 3
 set :use_sudo, false
 set :rails_env, :production
-set :sudo_prompt, "xxxx-xxxx"
+set :sudo_prompt, "xxxx"
 set :bundle_without, [:development, :test]
 set :shared_children, fetch(:shared_children) + %w(data)
 # set :ssh_options, {:keys => ["/users/dima/.ssh/id_rsa"]}

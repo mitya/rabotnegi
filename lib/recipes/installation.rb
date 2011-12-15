@@ -201,7 +201,7 @@ namespace :install do
 
   task :logrotate do
     config = <<-end
-      #{current_path}/log/*.log {
+      #{current_path}/log/*.{log,err,out,output} {
         daily
         missingok
         rotate 7
