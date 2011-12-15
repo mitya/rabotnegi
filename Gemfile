@@ -23,6 +23,7 @@ group :development, :test do
   gem 'capybara-webkit'
   gem 'launchy'
   gem 'turn', :require => false
+  gem 'thin'
 end
 
 group :assets do

@@ -201,15 +201,15 @@ namespace :install do
 
   task :logrotate do
     config = <<-end
-      #{current_path}/log/*.{log,err,out,output} {
-        daily
-        missingok
-        rotate 7
-        size 1M
-        compress
-        copytruncate
-        notifempty  
-      }
+#{current_path}/log/*.{log,err,out,output} {
+  daily
+  missingok
+  rotate 7
+  size 1M
+  compress
+  copytruncate
+  notifempty  
+}
     end
 
     put_as_user logrotate_config_path, config
@@ -227,15 +227,15 @@ namespace :install do
     task :resque do
       number = 1
 
-      env = "RAILS_ENV=#{rails_env} PATH=/usr/local/bin:/usr/local/ruby/bin:/usr/bin:/bin:$PATH"
+      env = "RAILS_ENV=#{rails_env} PATH=/usr/local/bin:/usr/bin:/bin:$PATH"
 
       config = <<-end
-        check process resque.#{number}
-        with pidfile #{current_path}/tmp/pids/resque.#{number}.pid
-        start program = "/usr/bin/env #{env} /bin/sh -l -c '#{current_path}/script/resque #{number} start >> #{shared_path}/log/resque.#{number}.output 2>&1'" as uid #{user} and gid #{user}
-        stop program = "/usr/bin/env #{env} /bin/sh -l -c '#{current_path}/script/resque #{number} stop >> #{shared_path}/log/resque.#{number}.output 2>&1'" as uid #{user} and gid #{user}
-        if totalmem is greater than 100 MB for 10 cycles then restart
-        group resque
+check process resque.#{number}
+with pidfile #{current_path}/tmp/pids/resque.#{number}.pid
+start program = "/usr/bin/env #{env} /bin/sh -l -c '#{current_path}/script/resque #{number} start >> #{shared_path}/log/resque.#{number}.output 2>&1'" as uid #{user} and gid #{user}
+stop program = "/usr/bin/env #{env} /bin/sh -l -c '#{current_path}/script/resque #{number} stop >> #{shared_path}/log/resque.#{number}.output 2>&1'" as uid #{user} and gid #{user}
+if totalmem is greater than 100 MB for 10 cycles then restart
+group resque
       end
       
       put_as_user "/etc/monit/conf.d/resque", config
