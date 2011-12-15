@@ -50,11 +50,11 @@ namespace :deploy do
 
   task(:crontab) do
     def rake(task)
-      "#{user} cd #{current_path} && RAILS_ENV=#{rails_env} bundle exec rake --trace --silent #{task} >> #{current_path}/log/cron.out 2>> #{current_path}/log/cron.err"
+      "#{user} cd $RAILS_ROOT && bundle exec rake #{task} > $RAILS_ROOT/log/cron.out 2> $RAILS_ROOT/log/cron.err"
     end
 
     def runner(task)
-      "#{user} cd #{current_path} && script/rails runner -e #{rails_env} #{task} >> #{current_path}/log/cron.out 2>> #{current_path}/log/cron.err"
+      "#{user} cd $RAILS_ROOT && script/rails runner -e $RAILS_ENV #{task} > $RAILS_ROOT/log/cron.out 2> $RAILS_ROOT/log/cron.err"
     end    
     
     config = <<-end
@@ -62,10 +62,12 @@ MAILTO=dsokurenko@gmail.com
 PATH=$PATH:/usr/local/bin/:/usr/bin:/bin
 RUBYOPT="-Ku"
 RAILS_PROC='cron'
+RAILS_ROOT="#{current_path}"
+RAILS_ENV=#{rails_env}
   
 30 3 * * * #{ runner "RabotaRu.load" }
 0 3 * * * #{ runner "Vacancy.cleanup" }
-0 4,16 * * * #{ rake "data:dump dest=/apps/data db=rabotnegi_prod" }
+0 4,16 * * * #{ rake "data:dump dest=/data/backup db=rabotnegi_prod" }
 */10 * * * * #{ rake "cron:ping" }
     end
     
@@ -88,8 +90,8 @@ namespace :log do
   task(:default) { app }
   task(:local) { print_log "#{current_path}/log/#{rails_env}.log" }
   task(:app) { print_log app_log_path }
-  task(:access) { print_log "#{current_path}/log/access.log" }
-  task(:error) { print_log "#{current_path}/log/error.log" }
+  task(:web) { print_log "#{current_path}/log/web.log" }
+  task(:error) { print_log "#{current_path}/log/web.err" }
   task(:dump) { print_log "#{current_path}/log/#{ENV['T']}.log" }
   
   task :f, :roles => :app do
@@ -124,7 +126,7 @@ namespace :backups do
 end
 
 namespace :data do
-  # Dumps and downloads a current copy of the server database
+  desc "dumps and downloads a current copy of the server database"
   task :dump do
     database = "rabotnegi_prod"
     timestamp = Time.now.strftime("%y%m%d_%H%M")
@@ -136,7 +138,7 @@ namespace :data do
     # system "tar xjf tmp/db_#{timestamp}.tbz -C tmp/db_#{database}_#{timestamp}"
   end
   
-  # Uploads a db dump from "tmp/dump/rabotnegi_dev" to the server
+  desc "uploads a db dump from tmp/dump/rabotnegi_dev to the server"
   task :restore do
     workdir = Dir.pwd
     system "cd tmp/dump/rabotnegi_dev && tar cj * > #{workdir}/tmp/localdump.tbz"

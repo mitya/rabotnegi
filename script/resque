@@ -16,3 +16,21 @@ Daemons.run_proc("resque.#{id}", dir: File.join(rails_root, "tmp/pids"), dir_mod
   worker.verbose = true
   worker.work(5)
 end
+
+__END__
+
+#!/bin/bash
+export JAVA_HOME=/usr/local/java/
+CLASSPATH=ajarfile.jar:.
+
+case $1 in
+   start)
+      echo $$ > /var/run/xyz.pid;
+      exec 2>&1 java -cp ${CLASSPATH} org.something.with.main 1>/tmp/xyz.out 
+      ;;
+    stop)  
+      kill `cat /var/run/xyz.pid` ;;
+    *)  
+      echo "usage: xyz {start|stop}" ;;
+esac
+exit 0

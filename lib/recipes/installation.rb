@@ -227,13 +227,13 @@ namespace :install do
     task :resque do
       number = 1
 
-      env = "RAILS_ENV=#{rails_env} PATH=/usr/local/bin:/usr/bin:/bin:$PATH"
+      env = "RAILS_ENV=#{rails_env} PATH=/usr/local/bin:/usr/bin:/bin:$PATH RAILS_ROOT=#{current_path}"
 
       config = <<-end
 check process resque.#{number}
 with pidfile #{current_path}/tmp/pids/resque.#{number}.pid
-start program = "/usr/bin/env #{env} /bin/sh -l -c '#{current_path}/script/resque #{number} start >> #{shared_path}/log/resque.#{number}.output 2>&1'" as uid #{user} and gid #{user}
-stop program = "/usr/bin/env #{env} /bin/sh -l -c '#{current_path}/script/resque #{number} stop >> #{shared_path}/log/resque.#{number}.output 2>&1'" as uid #{user} and gid #{user}
+start program = "/usr/bin/env #{env} sh -l -c '$RAILS_ROOT/script/resque #{number} start > $RAILS_ROOT/log/resque.#{number}.output 2>&1'" as uid #{user} and gid #{user}
+stop program = "/usr/bin/env #{env} sh -l -c '$RAILS_ROOT/script/resque #{number} stop > $RAILS_ROOT/log/resque.#{number}.output 2>&1'" as uid #{user} and gid #{user}
 if totalmem is greater than 100 MB for 10 cycles then restart
 group resque
       end
