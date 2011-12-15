@@ -21,6 +21,7 @@ set :bundle_without, [:development, :test]
 set :shared_children, fetch(:shared_children) + %w(data)
 # set :ssh_options, {:keys => ["/users/dima/.ssh/id_rsa"]}
 
+set :project, "rabotnegi"
 set :application, "rabotnegi_prod"
 set :domain, "rabotnegi.ru"
 set :host, "www.rabotnegi.ru" # '178.79.171.92'

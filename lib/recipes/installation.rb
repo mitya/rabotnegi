@@ -59,8 +59,8 @@ namespace :install do
 
         log_format asset '$remote_addr [$time_local] "$request" $status $body_bytes_sent';
 
-        error_log  #{current_path}/log/error.log notice;
-        access_log #{current_path}/log/access.log combined;
+        error_log  #{current_path}/log/web.err notice;
+        access_log #{current_path}/log/web.log combined;
         
         gzip             on;
         gzip_types       text/plain text/css text/javascript application/xml application/javascript application/x-javascript;
@@ -111,8 +111,8 @@ namespace :install do
           auth_basic_user_file  htpasswd;
         }
 
-        error_log  #{current_path}/log/resque-error.log notice;
-        access_log #{current_path}/log/resque-access.log combined;
+        error_log  #{current_path}/log/resque_web.err notice;
+        access_log #{current_path}/log/resque_web.log combined;
       }
     end
 
@@ -147,8 +147,8 @@ namespace :install do
           auth_basic_user_file  htpasswd;          
         }
   
-        error_log  #{app_path}/log/error.log notice;
-        access_log #{app_path}/log/access.log combined;
+        error_log  #{app_path}/log/web.err notice;
+        access_log #{app_path}/log/web.log combined;
       }
     end
   
@@ -163,8 +163,8 @@ namespace :install do
         ServerName #{host}
         DocumentRoot #{current_path}/public
         RailsEnv #{rails_env}
-        ErrorLog  #{current_path}/log/error.log
-        CustomLog #{current_path}/log/access.log combined
+        ErrorLog  #{current_path}/log/web.err
+        CustomLog #{current_path}/log/web.log combined
         
         <Location /assets/>
           Header unset Last-Modified
@@ -204,7 +204,7 @@ namespace :install do
       #{current_path}/log/*.log {
         daily
         missingok
-        rotate 9
+        rotate 7
         size 1M
         compress
         copytruncate
