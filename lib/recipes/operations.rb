@@ -13,7 +13,16 @@ end
 # end
 
 def print_log(path)
-  puts capture("sudo -p 'xxxx-xxxx' tail -n #{ENV['N'] || 200} #{path}")
+  lines = ENV['N'] || 200
+  query = ENV['Q']
+
+  if query
+    command = "cat #{path} | grep #{query} | tail -n #{lines}"
+  else
+    command = "tail -n #{lines} #{path}"
+  end
+
+  puts capture(command, via: :sudo)
 end
 
 def print_output(command)
