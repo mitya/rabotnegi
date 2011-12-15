@@ -59,8 +59,19 @@ module Mai
   def disk_usage(mount_point = '/')
     output = `df #{mount_point}`
     lines = output.split("\n")
-    used = lines.second.split.at(-2).to_i rescue nil
-    used
+    value = lines.second.split.at(-2).to_i
+    value
+  rescue
+    nil
+  end
+  
+  def memory_free
+    output = `free -m`
+    lines = output.split("\n")
+    value = lines.second.split.at(3).to_i
+    value
+  rescue 
+    nil
   end
   
 end

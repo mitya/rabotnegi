@@ -22,7 +22,7 @@ Rabotnegi::Application.configure do
 
   config.after_initialize do
     Slim::Engine.set_default_options pretty: true
-    # Resque.inline = false
+    Resque.inline = true
   end
   
   # config.cache_classes = true

@@ -57,7 +57,7 @@ end
 
 namespace :cron do
   task :ping => :environment  do
-    Rails.logger.info "Cron is still alive. event.count=#{MongoLog::Item.count}"
+    Rails.logger.info "Cron ping: event.count=#{MongoLog::Item.count}"
     Resque.enqueue(MiscWorker)
   end
 end

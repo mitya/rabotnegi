@@ -49,8 +49,29 @@ namespace :deploy do
   end
 
   task(:crontab) do
-    run "erb #{current_path}/config/crontab.erb > #{current_path}/config/crontab"
-    sudo "cp #{current_path}/config/crontab /etc/cron.d/#{application}"
+    def rake(task)
+      "#{user} cd #{current_path} && RAILS_ENV=#{rails_env} bundle exec rake --trace --silent #{task} >> #{current_path}/log/cron.out 2>> #{current_path}/log/cron.err"
+    end
+
+    def runner(task)
+      "#{user} cd #{current_path} && script/rails runner -e #{rails_env} #{task} >> #{current_path}/log/cron.out 2>> #{current_path}/log/cron.err"
+    end    
+    
+    config = <<-end
+MAILTO=dsokurenko@gmail.com
+PATH=$PATH:/usr/local/bin/:/usr/bin:/bin
+RUBYOPT="-Ku"
+RAILS_PROC='cron'
+  
+30 3 * * * #{ runner "RabotaRu.load" }
+0 3 * * * #{ runner "Vacancy.cleanup" }
+0 4,16 * * * #{ rake "data:dump dest=/apps/data db=rabotnegi_prod" }
+*/10 * * * * #{ rake "cron:ping" }
+    end
+    
+    put_as_user cron_config_path, config
+    # run "erb #{current_path}/config/crontab.erb > #{current_path}/config/crontab"
+    # sudo "cp #{current_path}/config/crontab #{cron_config_path}"  
   end
   
   task(:update_custom_symlinks) do
@@ -141,4 +162,9 @@ namespace :resque do
   task(:start) { run "RAILS_ENV=#{rails_env} #{current_path}/script/resque 1 start" }
   task(:stop) { run "RAILS_ENV=#{rails_env} #{current_path}/script/resque 1 stop" }
   task(:restart) { sudo "monit restart resque.1" }
+end
+
+namespace :monit do
+  task(:status) { sudo "monit status" }
+  task(:stop_all) { sudo "monit stop all" }  
 end
