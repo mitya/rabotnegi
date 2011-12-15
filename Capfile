@@ -43,7 +43,8 @@ set :public_children, []
 after "deploy:finalize_update", "deploy:update_custom_symlinks"
 # external after "deploy:finalize_update", "bundle:install"
 # external after "deploy:update_code", "deploy:assets:precompile"
-after "deploy:symlink", "deploy:crontab"
+after "deploy", "deploy:crontab"
+after "deploy", "resque:restart"
 
 task :demo do
 end

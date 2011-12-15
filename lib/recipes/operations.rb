@@ -131,4 +131,5 @@ end
 namespace :resque do
   task(:start) { run "RAILS_ENV=#{rails_env} #{current_path}/script/resque 1 start" }
   task(:stop) { run "RAILS_ENV=#{rails_env} #{current_path}/script/resque 1 stop" }
+  task(:restart) { sudo "monit restart resque.1" }
 end

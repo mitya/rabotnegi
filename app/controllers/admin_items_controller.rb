@@ -1,4 +1,4 @@
-class  AdminItemsController < ApplicationController
+class AdminItemsController < ApplicationController
   before_filter :admin_required
   before_filter :load_metadata
   layout 'admin'
@@ -24,6 +24,6 @@ class  AdminItemsController < ApplicationController
 private
   
   def load_metadata
-    @klass = MongoReflector.reflect(params[:collection])    
+    @klass = MongoReflector.reflect(params[:collection])
   end	
 end

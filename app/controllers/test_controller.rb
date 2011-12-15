@@ -22,9 +22,7 @@ class TestController < ApplicationController
   end
   
   def add_tasks
-    mai.enqueue DemoWorker, :perform, "a passed value"
-    mai.enqueue User, :demo
-    Resque.enqueue DemoWorker, "direct call"
+    mai.enqueue DemoWorker, :perform
     render text: "Ok"
   end
 end
