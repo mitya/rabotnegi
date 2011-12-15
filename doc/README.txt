@@ -7,3 +7,5 @@
 * Resque
  PIDFILE=./tmp/resque.pid BACKGROUND=yes QUEUE=file_serve rake environment resque:work
  PIDFILE=./tmp/resque.pid BACKGROUND=yes QUEUE=* rake resque:work
+ 
+ 
