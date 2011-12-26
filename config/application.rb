@@ -30,6 +30,7 @@ module Rabotnegi
     # config.mongoid.logger = Logger.new($stdout, :warn)
     # config.mongoid.autocreate_indexes = true
 
+    require 'fileutils'
     require "ext/core"
     require 'ext/rails'
     require "#{config.root}/app/plumbing/global"

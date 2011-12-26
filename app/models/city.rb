@@ -1,8 +1,14 @@
 class City < Struct.new(:code, :external_id, :name)
   cattr_reader :all
+  alias key code
 
   def self.[](code)
-    @@all.find { |city| city.code == code.to_sym }
+    if Array === code
+      code = code.map(&:to_sym)
+      all.select { |x| x.code.in?(code) }
+    else
+      all.detect { |x| x.code == code.to_sym }
+    end
   end
   singleton_class.send(:alias_method, :get, :[])
   
@@ -24,6 +30,10 @@ class City < Struct.new(:code, :external_id, :name)
     "<City #{code}/#{external_id} #{name}>"
   end
 
+  def log_key
+    key
+  end
+
   @@all = [
   	City.new(:msk, 1, "Москва"),
   	City.new(:spb, 2, "Санкт-Петербург"),
@@ -31,4 +41,15 @@ class City < Struct.new(:code, :external_id, :name)
   	City.new(:nn,  4, "Нижний Новгород"),
   	City.new(:nsk, 9, "Новосибирск")  
   ]
+  
+  def self.q
+    query = Object.new
+    class << query
+      def method_missing(selector, *args)
+        City[selector.to_sym]
+      end
+    end
+    query
+  end
 end
+

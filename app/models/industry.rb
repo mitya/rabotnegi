@@ -1,12 +1,18 @@
 class Industry < Struct.new(:code, :external_id, :name, :group)
   cattr_reader :all, :popular, :other
+  alias key code
 
   def to_s
     name
   end
   
   def self.[](code)
-    @@all.find { |industry| industry.code == code.to_sym }
+    if Array === code
+      code = code.map(&:to_sym)
+      all.select { |x| x.code.in?(code) }
+    else
+      all.detect { |x| x.code == code.to_sym }
+    end
   end
   singleton_class.send(:alias_method, :get, :[])
   
@@ -24,6 +30,10 @@ class Industry < Struct.new(:code, :external_id, :name, :group)
     external_ids.each do |eid|
       return find_by_external_id(eid) rescue next
     end
+  end
+
+  def log_key
+    key
   end
     
   @@all = [
@@ -54,4 +64,14 @@ class Industry < Struct.new(:code, :external_id, :name, :group)
   ].sort_by(&:name)
 
   @@popular, @@other = @@all.partition { |industry| industry.group == :popular }
+
+  def self.q
+    query = Object.new
+    class << query
+      def method_missing(selector, *args)
+        Industry[selector.to_sym]
+      end
+    end
+    query
+  end
 end

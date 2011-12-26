@@ -1,6 +1,7 @@
 module MongoLog
   def self.write(puid, severity, title, brief = [], data = {})
     duration = Hash === data && data.delete(:duration)
+    brief.map! { |param| param.respond_to?(:log_key) ? param.log_key : param }
     item = Item.create!(title: title, puid: puid, severity: severity.to_s, brief: brief, data: data, duration: duration)
     puts item.as_string if ENV['LOG_TO_CONSOLE']
   end

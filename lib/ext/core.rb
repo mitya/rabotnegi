@@ -12,6 +12,24 @@ class Object
   end  
 end
 
+class Module
+  def def_state_predicates(storage, *states)
+    module_eval <<-ruby    
+      def self._state_attr
+        :#{storage}
+      end
+    ruby
+    
+    states.each do |state|
+      module_eval <<-ruby
+        def #{state}?
+          self.#{storage} == :#{state} || self.#{storage} == '#{state}'
+        end
+      ruby
+    end
+  end  
+end
+
 class Hash
   def append_string(key, text)
     self[key] ||= ""

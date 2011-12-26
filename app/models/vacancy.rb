@@ -35,7 +35,7 @@ class Vacancy < ApplicationModel
     parameterized_title = RussianInflector.parameterize(title)
     parameterized_title.present?? "#{id}-#{parameterized_title}" : id.to_s    
   end
-  
+
   def city_name
     City.get(city).name
   end

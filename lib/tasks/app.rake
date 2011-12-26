@@ -1,3 +1,5 @@
+require "shellwords"
+
 namespace :app do
   task :load_demo_data do
     Rails.env = 'test'
@@ -9,15 +11,14 @@ namespace :app do
 
   task(:load => :environment) { RabotaRu.load }
 
-  namespace :v do
+  namespace :vacancies do
     # Usage: rake vacancies:load CITY=spb INDUSTRY=telework
     task :load => :environment do
       ENV['LOG_TO_CONSOLE'] = 'true'
 
-      options = {}    
-      options[:city] = ENV['CITY'] if ENV['CITY'].present?
-      options[:industry] = ENV['INDUSTRY'] if ENV['INDUSTRY'].present?
-      options[:remote] = false if ENV['REMOTE'] == "false"
+      options = {}
+      options[:city] = ENV['CITY'].shellsplit if ENV['CITY'].present?
+      options[:industry] = ENV['INDUSTRY'].shellsplit if ENV['INDUSTRY'].present?
 
       RabotaRu::VacancyLoader.new(options).load
     end

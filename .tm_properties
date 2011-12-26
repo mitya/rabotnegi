@@ -1,0 +1,2 @@
+exclude = "{log,vendor,tmp}"
+TM_GIT = "/usr/local/bin/git"

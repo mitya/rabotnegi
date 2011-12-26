@@ -31,7 +31,7 @@ namespace :deploy do
       RAILS_ROOT="#{current_path}"
       RAILS_ENV=#{rails_env}
   
-      30 3 * * * #{ runner "RabotaRu.load" }
+      # 30 3 * * * #{ runner "RabotaRu.load" }
       0 3 * * * #{ runner "Vacancy.cleanup" }
       0 4,16 * * * #{ rake "data:dump dest=/data/backup db=rabotnegi_prod" }
       */10 * * * * #{ rake "cron:ping" }
