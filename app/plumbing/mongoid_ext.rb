@@ -93,7 +93,7 @@ module Mongoid::Document
   def mark(state, other_attributes = {})
     self[self.class._state_attr] = state
     self["#{state}_at"] = Time.now
-    update_attributes!(attributes)
+    update_attributes!(other_attributes)
   end
     
   module ClassMethods

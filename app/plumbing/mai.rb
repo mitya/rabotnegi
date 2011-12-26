@@ -10,7 +10,11 @@ module Mai
       results = array ? array.map(&:id) : []
       results = results.map(&:to_s) if results.first.is_a?(BSON::ObjectId)
       results
-    end    
+    end
+    
+    def logger
+      Rails.logger
+    end
   end
   
   module Jobs
@@ -95,14 +99,14 @@ module Mai
 
   module Http
     def get(url)
-      Rails.logger.debug "qq.http.get #{url}"
+      gg.logger.debug "qq.http.get #{url}"
       Net::HTTP.get(URI.parse(url))
     end    
   end
   
   module Files
     def write(path, data = nil)
-      Rails.logger.debug "qq.files.write #{path}"      
+      gg.logger.debug "qq.files.write #{path}"      
       File.open(path, 'w') { |file| file << data }
     end    
   end
