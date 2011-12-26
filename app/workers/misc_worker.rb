@@ -2,6 +2,6 @@ module MiscWorker
   @queue = DEFAULT_QUEUE
 
   def self.perform
-    Rails.logger.info "Worker ping: disk.usage=#{mai.disk_usage}% memory.free=#{mai.memory_free}MB vacancy.count=#{Vacancy.count}"
+    Rails.logger.info "Worker ping: disk.usage=#{M.disk_usage}% memory.free=#{M.memory_free}MB vacancy.count=#{Vacancy.count}"
   end
 end

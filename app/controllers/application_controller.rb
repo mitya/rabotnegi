@@ -87,7 +87,7 @@ protected
   end
   
   def find_model
-    selector = model_class.singleton_methods(false).include?(:get) ? :get : :find
+    selector = model_class.respond_to?(:get) ? :get : :find
     @model = model_class.send(selector, params[:id])
   end
   
@@ -114,26 +114,13 @@ protected
   def handle_unexpected_exception(exception)
     return if Rails.env.test? unless $test_error_reporting_enabled
   
-    logger.error "ERROR #{exception.class}: #{exception.message}"
-    # logger.error Rails.backtrace_cleaner.clean(exception.backtrace).join("\n")
-
-    # render text: "<h2>#{CGI.escape_html(exception.to_s)}</h2><pre>#{Rails.backtrace_cleaner.clean(exception.backtrace).join("\n")}</pre>"
-    # render text: "<h2>#{CGI.escape_html(exception.to_s)}</h2><pre>#{exception.backtrace.join("\n")}</pre>" 
-
-    Err.register(
-      controller: controller_name, 
-      action: action_name, 
+    Err.register("#{controller_name}/#{action_name}", exception,
+      params: params.except(:controller, :action),
       url: request.url, 
       verb: request.method,
-      host: Socket.gethostname, 
-      time: Time.now,
       session: session.to_hash.except('flash'),
       flash: flash.to_hash,
-      params: params.except(:controller, :action), 
-      exception_class: exception.class.name,
-      exception_message: exception.message,
       cookies: cookies.to_a.map(&:first),
-      backtrace: exception.backtrace.join("\n"),
       request_headers: request.env.slice(*request.class::ENV_METHODS),
       response_headers: response.headers
     )

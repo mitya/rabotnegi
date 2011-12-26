@@ -43,6 +43,7 @@ def assert(*conditions)
   conditions.each { |condition| raise message unless condition }
 end
 
-def mai
-  Mai
-end
+def my; Mai end
+def gg; Mai end
+def mai; Mai end
+def M; Mai end

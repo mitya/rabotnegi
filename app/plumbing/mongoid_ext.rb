@@ -84,3 +84,26 @@ module MongoidExt
     end
   end
 end
+
+module Mongoid::Document
+  def store(attributes = {})
+    update_attributes!(attributes)
+  end  
+
+  def mark(state, other_attributes = {})
+    self[self.class._state_attr] = state
+    self["#{state}_at"] = Time.now
+    update_attributes!(attributes)
+  end
+    
+  module ClassMethods
+    def get(id)
+      find(id)
+    end
+    
+    def def_state_predicates(storage, *states)
+      super
+      states.each { |state| field "#{state}_at", type: Time }    
+    end 
+  end
+end

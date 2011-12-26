@@ -1,27 +1,23 @@
-# Convert json data to vacancy models.
+# Convert json data to vacancy models
 class RabotaRu::VacancyConverter
-
-  def initialize(loader)
-    @loader = loader
-  end
-
   def convert(hash)
     vacancy = Vacancy.new
-    vacancy.title         = hash['position']
-    vacancy.description   = hash['responsibility']['value']
-    vacancy.external_id   = extract_id(hash['link'])
+    vacancy.title = hash['position']
+    vacancy.description = hash['responsibility']['value']
+    vacancy.external_id = extract_id(hash['link'])
     vacancy.employer_name = hash['employer'] && hash['employer']['value']
-    vacancy.city          = City.find_by_external_id(hash['city']['id']).to_s
-    vacancy.industry      = Industry.find_by_external_ids(
+    vacancy.city = City.find_by_external_id(hash['city']['id']).to_s
+    vacancy.industry = Industry.find_by_external_ids(
       hash['rubric_0'] && hash['rubric_0']['id'], 
       hash['rubric_1'] && hash['rubric_1']['id'], 
-      hash['rubric_2'] && hash['rubric_2']['id']).to_s
-    vacancy.salary        = convert_salary(hash['salary'])
-    vacancy.created_at    = Time.parse(hash['publishDate'])
+      hash['rubric_2'] && hash['rubric_2']['id']
+    ).to_s
+    vacancy.salary = convert_salary(hash['salary'])
+    vacancy.created_at = Time.parse(hash['publishDate'])
     vacancy
   end
 
-# steps
+private
 
   # http://www.rabota.ru/vacancy1234567.html' => 1234567
   def extract_id(link)
@@ -29,7 +25,7 @@ class RabotaRu::VacancyConverter
     $1.to_i
   end
 
-  # {"min": "27000", "max": "35000", "currency": {"value": "руб", "id": "2"}} => Salary(min: 27000, max: 35000, currency: :rub)
+  # {"min": "27000", "max": "35000", "currency": {"value": "руб", "id": "2"}} => Salary(min: 27000, max: 35000, currency: :rub)
   # {"min": "10000, "max": "10000", "currency": {"value": "руб", "id": "2"}}
   # {"min": "27000", "currency": {"value": "руб", "id": "2"}}
   # {"agreed":"yes"}
@@ -63,7 +59,7 @@ class RabotaRu::VacancyConverter
       when 'usd' then :usd
       when 'eur' then :eur
       else
-        @loader.log.warn :convert, "Unknown currency #{currency_name}"
+        gg.alert "rrl.convert", "unknown currency #{currency_name}"
         :rub
     end
   end

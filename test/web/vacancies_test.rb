@@ -79,7 +79,7 @@ web_test "Vacancies" do
   end
   
   test "post" do
-    title = "Негр ##{mai.timestamp_string}"
+    title = "Негр ##{mai.time_stamp}"
     
     visit "/vacancies/new"
     fill "Должность", title
@@ -107,7 +107,7 @@ web_test "Vacancies" do
   end
   
   test "post invalid data" do
-    title = "Негр ##{mai.timestamp_string}"
+    title = "Негр ##{mai.time_stamp}"
     
     visit "/vacancies/new"
     click_button "Опубликовать"
