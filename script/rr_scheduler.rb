@@ -19,29 +19,28 @@ ENV['RAILS_PROC'] = 'worker-rr'
 # end
 
 require File.join(rails_root, "config/environment")
-PERIOD = 0.1
+PERIOD = 10
 
 queue = City.all.product(Industry.all).map { |city, industry| 
-  RabotaRu::LoadingItem.new(city: city.key, industry: industry.key)
+  RabotaRu::Loading.new(city: city.key, industry: industry.key)
 }
 current = queue.shift
-memo = RabotaRu::Loading.create!
+job = RabotaRu::Job.create!
 
 def wait(timeout = PERIOD)
   sleep(timeout)
 end
 
 loop do
-  memo.reload
+  job.reload
   current.reload if current && current.queued?
-  puts "tick #{current.try(:state)}"
+  qq.debug "rr_scheduler: current.state=#{current.try(:state)} job.loadings.count=#{job.loadings.count}"
   case when current == nil
-    puts "all done"
-    memo.mark :loaded
-    memo.queue_processing
+    job.mark :loaded
+    job.queue_processing
     break
   when current.created?
-    memo.items << current
+    job.loadings << current
     current.queue
     wait
   when current.queued?
@@ -51,8 +50,8 @@ loop do
       current = queue.deq
     end
   when current.failed?
-    if memo.items.select(&:failed?).count > 3
-      memo.mark :failed
+    if job.loadings.select(&:failed?).count > 3
+      job.mark :failed
       break
     end
     current = queue.shift

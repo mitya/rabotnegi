@@ -1,14 +1,10 @@
 class RabotaRu::VacancyProcessor
   attr_accessor :vacancies
   
-  def self.perform(options = {})
-    new(options).process
-  end
-  
   def initialize(options = {})
     @vacancies = []
     @work_dir = Rails.root.join("tmp/rabotaru-#{gg.date_stamp}")
-    @vacancy_converter = RabotaRu::VacancyConverter.new
+    @converter = RabotaRu::VacancyConverter.new
   end
 
   def process
@@ -34,7 +30,7 @@ class RabotaRu::VacancyProcessor
   end
 
   def convert(item)
-    @vacancy_converter.convert(item)
+    @converter.convert(item)
   rescue => e
     # save error to the errors table
     gg.alert "convert failed, item skipped #{item['position']}", reason: gg.format_error(e.message)
