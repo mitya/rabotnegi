@@ -39,14 +39,20 @@ ru:
         city: Город
         controller: Контроллер
         created_at: Создано
+        started_at: Начато
+        processed_at: Обработано
+        failed_at: Провалено
+        loaded_at: Загружено
         id: ID
         industry: Отрасль
         ip_address: IP адрес
         state: Статус
         counts: Счетчики
-        password: Пароль        
+        password: Пароль
         updated_at: Обновлено
         url: URL
+        source: Источник
+        exception: Исключение
     models:
       resume: резюме
       vacancy: вакансия

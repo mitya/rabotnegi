@@ -27,7 +27,7 @@ class City < Struct.new(:code, :external_id, :name)
   end
 
   def inspect
-    "<City #{code}/#{external_id} #{name}>"
+    "City(#{code}/#{external_id} #{name})"
   end
 
   def log_key

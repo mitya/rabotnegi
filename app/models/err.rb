@@ -29,7 +29,7 @@ class Err < ApplicationModel
   end
 
   def to_s
-    "#{source} - #{exception_class} - #{exception_message}"
+    "#{source} - #{exception_class} - #{exception_message.to_s.truncate(40)}"
   end
 
   class << self
