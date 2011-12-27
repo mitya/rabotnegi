@@ -2,7 +2,7 @@
 
 = details_view do |d|
   - @klass.details_fields.each do |field|
-    = d.item field.title, inspect_field(@model, field), klass: classes_from(wide: field.format.in?([:hash, :pre])), format: false
+    = d.item field.title, inspect_field(@model, field), klass: field.css, format: false
 
   = d.actions do
     = link_to "Изменить", url(:edit_admin_item, params[:collection], @model)

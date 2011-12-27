@@ -42,10 +42,11 @@
 # time.xmlschema
 
 formats = {
-  :num => "%y%m%d_%H%M%S",
-  :short_date => "%d.%m.%y %H:%M:%S",
-  :rus_zone => "%d.%m.%Y %H:%M:%S %Z",
-  :rus_usec => proc { |val| val.strftime("%d.%m.%Y %H:%M:%S.#{'%06d' % val.usec} %Z") }
+  num: "%y%m%d_%H%M%S",
+  humane: ->(val) { val.year == Time.now.year ? val.strftime("%b #{val.day} %H:%M") : val.to_s(:rus_zone) },
+  short_date: "%d.%m.%Y %H:%M:%S",
+  rus_zone: "%d.%m.%Y %H:%M:%S %Z",
+  rus_usec: ->(val) { val.strftime("%d.%m.%Y %H:%M:%S.#{'%06d' % val.usec} %Z") }
 }
 Time::DATE_FORMATS.update(formats)
 Date::DATE_FORMATS.update(formats)

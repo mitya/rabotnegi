@@ -12,6 +12,7 @@ module FormatHelper
   end
 
   def hash_view(hash)
+    return "" if hash.blank?
     element :table, "hash" do
       hash.map do |key, value|
         element(:tr) do
@@ -74,14 +75,19 @@ module FormatHelper
     raw(value)  
   end
 
+  def short_object_id(value)
+    "#{value.to_s.first(8)}-#{value.to_s.last(4)}"
+  end
+
   def inspect_value(value, options = {})
-    return "—" if value.blank?
+    return "" if value.blank?
 
     case value
-      when Time then value.localtime.to_s(:short_date)
+      when Time then options[:compact] ? l(value.localtime, format: :short) : l(value.localtime)
       when Integer then number(value)
-      when BSON::ObjectId then options[:truncate] == false ? value : "#{value.to_s.first(8)}...#{value.to_s.last(4)}"
-      when String then html_string(value, options.slice(:truncate))
+      when BSON::ObjectId then options[:compact] ? short_object_id(value) : value
+      when String then html_string(value, options.slice(:trim))
+      when Symbol then value.to_s.humanize
       else value
     end    
   end
@@ -89,15 +95,22 @@ module FormatHelper
   alias f inspect_value
 
   def inspect_field(model, field, options = {})
-    value = model.send(field.name)
-        
-    case field.format
-      when :link then link_to(value, url(:admin_item, field.klass.key, model))
+    value = model.send(field.name) unless field.custom?
+
+    result = case field.format
+      when :link then 
+        value = short_object_id(value) if BSON::ObjectId === value
+        link_to(value, url(:admin_item, field.klass.key, model))
       when :city then City[value]
       when :industry then Industry[value]
       when :pre then element(:pre, value)
       when String then send(field.format, value)
+      when Proc then field.format.(model)
       else inspect_value(value, options)
     end
+    
+    result = result.to_s.truncate(field.options[:trim]) if field.options[:trim]
+    
+    result
   end
 end

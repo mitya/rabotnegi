@@ -74,6 +74,7 @@ ul.resource { padding: 0;
   li.item.full b.heading { position: static; }
   
   li.item pre { font-size: smaller; }
+  li.item.bold { font-weight: bold; }
 
   .actions { margin: 20px 10px 10px 10px; padding-top: 10px; padding-left: 150px; border-top: 1px solid #ccc; list-style-type: none; }
   .actions a:visited { color: $link_color; }
@@ -100,8 +101,9 @@ form.resource {
 }
 
 table.hash {
-  th { text-align: right; width: 12em; color: $label-color; }
+  th { color: $label-color; }
   th, td { padding: 2px 5px; }
+  th { padding-left: 0; }
 }
 
 table.properties {
@@ -122,8 +124,10 @@ span.color {
   padding: 4px; @include rounded(4px); color: white; font-size: 90%;
 }
 
-body.admin-vacancy-loadings {
-  .listing tr.finished { @include background-gradient(#efe, #e0ffe0); }
+body.admin-rabotaru-jobs {
+  .listing tr.processed { @include background-gradient(#efe, #e0ffe0); }
+  .listing tr.loaded { @include background-gradient(#ff0, #f0f000); }
+  .listing tr.failed { @include background-gradient(#ffe9e8, #ffdddd); }
 }
 
 body.admin-log-items {

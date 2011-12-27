@@ -10,7 +10,7 @@
   - for model in @models
     tr{class="#{classes_from(@klass.list_css_classes(model))}"}
       - @klass.list_fields.each do |field|
-        td= inspect_field(model, field, truncate: true)
+        td= inspect_field(model, field, compact: true)
       td.actions
         = link_to "Изменить", url(:edit_admin_item, @klass.key, model)
         '

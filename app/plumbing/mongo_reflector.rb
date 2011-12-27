@@ -59,7 +59,7 @@ module MongoReflector
     end
     
     def list_order
-      @list_order || [:id, :asc]
+      @list_order || [:_id, :desc]
     end
     
     def edit_fields
@@ -68,7 +68,7 @@ module MongoReflector
   end
   
   class Field
-    attr_accessor :name, :format, :klass, :args
+    attr_accessor :name, :format, :klass, :args, :options
 
     def initialize(name, options = {})
       @name = name.to_s
@@ -77,6 +77,27 @@ module MongoReflector
     
     def title
       I18n.t("active_record.attributes.#{klass.singular}.#{name}", default: [:"active_record.attributes.common.#{name}", name.to_s.humanize])
+    end
+    
+    def custom?
+      format.is_a?(Proc)
+    end
+    
+    def options=(hash)
+      @options ||= ActiveSupport::OrderedOptions.new
+      @options.merge!(hash) if hash
+    end
+    
+    def options
+      @options || ActiveSupport::OrderedOptions.new
+    end
+    
+    def css
+      css = []
+      # css << options[:css] if options
+      css << options.css if options
+      css << 'wide' if format.in?([:hash, :pre])
+      css.join(' ')
     end
     
     def inspect
@@ -92,6 +113,7 @@ module MongoReflector
     end
 
     def list(*field_specs)          
+      field_specs = field_specs.first.to_a if Hash === field_specs.first
       @@current_klass.list_fields = field_specs.map(&method(:convert_field_spec_to_object))
     end
 
@@ -108,6 +130,7 @@ module MongoReflector
     end
 
     def details(*field_specs)
+      field_specs = field_specs.first.to_a if Hash === field_specs.first      
       @@current_klass.details_fields = field_specs.map { |s| convert_field_spec_to_object(s) }
     end
 
@@ -124,33 +147,38 @@ module MongoReflector
       end
     end
     
-  private
+    private
 
     def convert_field_spec_to_object(spec)
+      # :name
+      # :name, :format, option1: 'value1'
+      # :name, [:format, option1: 'value1']
       if Array === spec
-        format = spec.second
-        spec = spec.first
+        spec.flatten! if Array === spec.second
+        name = spec.first
+        options = spec.extract_options!
+        format = spec.second        
+      else
+        name = spec        
       end
 
-      Field.new(spec, format: format, klass: @@current_klass)
+      Field.new(name, format: format, klass: @@current_klass, options: options)
     end
   end
+
+  _ = nil
 
   desc Vacancy do
     list :id, :industry, :city, [:title, :link], :employer_name, :created_at
     details :id, :title, :city, :industry, :external_id, :employer_name, :created_at, :updated_at, :salary, :description
     
-    edit(
+    edit \
       title: 'text', 
-      city_name: ['combo', City.all],
-      industry_name: ['combo', Industry.all],
+      city_name: ['combo', City.all], industry_name: ['combo', Industry.all],
       external_id: 'text',
-      employer_id: 'text',
-      employer_name: 'text',
-      created_at: 'date_time',
-      updated_at: 'date_time',
+      employer_id: 'text', employer_name: 'text',
+      created_at: 'date_time', updated_at: 'date_time',
       description: 'text_area'      
-    )
   end    
 
   desc User do
@@ -158,27 +186,28 @@ module MongoReflector
   end
 
   desc Err do
-    list :created_at, [:id, :link], :controller, :action, :url, :exception_class, :exception_message
-    details :id,
-      :created_at, :updated_at, 
-      :controller, :action, :url, :host, :verb, 
-      :exception_class, :exception_message,
-      [:params, 'hash_view'], [:session, 'hash_view'], [:request_headers, 'hash_view'], [:response_headers, 'hash_view'], 
-      [:backtrace, :pre]
-  end  
+    list created_at: _, id: :link, source: _, 
+      url: [trim: 40],
+      exception: [ ->(err) { "#{err.exception_class}: #{err.exception_message}" }, trim: 100 ]
+
+    details \
+      id: _, created_at: _, host: _, source: _, 
+      url: ->(err) { "#{err.verb} #{err.url}" },
+      exception: ->(err) { "#{err.exception_class}: #{err.exception_message}" },
+      params: 'hash_view',
+      session: 'hash_view', request_headers: 'hash_view', response_headers: 'hash_view', backtrace: :pre
+  end
 
   desc MongoLog::Item, key: 'log_items' do
-    list [:id, :link], :created_at, [:puid, 'color_code'], :title, [:duration, 'sec_usec'], [:brief, 'array_inline']
+    list id: :link, created_at: _, puid: 'color_code', title: _, duration: 'sec_usec', brief: 'array_inline'
     list_css_classes { |x| {start: x.title == 'rrl.start', warning: x.warning?} }
-    list_order [:_id, :desc]
     list_page_size 100
     details :id, :created_at, :puid, :title, :duration, [:brief, 'array_view'], [:data, 'hash_view']
   end
   
-  desc RabotaRu::VacancyLoading, key: 'vacancy_loadings' do
-    list [:id, :link], :created_at, :updated_at, :state, :details, :counts, :started_at, :finished_at
-    list_css_classes { |x| {finished: x.finished?} }
-    details :id, :created_at, :updated_at, :state, 
-      [:duration, 'time'], [:details, 'hash_view'], [:counts, 'hash_view'], :started_at, :finished_at    
+  desc RabotaRu::Job, key: 'rabotaru_jobs' do
+    list [:id, :link], :state, :created_at, :updated_at, :started_at, :loaded_at, :processed_at, :failed_at
+    list_css_classes { |x| { processed: x.processed?, loaded: x.loaded?, failed: x.failed? } }
+    details :id, :state, :created_at, :updated_at, :started_at, :loaded_at, :processed_at, :failed_at
   end
 end
