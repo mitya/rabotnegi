@@ -95,7 +95,7 @@ module FormatHelper
   alias f inspect_value
 
   def inspect_field(model, field, options = {})
-    value = model.send(field.name) unless field.custom?
+    value = model.send_chain(field.name) unless field.custom?
 
     result = case field.format
       when :link then 

@@ -11,7 +11,7 @@ module RabotaRu
     def to_s
       "RabotaRu-Job(#{created_at.to_date.to_s(:long)})"
     end
-
+    
     def self.process(job_id)
       job = find(job_id)
       # RabotaRu::VacancyProcessor.new.process

@@ -21,7 +21,7 @@ class RabotaRu::VacancyProcessor
   def read
     Dir["#{@work_dir}/*.json"].each do |file|
       data = File.read(file).sub!(/;\s*$/, '')
-      items = my.json.decode(data)
+      items = gg.json.decode(data)
       vacancies = items.map { |item| convert(item) }.compact
       @vacancies.concat(vacancies)
     end

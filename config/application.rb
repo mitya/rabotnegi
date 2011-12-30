@@ -34,7 +34,7 @@ module Rabotnegi
     require "ext/core"
     require 'ext/rails'
     require "#{config.root}/app/plumbing/global"
-
+    
     ::ADMIN_LOGIN = 'admin'
     ::ADMIN_PASSWORD = '0000'
     ::MAX_ERR_NOTIFICATIONS_PER_HOUR = 3
@@ -47,7 +47,9 @@ module Rabotnegi
       ActiveSupport::JSON.engine = :json_gem
 
       # Resque.redis = "localhost:6379"
-      Resque.redis.namespace = "rabotnegi:jobs"      
+      Resque.redis.namespace = "rabotnegi:jobs"
+      
+      Mai # load it
     end
   end
 end
