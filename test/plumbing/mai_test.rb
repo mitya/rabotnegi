@@ -6,6 +6,6 @@ unit_test Mai do
   end
   
   test "interpolate" do
-    assert_equal "/some/url?region=spb&industry=it", mai.interpolate("/some/url?region={city}&industry={industry}", city: :spb, industry: "it")
+    assert_equal "/some/url?region=spb&industry=it", M.interpolate("/some/url?region={city}&industry={industry}", city: :spb, industry: "it")
   end
 end

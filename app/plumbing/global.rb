@@ -42,8 +42,3 @@ def assert(*conditions)
   message = "Assertion Failed: #{Reflector.hash_view(message)}" if Hash === message
   conditions.each { |condition| raise message unless condition }
 end
-
-def my; Mai end
-def gg; Mai end
-def mai; Mai end
-def M; Mai end

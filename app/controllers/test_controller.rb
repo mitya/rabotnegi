@@ -22,7 +22,7 @@ class TestController < ApplicationController
   end
   
   def add_tasks
-    mai.enqueue DemoWorker, :perform
+    M.enqueue DemoWorker, :perform
     render text: "Ok"
   end
 end

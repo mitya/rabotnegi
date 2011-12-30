@@ -76,6 +76,7 @@ module MongoReflector
     end
     
     def title
+      name = @name.gsub('.', '_')
       I18n.t("active_record.attributes.#{klass.singular}.#{name}", default: [:"active_record.attributes.common.#{name}", name.to_s.humanize])
     end
     
@@ -208,6 +209,20 @@ module MongoReflector
   desc RabotaRu::Job, key: 'rabotaru_jobs' do
     list [:id, :link], :state, :created_at, :updated_at, :started_at, :loaded_at, :processed_at, :failed_at
     list_css_classes { |x| { processed: x.processed?, loaded: x.loaded?, failed: x.failed? } }
-    details :id, :state, :created_at, :updated_at, :started_at, :loaded_at, :processed_at, :failed_at
+    details :id, :state, 
+      :created_at, :updated_at, :started_at, :loaded_at, :processed_at, :failed_at,
+      "loadings.count"
+      
+    # embed_list :rabotaru_loadings, key: 'job_id'
+  end
+
+  desc RabotaRu::Job, key: 'rabotaru_loadings' do
+    list [:id, :link], :state, :created_at, :updated_at, :started_at, :loaded_at, :processed_at, :failed_at
+    list_css_classes { |x| { processed: x.processed?, loaded: x.loaded?, failed: x.failed? } }
+    details :id, :state, 
+      :created_at, :updated_at, :started_at, :loaded_at, :processed_at, :failed_at,
+      "loadings.count"
+      
+    # embed_list :rabotaru_loadings, key: 'job_id'
   end
 end

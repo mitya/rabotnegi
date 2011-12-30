@@ -20,7 +20,7 @@ class ErrMailerTest < ActionMailer::TestCase
     )
  
     email = ErrMailer.notification(@err)
-    body = mai.unescape_action_mailer_stuff(email.body.to_s)
+    body = M.unescape_action_mailer_stuff(email.body.to_s)
  
     assert_equal [ERR_RECIPIENTS], email.to
     assert_equal [ERR_SENDER], email.from

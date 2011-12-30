@@ -21,10 +21,10 @@ class RabotaRu::VacancyLoader
     file_path = "#{directory}/#{city.key}-#{industry.key}.json"
     return if File.size?(file_path)
     
-    feed_url = gg.interpolate(JsonUrlTemplate, city: city.external_id, industry: industry.external_id)
-    feed_json = gg.http.get(feed_url)
-    gg.files.write(file_path, feed_json)
-    gg.info 'feed loaded', [city, industry, feed_json.size]
+    feed_url = M.interpolate(JsonUrlTemplate, city: city.external_id, industry: industry.external_id)
+    feed_json = Http.get(feed_url)
+    File.write(file_path, feed_json)
+    Log.info 'feed loaded', [city, industry, feed_json.size]
   end  
 
   private

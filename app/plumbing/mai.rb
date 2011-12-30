@@ -124,3 +124,16 @@ module Mai
   @files = Object.new.extend(Files)
   @json = Object.new.extend(Json)
 end
+
+module Http
+  extend self
+  delegate :get, to: "Mai.http"
+end
+
+module Log
+  extend self
+  delegate :info, :alert, :event, to: "Mai"
+end
+
+def gg; Mai end
+def M; Mai end
