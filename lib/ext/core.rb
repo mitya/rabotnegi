@@ -59,17 +59,17 @@ class Hash
   end
 end
 
-class Time
-  def to_json(*args)
-    as_json.to_json
-  end
-end
-
-class BSON::ObjectId
-  def to_json(*args)
-    as_json.to_json
-  end  
-end
+# class Time
+#   def to_json(*args)
+#     as_json.to_json
+#   end
+# end
+# 
+# class BSON::ObjectId
+#   def to_json(*args)
+#     as_json.to_json
+#   end  
+# end
 
 class File
   def self.write(path, data = nil)
