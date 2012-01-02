@@ -10,27 +10,19 @@ class RabotaRu::VacancyLoader
     @industry = Industry.get(industry)
   end
 
-  # def load_many
-  #   @cities = options[:city] ? City.get( options[:city] ) : City.all
-  #   @industries = options[:industry] ? Industry.get( options[:industry] ) : Industry.all
-  #   @cities.product(@industries) { |city, industry| load_one(city, industry) }
-  # end
-
   def load
     create_directory
     file_path = "#{directory}/#{city.key}-#{industry.key}.json"
     return if File.size?(file_path)
     
-    feed_url = M.interpolate(JsonUrlTemplate, city: city.external_id, industry: industry.external_id)
+    feed_url = U.interpolate(JsonUrlTemplate, city: city.external_id, industry: industry.external_id)
     feed_json = Http.get(feed_url)
-    File.write(file_path, feed_json)
-    Log.info 'feed loaded', [city, industry, feed_json.size]
+    U.info 'feed loaded', [city, industry, feed_json.size]
   end  
 
   private
   
   def create_directory
-    # FileUtils.rm_r(directory) if File.exists?(directory)
     Dir.mkdir(directory) unless File.directory?(directory)
   end
 end

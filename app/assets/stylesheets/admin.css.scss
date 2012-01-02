@@ -78,10 +78,10 @@ ul.resource { padding: 0;
   
   li.item table.listing { width: auto; }
 
-  .actions { margin: 20px 10px 10px 10px; padding-top: 10px; padding-left: 150px; border-top: 1px solid #ccc; list-style-type: none; }
-  .actions a:visited { color: $link_color; }
-  .actions a { padding-right: 10px; }
-  .actions a:visited { color: $visited_link_color; }
+  li.actions { margin: 20px 10px 10px 10px; padding-top: 10px; padding-left: 150px; border-top: 1px solid #ccc; list-style-type: none; }
+  li.actions a:visited { color: $link_color; }
+  li.actions a { padding-right: 10px; }
+  li.actions a:visited { color: $visited_link_color; }
 }
  
 form.resource {

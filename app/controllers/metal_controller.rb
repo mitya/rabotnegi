@@ -21,8 +21,6 @@ class MetalController < ActionController::Metal
       order_by(decode_order_to_mongo(params[:sort].presence || "title")).
       paginate(page: params[:page], per_page: 50) if params[:city]
 
-    Rails.logger.debug request.format
-
     data = @vacancies.map { |v| v.attributes.slice(:title, :city, :industry, :external_id, :salary_min, :salary_max, :employer_name) }
     self.content_type = "application/json"
     self.response_body = JSON.generate(data)

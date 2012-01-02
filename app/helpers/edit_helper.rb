@@ -48,8 +48,6 @@ module EditHelper
     end
 
     def ui_combo(attr, collection, options = {})
-      Rails.logger.debug [attr, collection, options]
-      
       if City === collection.first || Industry === collection.first
         collection = collection.map { |struct| [struct.name, struct.code] }
       end

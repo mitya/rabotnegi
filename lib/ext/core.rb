@@ -1,4 +1,8 @@
 class Object
+  def _class
+    self.class
+  end
+  
   def is?(*types)
     types.any? { |type| self.is_a?(type) }
   end
@@ -9,7 +13,7 @@ class Object
     return self if expression.blank?
     return self.send(expression) unless expression.include?(".")
     
-    expression.split('.').inject(self) { |result, method| Rails.logger.debug(result, method); result.send(method) }
+    expression.split('.').inject(self) { |result, method| result.send(method) }
   end
   
   def assign_attributes(attributes)
@@ -23,18 +27,22 @@ end
 
 class Module
   def def_state_predicates(storage, *states)
-    module_eval <<-ruby    
+    module_eval <<-RUBY
       def self._state_attr
         :#{storage}
       end
-    ruby
+      
+      def self._states
+        [ #{states.map { |state| ":#{state}" }.join(',')} ]
+      end      
+    RUBY
     
     states.each do |state|
-      module_eval <<-ruby
+      module_eval <<-RUBY
         def #{state}?
           self.#{storage} == :#{state} || self.#{storage} == '#{state}'
         end
-      ruby
+      RUBY
     end
   end  
 end
@@ -65,7 +73,7 @@ end
 
 class File
   def self.write(path, data = nil)
-    Rails.logger.debug "File.write #{path} (#{data.try(:size)}bytes)"
+    Log.trace "File.write #{path} (#{data.try(:size)}bytes)"
     open(path, 'w') { |file| file << data }
   end  
 end

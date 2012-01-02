@@ -104,7 +104,17 @@ module Mai
     end    
   end
 
-  module Logging
+  module Log
+    def method_missing(selector, *args)
+      Rails.logger.send(selector, *args)
+    end
+    
+    def trace(*args)
+      debug(*args)
+    end
+  end
+  
+  module DbLog
     def write(severity, message, *args)
       data = args.extract_options!
       brief = args.shift if args.first.is_a?(Array)
@@ -121,19 +131,19 @@ module Mai
     
     def event(key, data = {})
       info("event registered: #{key}", data)
-    end
+    end    
   end
 
   module Http
     def get(url)
-      gg.logger.debug "qq.http.get #{url}"
+      Log.trace "U.http.get #{url}"
       Net::HTTP.get(URI.parse(url))
     end    
   end
   
   module Files
     def write(path, data = nil)
-      gg.logger.debug "qq.files.write #{path}"      
+      Log.trace "U.files.write #{path}"
       File.open(path, 'w') { |file| file << data }
     end    
   end
@@ -144,12 +154,14 @@ module Mai
     end    
   end
 
-  extend self, Server, Strings, Logging, Jobs, RandomHelpers
+  extend self, Server, Strings, DbLog, Jobs, RandomHelpers
     
-  attr :http, :files, :json
+  attr :http, :files, :json, :db_log, :log
   @http = Object.new.extend(Http)
   @files = Object.new.extend(Files)
   @json = Object.new.extend(Json)
+  @db_log = Object.new.extend(DbLog)
+  @log = Object.new.extend(Log)
 end
 
 module Http
@@ -159,7 +171,7 @@ end
 
 module Log
   extend self
-  delegate :info, :alert, :event, to: "Mai"
+  delegate :info, :error, :warn, :debug, :trace, to: "Mai.log"
 end
 
 def gg; Mai end

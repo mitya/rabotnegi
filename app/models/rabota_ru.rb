@@ -46,8 +46,12 @@ module RabotaRu
       mark :failed, error: gg.format_error(e)
     end
     
+    def updated_at
+      _class._states.map { |s| send("#{state}_at") }.compact.max
+    end
+    
     def inspect(*args)
-      "Loading(#{state}, #{city}, #{industry})"
+      U.inspection(self, state, city, industry)
     end
     
     def to_s
