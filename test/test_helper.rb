@@ -3,6 +3,7 @@ ENV["RAILS_ENV"] = ENV["X_RAILS_ENV"] || "test"
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'pp'
+require 'fileutils'
 require "support/mocks"
 require "support/factories"
 require "support/helpers"

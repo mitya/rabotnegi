@@ -2,21 +2,21 @@ require 'test_helper'
 
 unit_test MongoReflector do
   setup do
-    @klass = MongoReflector.metadata_for('vacancies')
+    @collection = MongoReflector.metadata_for('vacancies')
   end
   
   test "klass" do
-    assert_equal Vacancy, @klass.reference
+    assert_equal Vacancy, @collection.klass
   end
   
   test "fields" do
-    field_names = @klass.list_fields.map(&:name)
+    field_names = @collection.list_fields.map(&:name)
     assert_include field_names, "title"
     assert_not_include field_names, "bum_bum"
   end
   
   test "custom fields" do
-    fields = @klass.list_fields
+    fields = @collection.list_fields
     name_field = fields.detect { |f| f.name == 'title' }
     assert_equal :link, name_field.format
   end
@@ -33,7 +33,7 @@ unit_test MongoReflector do
     assert_equal 'vacancies', vacancy.plural
     assert_equal 'vacancies', vacancy.key
     assert_equal true, vacancy.searchable?
-    assert_equal Vacancy, vacancy.reference
+    assert_equal Vacancy, vacancy.klass
 
     log_item = MongoReflector.metadata_for('log_items')
   
@@ -41,10 +41,10 @@ unit_test MongoReflector do
     assert_equal 'mongo_log_items', log_item.plural
     assert_equal 'log_items', log_item.key
     assert_equal true, log_item.searchable?
-    assert_equal MongoLog::Item, log_item.reference
+    assert_equal MongoLog::Item, log_item.klass
   end
   
   test "edit_fields" do
-    fields = @klass.edit_fields
+    fields = @collection.edit_fields
   end
 end

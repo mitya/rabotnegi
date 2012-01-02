@@ -31,16 +31,19 @@ module Rabotnegi
     # config.mongoid.autocreate_indexes = true
 
     require 'fileutils'
+    require 'ostruct'
     require "ext/core"
     require 'ext/rails'
     require "#{config.root}/app/plumbing/global"
-    
-    ::ADMIN_LOGIN = 'admin'
-    ::ADMIN_PASSWORD = '0000'
-    ::MAX_ERR_NOTIFICATIONS_PER_HOUR = 3
-    ::ERR_SENDER = "errors@rabotnegi.ru"
-    ::ERR_RECIPIENTS = "dmitry.sokurenko@gmail.com"
-    ::DEFAULT_QUEUE = :main
+
+    ::Se = OpenStruct.new
+    Se.admin_login = 'admin'
+    Se.admin_password = '0000'
+    Se.err_max_notifications_per_hour = 3
+    Se.err_sender = "errors@rabotnegi.ru"
+    Se.err_recipients = "dmitry.sokurenko@gmail.com"
+    Se.rabotaru_dir = "rabotaru"
+    Se.default_queue = :main
     
     config.after_initialize do  
       ActionView::Base.default_form_builder = CustomFormBuilder

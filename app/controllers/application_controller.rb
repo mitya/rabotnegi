@@ -39,7 +39,7 @@ protected
     self.admin = Admin.log_in('root', '0000') and return if Rails.env.test?
     authenticate_or_request_with_http_basic do |login, password|
       return true if Rails.env.development?
-      login == ADMIN_LOGIN && password == ADMIN_PASSWORD
+      login == Se.admin_login && password == Se.admin_password
     end
   end  
   

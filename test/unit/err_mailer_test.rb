@@ -22,8 +22,8 @@ class ErrMailerTest < ActionMailer::TestCase
     email = ErrMailer.notification(@err)
     body = M.unescape_action_mailer_stuff(email.body.to_s)
  
-    assert_equal [ERR_RECIPIENTS], email.to
-    assert_equal [ERR_SENDER], email.from
+    assert_equal [Se.err_recipients], email.to
+    assert_equal [Se.err_sender], email.from
     assert_equal "[rabotnegi.ru] vacancies/show - ApplicationError - a test thing", email.subject
     assert_match "GET http://rabotnegi.test/vacancies/1234", body
     assert_match "parameter_1", body

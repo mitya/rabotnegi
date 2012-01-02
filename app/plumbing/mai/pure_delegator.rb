@@ -1,5 +1,5 @@
-module Util
-  class PureDelegator < ActiveSupport::BasicObject
+module Mai
+  class PureDelegator < BasicObject
     def initialize(target)
       @target = target
     end
