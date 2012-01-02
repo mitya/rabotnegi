@@ -2,13 +2,8 @@ class MongoReflector
   cattr_accessor :collections
   @@collections = {}
   
-  def self.metadata_for(key)
-    @@collections[key.to_s] || Collection.new(key.to_s.classify.constantize)
-  end
-
-  def self.define_metadata(&block)
-    Builder.new.instance_eval(&block)
-  end
+  def self.metadata_for(key) @@collections[key.to_s] || Collection.new(key.to_s.classify.constantize) end
+  def self.define_metadata(&block) Builder.new.instance_eval(&block) end
 
   class Collection
     attr_accessor :klass, :key
@@ -27,27 +22,26 @@ class MongoReflector
     end
     
     def searchable?
-      klass.respond_to?(:query)
+      @klass.respond_to?(:query) 
     end
-
+    
     def plural
-      @klass.model_name.plural
+      @klass.model_name.plural 
     end
     
     def singular
-      @klass.model_name.singular
+      @klass.model_name.singular 
     end
     
     def list_fields
-      @list_fields || klass_fields
-    end 
-    
+      @list_fields || klass_fields end 
+      
     def view_fields
-      @view_fields || klass_fields
+      @view_fields || klass_fields 
     end
     
     def stored_fields
-      klass.fields.reject{ |k,f| k.starts_with?('_') }.map{ |k,f| k }
+      klass.fields.reject{ |k,f| k.starts_with?('_') }.map{ |k,f| k } 
     end
 
     private
@@ -116,6 +110,7 @@ class MongoReflector
       @current_collection = Collection.new(klass, key)
       MongoReflector.collections[@current_collection.key] = @current_collection
       instance_eval(&block) if block_given?
+      @current_collection      
     end
 
     def list(*params)
