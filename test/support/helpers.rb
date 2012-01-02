@@ -3,7 +3,7 @@ module Testing
     def unit_test(name, &block)
       test_case = Class.new(ActiveSupport::TestCase)
       Object.const_set((name.to_s.tr_s(' :', '_') + 'Test').classify, test_case)
-      test_case.class_eval(&block)
+      test_case.class_exec(&block)
     end    
 
     def web_test(name, &block)
