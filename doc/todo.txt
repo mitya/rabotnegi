@@ -1,1 +1,0 @@
-* Employer.initialize_vacancy

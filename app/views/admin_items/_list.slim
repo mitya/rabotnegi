@@ -1,0 +1,14 @@
+= listing models do
+  thead
+    tr
+      - collection.list_fields.each do |field|
+        th= field.title
+      th
+  - models.each do |model|
+    tr{class=U.css_classes_for(collection.list_css_classes.(model))}
+      - collection.list_fields.each do |field|
+        td= inspect_field(model, field, compact: true)
+      td.actions
+        = link_to "Изменить", url(:edit_admin_item, collection.key, model) unless collection.actions[:update] == false
+        '
+        = link_to "Удалить", url(:admin_item, collection.key, model), method: :delete unless collection.actions[:delete] == false

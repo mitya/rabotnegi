@@ -4,26 +4,26 @@ class AdminItemsController < ApplicationController
   layout 'admin'
 
   def index
-    @scope = @klass.reference.respond_to?(:query) ? @klass.reference.query(q: params[:q]) : @klass.reference
-    @models = @scope.order_by(@klass.list_order).paginate(params[:page], @klass.list_page_size)
+    @scope = @collection.klass.respond_to?(:query) ? @collection.klass.query(q: params[:q]) : @collection.klass
+    @models = @scope.order_by(@collection.list_order).paginate(params[:page], @collection.list_page_size)
   end  
   
 	def show
-    @model = @klass.reference.get(params[:id])
+    @model = @collection.klass.get(params[:id])
 	end
 	
   def edit
-    @model = @klass.reference.get(params[:id])
+    @model = @collection.klass.get(params[:id])
   end 
   
   def update
-    @model = @klass.reference.get(params[:id])
-    update_model @model, params[@klass.singular], url(:admin_data_item, @klass.key, @model)
+    @model = @collection.klass.get(params[:id])
+    update_model @model, params[@collection.singular], url(:admin_data_item, @collection.key, @model)
   end
 	
-private
+  private
   
   def load_metadata
-    @klass = MongoReflector.reflect(params[:collection])
+    @collection = MongoReflector.metadata_for(params[:collection])
   end	
 end

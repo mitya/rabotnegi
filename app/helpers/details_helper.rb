@@ -11,11 +11,10 @@ module DetailsHelper
     end
   
     def item(label, data = nil, options = {}, &block)
-      content = block_given?? capture(&block) : data
+      content = block_given? ? capture(&block) : data
       content = inspect_value(content) unless options[:format] == false
 
       element :li, "item #{options[:klass]}".strip do
-        content = data.to_s
         content = element(:b, label, 'heading') + " " + content unless options[:header] == false
         content
       end

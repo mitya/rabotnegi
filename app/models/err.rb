@@ -25,6 +25,7 @@ class Err < ApplicationModel
   end
 
   def notify
+    return if Rails.env.development?
     ErrMailer.notification(self).deliver
   end
 
