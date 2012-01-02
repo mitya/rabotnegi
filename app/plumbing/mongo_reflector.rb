@@ -232,7 +232,7 @@ class MongoReflector
     end
 
     desc RabotaRu::Loading, 'rabotaru_loadings' do
-      list :id, :city, :industry, :state, :error
+      list :id, :city, :industry, :state, :error, :updated_at
       view :id, :state, :created_at, :updated_at
       actions update: false, delete: false
     end    

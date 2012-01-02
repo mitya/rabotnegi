@@ -11,7 +11,6 @@ class User < ApplicationModel
   end
   
   def self.demo
-    Rails.logger.debug "User.demo() at #{Time.now}"
     MongoLog.write(nil, :info, 'user.demo')
   end
 end
