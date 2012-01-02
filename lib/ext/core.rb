@@ -26,6 +26,15 @@ class Object
 end
 
 class Module
+  def def_struct_ctor
+    module_eval <<-RUBY
+      def intialize(attributes = {})
+        assign_attributes!(attributes)
+        super
+      end
+    RUBY
+  end
+  
   def def_state_predicates(storage, *states)
     module_eval <<-RUBY
       def self._state_attr
