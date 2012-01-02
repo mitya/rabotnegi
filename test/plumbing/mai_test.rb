@@ -2,7 +2,8 @@ require 'test_helper'
 
 unit_test Mai do
   test "alias" do
-    assert_equal mai, Mai
+    assert_equal Mu, Mai
+    assert_equal gg, Mai
   end
   
   test "interpolate" do

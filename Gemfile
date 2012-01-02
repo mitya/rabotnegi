@@ -24,6 +24,7 @@ group :development, :test do
   gem 'launchy'
   gem 'turn', :require => false
   gem 'thin'
+  gem 'mocha'
 end
 
 group :assets do

@@ -5,7 +5,7 @@ module RabotaRu
     def_state_predicates 'state', :started, :failed, :loaded, :processed
 
     def queue_processing
-      gg.enqueue(self.class, :process, id)
+      Mu.enqueue(self.class, :process, id)
     end
 
     def to_s
@@ -33,7 +33,7 @@ module RabotaRu
     
     def queue
       mark :queued
-      gg.enqueue(self.class, :perform, job.id, id)
+      Mu.enqueue(self.class, :perform, job.id, id)
     end
 
     def run
@@ -51,7 +51,7 @@ module RabotaRu
     end
     
     def inspect(*args)
-      U.inspection(self, state, city, industry)
+      Mu.inspection(self, state, city, industry)
     end
     
     def to_s

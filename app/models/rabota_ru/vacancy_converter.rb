@@ -17,7 +17,7 @@ class RabotaRu::VacancyConverter
     vacancy
   end
 
-private
+  private
 
   # http://www.rabota.ru/vacancy1234567.html' => 1234567
   def extract_id(link)
@@ -59,7 +59,7 @@ private
       when 'usd' then :usd
       when 'eur' then :eur
       else
-        gg.alert "rrl.convert", "unknown currency #{currency_name}"
+        Mu.alert "can not convert unknown currency #{currency_name}"
         :rub
     end
   end

@@ -1,9 +1,9 @@
 class ErrMailer < ActionMailer::Base
-  default from: ERR_SENDER
+  default from: Se.err_sender
   helper :application, :format
 
   def notification(err)
     @err = err
-    mail to: ERR_RECIPIENTS, subject: "[rabotnegi.ru] #{@err}"
+    mail to: Se.err_recipients, subject: "[rabotnegi.ru] #{@err}"
   end
 end

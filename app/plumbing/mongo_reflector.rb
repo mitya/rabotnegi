@@ -82,11 +82,11 @@ class MongoReflector
     end
     
     def css
-      U.css_classes_for @css, wide: format.in?([:hash, :pre])
+      Mu.css_classes_for @css, wide: format.in?([:hash, :pre])
     end
     
     def inspect
-      U.inspection(self, name, format: format)
+      Mu.inspection(self, name, format: format)
     end
   end
   

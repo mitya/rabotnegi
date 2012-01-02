@@ -47,7 +47,8 @@ class Err < ApplicationModel
       )
     
       err = logger.silence { create!(data) }
-      err.notify if recent_errors_count < MAX_ERR_NOTIFICATIONS_PER_HOUR
+      err.notify if recent_errors_count < Se.err_max_notifications_per_hour
+      err.notify if recent_errors_count < Se.max_err_notifications_per_hour
       err
 
     rescue => e

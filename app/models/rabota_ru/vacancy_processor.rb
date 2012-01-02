@@ -3,19 +3,19 @@ class RabotaRu::VacancyProcessor
   
   def initialize(options = {})
     @vacancies = []
-    @work_dir = Rails.root.join("tmp/rabotaru-#{gg.date_stamp}")
+    @work_dir = Rails.root.join("tmp", "#{Se.rabotaru_dir}-#{Mu.date_stamp}")
     @converter = RabotaRu::VacancyConverter.new
   end
 
   def process
-    gg.info "processing downloaded vacancies"
+    Mu.info "processing downloaded vacancies"
 
     read unless vacancies.any?
     remove_duplicates
     filter
     save
 
-    gg.event "rr-loader.processed"
+    Mu.event "rr-loader.processed"
   end
 
   def read
@@ -26,20 +26,20 @@ class RabotaRu::VacancyProcessor
       @vacancies.concat(vacancies)
     end
 
-    gg.info "read files", count: @vacancies.size
+    Mu.info "read files", count: @vacancies.size
   end
 
   def convert(item)
     @converter.convert(item)
   rescue => e
     # save error to the errors table
-    gg.alert "convert failed, item skipped #{item['position']}", reason: gg.format_error(e.message)
+    Mu.alert "convert failed, item skipped #{item['position']}", reason: gg.format_error(e.message)
     nil
   end
 
   def remove_duplicates
     @vacancies.uniq_by! { |v| v.external_id }
-    gg.info "removed dups", count: @vacancies.size
+    Mu.info "removed dups", count: @vacancies.size
   end
   
   def filter
@@ -68,11 +68,11 @@ class RabotaRu::VacancyProcessor
       detalization["#{v.city}-#{v.industry}"] += 1
     }
 
-    gg.info new: new_vacancies.count, updated: updated_vacancies.count, total: @vacancies.count, env: detalization
+    Mu.info new: new_vacancies.count, updated: updated_vacancies.count, total: @vacancies.count, env: detalization
   end
 
   def save
     @vacancies.each { |a| a.save! }
-    gg.info "stored"
+    Mu.info "stored"
   end
 end

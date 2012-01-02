@@ -177,3 +177,4 @@ end
 def gg; Mai end
 M = Mai
 U = Mai
+Mu = Mai
