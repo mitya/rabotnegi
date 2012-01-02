@@ -41,14 +41,16 @@ module Rabotnegi
     ::ERR_SENDER = "errors@rabotnegi.ru"
     ::ERR_RECIPIENTS = "dmitry.sokurenko@gmail.com"
     ::DEFAULT_QUEUE = :main
-
+    
     config.after_initialize do  
       ActionView::Base.default_form_builder = CustomFormBuilder
       ActiveSupport::JSON.engine = :json_gem
 
       # Resque.redis = "localhost:6379"
       Resque.redis.namespace = "rabotnegi:jobs"
-      
+    end
+    
+    config.to_prepare do
       Mai # load it
     end
   end

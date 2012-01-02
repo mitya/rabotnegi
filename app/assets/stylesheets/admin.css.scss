@@ -75,6 +75,8 @@ ul.resource { padding: 0;
   
   li.item pre { font-size: smaller; }
   li.item.bold { font-weight: bold; }
+  
+  li.item table.listing { width: auto; }
 
   .actions { margin: 20px 10px 10px 10px; padding-top: 10px; padding-left: 150px; border-top: 1px solid #ccc; list-style-type: none; }
   .actions a:visited { color: $link_color; }

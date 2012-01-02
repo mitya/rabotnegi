@@ -1,74 +1,68 @@
-module MongoReflector
-  def self.reflect(key)
-    key = key.to_s
-    @@klasses[key] || Klass.new(key.classify.constantize)
+class MongoReflector
+  cattr_accessor :collections
+  @@collections = {}
+  
+  def self.metadata_for(key)
+    @@collections[key.to_s] || Collection.new(key.to_s.classify.constantize)
   end
 
-  mattr_accessor :klasses
-  @@klasses = {}
-  @@current_class = nil
-  
-  class Klass
-    attr_accessor :reference, :key, :list_fields, :details_fields, :list_order, :list_page_size, :edit_fields
+  def self.define_metadata(&block)
+    Builder.new.instance_eval(&block)
+  end
 
-    def initialize(reference, options = {})
-      @reference = reference
-      @options = options
+  class Collection
+    attr_accessor :klass, :key
+    attr_accessor :list_fields, :list_order, :list_page_size, :list_css_classes
+    attr_accessor :view_fields, :view_subcollections, :edit_fields, :actions
+
+    def initialize(klass, key = nil)
+      @klass = klass
+      @key = key || @klass.model_name.plural
+
+      @view_subcollections = []
+      @list_order = [:_id, :desc]
+      @list_page_size = 30
+      @list_css_classes = ->(m){}
+      @actions = {}
     end
     
     def searchable?
-      reference.respond_to?(:query)
+      klass.respond_to?(:query)
     end
 
-    def key
-      @options[:key] || @reference.model_name.plural
-    end
-    
     def plural
-      @reference.model_name.plural
+      @klass.model_name.plural
     end
     
     def singular
-      @reference.model_name.singular
-    end
-    
-    def reference_fields
-      @reference_fields ||= reference.fields.
-        reject { |key, mongo_field| key == '_type' }.
-        map { |key, mongo_field| Field.new(key, klass: self) }
+      @klass.model_name.singular
     end
     
     def list_fields
-      @list_fields || reference_fields
+      @list_fields || klass_fields
     end 
     
-    def details_fields
-      @details_fields || reference_fields
+    def view_fields
+      @view_fields || klass_fields
     end
     
-    def list_css_classes=(proc)
-      @list_css_classes = proc
+    def stored_fields
+      klass.fields.reject{ |k,f| k.starts_with?('_') }.map{ |k,f| k }
     end
-    
-    def list_css_classes(record)
-      @list_css_classes ? @list_css_classes.call(record) : nil
-    end
-    
-    def list_page_size
-      @list_page_size || 30
-    end
-    
-    def list_order
-      @list_order || [:_id, :desc]
-    end
-    
-    def edit_fields
-      @edit_fields
-    end
+
+    private
+
+    def klass_fields
+      @klass_fields ||= klass.fields.
+        reject { |key, mongo_field| key == '_type' }.
+        map { |key, mongo_field| Field.new(key, collection: self) }
+    end    
   end
   
   class Field
-    attr_accessor :name, :format, :klass, :args, :options
+    attr_accessor :name, :format, :args
+    attr_accessor :trim, :css
+    attr_accessor :collection
 
     def initialize(name, options = {})
       @name = name.to_s
@@ -76,67 +70,80 @@ module MongoReflector
     end
     
     def title
-      name = @name.gsub('.', '_')
-      I18n.t("active_record.attributes.#{klass.singular}.#{name}", default: [:"active_record.attributes.common.#{name}", name.to_s.humanize])
+      key = @name.gsub('.', '_')
+      I18n.t(
+        "active_record.attributes.#{collection.singular}.#{key}",
+        default: [:"active_record.attributes.common.#{key}", key.humanize]
+      )
     end
     
     def custom?
       format.is_a?(Proc)
     end
     
-    def options=(hash)
-      @options ||= ActiveSupport::OrderedOptions.new
-      @options.merge!(hash) if hash
-    end
-    
-    def options
-      @options || ActiveSupport::OrderedOptions.new
-    end
-    
     def css
-      css = []
-      # css << options[:css] if options
-      css << options.css if options
-      css << 'wide' if format.in?([:hash, :pre])
-      css.join(' ')
+      U.css_classes_for @css, wide: format.in?([:hash, :pre])
     end
     
     def inspect
-      "<#{name}, format=#{format}>"
+      U.inspection(self, name, format: format)
     end
   end
   
-  class << self
-    def desc(reference, options = {})
-      @@current_klass = Klass.new(reference, options)
-      @@klasses[@@current_klass.key] = @@current_klass
-      yield if block_given?
-    end
-
-    def list(*field_specs)          
-      field_specs = field_specs.first.to_a if Hash === field_specs.first
-      @@current_klass.list_fields = field_specs.map(&method(:convert_field_spec_to_object))
-    end
-
-    def list_css_classes(&block)
-      @@current_klass.list_css_classes = block
+  class Subcollection
+    attr_accessor :key, :accessor
+    
+    def initialize(accessor, key)
+      @accessor = accessor
+      @key = key
     end
     
+    def title
+      I18n.t("active_record.attributes.#{collection.singular}.#{accessor}", 
+        default: [:"active_record.attributes.common.#{accessor}", accessor.to_s.humanize]
+      )
+    end
+    
+    def collection
+      MongoReflector.metadata_for(key)
+    end
+  end
+
+  class Builder
+    attr_accessor :current_collection
+    
+    def desc(klass, key = nil, &block)
+      @current_collection = Collection.new(klass, key)
+      MongoReflector.collections[@current_collection.key] = @current_collection
+      instance_eval(&block) if block_given?
+    end
+
+    def list(*params)
+      @current_collection.list_fields = build_fields(params)
+    end
+
     def list_order(value)
-      @@current_klass.list_order = value
+      @current_collection.list_order = value
     end
 
     def list_page_size(value)
-      @@current_klass.list_page_size = value
+      @current_collection.list_page_size = value
     end
 
-    def details(*field_specs)
-      field_specs = field_specs.first.to_a if Hash === field_specs.first      
-      @@current_klass.details_fields = field_specs.map { |s| convert_field_spec_to_object(s) }
+    def list_css_classes(&block)
+      @current_collection.list_css_classes = block
+    end
+    
+    def actions(params = {})
+      @current_collection.actions = params
+    end
+
+    def view(*params)
+      @current_collection.view_fields = build_fields(params)
     end
 
     def edit(field_specs)
-      @@current_klass.edit_fields = field_specs.map do |key, spec|
+      @current_collection.edit_fields = field_specs.map do |key, spec|
         if Array === spec
           helper = spec.shift
           args = spec
@@ -144,85 +151,90 @@ module MongoReflector
           helper = spec
           args = []
         end
-        Field.new(key, format: helper, args: args, klass: @@current_klass)
+        Field.new(key, format: helper, args: args, collection: @current_collection)
       end
+    end
+    
+    def view_subcollection(accessor, key)
+      @current_collection.view_subcollections << Subcollection.new(accessor, key)
+    end
+
+    def _
     end
     
     private
 
-    def convert_field_spec_to_object(spec)
-      # :name
-      # :name, :format, option1: 'value1'
-      # :name, [:format, option1: 'value1']
-      if Array === spec
-        spec.flatten! if Array === spec.second
-        name = spec.first
-        options = spec.extract_options!
-        format = spec.second        
-      else
-        name = spec        
-      end
+    # Accepts a list of:
+    #   :name
+    #   :name, :format, option1: 'value1'
+    #   :name, [:format, option1: 'value1']
+    def build_fields(params_list)
+      params_list = params_list.first.to_a if Hash === params_list.first
+      
+      params_list.map do |params|
+        if Array === params
+          params.flatten! if Array === params.second
+          options = params.extract_options!
+          name = params.first
+          format = params.second
+        else
+          name = params
+          options = {}
+        end
 
-      Field.new(name, format: format, klass: @@current_klass, options: options)
+        attributes = {format: format, collection: @current_collection}.merge(options)
+        Field.new(name, attributes)
+      end
     end
   end
 
-  _ = nil
+  define_metadata do
+    desc Vacancy do
+      list :id, :industry, :city, [:title, :link], :employer_name, :created_at
+      view :id, :title, :city, :industry, :external_id, :employer_name, :created_at, :updated_at, :salary, :description
+      edit title: 'text',
+        city_name: ['combo', City.all], industry_name: ['combo', Industry.all],
+        external_id: 'text',
+        employer_id: 'text', employer_name: 'text',
+        created_at: 'date_time', updated_at: 'date_time',
+        description: 'text_area'      
+    end    
 
-  desc Vacancy do
-    list :id, :industry, :city, [:title, :link], :employer_name, :created_at
-    details :id, :title, :city, :industry, :external_id, :employer_name, :created_at, :updated_at, :salary, :description
-    
-    edit \
-      title: 'text', 
-      city_name: ['combo', City.all], industry_name: ['combo', Industry.all],
-      external_id: 'text',
-      employer_id: 'text', employer_name: 'text',
-      created_at: 'date_time', updated_at: 'date_time',
-      description: 'text_area'      
-  end    
+    desc User do
+      list :id, :industry, :city, :ip_address, :browser, :created_at
+    end
 
-  desc User do
-    list :id, :industry, :city, :ip_address, :browser, :created_at
-  end
+    desc Err do
+      list created_at: _, id: :link, source: _, 
+        url: [trim: 40],
+        exception: [ ->(err) { "#{err.exception_class}: #{err.exception_message}" }, trim: 100 ]
+      view id: _, created_at: _, host: _, source: _, 
+        url: ->(err) { "#{err.verb} #{err.url}" },
+        exception: ->(err) { "#{err.exception_class}: #{err.exception_message}" },
+        params: 'hash_view',
+        session: 'hash_view', request_headers: 'hash_view', response_headers: 'hash_view', backtrace: :pre
+      actions update: false, delete: false
+    end
 
-  desc Err do
-    list created_at: _, id: :link, source: _, 
-      url: [trim: 40],
-      exception: [ ->(err) { "#{err.exception_class}: #{err.exception_message}" }, trim: 100 ]
-
-    details \
-      id: _, created_at: _, host: _, source: _, 
-      url: ->(err) { "#{err.verb} #{err.url}" },
-      exception: ->(err) { "#{err.exception_class}: #{err.exception_message}" },
-      params: 'hash_view',
-      session: 'hash_view', request_headers: 'hash_view', response_headers: 'hash_view', backtrace: :pre
-  end
-
-  desc MongoLog::Item, key: 'log_items' do
-    list id: :link, created_at: _, puid: 'color_code', title: _, duration: 'sec_usec', brief: 'array_inline'
-    list_css_classes { |x| {start: x.title == 'rrl.start', warning: x.warning?} }
-    list_page_size 100
-    details :id, :created_at, :puid, :title, :duration, [:brief, 'array_view'], [:data, 'hash_view']
-  end
+    desc MongoLog::Item, 'log_items' do
+      list id: :link, created_at: _, puid: 'color_code', title: _, duration: 'sec_usec', brief: 'array_inline'
+      list_css_classes { |x| {start: x.title == 'rrl.start', warning: x.warning?} }
+      view :id, :created_at, :puid, :title, :duration, [:brief, 'array_view'], [:data, 'hash_view']
+      actions update: false, delete: false
+    end
   
-  desc RabotaRu::Job, key: 'rabotaru_jobs' do
-    list [:id, :link], :state, :created_at, :updated_at, :started_at, :loaded_at, :processed_at, :failed_at
-    list_css_classes { |x| { processed: x.processed?, loaded: x.loaded?, failed: x.failed? } }
-    details :id, :state, 
-      :created_at, :updated_at, :started_at, :loaded_at, :processed_at, :failed_at,
-      "loadings.count"
-      
-    # embed_list :rabotaru_loadings, key: 'job_id'
-  end
+    desc RabotaRu::Job, 'rabotaru_jobs' do
+      list [:id, :link], :state, :created_at, :updated_at, :started_at, :loaded_at, :processed_at, :failed_at
+      list_css_classes { |x| { processed: x.processed?, loaded: x.loaded?, failed: x.failed? } }
+      view :id, :state, :created_at, :updated_at, :started_at, :loaded_at, :processed_at, :failed_at, "loadings.count"
+      view_subcollection :loadings, 'rabotaru_loadings'
+      actions update: false, delete: false
+    end
 
-  desc RabotaRu::Job, key: 'rabotaru_loadings' do
-    list [:id, :link], :state, :created_at, :updated_at, :started_at, :loaded_at, :processed_at, :failed_at
-    list_css_classes { |x| { processed: x.processed?, loaded: x.loaded?, failed: x.failed? } }
-    details :id, :state, 
-      :created_at, :updated_at, :started_at, :loaded_at, :processed_at, :failed_at,
-      "loadings.count"
-      
-    # embed_list :rabotaru_loadings, key: 'job_id'
+    desc RabotaRu::Loading, 'rabotaru_loadings' do
+      list :id, :city, :industry, :state, :error
+      view :id, :state, :created_at, :updated_at
+      actions update: false, delete: false
+    end    
   end
 end

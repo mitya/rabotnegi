@@ -2,7 +2,7 @@ require 'test_helper'
 
 unit_test MongoReflector do
   setup do
-    @klass = MongoReflector.reflect('vacancies')
+    @klass = MongoReflector.metadata_for('vacancies')
   end
   
   test "klass" do
@@ -22,12 +22,12 @@ unit_test MongoReflector do
   end
   
   test "keys" do
-    assert_equal Vacancy, MongoReflector.reflect('vacancies').try(:reference)
-    assert_equal MongoLog::Item, MongoReflector.reflect('log_items').try(:reference)
+    assert_equal Vacancy, MongoReflector.metadata_for('vacancies').try(:klass)
+    assert_equal MongoLog::Item, MongoReflector.metadata_for('log_items').try(:klass)
   end
   
   test "accessors" do
-    vacancy = MongoReflector.reflect('vacancies')
+    vacancy = MongoReflector.metadata_for('vacancies')
   
     assert_equal 'vacancy', vacancy.singular
     assert_equal 'vacancies', vacancy.plural
@@ -35,7 +35,7 @@ unit_test MongoReflector do
     assert_equal true, vacancy.searchable?
     assert_equal Vacancy, vacancy.reference
 
-    log_item = MongoReflector.reflect('log_items')
+    log_item = MongoReflector.metadata_for('log_items')
   
     assert_equal 'mongo_log_item', log_item.singular
     assert_equal 'mongo_log_items', log_item.plural

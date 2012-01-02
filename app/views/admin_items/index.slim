@@ -1,21 +1,9 @@
-- page "admin-data-list", t("active_record.models.#{@klass.reference.model_name.plural}", default: @klass.reference.model_name.human.pluralize), klass: "admin-#{@klass.key.dasherize}"
+- page "admin-data-list", t("active_record.models.#{@collection.klass.model_name.plural}", default: @collection.klass.model_name.human.pluralize), klass: "admin-#{@collection.key.dasherize}"
 
-= search_form url_for(params) if @klass.searchable?
-= listing @models do
-  thead
-    tr
-      - @klass.list_fields.each do |field|
-        th= field.title
-      th
-  - for model in @models
-    tr{class="#{classes_from(@klass.list_css_classes(model))}"}
-      - @klass.list_fields.each do |field|
-        td= inspect_field(model, field, compact: true)
-      td.actions
-        = link_to "Изменить", url(:edit_admin_item, @klass.key, model)
-        '
-        = link_to "Удалить", url(:admin_item, @klass.key, model), method: :delete
+= search_form url_for(params) if @collection.searchable?
+
+= render 'list', models: @models, collection: @collection
 
 p
   b Хранимые аттрибуты — 
-  = @klass.reference.fields.reject{ |k,f| k.starts_with?('_') }.map{ |k,f| ":#{k}" }.join(", ")
+  = @collection.stored_fields.map{ |f| ":#{f}" }.join(", ")

@@ -45,16 +45,7 @@ module ApplicationHelper
 
   # (wide: true, narrow: false, thin: true) => "wide thin"
   def classes_from(*args)
-    return if args.first.nil?
-    
-    conditions = args.extract_options!
-    static_classes = args.first
-    classes = []
-    classes << static_classes if static_classes.present?
-    for klass, condition in conditions
-      classes << klass if condition
-    end
-    classes.join(" ")
+    M.css_classes_for(*args)
   end  
   
   # Works like content_tag. But:

@@ -47,7 +47,7 @@ module RabotaRu
     end
     
     def inspect(*args)
-      "LoadingItem(#{state}, #{city}, #{industry})"
+      "Loading(#{state}, #{city}, #{industry})"
     end
     
     def to_s

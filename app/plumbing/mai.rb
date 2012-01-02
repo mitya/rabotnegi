@@ -15,6 +15,33 @@ module Mai
     def logger
       Rails.logger
     end
+    
+    # f("fixed1", "fixed2", conditional1: true, conditional2: false) => "fixed1 fixed2 conditional1"
+    def css_classes_for(*args)
+      return nil if args.empty?
+
+      conditions = args.extract_options!
+      classes = args.dup
+      conditions.each { |clas, condition| classes << clas if condition }
+      classes.join(" ")
+    end
+    
+    def inspection(title, *args)
+      options = args.extract_options!
+      options.reject! { |k,v| v.blank? }
+      options = options.map { |k,v| "#{k}=#{inspect_value(v)}" }.join(',')
+      args = args.join(',')
+      string = [args, options].reject(&:blank?).join(' ')
+      # inspection = "#{title}(#{string})"
+      inspection = "{#{string}}"
+    end
+    
+    def inspect_value(value)
+      case value
+        when Proc then "Proc"
+        else value
+      end
+    end
   end
   
   module Jobs
@@ -136,4 +163,5 @@ module Log
 end
 
 def gg; Mai end
-def M; Mai end
+M = Mai
+U = Mai

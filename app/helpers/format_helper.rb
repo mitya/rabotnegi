@@ -79,6 +79,7 @@ module FormatHelper
     "#{value.to_s.first(8)}-#{value.to_s.last(4)}"
   end
 
+  # options: compact, trim
   def inspect_value(value, options = {})
     return "" if value.blank?
 
@@ -96,21 +97,19 @@ module FormatHelper
 
   def inspect_field(model, field, options = {})
     value = model.send_chain(field.name) unless field.custom?
+    value = short_object_id(value) if BSON::ObjectId === value
 
     result = case field.format
-      when :link then 
-        value = short_object_id(value) if BSON::ObjectId === value
-        link_to(value, url(:admin_item, field.klass.key, model))
-      when :city then City[value]
-      when :industry then Industry[value]
+      when :link then link_to(value, url(:admin_item, field.collection.key, model))
+      when :city then City.get(value)
+      when :industry then Industry.get(value)
       when :pre then element(:pre, value)
       when String then send(field.format, value)
       when Proc then field.format.(model)
       else inspect_value(value, options)
     end
     
-    result = result.to_s.truncate(field.options[:trim]) if field.options[:trim]
-    
+    result = result.to_s.truncate(field.trim) if field.trim    
     result
   end
 end
