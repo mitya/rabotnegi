@@ -19,4 +19,4 @@ ENV['RAILS_PROC'] = 'worker-rr'
 # end
 
 require File.join(rails_root, "config/environment")
-RabotaRu.run_job
+Rabotaru.run_job

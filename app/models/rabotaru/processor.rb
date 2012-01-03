@@ -1,10 +1,10 @@
-class RabotaRu::VacancyProcessor
+class Rabotaru::Processor
   attr_accessor :vacancies
   
   def initialize(options = {})
     @vacancies = []
     @work_dir = Rails.root.join("tmp", "#{Se.rabotaru_dir}-#{Mu.date_stamp}")
-    @converter = RabotaRu::VacancyConverter.new
+    @converter = Rabotaru::Converter.new
   end
 
   def process

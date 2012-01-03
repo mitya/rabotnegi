@@ -1,6 +1,6 @@
 require 'test_helper'
 
-unit_test RabotaRu::VacancyConverter do
+unit_test Rabotaru::Converter do
   DATA = ActiveSupport::JSON.decode('{
       "publishDate": "Fri, 19 Sep 2008 20:07:18 +0400",
       "expireDate": "Fri, 26 Sep 2008 20:07:18 +0400",
@@ -31,7 +31,7 @@ unit_test RabotaRu::VacancyConverter do
       salary: Salary.make(min: 20000.0, max: 30000.0, currency: :rub)
     )
 
-    @converter = Mu::PureDelegator.new(RabotaRu::VacancyConverter.new)
+    @converter = Mu::PureDelegator.new(Rabotaru::Converter.new)
   end
 
   test "convert vacancy" do

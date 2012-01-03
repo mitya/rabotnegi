@@ -9,7 +9,7 @@ namespace :app do
     100.times { Vacancy.create title: "Test", description: "Hello", industry: "it", city: "msk" }
   end
 
-  task(:load => :environment) { RabotaRu.load }
+  task(:load => :environment) { Rabotaru.load }
 
   namespace :vacancies do
     # Usage: rake vacancies:load CITY=spb INDUSTRY=telework
@@ -20,7 +20,7 @@ namespace :app do
       options[:city] = ENV['CITY'].shellsplit if ENV['CITY'].present?
       options[:industry] = ENV['INDUSTRY'].shellsplit if ENV['INDUSTRY'].present?
 
-      RabotaRu::VacancyLoader.new(options).load
+      Rabotaru::Loader.new(options).load
     end
 
     task :count => :environment do

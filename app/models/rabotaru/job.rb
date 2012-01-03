@@ -1,8 +1,9 @@
-module RabotaRu
+module Rabotaru
   class Job < ApplicationModel
     field :state, type: Symbol, default: 'started'
-    embeds_many :loadings, class_name: 'RabotaRu::Loading'
+    embeds_many :loadings, class_name: 'Rabotaru::Loading'
     def_state_predicates 'state', :started, :failed, :loaded, :processed
+    store_in "rabotaru.jobs"
 
     attr_accessor :period, :queue, :current
 
@@ -15,7 +16,7 @@ module RabotaRu
     end
 
     def to_s
-      "RabotaRu-Job(#{created_at.to_date.to_s(:long)})"
+      "Rabotaru-Job(#{created_at.to_date.to_s(:long)})"
     end
 
     private
@@ -27,7 +28,7 @@ module RabotaRu
       case current.try(:state)
       when nil
         mark :loaded
-        Mu.enqueue(RabotaRu, :process_loaded_vacancies, id)
+        Mu.enqueue(Rabotaru, :process_loaded_vacancies, id)
         return true
       when :created
         loadings << current
