@@ -21,25 +21,22 @@ unit_test MongoReflector do
 end
 
 unit_test MongoReflector::Builder do
-  class TUser < ApplicationModel
+  dummy = temp_class ApplicationModel do
     field :name
-    field :email
-  end
-  
-  setup do
+    field :email    
   end
   
   test "list" do
-    collection_1 = MongoReflector::Builder.new.desc(TUser) do
+    collection_1 = MongoReflector::Builder.new.desc(dummy) do
       list :id, [:name, :link], [:email, trim: 20], [:url, :link, trim: 30]
     end
     fields_1 = collection_1.list_fields.index_by { |field| field.name.to_sym }
-
-    collection_2 = MongoReflector::Builder.new.desc(TUser) do
+  
+    collection_2 = MongoReflector::Builder.new.desc(dummy) do
       list id: _, name: :link, email: {trim: 20}, url: [:link, trim: 30]
     end
     fields_2 = collection_2.list_fields.index_by { |field| field.name.to_sym }
-
+  
     [fields_1, fields_2].each do |fields|
       assert_equal 'id', fields[:id].name
       assert_equal 'name', fields[:name].name
@@ -54,7 +51,7 @@ unit_test MongoReflector::Builder do
   end  
   
   test "list options" do
-    collection = MongoReflector::Builder.new.desc(TUser) do
+    collection = MongoReflector::Builder.new.desc(dummy) do
       list_order :name
       list_page_size 33
       actions update: false
@@ -67,16 +64,16 @@ unit_test MongoReflector::Builder do
   end
   
   test "list_css_classes" do
-    collection = MongoReflector::Builder.new.desc(TUser) do
+    collection = MongoReflector::Builder.new.desc(dummy) do
       list_css_classes { |x| {joe: x.name == 'Joe'} }
     end
-
-    assert_equal Hash[joe: true], collection.list_css_classes.(TUser.new(name: "Joe"))
-    assert_equal Hash[joe: false], collection.list_css_classes.(TUser.new(name: "Bob"))
+  
+    assert_equal Hash[joe: true], collection.list_css_classes.(dummy.new(name: "Joe"))
+    assert_equal Hash[joe: false], collection.list_css_classes.(dummy.new(name: "Bob"))
   end
   
   test "view_subcollection" do
-    collection = MongoReflector::Builder.new.desc(TUser) do
+    collection = MongoReflector::Builder.new.desc(dummy) do
       view_subcollection :loadings, 'rabotaru_loadings'
     end
     
@@ -84,12 +81,12 @@ unit_test MongoReflector::Builder do
     assert_equal 'rabotaru_loadings', collection.view_subcollections.first.key
     assert_equal MongoReflector.metadata_for('rabotaru_loadings'), collection.view_subcollections.first.collection
   end
-
+  
   test "edit" do
-    collection = MongoReflector::Builder.new.desc(TUser) do
+    collection = MongoReflector::Builder.new.desc(dummy) do
       edit title: 'text', city_name: ['combo', City.all], created_at: 'date_time'
     end
-
+  
     fields = collection.edit_fields.index_by { |field| field.name.to_sym }
     assert_equal 'title', fields[:title].name
     assert_equal 'text', fields[:title].format

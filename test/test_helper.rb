@@ -8,6 +8,7 @@ require "support/mocks"
 require "support/factories"
 require "support/helpers"
 require "support/capybara"
+require "support/stubbing"
 
 raise "No vacancies in the database" if Rails.env.test_real? && Vacancy.count < 100
 
