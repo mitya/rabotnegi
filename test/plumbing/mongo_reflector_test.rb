@@ -1,32 +1,7 @@
 require 'test_helper'
 
 unit_test MongoReflector do
-  setup do
-    @collection = MongoReflector.metadata_for('vacancies')
-  end
-  
-  test "klass" do
-    assert_equal Vacancy, @collection.klass
-  end
-  
-  test "fields" do
-    field_names = @collection.list_fields.map(&:name)
-    assert_include field_names, "title"
-    assert_not_include field_names, "bum_bum"
-  end
-  
-  test "custom fields" do
-    fields = @collection.list_fields
-    name_field = fields.detect { |f| f.name == 'title' }
-    assert_equal :link, name_field.format
-  end
-  
-  test "keys" do
-    assert_equal Vacancy, MongoReflector.metadata_for('vacancies').try(:klass)
-    assert_equal MongoLog::Item, MongoReflector.metadata_for('log_items').try(:klass)
-  end
-  
-  test "accessors" do
+  test "real definitions" do
     vacancy = MongoReflector.metadata_for('vacancies')
   
     assert_equal 'vacancy', vacancy.singular
@@ -43,10 +18,6 @@ unit_test MongoReflector do
     assert_equal true, log_item.searchable?
     assert_equal MongoLog::Item, log_item.klass
   end
-  
-  test "edit_fields" do
-    fields = @collection.edit_fields
-  end  
 end
 
 unit_test MongoReflector::Builder do
@@ -78,7 +49,7 @@ unit_test MongoReflector::Builder do
       assert_equal 20, fields[:email].trim
       assert_equal 'url', fields[:url].name
       assert_equal :link, fields[:url].format
-      assert_equal 30, fields[:url].trim      
+      assert_equal 30, fields[:url].trim
     end
   end  
   
@@ -105,10 +76,25 @@ unit_test MongoReflector::Builder do
   end
   
   test "view_subcollection" do
+    collection = MongoReflector::Builder.new.desc(TUser) do
+      view_subcollection :loadings, 'rabotaru_loadings'
+    end
     
+    assert_equal :loadings, collection.view_subcollections.first.accessor
+    assert_equal 'rabotaru_loadings', collection.view_subcollections.first.key
+    assert_equal MongoReflector.metadata_for('rabotaru_loadings'), collection.view_subcollections.first.collection
   end
 
   test "edit" do
-    
+    collection = MongoReflector::Builder.new.desc(TUser) do
+      edit title: 'text', city_name: ['combo', City.all], created_at: 'date_time'
+    end
+
+    fields = collection.edit_fields.index_by { |field| field.name.to_sym }
+    assert_equal 'title', fields[:title].name
+    assert_equal 'text', fields[:title].format
+    assert_equal 'combo', fields[:city_name].format
+    assert_equal [City.all], fields[:city_name].args
+    assert_equal 'date_time', fields[:created_at].format
   end
 end
