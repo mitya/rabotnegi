@@ -219,7 +219,7 @@ class MongoReflector
       actions update: false, delete: false
     end
   
-    desc RabotaRu::Job, 'rabotaru_jobs' do
+    desc Rabotaru::Job, 'rabotaru_jobs' do
       list [:id, :link], :state, :created_at, :updated_at, :started_at, :loaded_at, :processed_at, :failed_at
       list_css_classes { |x| { processed: x.processed?, loaded: x.loaded?, failed: x.failed? } }
       view :id, :state, :created_at, :updated_at, :started_at, :loaded_at, :processed_at, :failed_at, "loadings.count"
@@ -227,7 +227,7 @@ class MongoReflector
       actions update: false, delete: false
     end
 
-    desc RabotaRu::Loading, 'rabotaru_loadings' do
+    desc Rabotaru::Loading, 'rabotaru_loadings' do
       list :id, :city, :industry, :state, :error, :updated_at
       view :id, :state, :created_at, :updated_at
       actions update: false, delete: false

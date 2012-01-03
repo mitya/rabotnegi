@@ -1,4 +1,4 @@
-module RabotaRu
+module Rabotaru
   def self.run_job
     job = Job.create!
     job.run
@@ -6,7 +6,7 @@ module RabotaRu
 
   def self.process_loaded_vacancies(job_id)
     job = Job.find(job_id)
-    VacancyProcessor.new.process
+    Processor.new.process
     job.mark :processed
   end
 

@@ -6,7 +6,7 @@ class SiteController < ApplicationController
   end
 
   def load_data_from_rabota_ru
-    loader = RabotaRu::VacancyLoader.new
+    loader = Rabotaru::Loader.new
     loader.load
     render text: 'ok'
   end

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-unit_test RabotaRu::VacancyLoader do
+unit_test Rabotaru::Loader do
   setup do
     @directory = Rails.root.join("tmp", "rabotaru-test-#{Mu.date_stamp}")
   end
@@ -12,7 +12,7 @@ unit_test RabotaRu::VacancyLoader do
   test "load loads the feed from the web and writes it to the file" do
     Http.stubs(:get).returns("downloaded data")
 
-    loader = RabotaRu::VacancyLoader.new("spb", "it")
+    loader = Rabotaru::Loader.new("spb", "it")
     loader.load
     
     assert File.directory?(@directory)
@@ -24,7 +24,7 @@ unit_test RabotaRu::VacancyLoader do
     File.write(@directory.join("spb-it.json"), "existing data")
     Http.stubs(:get).never
 
-    loader = RabotaRu::VacancyLoader.new("spb", "it")
+    loader = Rabotaru::Loader.new("spb", "it")
     loader.load
     
     assert_equal "existing data", File.read(@directory.join("spb-it.json"))
@@ -34,7 +34,7 @@ unit_test RabotaRu::VacancyLoader do
   #   make Vacancy, title: "V-1", city: "spb", industry: "it", external_id: 101, created_at: "2008-09-01", description: "no"
   #   make Vacancy, title: "V-2", city: "spb", industry: "it", external_id: 102, created_at: "2008-09-01", description: "no"
   #   
-  #   @loader = Util::PureDelegator.new(RabotaRu::VacancyLoader.new)
+  #   @loader = Util::PureDelegator.new(Rabotaru::Loader.new)
   #   @loader.work_directory = "#{Rails.root}/tmp/rabotaru_test"
   # 
   #   Dir.mkdir(@loader.work_directory) unless File.exists?(@loader.work_directory)
@@ -43,7 +43,7 @@ unit_test RabotaRu::VacancyLoader do
   # 
   # teardown do
   #   Vacancy.delete_all
-  #   RabotaRu::VacancyLoading.delete_all
+  #   Rabotaru::VacancyLoading.delete_all
   # end
   # 
   # no_test "directory clearing and remote loading" do
@@ -81,7 +81,7 @@ unit_test RabotaRu::VacancyLoader do
   # end
   # 
   # def load_vacancies
-  #   @loader.info = RabotaRu::VacancyLoading.create!(:started_at => Time.current)
+  #   @loader.info = Rabotaru::VacancyLoading.create!(:started_at => Time.current)
   #   @loader.vacancies = [      
   #     Vacancy.new(:title => 'V-1', :city => 'spb', :created_at => "2008-09-02", :external_id => 101, :industry => 'it', :description => 'updated'),
   #     Vacancy.new(:title => 'V-2', :city => 'spb', :created_at => "2008-09-01", :external_id => 102, :industry => 'it', :description => 'no'),

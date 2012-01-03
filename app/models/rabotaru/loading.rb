@@ -1,4 +1,4 @@
-module RabotaRu
+module Rabotaru
   class Loading
     include Mongoid::Document
         
@@ -7,22 +7,22 @@ module RabotaRu
     field :state, type: Symbol, default: 'created'
     field :error, type: String
     
-    embedded_in :job, class_name: 'RabotaRu::Job'
+    embedded_in :job, class_name: 'Rabotaru::Job'
     validates_presence_of :city, :industry
     def_state_predicates 'state', :created, :queued, :started, :done, :skipped, :failed
     
     def queue
       mark :queued
-      Mu.enqueue(RabotaRu, :load_vacancies, job.id, id)
+      Mu.enqueue(Rabotaru, :load_vacancies, job.id, id)
     end
 
     def run
       mark :started
-      loader = VacancyLoader.new(city, industry)
+      loader = Loader.new(city, industry)
       loader.load
       mark :done
     rescue => e
-      Err.register("RabotaRu::Loading.run", e, params: {city: city, industry: industry})
+      Err.register("Rabotaru::Loading.run", e, params: {city: city, industry: industry})
       mark :failed, error: gg.format_error(e)
     end
     

@@ -1,5 +1,5 @@
 # Convert json data to vacancy models
-class RabotaRu::VacancyConverter
+class Rabotaru::Converter
   def convert(hash)
     vacancy = Vacancy.new
     vacancy.title = hash['position']
