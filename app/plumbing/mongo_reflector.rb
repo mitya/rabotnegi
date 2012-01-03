@@ -20,7 +20,7 @@ class MongoReflector
       @list_css_classes = ->(m){}
       @actions = {}
     end
-    
+
     def searchable?
       @klass.respond_to?(:query) 
     end
@@ -34,14 +34,15 @@ class MongoReflector
     end
     
     def list_fields
-      @list_fields || klass_fields end 
+      @list_fields || klass_fields 
+    end 
       
     def view_fields
       @view_fields || klass_fields 
     end
     
     def stored_fields
-      klass.fields.reject{ |k,f| k.starts_with?('_') }.map{ |k,f| k } 
+      @klass.fields.reject{ |k,f| k.starts_with?('_') }.map{ |k,f| k } 
     end
 
     private
