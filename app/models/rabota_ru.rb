@@ -1,71 +1,18 @@
 module RabotaRu
-  class Job < ApplicationModel
-    field :state, type: Symbol, default: 'started'
-    embeds_many :loadings, class_name: 'RabotaRu::Loading'
-    def_state_predicates 'state', :started, :failed, :loaded, :processed
-
-    def queue_processing
-      Mu.enqueue(self.class, :process, id)
-    end
-
-    def to_s
-      "RabotaRu-Job(#{created_at.to_date.to_s(:long)})"
-    end
-    
-    def self.process(job_id)
-      job = find(job_id)
-      # RabotaRu::VacancyProcessor.new.process
-      job.mark :processed
-    end
+  def self.run_job
+    job = Job.create!
+    job.run
   end
 
-  class Loading
-    include Mongoid::Document
-        
-    field :city
-    field :industry
-    field :state, type: Symbol, default: 'created'
-    field :error, type: String
-    
-    embedded_in :job, class_name: 'RabotaRu::Job'
-    validates_presence_of :city, :industry
-    def_state_predicates 'state', :created, :queued, :done, :skipped, :failed
-    
-    def queue
-      mark :queued
-      Mu.enqueue(self.class, :perform, job.id, id)
-    end
-
-    def run
-      mark :started
-      loader = VacancyLoader.new(city, industry)
-      loader.load
-      mark :done
-    rescue => e
-      Err.register("RabotaRu::Loading.run", e, params: {city: city, industry: industry})
-      mark :failed, error: gg.format_error(e)
-    end
-    
-    def updated_at
-      _class._states.map { |s| send("#{state}_at") }.compact.max
-    end
-    
-    def inspect(*args)
-      Mu.inspection(self, state, city, industry)
-    end
-    
-    def to_s
-      inspect
-    end
-    
-    # def self.model_name
-    #   @model_name ||= ActiveModel::Name.new(self, RabotaRu)
-    # end
-        
-    def self.perform(job_id, loading_id)
-      job = Job.get(job_id)
-      loading = job.loadings.find(loading_id)
-      loading.run
-    end    
+  def self.process_loaded_vacancies(job_id)
+    job = Job.find(job_id)
+    VacancyProcessor.new.process
+    job.mark :processed
   end
+
+  def self.load_vacancies(job_id, loading_id)
+    job = Job.find(job_id)
+    loading = job.loadings.find(loading_id)
+    loading.run
+  end    
 end

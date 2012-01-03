@@ -3,8 +3,8 @@ module Testing
     def unit_test(name, &block)
       test_case = Class.new(ActiveSupport::TestCase)
       Object.const_set((name.to_s.tr_s(' :', '_') + 'Test').classify, test_case)
-      test_case.class_exec(&block)
-    end    
+      test_case.class_eval(&block)
+    end
 
     def web_test(name, &block)
       test_case = Class.new(WebTest)
@@ -18,6 +18,10 @@ module Testing
       factory_name = factory_name.model_name.singular if Class === factory_name
       Factory(factory_name, *args, &block)
     end
+    
+    def patch(*args)
+      Stubber.stub(*args)
+    end    
   end
   
   module CaseHelpers
@@ -26,7 +30,12 @@ module Testing
     
     def visual_test(name, &block)
       # test(name, &block)
-    end    
+    end
+    
+    def temp_class(base = Object, &block)
+      name = "TempClass#{rand(1000)}"
+      const_set(name, Class.new(base, &block))
+    end        
   end
   
   module Assertions
@@ -46,3 +55,4 @@ module Testing
 end
 
 include Testing::GlobalHelpers
+

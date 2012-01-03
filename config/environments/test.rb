@@ -12,4 +12,8 @@ Rabotnegi::Application.configure do
   config.assets.allow_debugging = true
 
   Se.rabotaru_dir = "rabotaru-test"
+  
+  config.after_initialize do
+    Resque.inline = true
+  end
 end
